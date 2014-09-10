@@ -3,7 +3,7 @@ Laravel Artificer (under development)
 
 Artificer is an admin package built on top of your models. It automatically detects all your models, tables and columns building a beautiful interface to manage your data. Help is needed.
 
-Current state advisory
+Current state warning
 ----
 Please don't use this package on production as it is under development.
 
