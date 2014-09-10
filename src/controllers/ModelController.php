@@ -10,7 +10,8 @@ use Mascame\Artificer\Option\AdminOption;
 
 class ModelController extends Artificer {
 
-	public function __construct(Model $model) {
+	public function __construct(Model $model)
+	{
 		parent::__construct($model);
 
 		$this->modelObject = $model;
@@ -28,7 +29,7 @@ class ModelController extends Artificer {
 
 		$form = array(
 			'form_action_route' => 'admin.store',
-			'form_method' => 'post'
+			'form_method'       => 'post'
 		);
 
 		return View::make($this->getView('edit'))->with('items', $this->data)->with($form);
@@ -97,7 +98,7 @@ class ModelController extends Artificer {
 
 		$form = array(
 			'form_action_route' => 'admin.update',
-			'form_method' => 'put'
+			'form_method'       => 'put'
 		);
 
 		return View::make($this->getView('edit'))->with('items', $this->data)->with($form);
@@ -167,7 +168,6 @@ class ModelController extends Artificer {
 
 		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
 	}
-
 
 
 }

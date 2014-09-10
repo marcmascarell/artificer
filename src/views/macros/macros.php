@@ -1,125 +1,132 @@
 <?php
 
-function isHidden($key, $hidden) {
-    return (!isset($hidden) || (isset($hidden) && !in_array($key, $hidden))) ? true : false;
+function isHidden($key, $hidden)
+{
+	return (!isset($hidden) || (isset($hidden) && !in_array($key, $hidden))) ? true : false;
 }
 
-function getSort($table_name, $sort) {
-    $sort_table = $table_name;
-    $sort_dir = 'asc';
+function getSort($table_name, $sort)
+{
+	$sort_table = $table_name;
+	$sort_dir = 'asc';
 
-    if ($sort != null && !empty($sort)) {
-        $sorted_table = isset($sort['column']) ? $sort['column'] : null;
-        $sort_dir = isset($sort['direction']) ? $sort['direction'] : null;
+	if ($sort != null && !empty($sort)) {
+		$sorted_table = isset($sort['column']) ? $sort['column'] : null;
+		$sort_dir = isset($sort['direction']) ? $sort['direction'] : null;
 
-        if ($sorted_table == $table_name) {
-            if ($sort_dir == 'asc') {
-                $sort_dir = 'desc';
-            } else {
-                $sort_dir = 'asc';
-            }
-        }
-    }
+		if ($sorted_table == $table_name) {
+			if ($sort_dir == 'asc') {
+				$sort_dir = 'desc';
+			} else {
+				$sort_dir = 'asc';
+			}
+		}
+	}
 
-    return array('sort_by' => $sort_table, 'direction' => $sort_dir, 'page' => Input::get('page'));
+	return array('sort_by' => $sort_table, 'direction' => $sort_dir, 'page' => Input::get('page'));
 }
 
-function getSortIcon($table_name, $sort) {
-    if ($sort['column'] == $table_name) {
-        if ($sort['direction'] == 'desc') {
-            $icon = 'fa-long-arrow-down';
-        } else {
-            $icon = 'fa-long-arrow-up';
-        }
+function getSortIcon($table_name, $sort)
+{
+	if ($sort['column'] == $table_name) {
+		if ($sort['direction'] == 'desc') {
+			$icon = 'fa-long-arrow-down';
+		} else {
+			$icon = 'fa-long-arrow-up';
+		}
 
-        return '<i class="fa '.$icon.'"></i>';
-    }
+		return '<i class="fa ' . $icon . '"></i>';
+	}
 
-    return null;
+	return null;
 }
 
-HTML::macro('table', function($model, $data = array(), $fields, $options, $sort){
-    $showEdit = true;
-    $showDelete = true;
-    $showView = true;
-    ?>
-    <div class="table-responsive">
-        <table id="table" class="table table-bordered table-striped"
-			   data-page="<?=Paginator::getCurrentPage()?>"
-			   data-start="<?=$data[0]->sort_id?>"
-			   data-sort-url="<?=URL::route("admin.sort", array($model['route'],'replace_old_id','replace_new_id'))?>">
+HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort) {
+	$showEdit = true;
+	$showDelete = true;
+	$showView = true;
+	?>
+	<div class="table-responsive">
+		<table id="table" class="table table-bordered table-striped"
+			   data-page="<?= Paginator::getCurrentPage() ?>"
+			   data-start="<?= $data[0]->sort_id ?>"
+			   data-sort-url="<?= URL::route("admin.sort", array($model['route'], 'replace_old_id', 'replace_new_id')) ?>">
 			<thead>
-				<tr>
-					<?php foreach ($fields as $field) {
-						if ($field->isListed() && !($field->isHiddenList())) {
-							?>
-							<th>
-								<a href="<?= URL::current() . '?' . http_build_query(getSort($field->name, $sort)) ?>">
-									<?=Str::title($field->title)?>
+			<tr>
+				<?php foreach ($fields as $field) {
+					if ($field->isListed() && !($field->isHiddenList())) {
+						?>
+						<th>
+							<a href="<?= URL::current() . '?' . http_build_query(getSort($field->name, $sort)) ?>">
+								<?= Str::title($field->title) ?>
 
-									<?= getSortIcon($field->name, $sort) ?>
-								</a>
-							</th>
-						<?php
-							}
-						} ?>
+								<?= getSortIcon($field->name, $sort) ?>
+							</a>
+						</th>
+					<?php
+					}
+				} ?>
 
 
-					<?php if ($showEdit || $showDelete || $showView ) { ?>
-						<th></th>
-					<?php } ?>
-				</tr>
+				<?php if ($showEdit || $showDelete || $showView) { ?>
+					<th></th>
+				<?php } ?>
+			</tr>
 			</thead>
 
-            <tbody class="sortable">
+			<tbody class="sortable">
 
-                <?php
-				foreach ( $data as $d ) {
+			<?php
+			foreach ($data as $d) {
 
-					?>
-                    <tr data-id="<?=$d->id?>"  data-sort-id="<?=$d->sort_id?>">
+				?>
+				<tr data-id="<?= $d->id ?>" data-sort-id="<?= $d->sort_id ?>">
 
-                        <?php foreach($model['columns'] as $key) {
-							if ($fields[$key]->isListed() && !($fields[$key]->isHiddenList())) {
-								?>
-								<td>
-									<?= $fields[$key]->show($d->$key) ?>
-								</td>
+					<?php foreach ($model['columns'] as $key) {
+						if ($fields[$key]->isListed() && !($fields[$key]->isHiddenList())) {
+							?>
+							<td>
+								<?= $fields[$key]->show($d->$key) ?>
+							</td>
 						<?php
-							}
-						} ?>
+						}
+					} ?>
 
-                        <?php if ($showEdit || $showDelete || $showView ) { ?>
-                            <td class="text-center">
-								<div class="btn-group">
-									<?php if ($showEdit) { ?>
-										<a href="<?=route('admin.edit', array('slug' => $model['route'], 'id' => $d->id), $absolute = true)?>" type="button" class="btn btn-default">
-											<i class="glyphicon glyphicon-edit"></i>
-										</a>
-									<?php } ?>
+					<?php if ($showEdit || $showDelete || $showView) { ?>
+						<td class="text-center">
+							<div class="btn-group">
+								<?php if ($showEdit) { ?>
+									<a href="<?= route('admin.edit', array('slug' => $model['route'], 'id' => $d->id), $absolute = true) ?>"
+									   type="button" class="btn btn-default">
+										<i class="glyphicon glyphicon-edit"></i>
+									</a>
+								<?php } ?>
 
-									<?php if ($showView) { ?>
-										<a href="<?=$model['route'] . '/' . $d->id?>" type="button" class="btn btn-default">
-											<i class="glyphicon glyphicon-eye-open"></i>
-										</a>
-									<?php } ?>
+								<?php if ($showView) { ?>
+									<a href="<?= $model['route'] . '/' . $d->id ?>" type="button"
+									   class="btn btn-default">
+										<i class="glyphicon glyphicon-eye-open"></i>
+									</a>
+								<?php } ?>
 
-									<?php if ($showDelete) { ?>
-										<a data-method="delete" data-token="<?=csrf_token()?>" href="<?=route('admin.destroy', array('slug' => $model['route'], 'id' => $d->id), $absolute = true)?>" type="button" class="btn btn-default">
-											<i class="glyphicon glyphicon-remove"></i>
-										</a>
-									<?php } ?>
-								</div>
-                            </td>
+								<?php if ($showDelete) { ?>
+									<a data-method="delete" data-token="<?= csrf_token() ?>"
+									   href="<?= route('admin.destroy', array('slug' => $model['route'], 'id' => $d->id), $absolute = true) ?>"
+									   type="button" class="btn btn-default">
+										<i class="glyphicon glyphicon-remove"></i>
+									</a>
+								<?php } ?>
+							</div>
+						</td>
 
-                        <?php } ?>
-                    </tr>
-                <?php } ?>
+					<?php } ?>
+				</tr>
+			<?php } ?>
 
-            </tbody>
-        </table>
-    </div>
-    <?php
+			</tbody>
+		</table>
+	</div>
+<?php
 });
 
 //HTML::macro('table_php', function($model, $data = array(), $fields, $options, $showEdit = true, $showDelete = true, $showView = true){
@@ -170,16 +177,17 @@ HTML::macro('table', function($model, $data = array(), $fields, $options, $sort)
 //    return $table;
 //});
 
-HTML::macro('admin_notifications', function($notifications) {
-	if ( ! empty($notifications[0])) {
+HTML::macro('admin_notifications', function ($notifications) {
+	if (!empty($notifications[0])) {
 		foreach ($notifications[0] as $notification) {
 			?>
-			<div class="alert alert-<?php print $notification['type']; ?> alert-dismissable admin-notification <?php (!$notification['autohide']) ?: print 'autohide' ?>">
+			<div
+				class="alert alert-<?php print $notification['type']; ?> alert-dismissable admin-notification <?php (!$notification['autohide']) ?: print 'autohide' ?>">
 				<i class="fa fa-check"></i>
 				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 				<?php print $notification['value']; ?>
 			</div>
-			<?php
+		<?php
 		}
 	}
 });

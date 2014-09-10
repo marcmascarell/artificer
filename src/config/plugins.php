@@ -1,8 +1,8 @@
 <?php
 
-return array (
+return array(
 
-	'installed' => array(
+	'installed'   => array(
 		'mascame/sortable',
 		'mascame/gallery',
 		'mascame/datatables',

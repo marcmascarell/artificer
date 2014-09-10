@@ -13,7 +13,8 @@ class Textarea extends Text {
 		return Form::textarea($this->name, $this->value, $this->getAttributes());
 	}
 
-	public function guarded() {
+	public function guarded()
+	{
 		return "<div>" . $this->value . "</div>";
 	}
 

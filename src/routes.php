@@ -68,7 +68,7 @@ Route::group(array('prefix' => 'admin'), function () {
 		$pluginName = explode('/', $pluginNamespace);
 		$pluginName = end($pluginName);
 
-		$plugin = Config::get('artificer::plugins/'.$pluginNamespace.'/'.$pluginName);
+		$plugin = Config::get('artificer::plugins/' . $pluginNamespace . '/' . $pluginName);
 
 		if (isset($plugin['routes'])) {
 			$plugin_routes = $plugin['routes'];

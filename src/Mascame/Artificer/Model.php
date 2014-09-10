@@ -75,7 +75,7 @@ class Model {
 		$this->models = $this->getModels();
 		$this->tables = $this->getTables($this->models);
 
-        // Todo: improve this condition-....
+		// Todo: improve this condition-....
 		if (in_array(Route::currentRouteName(),
 			array(
 				'admin.all',
@@ -109,11 +109,13 @@ class Model {
 		View::share('models', $this->models);
 	}
 
-	public static function getCurrent() {
+	public static function getCurrent()
+	{
 		return self::$current;
 	}
 
-	public function getRouteName($model = null) {
+	public function getRouteName($model = null)
+	{
 		if ($model) {
 			return $this->models[$model]['route'];
 		}
@@ -281,7 +283,7 @@ class Model {
 		$model = array(
 			'class'    => $this->class,
 			'name'     => $this->name,
-			'route'  => $this->getRouteName(),
+			'route'    => $this->getRouteName(),
 			'table'    => $this->table,
 			'columns'  => $this->columns,
 			'fillable' => $this->fillable

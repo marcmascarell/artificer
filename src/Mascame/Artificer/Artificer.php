@@ -159,7 +159,7 @@ class Artificer extends Controller {
 			$pluginName = explode('/', $pluginNamespace);
 			$pluginName = end($pluginName);
 
-			$plugin = Option::get('plugins/'.$pluginNamespace.'/'.$pluginName);
+			$plugin = Option::get('plugins/' . $pluginNamespace . '/' . $pluginName);
 			$plugin = $plugin['plugin'];
 
 			$this->plugins[$pluginNamespace] = new $plugin($pluginNamespace, $this->modelObject->getRouteName());
@@ -170,11 +170,13 @@ class Artificer extends Controller {
 		return $this->plugins;
 	}
 
-	public function getPlugin($key) {
+	public function getPlugin($key)
+	{
 		return $this->plugins[$key];
 	}
 
-	public function getView($view) {
+	public function getView($view)
+	{
 		return $this->theme . '.' . $view;
 	}
 

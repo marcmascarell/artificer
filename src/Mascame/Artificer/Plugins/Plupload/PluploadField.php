@@ -19,22 +19,22 @@ class PluploadField extends Image {
 			print "guarded";
 		}
 		?>
-			<ul id="plupload-file-list" class="list-group"></ul>
+		<ul id="plupload-file-list" class="list-group"></ul>
 
-			<div class="plupload-preview">
-				<div class="thumbnail">
-					<?= $this->show() ?>
-				</div>
+		<div class="plupload-preview">
+			<div class="thumbnail">
+				<?= $this->show() ?>
 			</div>
+		</div>
 
-			<div id="container">
-				<a id="browse" href="javascript:;" class="btn btn-primary">Browse</a>
-<!--				<a id="start-upload" href="javascript:;" class="btn btn-success">[Start Upload]</a>-->
-			</div>
+		<div id="container">
+			<a id="browse" href="javascript:;" class="btn btn-primary">Browse</a>
+			<!--				<a id="start-upload" href="javascript:;" class="btn btn-success">[Start Upload]</a>-->
+		</div>
 
-<!--			<br />-->
-<!--			<pre id="console"></pre>-->
-		<?php
+		<!--			<br />-->
+		<!--			<pre id="console"></pre>-->
+	<?php
 	}
 
 	public function show($value = null)

@@ -44,7 +44,7 @@ class PublishCommand extends Command {
 //		$this->call('config:publish', array('package' => 'mascame/artificer'));
 
 //		php artisan config:publish --path="workbench/foo/bar/src/config" foo/bar
-		if (file_exists(base_path() .'/workbench/mascame/artificer/src/config/')) {
+		if (file_exists(base_path() . '/workbench/mascame/artificer/src/config/')) {
 			$this->call('config:publish', array('--path' => "workbench/mascame/artificer/src/config", 'package' => $package));
 		} else {
 			$this->call('config:publish', array('package' => 'mascame/artificer'));
@@ -62,8 +62,7 @@ class PublishCommand extends Command {
 	 */
 	protected function getArguments()
 	{
-		return array(
-//			array('example', InputArgument::REQUIRED, 'An example argument.'),
+		return array(//			array('example', InputArgument::REQUIRED, 'An example argument.'),
 		);
 	}
 
@@ -80,4 +79,5 @@ class PublishCommand extends Command {
 		);
 	}
 }
+
 ?>

@@ -11,7 +11,8 @@ use Str;
 
 class GalleryPlugin extends Plugin {
 
-	public function __construct($namespace, $model = null) {
+	public function __construct($namespace, $model = null)
+	{
 		parent::__construct($namespace, __DIR__);
 
 		$this->version = '1.0';
@@ -21,13 +22,12 @@ class GalleryPlugin extends Plugin {
 		$this->options = array(
 			'configuration' => array(
 				'title' => 'Config',
-				'icon' => '',
+				'icon'  => '',
 				'route' => route('admin.plugin.gallery.configuration', $this->slug)
 			)
 		);
 
-		Event::listen(array('pluploadfield.output', 'image.output'), function($image)
-		{
+		Event::listen(array('pluploadfield.output', 'image.output'), function ($image) {
 			$thumbnails = $this->getThumbnailLayouts();
 
 			foreach ($thumbnails as $thumbnail) {
@@ -79,15 +79,18 @@ class GalleryPlugin extends Plugin {
 //		}
 //	}
 
-	public function getThumbnailLayouts() {
+	public function getThumbnailLayouts()
+	{
 		return AdminOption::get('thumbnails');
 	}
 
-	public function addThumbnailLayouts($array) {
+	public function addThumbnailLayouts($array)
+	{
 		AdminOption::set('thumbnails', array_merge($this->getThumbnailLayouts(), $array));
 	}
 
-	public function getThumbnailLayout($layout) {
+	public function getThumbnailLayout($layout)
+	{
 		return AdminOption::get('thumbnails.' . $layout);
 	}
 

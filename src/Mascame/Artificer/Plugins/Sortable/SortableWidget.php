@@ -12,7 +12,7 @@ class SortableWidget extends Widget {
 		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 
 		<script>
-			$(function() {
+			$(function () {
 				var sortable_start_item = $("table").data('start');
 				var sortable_url = $("table").data('sort-url');
 				var sortable_start_pos = null;
@@ -21,10 +21,10 @@ class SortableWidget extends Widget {
 
 				$(".sortable").sortable({
 					placeholder: "ui-state-highlight",
-					start: function(event , ui) {
+					start: function (event, ui) {
 						sortable_start_pos = $(ui.item).data('sort-id');
 					},
-					update: function( event, ui ) {
+					update: function (event, ui) {
 						sortable_end_pos = ui.item.index() + sortable_start_item;
 						new_url = sortable_url.replace("replace_old_id", sortable_start_pos);
 						new_url = new_url.replace("replace_new_id", sortable_end_pos);
@@ -35,7 +35,7 @@ class SortableWidget extends Widget {
 
 			});
 		</script>
-		<?php
+	<?php
 	}
 
 }

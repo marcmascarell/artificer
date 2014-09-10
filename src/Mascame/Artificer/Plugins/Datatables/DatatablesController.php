@@ -6,7 +6,8 @@ use View;
 class DatatablesController extends Artificer {
 
 
-	public function configuration() {
+	public function configuration()
+	{
 		return View::make('admin::plugins.datatables.home');
 	}
 

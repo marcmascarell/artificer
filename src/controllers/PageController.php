@@ -37,11 +37,11 @@ class PageController extends Artificer {
 		if ($operation == 'install') {
 			$from = 'uninstalled';
 			$to = 'installed';
-			$message = 'Successfully installed <b>'. $plugin .'</b>';
+			$message = 'Successfully installed <b>' . $plugin . '</b>';
 		} else {
 			$from = 'installed';
 			$to = 'uninstalled';
-			$message = 'Successfully uninstalled <b>'. $plugin .'</b>';
+			$message = 'Successfully uninstalled <b>' . $plugin . '</b>';
 		}
 
 		$plugin = str_replace('-', '/', $plugin);
@@ -64,17 +64,17 @@ class PageController extends Artificer {
 //				$content .= ';';
 				$content .= 'return array(' . PHP_EOL . PHP_EOL;
 
-					$content .= "\t" . '"installed" => array(' . PHP_EOL;
-					foreach ($plugins['installed'] as $plugin) {
-						$content .= "\t\t" . '"'.$plugin.'",' . PHP_EOL;
-					}
-					$content .= "\t" . '),' . PHP_EOL . PHP_EOL;
+				$content .= "\t" . '"installed" => array(' . PHP_EOL;
+				foreach ($plugins['installed'] as $plugin) {
+					$content .= "\t\t" . '"' . $plugin . '",' . PHP_EOL;
+				}
+				$content .= "\t" . '),' . PHP_EOL . PHP_EOL;
 
-					$content .= "\t" . '"uninstalled" => array(' . PHP_EOL;
-					foreach ($plugins['uninstalled'] as $plugin) {
-						$content .= "\t\t" . '"'.$plugin.'",' . PHP_EOL;
-					}
-					$content .= "\t" . '),' . PHP_EOL . PHP_EOL;
+				$content .= "\t" . '"uninstalled" => array(' . PHP_EOL;
+				foreach ($plugins['uninstalled'] as $plugin) {
+					$content .= "\t\t" . '"' . $plugin . '",' . PHP_EOL;
+				}
+				$content .= "\t" . '),' . PHP_EOL . PHP_EOL;
 
 				$content .= ');';
 

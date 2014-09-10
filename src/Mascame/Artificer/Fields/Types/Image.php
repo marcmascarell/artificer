@@ -14,13 +14,13 @@ class Image extends File {
 	{
 		if ($this->value != null) {
 			?>
-				<div data-box class="focal_box">
-					<?=$this->show()?>
-					<div data-point class="focal_point"></div>
-				</div>
+			<div data-box class="focal_box">
+				<?= $this->show() ?>
+				<div data-point class="focal_point"></div>
+			</div>
 
-				<div data-position class="focal_position"></div>
-			<?php
+			<div data-position class="focal_position"></div>
+		<?php
 		}
 
 		print Form::file($this->name);

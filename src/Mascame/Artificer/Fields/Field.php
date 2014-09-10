@@ -47,7 +47,8 @@ abstract class Field implements FieldInterface {
 	 * @param $key
 	 * @return bool
 	 */
-	public function fieldHas($key) {
+	public function fieldHas($key)
+	{
 		return FieldOption::has($key, $this->name);
 	}
 
@@ -56,7 +57,8 @@ abstract class Field implements FieldInterface {
 	 * @param $key
 	 * @return mixed
 	 */
-	public function fieldOption($key) {
+	public function fieldOption($key)
+	{
 		return FieldOption::get($key, $this->name);
 	}
 
@@ -65,7 +67,8 @@ abstract class Field implements FieldInterface {
 	 * @param $key
 	 * @param $value
 	 */
-	public function fieldSet($key, $value) {
+	public function fieldSet($key, $value)
+	{
 		FieldOption::set($key, $value, $this->name);
 	}
 
@@ -104,7 +107,8 @@ abstract class Field implements FieldInterface {
 	 * @param $key
 	 * @return array
 	 */
-	public function getAttribute($key) {
+	public function getAttribute($key)
+	{
 		return (isset($this->fieldOptions['attributes'][$key])) ? $this->fieldOptions['attributes'][$key] : array();
 	}
 
@@ -144,6 +148,7 @@ abstract class Field implements FieldInterface {
 	public function getType($type_class)
 	{
 		$pieces = explode('\\', $type_class);
+
 		return strtolower(end($pieces));
 	}
 
@@ -156,6 +161,7 @@ abstract class Field implements FieldInterface {
 	{
 		if (!in_array($widget->name, self::$widgets)) {
 			self::$widgets[$widget->name] = $widget;
+
 			return true;
 		}
 
@@ -279,7 +285,8 @@ abstract class Field implements FieldInterface {
 	/**
 	 * @return bool
 	 */
-	public function isHiddenList() {
+	public function isHiddenList()
+	{
 		return $this->isListed('list-hide');
 	}
 
@@ -289,7 +296,8 @@ abstract class Field implements FieldInterface {
 	 * @param $array
 	 * @return bool
 	 */
-	public function isInArray($value, $array) {
+	public function isInArray($value, $array)
+	{
 		return (is_array($array) && in_array($value, $array)) ? true : false;
 	}
 
@@ -310,7 +318,7 @@ abstract class Field implements FieldInterface {
 	public function getTitle($name)
 	{
 		if ($this->fieldHas('title')) {
-            return $this->fieldOption('title');
+			return $this->fieldOption('title');
 		}
 
 		return $name;

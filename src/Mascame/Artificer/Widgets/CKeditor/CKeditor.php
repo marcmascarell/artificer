@@ -9,7 +9,7 @@ class CKeditor extends Widget {
 		?>
 		<script src="//cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
 		<script>
-			$(function() {
+			$(function () {
 			});
 		</script>
 	<?php

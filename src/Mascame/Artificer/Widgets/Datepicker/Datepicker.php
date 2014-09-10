@@ -11,11 +11,11 @@ class Datepicker extends Widget {
 		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 
 		<script>
-			$(function() {
-				$( ".datepicker" ).datepicker();
+			$(function () {
+				$(".datepicker").datepicker();
 			});
 		</script>
-		<?php
+	<?php
 	}
 
 }

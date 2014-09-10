@@ -4,7 +4,8 @@ use Mascame\Artificer\Plugin;
 
 class SortablePlugin extends Plugin {
 
-	public function __construct($namespace, $model = null) {
+	public function __construct($namespace, $model = null)
+	{
 		parent::__construct($namespace, __DIR__);
 		$this->version = '1.0';
 		$this->name = 'Sortable';

@@ -17,7 +17,8 @@ class Plugin extends Artificer {
 	public $slug;
 	public $options = array();
 
-	public function __construct($namespace, $path) {
+	public function __construct($namespace, $path)
+	{
 		$this->path = $path;
 		$this->namespace = $namespace;
 		$this->configKey = 'plugins/' . $namespace;

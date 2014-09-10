@@ -18,7 +18,8 @@ class Text extends Field {
 		return Form::text($this->name, $this->value, $this->getAttributes());
 	}
 
-	public function guarded() {
+	public function guarded()
+	{
 		return "<div>" . $this->value . "</div>";
 	}
 }

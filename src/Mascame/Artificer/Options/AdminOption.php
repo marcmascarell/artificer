@@ -19,6 +19,7 @@ class AdminOption extends Option {
 		if (!$key) {
 			$key = self::$key;
 		}
+
 		return Option::get($key);
 	}
 }

@@ -1,35 +1,35 @@
 <?php
 
-return array (
+return array(
 
 	'default_route' => route('admin.all', array('slug' => 'user'), $absolute = true),
 
-	'theme' => 'artificer::themes.admin-lte-custom',
+	'theme'         => 'artificer::themes.admin-lte-custom',
 
-	'list' => array(
-		'hidden' => array(
+	'list'          => array(
+		'hidden'     => array(
 			'image_center'
 		),
-		'showable' => array(),
+		'showable'   => array(),
 		'pagination' => 5,
 	),
 
-	'edit' => array(
-		'hidden' => array(),
+	'edit'          => array(
+		'hidden'   => array(),
 		'showable' => array(),
 	),
 
 //	'routes' => Config::get('artificer::routes'),
 
-	'menu' => Config::get('artificer::menu'),
+	'menu'          => Config::get('artificer::menu'),
 
-	'plugins' => Config::get('artificer::plugins'),
+	'plugins'       => Config::get('artificer::plugins'),
 
-	'thumbnails' => Config::get('artificer::thumbnails'),
+	'thumbnails'    => Config::get('artificer::thumbnails'),
 
-	'types' => Config::get('artificer::fields.types'),
+	'types'         => Config::get('artificer::fields.types'),
 
-	'classmap' => Config::get('artificer::fields.classmap'),
+	'classmap'      => Config::get('artificer::fields.classmap'),
 
-	'models' => Config::get('artificer::models')
+	'models'        => Config::get('artificer::models')
 );

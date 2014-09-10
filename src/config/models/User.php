@@ -1,34 +1,34 @@
 <?php
 
-return array (
-	'title' => 'Users',
+return array(
+	'title'     => 'Users',
 
 	// hidden and Todo: guarded
-	'hidden' => array(''),
+	'hidden'    => array(''),
 
 	// Editable, fillable, updatable
-	'fillable' => array(),
+	'fillable'  => array(),
 
 	// Not updatable, not editable
-	'guarded' => array('id'),
+	'guarded'   => array('id'),
 
-	'list' => array('*'),
+	'list'      => array('*'),
 
 	'list-hide' => array('password'),
 
 	// Optional, else looks for eloquent rules
-	'rules' => array(
+	'rules'     => array(
 		'email' => 'required|email'
 	),
 
-	'fields' => array(
+	'fields'    => array(
 		'user_id' => array(
-			'title' => "Fake Owner",
+			'title'        => "Fake Owner",
 			'relationship' => array(
 //                'method' => 'usuario', //this is the name of the Eloquent relationship method!
-				'type' => 'hasOne',
+				'type'  => 'hasOne',
 				'model' => 'User',
-				'show' => "username",
+				'show'  => "username",
 			),
 
 			//'input' => '<input name="(:name)" value="(:value)">'

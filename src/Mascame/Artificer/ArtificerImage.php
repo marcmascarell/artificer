@@ -10,7 +10,8 @@ class ArtificerImage {
 //		$this->image = $image;
 //	}
 
-	public static function store(\Intervention\Image\Image $image, $path = null, $quality = null) {
+	public static function store(\Intervention\Image\Image $image, $path = null, $quality = null)
+	{
 		if (!$path) {
 			$pathinfo = pathinfo($path);
 			$path = $pathinfo['dirname'];
@@ -29,11 +30,13 @@ class ArtificerImage {
 		return false;
 	}
 
-	public static function get($image, $layout) {
+	public static function get($image, $layout)
+	{
 		return 'uploads/' . $layout . '/' . $image;
 	}
 
-	public static function path($image, $layout) {
+	public static function path($image, $layout)
+	{
 		return public_path() . 'uploads/' . $layout . '/' . $image;
 	}
 

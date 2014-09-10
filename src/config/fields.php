@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
 
 	'classmap' => array(
 		'integer' => '\Mascame\Artificer\Fields\Types\Integer',
@@ -9,65 +9,60 @@ return array (
 		'hasMany' => '\Mascame\Artificer\Fields\Types\Relations\hasMany',
 	),
 
-	'types' => array(
+	'types'    => array(
 		// field_type => array('fieldname_1', 'fieldname_1')
-		'integer' => array(
+		'integer'      => array(
 			'id'
 		),
 
-		'checkbox' => array(
+		'checkbox'     => array(
 			'accept'
 		),
 
-		'password' => array(
+		'password'     => array(
 			'password'
 		),
 
-		'text' => array(
+		'text'         => array(
 			'title',
 			'username'
 		),
 
-		'textarea' => array(
+		'textarea'     => array(
 			''
 		),
 
-		'wysiwyg' => array(
+		'wysiwyg'      => array(
 			'body'
 		),
 
-		'option' => array(
+		'option'       => array(
 			'selection'
 		),
 
-		'email' => array(
-		),
+		'email'        => array(),
 
-		'link' => array(
+		'link'         => array(
 			'url'
 		),
 
-		'date' => array(
-		),
+		'date'         => array(),
 
-		'file' => array(
-		),
+		'file'         => array(),
 
-		'image' => array(
+		'image'        => array(
 			'image'
 		),
 
-		'image_center' => array(
-		),
+		'image_center' => array(),
 
-		'hasOne' => array(
+		'hasOne'       => array(
 			'user_id',
 			'fake_id'
 		),
 
-		'hasMany' => array(
-		),
+		'hasMany'      => array(),
 
-		'default' => array('text')
+		'default'      => array('text')
 	),
 );

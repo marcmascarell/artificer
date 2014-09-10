@@ -33,8 +33,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 		Notification::attach();
 
-		$this->app['artificer'] = $this->app->share(function($app)
-		{
+		$this->app['artificer'] = $this->app->share(function ($app) {
 			return new PublishCommand();
 		});
 		$this->commands('artificer');

@@ -1,11 +1,10 @@
 <?php
 
-return array (
+return array(
 
 	'directories' => array(
 		app_path() . '/models'
 	),
-
 
 
 );
