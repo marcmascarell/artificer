@@ -11,13 +11,13 @@ Features
 ----
 
   - Plugins & widgets (making it really simple to extend and customize)
-  - Themes
-  - Beautiful interface
+  - Themes (Having a beautiful default theme)
   - Automatic form field type detection
   - Validation
   - "Hooks" (with Laravel Events)
   - Ultra configurable
-
+  - Frontend uses Laravel's blade template engine to avoid complexity
+  - Notifications
 
 Todo
 -----------
