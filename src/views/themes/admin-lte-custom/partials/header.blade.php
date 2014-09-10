@@ -1,6 +1,6 @@
 <a href="index.html" class="logo">
 	<!-- Add the class icon to your logo image or logo icon to add the margining -->
-	Laravel Admin
+	Artificer
 </a>
 <!-- Header Navbar: style can be found in header.less -->
 <nav class="navbar navbar-static-top" role="navigation">
@@ -27,7 +27,7 @@
 				<li><!-- start message -->
 					<a href="#">
 						<div class="pull-left">
-							<img src="{{ asset('packages/mascame/admin/themes/admin-lte-custom/img/avatar3.png') }}" class="img-circle" alt="User Image"/>
+							<img src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/img/avatar3.png') }}" class="img-circle" alt="User Image"/>
 						</div>
 						<h4>
 							Support Team
@@ -39,7 +39,7 @@
 				<li>
 					<a href="#">
 						<div class="pull-left">
-							<img src="{{ asset('packages/mascame/admin/themes/admin-lte-custom/img/avatar2.png') }}" class="img-circle" alt="user image"/>
+							<img src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/img/avatar2.png') }}" class="img-circle" alt="user image"/>
 						</div>
 						<h4>
 							AdminLTE Design Team
@@ -51,7 +51,7 @@
 				<li>
 					<a href="#">
 						<div class="pull-left">
-							<img src="{{ asset('packages/mascame/admin/themes/admin-lte-custom/img/avatar.png') }}" class="img-circle" alt="user image"/>
+							<img src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/img/avatar.png') }}" class="img-circle" alt="user image"/>
 						</div>
 						<h4>
 							Developers
@@ -63,7 +63,7 @@
 				<li>
 					<a href="#">
 						<div class="pull-left">
-							<img src="{{ asset('packages/mascame/admin/themes/admin-lte-custom/img/avatar2.png') }}" class="img-circle" alt="user image"/>
+							<img src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/img/avatar2.png') }}" class="img-circle" alt="user image"/>
 						</div>
 						<h4>
 							Sales Department
@@ -75,7 +75,7 @@
 				<li>
 					<a href="#">
 						<div class="pull-left">
-							<img src="{{ asset('packages/mascame/admin/themes/admin-lte-custom/img/avatar.png') }}" class="img-circle" alt="user image"/>
+							<img src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/img/avatar.png') }}" class="img-circle" alt="user image"/>
 						</div>
 						<h4>
 							Reviewers
@@ -210,7 +210,7 @@
 	<ul class="dropdown-menu">
 		<!-- User image -->
 		<li class="user-header bg-light-blue">
-			<img src="{{ asset('packages/mascame/admin/themes/admin-lte-custom/img/avatar3.png') }}" class="img-circle" alt="User Image" />
+			<img src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/img/avatar3.png') }}" class="img-circle" alt="User Image" />
 			<p>
 				Jane Doe - Web Developer
 				<small>Member since Nov. 2012</small>

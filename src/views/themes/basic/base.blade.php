@@ -39,7 +39,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('packages/mascame/admin/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('packages/mascame/artificer/style.css') }}">
 
 <!--    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>-->
 
@@ -52,7 +52,7 @@
     </script>
 
 <!--    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>-->
-    <script src="{{ asset('packages/mascame/admin/restfulizer.js') }}"></script>
+    <script src="{{ asset('packages/mascame/artificer/restfulizer.js') }}"></script>
 
     @yield('assets')
 
@@ -60,7 +60,7 @@
         {{ $field->assets() }}
     @endforeach
 
-<!--	{{ HTML::style('packages/mascame/admin/widgets/dropzone/css/basic.css') }}-->
+<!--	{{ HTML::style('packages/mascame/artificer/widgets/dropzone/css/basic.css') }}-->
 
 <!--    Todo: this must go into their widget -->
 <!--	<script>-->

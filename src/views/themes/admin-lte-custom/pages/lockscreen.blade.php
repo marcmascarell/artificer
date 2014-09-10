@@ -5,11 +5,11 @@
         <title>AdminLTE | Lockscreen</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- bootstrap 3.0.2 -->
-        <link href="{{ asset('packages/mascame/admin/themes/admin-lte-custom/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
         <!-- font Awesome -->
-        <link href="{{ asset('packages/mascame/admin/themes/admin-lte-custom/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
-        <link href="{{ asset('packages/mascame/admin/themes/admin-lte-custom/css/AdminLTE.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/css/AdminLTE.css') }}" rel="stylesheet" type="text/css" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,7 +32,7 @@
             <div class="lockscreen-item">
                 <!-- lockscreen image -->
                 <div class="lockscreen-image">
-                    <img src="{{ asset('packages/mascame/admin/themes/admin-lte-custom/img/avatar5.png') }}" alt="user image"/>
+                    <img src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/img/avatar5.png') }}" alt="user image"/>
                 </div>
                 <!-- /.lockscreen-image -->
 
@@ -57,7 +57,7 @@
         <!-- jQuery 2.0.2 -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <!-- Bootstrap -->
-        <script src="{{ asset('packages/mascame/admin/themes/admin-lte-custom/js/bootstrap.min.js') }}	" type="text/javascript"></script>
+        <script src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/js/bootstrap.min.js') }}	" type="text/javascript"></script>
 
         <!-- page script -->
         <script type="text/javascript">

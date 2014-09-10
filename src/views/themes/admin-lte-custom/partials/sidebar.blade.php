@@ -1,7 +1,7 @@
 <!-- Sidebar user panel -->
 <!--<div class="user-panel">-->
 <!--	<div class="pull-left image">-->
-<!--		<img src="{{ asset('packages/mascame/admin/themes/admin-lte-custom/img/avatar3.png') }}" class="img-circle" alt="User Image" />-->
+<!--		<img src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/img/avatar3.png') }}" class="img-circle" alt="User Image" />-->
 <!--	</div>-->
 <!--	<div class="pull-left info">-->
 <!--		<p>Hello, Jane</p>-->
