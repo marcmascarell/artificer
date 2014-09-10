@@ -14,7 +14,7 @@ class PublishCommand extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'mascame:publish';
+	protected $name = 'artificer:publish';
 
 	/**
 	 * The console command description.
