@@ -47,6 +47,13 @@ Publish assets and config
 ```sh
 php artisan artificer:publish
 ```
+Require this dependency:
+
+    "intervention/image": "2.*"
+
+Optional dependency for Plupload plugin:
+
+    "jildertmiedema/laravel-plupload": "dev-master"
 
 Usage
 --------------
