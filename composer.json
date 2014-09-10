@@ -1,7 +1,7 @@
 {
-    "name": "mascame/artificer",
+    "name": "mascame/laravel-artificer",
     "description": "",
-    "homepage": "https://github.com/marcmascarell/artificer",
+    "homepage": "https://github.com/marcmascarell/laravel-artificer",
     "keywords": ["laravel"],
     "license": "MIT",
     "authors": [
