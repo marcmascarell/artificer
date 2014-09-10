@@ -35,7 +35,7 @@ Installation
 --------------
 Require this package in your composer.json and run composer update:
 
-    "mascame/laravel-artificer": "dev-master"
+    "mascame/artificer": "dev-master"
 
 Add the Service Provider to `app/config` at the bottom of Providers:
 
