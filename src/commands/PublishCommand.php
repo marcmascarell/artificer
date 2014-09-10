@@ -48,8 +48,8 @@ class PublishCommand extends Command {
 			$this->call('config:publish', array('--path' => "workbench/mascame/artificer/src/config", 'package' => $package));
 			$this->call('asset:publish', array('--bench' => $package));
 		} else {
-			$this->call('config:publish ' . $package);
-			$this->call('asset:publish ' . $package);
+			$this->call('config:publish', array('package' => $package));
+			$this->call('asset:publish', array('package' => $package));
 		}
 
 		$this->info("Done.");

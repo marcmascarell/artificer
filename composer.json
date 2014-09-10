@@ -1,5 +1,5 @@
 {
-    "name": "mascame/laravel-artificer",
+    "name": "mascame/artificer",
     "description": "Artificer is an admin package built on top of your Eloquent models.",
     "homepage": "https://github.com/marcmascarell/laravel-artificer",
     "keywords": ["laravel", "admin", "artificer", "admin interface", "eloquent admin", "administration"],
