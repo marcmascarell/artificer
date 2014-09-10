@@ -1,4 +1,4 @@
-Laravel Artificer [under heavy development]
+Laravel Artificer (under development)
 =========
 
 Artificer is an admin package built on top of your models. It automatically detects all your models, tables and columns building a beautiful interface to manage your data. Help is needed.
@@ -37,12 +37,12 @@ Require this package in your composer.json and run composer update:
 
     "mascame/laravel-artificer": "dev-master"
 
-- Add the Service Provider to `app/config` at the bottom of Providers:
+Add the Service Provider to `app/config` at the bottom of Providers:
 
 ```php
 Mascame\Artificer\ArtificerServiceProvider
 ```
-- Publish assets and config
+Publish assets and config
 
 ```sh
 php artisan artificer:publish
