@@ -50,10 +50,12 @@ php artisan artificer:publish
 Require this dependency:
 
     "intervention/image": "2.*"
+    'Intervention\Image\ImageServiceProvider'
 
 Optional dependency for Plupload plugin:
 
     "jildertmiedema/laravel-plupload": "dev-master"
+    'JildertMiedema\LaravelPlupload\LaravelPluploadServiceProvider'
 
 Usage
 --------------
