@@ -44,7 +44,12 @@ class PublishCommand extends Command {
 //		$this->call('config:publish', array('package' => 'mascame/artificer'));
 
 //		php artisan config:publish --path="workbench/foo/bar/src/config" foo/bar
-		$this->call('config:publish', array('--path' => "workbench/mascame/artificer/src/config", 'package' => $package));
+		if (file_exists(base_path() .'/workbench/mascame/artificer/src/config/')) {
+			$this->call('config:publish', array('--path' => "workbench/mascame/artificer/src/config", 'package' => $package));
+		} else {
+			$this->call('config:publish', array('package' => 'mascame/artificer'));
+		}
+
 		$this->call('asset:publish', array('--bench' => $package));
 
 		$this->info("Done.");
