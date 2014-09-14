@@ -5,8 +5,8 @@ use Validator;
 use Input;
 use View;
 use Response;
+use Event;
 use JildertMiedema\LaravelPlupload\Facades\Plupload;
-use Mascame\Artificer\Option\AdminOption;
 
 class ModelController extends Artificer {
 
@@ -160,8 +160,12 @@ class ModelController extends Artificer {
 	 */
 	public function destroy($modelName, $id)
 	{
+        $event_info = array($modelName, $id);
+        Event::fire('artificer.before.destroy', $event_info);
+
 		if ($this->model->destroy($id)) {
 			Notification::success('<b>Success!</b> The record has been deleted!', true);
+            Event::fire('artificer.after.destroy', $event_info);
 		} else {
 			Notification::danger('<b>Failed!</b> The record could not be deleted!');
 		}

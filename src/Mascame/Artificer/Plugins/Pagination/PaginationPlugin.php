@@ -31,7 +31,7 @@ class PaginationPlugin extends Plugin {
 
 	public function addHooks()
 	{
-		Event::listen(array('before-list', 'after-list'), function ($items) {
+		Event::listen(array('artificer.before.list', 'artificer.after.list'), function ($items) {
 			print $items->appends(Input::except('page'))->links();
 		});
 	}

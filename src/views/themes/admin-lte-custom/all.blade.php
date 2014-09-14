@@ -21,7 +21,7 @@
 @overwrite
 
 @section('content')
-	<?php Event::fire('before-list', $items, $halt = false); ?>
+	<?php Event::fire('artificer.before.list', $items, $halt = false); ?>
 
     <div class="row">
         <div class="col-md-12 text-right">
@@ -37,6 +37,6 @@
 		{{ Form::submit('Submit!', array('class' => 'hidden', 'id' => 'sort-submit')); }}
 	{{ Form::close() }}
 
-	<?php Event::fire('after-list', $items, $halt = false);  ?>
+	<?php Event::fire('artificer.after.list', $items, $halt = false);  ?>
 @stop
 
