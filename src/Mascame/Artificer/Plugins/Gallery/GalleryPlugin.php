@@ -11,10 +11,8 @@ use Str;
 
 class GalleryPlugin extends Plugin {
 
-	public function __construct($namespace, $model = null)
+	public function meta()
 	{
-		parent::__construct($namespace, __DIR__);
-
 		$this->version = '1.0';
 		$this->name = 'Gallery';
 		$this->description = 'Simple gallery';
@@ -26,15 +24,17 @@ class GalleryPlugin extends Plugin {
 				'route' => route('admin.plugin.gallery.configuration', $this->slug)
 			)
 		);
+	}
 
-		Event::listen(array('pluploadfield.output', 'image.output'), function ($image) {
-			$thumbnails = $this->getThumbnailLayouts();
+    public function boot() {
+        Event::listen(array('pluploadfield.output', 'image.output'), function ($image) {
+            $thumbnails = $this->getThumbnailLayouts();
 
-			foreach ($thumbnails as $thumbnail) {
-				if (!$thumbnail['function']($image)) {
-					// here means thumb already exists
-				}
-			}
+            foreach ($thumbnails as $thumbnail) {
+                if (!$thumbnail['function']($image)) {
+                    // here means thumb already exists
+                }
+            }
 
 //			$thumb_layout = $this->getThumbnailLayout('ultra_custom');
 //
@@ -42,8 +42,8 @@ class GalleryPlugin extends Plugin {
 //				// here means thumb already exists
 //			}
 
-		});
-	}
+        });
+    }
 
 //	public function page($page) {
 ////		$test = array('ultra_custom' => array(

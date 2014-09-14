@@ -4,7 +4,7 @@ use Config;
 use Str;
 use Mascame\Artificer\Options\AdminOption as Option;
 
-class Plugin extends Artificer {
+class Plugin {
 
 	public $version;
 	public $namespace;
@@ -15,19 +15,25 @@ class Plugin extends Artificer {
 	public $configKey;
 	public $path;
 	public $slug;
+	public $installed = false;
 	public $options = array();
 
-	public function __construct($namespace, $path)
+	public function __construct($namespace)
 	{
-		$this->path = $path;
 		$this->namespace = $namespace;
 		$this->configKey = 'plugins/' . $namespace;
 		$this->config = (Option::has($this->configKey)) ? Option::get($this->configKey) : null;
 		$this->slug = str_replace('/', '-', $this->namespace);
-//		$this->bootstrap();
+
+        $this->meta();
 	}
 
-	public static function install()
+    public function boot()
+    {
+
+    }
+
+	public function meta()
 	{
 
 	}

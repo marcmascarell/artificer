@@ -18,8 +18,7 @@ class PageController extends Artificer {
 	public function plugins()
 	{
 		return View::make($this->getView('plugins'))
-			->with('plugins', $this->plugins)
-			->with('plugins_uninstalled', AdminOption::get('plugins.uninstalled'));
+			->with('plugins', $this->plugins);
 	}
 
 	public function installPlugin($plugin)

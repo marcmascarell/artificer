@@ -10,10 +10,8 @@ use Route;
 
 class DatatablesPlugin extends Plugin {
 
-	public function __construct($namespace, $model = null)
+	public function meta()
 	{
-		parent::__construct($namespace, __DIR__);
-
 		$this->version = '1.0';
 		$this->name = 'Datatables';
 		$this->description = 'Datatables for models';
@@ -25,9 +23,11 @@ class DatatablesPlugin extends Plugin {
 				'route' => route('admin.plugin.datatables.configuration', $this->slug)
 			)
 		);
-
-		$this->addHooks();
 	}
+
+    public function boot() {
+        $this->addHooks();
+    }
 
 	public function addHooks()
 	{

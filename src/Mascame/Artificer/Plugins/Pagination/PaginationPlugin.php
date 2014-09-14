@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Plugins\Pagination;
 
 use Mascame\Artificer\Artificer;
+use Mascame\Artificer\Model;
 use Mascame\Artificer\Plugin;
 use Config;
 use View;
@@ -14,19 +15,19 @@ class PaginationPlugin extends Plugin {
 
 	public static $pagination;
 
-	public function __construct($namespace, $model = null)
+	public function meta()
 	{
-		parent::__construct($namespace, __DIR__);
-
 		$this->version = '1.0';
 		$this->name = 'Pagination';
 		$this->description = 'Provides Laravel pagination to models';
 		$this->author = 'Marc Mascarell';
 		$this->options = array();
-
-		self::$pagination = $this->getPagination($model);
-		$this->addHooks();
 	}
+
+    public function boot() {
+        self::$pagination = $this->getPagination(Model::getCurrent());
+        $this->addHooks();
+    }
 
 	public function addHooks()
 	{

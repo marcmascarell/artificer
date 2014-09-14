@@ -19,7 +19,7 @@ class Artificer extends Controller {
 	public $fields = null;
 	public $data;
 	public $options;
-	public $plugins;
+	public $plugins = null;
 	public $theme;
 	public static $routes;
 
@@ -148,23 +148,28 @@ class Artificer extends Controller {
 
 	public function getPlugins()
 	{
-		return AdminOption::get('plugins');
+		return ($this->plugins) ? $this->plugins : null;
 	}
 
 	public function bootPlugins()
 	{
-		$plugins = AdminOption::get('plugins.installed');
+		$plugins = AdminOption::get('plugins');
 
-		foreach ($plugins as $pluginNamespace) {
+        $all_plugins = array_merge($plugins['installed'], $plugins['uninstalled']);
+
+		foreach ($all_plugins as $pluginNamespace) {
 			$pluginName = explode('/', $pluginNamespace);
 			$pluginName = end($pluginName);
 
 			$plugin = Option::get('plugins/' . $pluginNamespace . '/' . $pluginName);
 			$plugin = $plugin['plugin'];
 
-			$this->plugins[$pluginNamespace] = new $plugin($pluginNamespace, $this->modelObject->getRouteName());
-			// todo: make bootable and construct just for meta
-//			$this->plugins[$pluginNamespace]->boot();
+            if (in_array($pluginNamespace, $plugins['installed'])) {
+                $this->plugins['installed'][$pluginNamespace] = new $plugin($pluginNamespace);
+                $this->plugins['installed'][$pluginNamespace]->boot();
+            } else {
+                $this->plugins['uninstalled'][$pluginNamespace] = new $plugin($pluginNamespace);
+            }
 		}
 
 		return $this->plugins;
