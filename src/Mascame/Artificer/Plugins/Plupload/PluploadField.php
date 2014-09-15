@@ -45,7 +45,7 @@ class PluploadField extends Image {
 			$value = '/uploads/' . $value;
 		}
 
-		return '<img src="' . $value . '" height="100" />';
+		return '<img style="display: block; margin: auto" src="' . $value . '" height="100" />';
 	}
 
 }

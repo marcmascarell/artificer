@@ -34,6 +34,6 @@ class Image extends File {
 			$value = '/uploads/' . $value;
 		}
 
-		return '<img src="/uploads/' . $value . '" height="100" />';
+		return '<img style="display: block; margin: auto" src="/uploads/' . $value . '" height="100" />';
 	}
 }
