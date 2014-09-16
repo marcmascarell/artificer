@@ -34,6 +34,7 @@ class Artificer extends Controller {
 		$this->plugins = $this->bootPlugins();
 		$this->theme = AdminOption::get('theme');
 
+		View::share('main_title', AdminOption::get('title'));
 		View::share('menu', AdminOption::get('menu'));
 		View::share('theme', $this->theme);
 		View::share('fields', array());

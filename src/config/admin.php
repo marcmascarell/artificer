@@ -2,6 +2,8 @@
 
 return array(
 
+	'title' => 'Artificer',
+
 	'default_route' => route('admin.all', array('slug' => 'user'), $absolute = true),
 
 	'theme'         => 'artificer::themes.admin-lte-custom',
