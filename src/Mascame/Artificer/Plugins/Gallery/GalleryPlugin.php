@@ -30,11 +30,11 @@ class GalleryPlugin extends Plugin {
         Event::listen(array('artificer.field.pluploadfield.output', 'artificer.field.image.output'), function ($image) {
             $thumbnails = $this->getThumbnailLayouts();
 
-            foreach ($thumbnails as $thumbnail) {
-                if (!$thumbnail['function']($image)) {
-                    // here means thumb already exists
-                }
-            }
+//            foreach ($thumbnails as $thumbnail) {
+//                if (!$thumbnail['function']($image)) {
+//                    // here means thumb already exists
+//                }
+//            }
 
 //			$thumb_layout = $this->getThumbnailLayout('ultra_custom');
 //

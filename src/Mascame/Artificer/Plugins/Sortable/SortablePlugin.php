@@ -17,8 +17,6 @@ class SortablePlugin extends Plugin {
         Event::listen(array('artificer.before.destroy'), function ($item) {
             $sortable = new SortableController();
             $sortable->handleDeletedRow($item['model'], $item['id']);
-
-            $sortable->successNotification();
         });
     }
 }

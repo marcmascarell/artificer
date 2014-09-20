@@ -47,7 +47,7 @@ class SortableController extends Artificer {
 		$item->sort_id = $this->new_id;
 		$item->save();
 
-        $this->successNotification();
+        Notification::success('<b>Success!</b> The table has been reordered!', true);
 
 		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
 	}
@@ -63,10 +63,6 @@ class SortableController extends Artificer {
 
     public function getLastSorted() {
         return $this->model->orderby('sort_id', 'desc')->first();
-    }
-
-    public function successNotification() {
-        Notification::success('<b>Success!</b> The table has been reordered!', true);
     }
 
 }

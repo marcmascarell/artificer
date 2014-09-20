@@ -6,17 +6,10 @@ use Input;
 use View;
 use Response;
 use Event;
+use App;
 use JildertMiedema\LaravelPlupload\Facades\Plupload;
 
 class ModelController extends Artificer {
-
-	public function __construct(Model $model)
-	{
-		parent::__construct($model);
-
-		$this->modelObject = $model;
-		$this->model = $model->model;
-	}
 
 	/**
 	 * Show the form for creating a new resource.
