@@ -114,6 +114,11 @@ class Model {
 		return self::$current;
 	}
 
+    public static function getCurrentClass()
+	{
+		return '\\' . self::$current;
+	}
+
 	public function getRouteName($model = null)
 	{
 		if ($model) {

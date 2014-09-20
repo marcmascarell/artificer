@@ -2,6 +2,7 @@
 
 use Redirect;
 use Mascame\Artificer\Artificer;
+use Mascame\Artificer\Notification;
 
 class SortableController extends Artificer {
 
@@ -46,7 +47,26 @@ class SortableController extends Artificer {
 		$item->sort_id = $this->new_id;
 		$item->save();
 
+        $this->successNotification();
+
 		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
 	}
+
+    public function handleDeletedRow($modelName, $old_id)
+    {
+        $last = $this->getLastSorted();
+
+        $item = $this->model->find($old_id);
+
+        $this->sort($modelName, $item->sort_id, $last->sort_id);
+    }
+
+    public function getLastSorted() {
+        return $this->model->orderby('sort_id', 'desc')->first();
+    }
+
+    public function successNotification() {
+        Notification::success('<b>Success!</b> The table has been reordered!', true);
+    }
 
 }

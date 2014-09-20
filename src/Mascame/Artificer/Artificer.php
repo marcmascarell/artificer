@@ -9,6 +9,7 @@ use Mascame\Artificer\Fields\Factory;
 use Controller;
 use Session;
 use Event;
+use App;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\Option;
 
@@ -26,8 +27,9 @@ class Artificer extends Controller {
 	/**
 	 * @param Model $model
 	 */
-	public function __construct(Model $model)
+	public function __construct()
 	{
+        $model = App::make('artificer-model');
 		$this->modelObject = $model;
 		$this->model = $model->model;
 		$this->options = AdminOption::all();

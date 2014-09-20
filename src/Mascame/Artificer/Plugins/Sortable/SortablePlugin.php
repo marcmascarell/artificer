@@ -9,13 +9,16 @@ class SortablePlugin extends Plugin {
 	{
 		$this->version = '1.0';
 		$this->name = 'Sortable';
-		$this->description = 'Ultra simple sort of records (using a db column). <b>Does not work when there are deleted rows</b>';
+		$this->description = 'Ultra simple sort of records (using a db column).';
 		$this->author = 'Marc Mascarell';
 	}
 
     public function boot() {
-        Event::listen(array('artificer.after.destroy'), function ($item) {
+        Event::listen(array('artificer.before.destroy'), function ($item) {
+            $sortable = new SortableController();
+            $sortable->handleDeletedRow($item['model'], $item['id']);
 
+            $sortable->successNotification();
         });
     }
 }

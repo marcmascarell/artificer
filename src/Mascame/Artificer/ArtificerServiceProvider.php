@@ -2,6 +2,8 @@
 
 use Illuminate\Support\ServiceProvider;
 use Config;
+use App;
+
 
 class ArtificerServiceProvider extends ServiceProvider {
 
@@ -30,6 +32,11 @@ class ArtificerServiceProvider extends ServiceProvider {
 //		$this->commands(array(
 //			'admin'
 //		));
+
+        App::singleton('artificer-model', function()
+        {
+            return new Model();
+        });
 
 		Notification::attach();
 

@@ -160,7 +160,12 @@ class ModelController extends Artificer {
 	 */
 	public function destroy($modelName, $id)
 	{
-        $event_info = array($modelName, $id);
+        $event_info = array(
+            array(
+                "model" => $modelName,
+                "id"    => $id
+            )
+        );
         Event::fire('artificer.before.destroy', $event_info);
 
 		if ($this->model->destroy($id)) {
