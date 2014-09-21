@@ -16,7 +16,10 @@ return array(
 		),
 
 		'checkbox'     => array(
-			'accept'
+			'accept',
+            'active',
+            'activated',
+            'published',
 		),
 
 		'password'     => array(
@@ -46,7 +49,9 @@ return array(
 			'url'
 		),
 
-		'date'         => array(),
+		'date'         => array(
+            '_at'
+        ),
 
 		'file'         => array(),
 
@@ -57,6 +62,7 @@ return array(
 		'image_center' => array(),
 
 		'hasOne'       => array(
+			'_id',
 			'user_id',
 			'fake_id'
 		),
