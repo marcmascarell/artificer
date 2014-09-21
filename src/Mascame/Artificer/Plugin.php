@@ -1,10 +1,8 @@
 <?php namespace Mascame\Artificer;
 
-use Config;
-use Str;
 use Mascame\Artificer\Options\AdminOption as Option;
 
-class Plugin {
+abstract class Plugin {
 
 	public $version;
 	public $namespace;
