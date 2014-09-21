@@ -31,11 +31,15 @@
         </div>
     </div>
 
-	{{ HTML::table($model, $items, $fields, $models[$model['name']]['options'], $sort) }}
+    @if (!$items->isEmpty())
+        {{ HTML::table($model, $items, $fields, $models[$model['name']]['options'], $sort) }}
 
-	{{ Form::open(array('route' => array('admin.sort', $model['route'], '', ''))) }}
-		{{ Form::submit('Submit!', array('class' => 'hidden', 'id' => 'sort-submit')); }}
-	{{ Form::close() }}
+        {{ Form::open(array('route' => array('admin.sort', $model['route'], '', ''))) }}
+            {{ Form::submit('Submit!', array('class' => 'hidden', 'id' => 'sort-submit')); }}
+        {{ Form::close() }}
+    @else
+        No results
+    @endif
 
 	<?php Event::fire('artificer.after.list', $items, $halt = false);  ?>
 @stop
