@@ -176,18 +176,3 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 //
 //    return $table;
 //});
-
-HTML::macro('admin_notifications', function ($notifications) {
-	if (!empty($notifications[0])) {
-		foreach ($notifications[0] as $notification) {
-			?>
-			<div
-				class="alert alert-<?php print $notification['type']; ?> alert-dismissable admin-notification <?php (!$notification['autohide']) ?: print 'autohide' ?>">
-				<i class="fa fa-check"></i>
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-				<?php print $notification['value']; ?>
-			</div>
-		<?php
-		}
-	}
-});

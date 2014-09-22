@@ -28,7 +28,8 @@ return array(
 
 		'text'         => array(
 			'title',
-			'username'
+			'username',
+			'name'
 		),
 
 		'textarea'     => array(
@@ -36,11 +37,16 @@ return array(
 		),
 
 		'wysiwyg'      => array(
-			'body'
+			'body',
+			'text'
 		),
 
 		'option'       => array(
-			'selection'
+			'selection',
+		),
+
+		'boolean'      => array(
+			'published'
 		),
 
 		'email'        => array(),
