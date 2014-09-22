@@ -36,7 +36,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-					<?php HTML::admin_notifications(Event::fire('admin.notifications')); ?>
+					<?php Notify::all(); ?>
 
 					@yield('content')
                 </section><!-- /.content -->
