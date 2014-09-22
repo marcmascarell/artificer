@@ -1,5 +1,6 @@
 <?php namespace Mascame\Artificer\Plugins\Sortable;
 
+use Mascame\Artificer\Model;
 use Mascame\Artificer\Plugin;
 use Event;
 
@@ -18,5 +19,17 @@ class SortablePlugin extends Plugin {
             $sortable = new SortableController();
             $sortable->handleDeletedRow($item['model'], $item['id']);
         });
+
+//        \Eloquent::saved(function($model) {
+//            $original = $model->getOriginal();
+//
+//            if ($model->sort_id) {
+//                $sortable = new SortableController();
+//                $sortable->sort(Model::getCurrent(),
+//                    $original['sort_id'],
+//                    $model->sort_id);
+//            }
+//
+//        });
     }
 }

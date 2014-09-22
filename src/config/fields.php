@@ -3,7 +3,7 @@
 return array(
 
 	'classmap' => array(
-		'integer' => '\Mascame\Artificer\Fields\Types\Integer',
+		'sort_id' => '\Mascame\Artificer\Plugins\Sortable\SortableField',
 		'image'   => '\Mascame\Artificer\Plugins\Plupload\PluploadField',
 		'hasOne'  => '\Mascame\Artificer\Fields\Types\Relations\hasOne',
 		'hasMany' => '\Mascame\Artificer\Fields\Types\Relations\hasMany',
@@ -66,6 +66,8 @@ return array(
 		),
 
 		'image_center' => array(),
+
+		'sort_id' => array(),
 
 		'hasOne'       => array(
 			'_id',
