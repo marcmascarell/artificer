@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
 use Form;
+use Str;
 use Mascame\Artificer\Widgets\FocalPoint\Focalpoint;
 
 class Image extends File {
@@ -26,14 +27,16 @@ class Image extends File {
 		print Form::file($this->name);
 	}
 
-	public function show($value = null)
-	{
-		$value = $this->getValue($value);
+    public function show($value = null)
+    {
+        $value = $this->getValue($value);
 
-		if (!\Str::startsWith($value, array('https://', 'http://'))) {
-			$value = '/uploads/' . $value;
-		}
+        if (!Str::startsWith($value, array('https://', 'http://'))) {
+            $value = '/uploads/' . $value;
+        }
 
-		return '<img style="display: block; margin: auto" src="/uploads/' . $value . '" height="100" />';
-	}
+        ?>
+            <img style="display: block; margin: auto;height:auto; width:auto; max-width:100px; max-height:100px;" src="<?=$value?>" height="100"/>
+        <?php
+    }
 }

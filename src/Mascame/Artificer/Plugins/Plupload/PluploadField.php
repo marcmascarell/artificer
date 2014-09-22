@@ -37,15 +37,6 @@ class PluploadField extends Image {
 	<?php
 	}
 
-	public function show($value = null)
-	{
-		$value = $this->getValue($value);
 
-		if (!\Str::startsWith($value, array('https://', 'http://'))) {
-			$value = '/uploads/' . $value;
-		}
-
-		return '<img style="display: block; margin: auto" src="' . $value . '" height="100" />';
-	}
 
 }
