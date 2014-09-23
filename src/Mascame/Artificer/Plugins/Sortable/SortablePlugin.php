@@ -1,6 +1,5 @@
 <?php namespace Mascame\Artificer\Plugins\Sortable;
 
-use Mascame\Artificer\Model;
 use Mascame\Artificer\Plugin;
 use Event;
 
@@ -20,16 +19,30 @@ class SortablePlugin extends Plugin {
             $sortable->handleDeletedRow($item['model'], $item['id']);
         });
 
-//        \Eloquent::saved(function($model) {
-//            $original = $model->getOriginal();
-//
-//            if ($model->sort_id) {
-//                $sortable = new SortableController();
-//                $sortable->sort(Model::getCurrent(),
-//                    $original['sort_id'],
-//                    $model->sort_id);
-//            }
-//
-//        });
+		//		$modified = 0;
+		//		Event::listen('eloquent.saved: *', function ($model) {
+		//			$original = $model->getOriginal();
+		//
+		//			if ($original->sort_id) {
+		//				\Session::flash('artificer.plugin.sortable.need_resort', true);
+		//			}
+		//		});
+
+		//		\Illuminate\Database\Eloquent\Model::saving(function($model) {
+		//			dd($model);
+		//		});
+
+		//		\Illuminate\Database\Eloquent\Model::saved()::saved(function($model) {
+		//            $original = $model->getOriginal();
+		//dd($model);
+		//            if ($model->sort_id) {
+		//                $sortable = new SortableController();
+		//                $sortable->sort(Model::getCurrent(),
+		//                    $original['sort_id'],
+		//                    $model->sort_id);
+		//            }
+		//
+		//        });
+
     }
 }
