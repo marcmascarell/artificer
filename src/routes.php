@@ -14,7 +14,7 @@ Route::pattern('username', '[a-z0-9_-]{3,16}');
 
 Route::group(array(
     'prefix' => LaravelLocalization::setLocale(),
-    'before' => 'LaravelLocalizationRedirectFilter'
+    'before' => 'LaravelLocalizationRedirectFilter|artificer-auth'
 ), function () {
     Route::group(array('prefix' => 'admin'), function () {
 
@@ -30,8 +30,11 @@ Route::group(array(
         Route::get('/', array('as' => 'admin.home', 'uses' => 'Mascame\Artificer\PageController@home'));
 
         Route::get('login', array('as' => 'admin.showlogin', 'uses' => 'Mascame\Artificer\UserController@showLogin'));
-        Route::post('login', array('as' => 'admin.login', 'uses' => 'Mascame\Artificer\UserController@doLogin'))->before('csrf');
-        Route::get('logout', array('as' => 'admin.logout', 'uses' => 'Mascame\Artificer\UserController@doLogout'));
+        Route::post('login', array('as' => 'admin.login', function() {
+            dd('here');
+        }))->before('csrf');
+        Route::post('login', array('as' => 'admin.login', 'uses' => 'Mascame\Artificer\UserController@login'))->before('csrf');
+        Route::get('logout', array('as' => 'admin.logout', 'uses' => 'Mascame\Artificer\UserController@logout'));
 
         Route::get('page/plugins', array('as' => 'admin.page.plugins', 'uses' => 'Mascame\Artificer\PageController@plugins'));
         Route::get('page/plugin/{slug}/install', array('as' => 'admin.page.plugin.install', 'uses' => 'Mascame\Artificer\PageController@installPlugin'));

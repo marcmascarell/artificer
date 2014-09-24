@@ -44,6 +44,6 @@
         </div><!-- ./wrapper -->
 
 		@include($theme . '.partials.bottom-scripts')
-
+        @yield('bottom-scripts')
     </body>
 </html>
