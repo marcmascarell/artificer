@@ -5,9 +5,16 @@
         <title>{{ $main_title }}</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
+        @section('head-styles')
+            @include($theme . '.partials.head-styles')
+            <?php Event::fire('artificer.view.head-styles'); ?>
+        @show
+
         @section('head-scripts')
             @include($theme . '.partials.head-scripts')
+            <?php Event::fire('artificer.view.head-scripts'); ?>
         @show
+
     </head>
     <body class="skin-blue fixed">
         <!-- header logo: style can be found in header.less -->
@@ -29,20 +36,21 @@
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
-                <!-- Content Header (Page header) -->
+                <!-- Main content -->
                 <section class="content-header">
-					@include($theme . '.partials.content-header')
+                    @include($theme . '.partials.content-header')
                 </section>
 
-                <!-- Main content -->
+                <!-- Content Header (Page header) -->
                 <section class="content">
-					<?php Notify::all(); ?>
+                    <div class="notifications">
+                        {{ Notify::all(); }}
+                    </div>
 
 					@yield('content')
                 </section><!-- /.content -->
+
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
-
-		@include($theme . '.partials.bottom-scripts')
     </body>
 </html>

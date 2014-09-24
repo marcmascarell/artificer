@@ -19,7 +19,7 @@ class ActionConfirmationPlugin extends Plugin {
 
     public function addHooks()
     {
-        Event::listen(array('bottom-scripts'), function () {
+        Event::listen(array('artificer.view.head-scripts'), function () {
             ?>
             <script type="text/javascript">
                 $(function () {

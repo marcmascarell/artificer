@@ -31,7 +31,7 @@ class DatatablesPlugin extends Plugin {
 
 	public function addHooks()
 	{
-		Event::listen(array('head-scripts'), function () {
+		Event::listen(array('artificer.view.head-styles'), function () {
 			?>
 			<!-- DATA TABLES -->
 			<link href="<?php print asset('packages/mascame/admin/plugins/datatables/dataTables.bootstrap.css') ?>"
@@ -39,7 +39,7 @@ class DatatablesPlugin extends Plugin {
 		<?php
 		});
 
-		Event::listen(array('bottom-scripts'), function () {
+		Event::listen(array('artificer.view.head-scripts'), function () {
 			?>
 			<!-- DATA TABES SCRIPT -->
 			<script src="<?php print asset('packages/mascame/admin/plugins/datatables/jquery.dataTables.js') ?>"
