@@ -20,7 +20,7 @@ class DatatablesPlugin extends Plugin {
 			'configuration' => array(
 				'title' => 'Config',
 				'icon'  => '',
-				'route' => route('admin.plugin.datatables.configuration', $this->slug)
+				'route' => route('artificer.plugin.datatables.configuration', $this->slug)
 			)
 		);
 	}
@@ -34,7 +34,7 @@ class DatatablesPlugin extends Plugin {
 		Event::listen(array('artificer.view.head-styles'), function () {
 			?>
 			<!-- DATA TABLES -->
-			<link href="<?php print asset('packages/mascame/admin/plugins/datatables/dataTables.bootstrap.css') ?>"
+			<link href="<?php print asset('packages/mascame/artificer/plugins/mascame/datatables/dataTables.bootstrap.css') ?>"
 				  rel="stylesheet" type="text/css"/>
 		<?php
 		});
@@ -42,9 +42,9 @@ class DatatablesPlugin extends Plugin {
 		Event::listen(array('artificer.view.head-scripts'), function () {
 			?>
 			<!-- DATA TABES SCRIPT -->
-			<script src="<?php print asset('packages/mascame/admin/plugins/datatables/jquery.dataTables.js') ?>"
+			<script src="<?php print asset('packages/mascame/artificer/plugins/mascame/datatables/jquery.dataTables.js') ?>"
 					type="text/javascript"></script>
-			<script src="<?php print asset('packages/mascame/admin/plugins/datatables/dataTables.bootstrap.js') ?>"
+			<script src="<?php print asset('packages/mascame/artificer/plugins/mascame/datatables/dataTables.bootstrap.js') ?>"
 					type="text/javascript"></script>
 
 			<!-- page script -->

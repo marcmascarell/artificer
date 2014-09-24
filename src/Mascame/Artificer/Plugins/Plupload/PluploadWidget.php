@@ -7,7 +7,7 @@ class PluploadWidget extends Widget {
 	public function output()
 	{
 		?>
-		<script src="<?= $this->package_assets ?>/widgets/plupload/plupload.full.min.js"></script>
+		<script src="<?= $this->package_assets ?>/plugins/mascame/plupload/plupload.full.min.js"></script>
 
 		<style>
 			.plupload-preview .thumbnail {

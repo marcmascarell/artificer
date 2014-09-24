@@ -3,7 +3,7 @@
 class Widget {
 
 	public $name;
-	public $package_assets = '/packages/mascame/admin';
+	public $package_assets = '/packages/mascame/artificer';
 
 	public function __construct()
 	{

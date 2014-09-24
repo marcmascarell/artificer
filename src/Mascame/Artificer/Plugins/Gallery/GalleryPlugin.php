@@ -21,7 +21,7 @@ class GalleryPlugin extends Plugin {
 			'configuration' => array(
 				'title' => 'Config',
 				'icon'  => '',
-				'route' => route('admin.plugin.gallery.configuration', $this->slug)
+				'route' => route('artificer.plugin.gallery.configuration', $this->slug)
 			)
 		);
 	}
