@@ -50,7 +50,7 @@ class DatatablesPlugin extends Plugin {
 			<!-- page script -->
 			<script type="text/javascript">
 				$(function () {
-					$('#table').dataTable({
+					$('.datatable').dataTable({
 						"bPaginate": true,
 						"bLengthChange": true,
 						"bFilter": true,

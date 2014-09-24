@@ -47,7 +47,7 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 	$showView = true;
 	?>
 	<div class="table-responsive">
-		<table id="table" class="table table-bordered table-striped"
+		<table class="table table-bordered table-striped datatable"
 			   data-page="<?= Paginator::getCurrentPage() ?>"
 			   data-start="<?= $data[0]->sort_id ?>"
 			   data-sort-url="<?= URL::route("admin.sort", array($model['route'], 'replace_old_id', 'replace_new_id')) ?>">
