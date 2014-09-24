@@ -10,7 +10,6 @@ class Text extends Field {
 
 	public function boot()
 	{
-		$this->addWidget(new SortableWidget());
 	}
 
 	public function input()

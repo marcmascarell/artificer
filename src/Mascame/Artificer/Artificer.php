@@ -179,8 +179,12 @@ class Artificer extends Controller {
 	}
 
 	public function getPlugin($key)
-	{
-		return $this->plugins[$key];
+    {
+        if (array_key_exists($key, $this->plugins['installed'])) {
+            return $this->plugins['installed'][$key];
+        }
+
+        return $this->plugins['uninstalled'][$key];
 	}
 
 	public function getView($view)
