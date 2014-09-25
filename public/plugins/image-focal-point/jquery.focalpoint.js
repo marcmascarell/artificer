@@ -7,10 +7,10 @@ var focalPoint = function (element, options) {
     }, options);
 
     // Click on container
-    $(this.$element).on('click', $('img', this.$element), function(e){
-        var pos = focalpoint.calculate($(focalpoint.$element).offset().top,$(focalpoint.$element).offset().left,e.clientY,e.clientX);
+    $(this.$element).on('click', $('img', this.$element), function (e) {
+        var pos = focalpoint.calculate($(focalpoint.$element).offset().top, $(focalpoint.$element).offset().left, e.clientY, e.clientX);
         //Calculate and position focal point
-        $(options.point).offset({ top: pos.pos_y, left: pos.pos_x });
+        $(options.point).offset({top: pos.pos_y, left: pos.pos_x});
 
         console.log();
         //Callback for position
@@ -20,42 +20,50 @@ var focalPoint = function (element, options) {
 
         focalpoint.position = focalpoint.getPosition();
         console.log(focalpoint.position);
-        $('[name="image_center"]').val(jQuery.param( focalpoint.position ));
+        $('[name="image_center"]').val(jQuery.param(focalpoint.position));
 //        console.log(pos);
     })
 
 };
 
 focalPoint.prototype = {
-    getPosition: function() {
-        return {top: parseInt(this.options.point.position().top - ($(this.options.point).outerHeight()/2)), left: parseInt(this.options.point.position().left - ($(this.options.point).outerWidth()/2))}
+    getPosition: function () {
+        return {
+            top: parseInt(this.options.point.position().top - ($(this.options.point).outerHeight() / 2)),
+            left: parseInt(this.options.point.position().left - ($(this.options.point).outerWidth() / 2))
+        }
     },
     // Get percentage values from pixels (doesn't account for body margin/padding)
-	calculate: function(t_set,l_set,t_pos,l_pos){
-	  var image = $(this.$element);
-	  var offset_t = image.offset().top - $(window).scrollTop();
-	  var offset_l = image.offset().left - $(window).scrollLeft();
-	  var width = image.height();
-	  var height = image.width();
-	  var top = Math.round( (t_pos - offset_t) );
-	  var left = Math.round( (l_pos - offset_l) );
-	  percentx =  Math.round((left / height) * 100)/100;
-	  percenty =  Math.round((top / width) * 100)/100;
-      return {x: percentx, y: percenty, pos_x: (l_pos + $(window).scrollLeft() - ($(this.options.point).width()/2) ), pos_y: (t_pos + $(window).scrollTop() - ($(this.options.point).width()/2) ) };
-	},
+    calculate: function (t_set, l_set, t_pos, l_pos) {
+        var image = $(this.$element);
+        var offset_t = image.offset().top - $(window).scrollTop();
+        var offset_l = image.offset().left - $(window).scrollLeft();
+        var width = image.height();
+        var height = image.width();
+        var top = Math.round((t_pos - offset_t));
+        var left = Math.round((l_pos - offset_l));
+        percentx = Math.round((left / height) * 100) / 100;
+        percenty = Math.round((top / width) * 100) / 100;
+        return {
+            x: percentx,
+            y: percenty,
+            pos_x: (l_pos + $(window).scrollLeft() - ($(this.options.point).width() / 2) ),
+            pos_y: (t_pos + $(window).scrollTop() - ($(this.options.point).width() / 2) )
+        };
+    },
     // Get pixel values from percentages
-	reverse_calculate: function(el){
+    reverse_calculate: function (el) {
         // Pass along percentage values in focal_x & focal_y
-		var default_x = this.options.focal_x.val();
-		var default_y= this.options.focal_y.val();
-		var image_x = $(el).offset().left ;
-		var image_y = $(el).offset().top ;
-		var image_width = $(el).width();
-		var image_height = $(el).height();
-		var final_x = (image_width * default_x) + image_x ;
-		var final_y = (image_height * default_y) + image_y ;
-		//$(options.point).offset({top:(final_y-40), left: (final_x-40) }).show();
-	}
+        var default_x = this.options.focal_x.val();
+        var default_y = this.options.focal_y.val();
+        var image_x = $(el).offset().left;
+        var image_y = $(el).offset().top;
+        var image_width = $(el).width();
+        var image_height = $(el).height();
+        var final_x = (image_width * default_x) + image_x;
+        var final_y = (image_height * default_y) + image_y;
+        //$(options.point).offset({top:(final_y-40), left: (final_x-40) }).show();
+    }
 };
 
 (function (factory) {
