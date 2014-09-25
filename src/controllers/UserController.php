@@ -34,7 +34,7 @@ class UserController extends Artificer {
 		);
 
 		if (Auth::attempt($userdata)) {
-			return Redirect::intended('admin.home');
+			return Redirect::route('admin.home');
 		}
 
 		return Redirect::route('admin.login')

@@ -13,6 +13,14 @@
 </a>
 <div class="navbar-right">
 <ul class="nav navbar-nav">
+
+<li class="dropdown messages-menu">
+<a href="{{ URL::route('admin.logout') }}">
+		<i class="fa fa-sign-out"></i>
+		Logout
+	</a>
+
+</li>
 <!-- Messages: style can be found in dropdown.less-->
 {{--<li class="dropdown messages-menu">--}}
 	{{--<a href="#" class="dropdown-toggle" data-toggle="dropdown">--}}
