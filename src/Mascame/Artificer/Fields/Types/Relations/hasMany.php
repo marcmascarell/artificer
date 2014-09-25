@@ -25,24 +25,32 @@ class hasMany extends Relation {
 
 		$select = array();
 
-		?>
-		<ul class="list-group"><?php
-		foreach ($data as $d) {
-			$select[$d['id']] = $d[$options['relationship']['show']];
 
-			$edit_url = \URL::route('admin.edit', array('slug' => $modelObject->models[$modelName]['route'], 'id' => $d['id']));
-			?>
-			<li class="list-group-item">
-				<?= $d[$options['relationship']['show']] ?>
-				&nbsp;
-				<a href="<?= $edit_url ?>" target="_blank">
-					<i class="fa fa-pencil"></i>
-					Edit
-				</a>
-			</li>
-		<?php
-		}
-		?></ul>
+			if (!empty($data)) {
+				?>
+				<ul class="list-group">
+					<?php foreach ($data as $d) {
+						$select[$d['id']] = $d[$options['relationship']['show']];
+
+						$edit_url = \URL::route('admin.edit', array('slug' => $modelObject->models[$modelName]['route'], 'id' => $d['id']));
+						?>
+						<li class="list-group-item">
+							<?= $d[$options['relationship']['show']] ?>
+							&nbsp;
+							<a href="<?= $edit_url ?>" target="_blank">
+								<i class="fa fa-pencil"></i>
+								Edit
+							</a>
+						</li>
+						<?php
+					} ?>
+				</ul>
+				<?php
+			} else {
+				?><div class="well well-sm">No items yet</div><?php
+			}
+
+		?>
 		<a href="<?= \URL::route('admin.create', array('slug' => $modelObject->models[$modelName]['route'])) ?>?<?= http_build_query(array($foreign => $id)) ?>"
 		   target="_blank">
 			<i class="fa fa-plus"></i>

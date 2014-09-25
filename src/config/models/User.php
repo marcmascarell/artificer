@@ -22,17 +22,17 @@ return array(
 	),
 
 	'fields'    => array(
-		'user_id' => array(
-			'title'        => "Fake Owner",
-			'relationship' => array(
+//		'user_id' => array(
+//			'title'        => "Fake Owner",
+//			'relationship' => array(
 //                'method' => 'usuario', //this is the name of the Eloquent relationship method!
-				'type'  => 'hasOne',
-				'model' => 'User',
-				'show'  => "username",
-			),
-
-			//'input' => '<input name="(:name)" value="(:value)">'
-		)
+//				'type'  => 'hasOne',
+//				'model' => 'User',
+//				'show'  => "username",
+//			),
+//
+//			//'input' => '<input name="(:name)" value="(:value)">'
+//		)
 	)
 
 );

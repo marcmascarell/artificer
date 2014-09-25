@@ -24,7 +24,7 @@ class ModelOption extends Option {
 
 	public static function model($model = null)
 	{
-		return Option::has(self::$key . '/' . self::getModel($model));
+		return Option::get(self::$key . '/' . self::getModel($model));
 	}
 
 	public static function getModel($model)

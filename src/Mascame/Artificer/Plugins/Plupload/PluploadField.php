@@ -22,9 +22,8 @@ class PluploadField extends Image {
 		<ul id="plupload-file-list" class="list-group"></ul>
 
 		<div class="plupload-preview">
-			<div class="thumbnail">
+
 				<?= $this->show() ?>
-			</div>
 		</div>
 
 		<div id="container">

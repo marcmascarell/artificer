@@ -31,13 +31,18 @@ class Image extends File {
 	{
 		$value = $this->getValue($value);
 
+		if (!$value) {
+			return '<div class="well well-sm">No file</div>';
+		}
+
 		if (!Str::startsWith($value, array('https://', 'http://'))) {
 			$value = '/uploads/' . $value;
 		}
-
 		?>
-		<img style="display: block; margin: auto;height:auto; width:auto; max-width:100px; max-height:100px;"
-			 src="<?= $value ?>" height="100"/>
+
+		<div class="thumbnail">
+			<img style="display: block; margin: auto;height:auto; width:auto; max-width:100px; max-height:100px;" src="<?= $value ?>" height="100"/>
+		</div>
 	<?php
 	}
 }

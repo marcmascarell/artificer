@@ -20,10 +20,10 @@ return array(
 		'user_id' => array(
 			'title'        => "Fake Owner",
 			'relationship' => array(
-//                'method' => 'usuario', //this is the name of the Eloquent relationship method!
+                'method' => 'user', //this is the name of the Eloquent relationship method!
 				'type'  => 'hasOne',
 				'model' => 'User',
-				'show'  => "username",
+				'show'  => "email",
 			),
 
 //            'input' => '<input name="(:name)" value="(:value)">'

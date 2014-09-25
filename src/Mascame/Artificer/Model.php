@@ -158,6 +158,7 @@ class Model {
 				$models[$modelName]['name'] = $modelName;
 				$models[$modelName]['route'] = strtolower($modelName);
 				$models[$modelName]['options'] = $this->getOptions($modelName);
+				$models[$modelName]['hidden'] = $this->isHidden($modelName);
 
 //				$models[$modelName]['instance'] = $this->instantiate($modelName);
 			}
@@ -295,12 +296,17 @@ class Model {
 		$fields = ModelOption::get('fields');
 
 		foreach ($fields as $field) {
-			if (isset($field['relationship']) && $field['relationship']['method']) {
+			if (isset($field['relationship']) && isset($field['relationship']['method'])) {
 				$this->relations = $field['relationship']['method'];
 			}
 		}
 
 		return $this->relations;
+	}
+
+	public function isHidden($modelName)
+	{
+		return (in_array($modelName, AdminOption::get('models.hidden'))) ? true : false;
 	}
 
 	/**
@@ -314,7 +320,8 @@ class Model {
 			'route'    => $this->getRouteName(),
 			'table'    => $this->table,
 			'columns'  => $this->columns,
-			'fillable' => $this->fillable
+			'fillable' => $this->fillable,
+			'hidden'   => $this->isHidden($this->name),
 		);
 
 		View::share('model', $model);

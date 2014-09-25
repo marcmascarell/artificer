@@ -40,17 +40,21 @@
 			<i class="fa fa-angle-left pull-right"></i>
 		</a>
 		<ul class="treeview-menu">
+
 			@foreach ($models as $m)
-			<li>
-				<a href="{{ route('admin.all', array('slug' => $m['route'])) }}">
-					<i class="fa fa-angle-right"></i>
-					@if (isset($m['options']['title']))
-						{{ $m['options']['title'] }}
-					@else
-						{{ $m['table'] }}
-					@endif
-				</a>
-			</li>
+
+			    @if (!$m['hidden'])
+                    <li>
+                        <a href="{{ route('admin.all', array('slug' => $m['route'])) }}">
+                            <i class="fa fa-angle-right"></i>
+                            @if (isset($m['options']['title']))
+                                {{ $m['options']['title'] }}
+                            @else
+                                {{ Str::title($m['table']) }}
+                            @endif
+                        </a>
+                    </li>
+                @endif
 			@endforeach
 		</ul>
 
