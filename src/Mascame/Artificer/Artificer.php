@@ -20,6 +20,7 @@ class Artificer extends Controller {
 	public $plugins = null;
 	public $theme;
 	public static $routes;
+	public $menu = array();
 
 	/**
 	 * @param Model $model
@@ -34,9 +35,26 @@ class Artificer extends Controller {
 		$this->theme = AdminOption::get('theme');
 
 		View::share('main_title', AdminOption::get('title'));
-		View::share('menu', AdminOption::get('menu'));
+		View::share('menu', $this->getMenu());
 		View::share('theme', $this->theme);
 		View::share('fields', array());
+	}
+
+	public function getMenu() {
+		if (!empty($this->menu)) return $this->menu;
+		$user = \Auth::getUser();
+		$menu = AdminOption::get('menu');
+
+		foreach ($menu as $menu_item) {
+			if ($menu_item['user_access'] == '*'
+				|| $menu_item['user_access'] == $user->role
+				|| (is_array($menu_item['user_access']) && isset($menu_item['user_access'][0]) && $menu_item['user_access'][0] == '*')
+				|| is_array($menu_item['user_access']) && in_array($user->role, $menu_item['user_access'])) {
+				$this->menu[] = $menu_item;
+			}
+		}
+
+		return $this->menu;
 	}
 
 	/**
