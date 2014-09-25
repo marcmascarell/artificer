@@ -26,23 +26,14 @@ class ArtificerServiceProvider extends ServiceProvider {
 		require_once __DIR__ . '/../../routes.php';
 		require_once __DIR__ . '/../../views/macros/macros.php';
 
-//		$this->app->bind('admin.admin', function($app) {
-//			return new AdminCommand();
-//		});
-//
-//		$this->commands(array(
-//			'admin'
-//		));
-
 		App::singleton('artificer-model', function () {
 			return new Model();
 		});
 
-		Notification::attach();
-
 		$this->app['artificer'] = $this->app->share(function ($app) {
 			return new PublishCommand();
 		});
+
 		$this->commands('artificer');
 	}
 
