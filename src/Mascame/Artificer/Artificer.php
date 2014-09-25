@@ -26,7 +26,7 @@ class Artificer extends Controller {
 	 */
 	public function __construct()
 	{
-        $model = App::make('artificer-model');
+		$model = App::make('artificer-model');
 		$this->modelObject = $model;
 		$this->model = $model->model;
 		$this->options = AdminOption::all();
@@ -40,9 +40,6 @@ class Artificer extends Controller {
 	}
 
 	/**
-	 * We just make Field objects WITH DATA when one record is passed
-	 * Else we are in a "list" view
-	 *
 	 * @param $data
 	 */
 	public function handleData($data)
@@ -57,7 +54,8 @@ class Artificer extends Controller {
 		$this->getFields($data);
 	}
 
-	public function isCollection($object) {
+	public function isCollection($object)
+	{
 		return is_a($object, 'Illuminate\Database\Eloquent\Collection');
 	}
 
@@ -162,7 +160,7 @@ class Artificer extends Controller {
 	{
 		$plugins = AdminOption::get('plugins');
 
-        $all_plugins = array_merge($plugins['installed'], $plugins['uninstalled']);
+		$all_plugins = array_merge($plugins['installed'], $plugins['uninstalled']);
 
 		foreach ($all_plugins as $pluginNamespace) {
 			$pluginName = explode('/', $pluginNamespace);
@@ -171,24 +169,24 @@ class Artificer extends Controller {
 			$plugin = Option::get('plugins/' . $pluginNamespace . '/' . $pluginName);
 			$plugin = $plugin['plugin'];
 
-            if (in_array($pluginNamespace, $plugins['installed'])) {
-                $this->plugins['installed'][$pluginNamespace] = new $plugin($pluginNamespace);
-                $this->plugins['installed'][$pluginNamespace]->boot();
-            } else {
-                $this->plugins['uninstalled'][$pluginNamespace] = new $plugin($pluginNamespace);
-            }
+			if (in_array($pluginNamespace, $plugins['installed'])) {
+				$this->plugins['installed'][$pluginNamespace] = new $plugin($pluginNamespace);
+				$this->plugins['installed'][$pluginNamespace]->boot();
+			} else {
+				$this->plugins['uninstalled'][$pluginNamespace] = new $plugin($pluginNamespace);
+			}
 		}
 
 		return $this->plugins;
 	}
 
 	public function getPlugin($key)
-    {
-        if (array_key_exists($key, $this->plugins['installed'])) {
-            return $this->plugins['installed'][$key];
-        }
+	{
+		if (array_key_exists($key, $this->plugins['installed'])) {
+			return $this->plugins['installed'][$key];
+		}
 
-        return $this->plugins['uninstalled'][$key];
+		return $this->plugins['uninstalled'][$key];
 	}
 
 	public function getView($view)

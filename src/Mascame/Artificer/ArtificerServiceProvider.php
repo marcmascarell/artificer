@@ -22,9 +22,9 @@ class ArtificerServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->package('mascame/artificer');
-        require_once __DIR__ . '/../../filters.php';
-        require_once __DIR__ . '/../../routes.php';
-        require_once __DIR__ . '/../../views/macros/macros.php';
+		require_once __DIR__ . '/../../filters.php';
+		require_once __DIR__ . '/../../routes.php';
+		require_once __DIR__ . '/../../views/macros/macros.php';
 
 //		$this->app->bind('admin.admin', function($app) {
 //			return new AdminCommand();
@@ -34,10 +34,9 @@ class ArtificerServiceProvider extends ServiceProvider {
 //			'admin'
 //		));
 
-        App::singleton('artificer-model', function()
-        {
-            return new Model();
-        });
+		App::singleton('artificer-model', function () {
+			return new Model();
+		});
 
 		Notification::attach();
 

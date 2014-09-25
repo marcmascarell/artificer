@@ -1,7 +1,6 @@
 <?php
 
-Route::filter('artificer-auth', function()
-{
+Route::filter('artificer-auth', function () {
 //    if (Auth::guest()
 //        && Route::currentRouteName() != 'admin.showlogin'
 //        && Route::currentRouteName() != 'admin.login'

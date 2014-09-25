@@ -9,17 +9,18 @@ class SortableController extends Artificer {
 	public $old_id;
 	public $new_id;
 	public $item_id;
-    public $plugin;
+	public $plugin;
 
-    public function __construct() {
-        parent::__construct();
+	public function __construct()
+	{
+		parent::__construct();
 
-        $this->plugin = $this->getPlugin('mascame/sortable');
-    }
+		$this->plugin = $this->getPlugin('mascame/sortable');
+	}
 
 	public function updateSort($old, $new)
 	{
-        $sort_column = $this->plugin->sort_column;
+		$sort_column = $this->plugin->sort_column;
 
 		if ($this->old_id != $old) {
 			$move_item = $this->model->where('sort_id', '=', $old)->first();
@@ -33,7 +34,7 @@ class SortableController extends Artificer {
 	{
 		$this->old_id = $old_sort_id;
 		$this->new_id = $new_sort_id;
-        $sort_column = $this->plugin->sort_column;
+		$sort_column = $this->plugin->sort_column;
 
 		$item = $this->model->where($this->plugin->sort_column, '=', $this->old_id)->first();
 
@@ -64,18 +65,19 @@ class SortableController extends Artificer {
 		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
 	}
 
-    public function handleDeletedRow($modelName, $old_id)
-    {
-        $sort_column = $this->plugin->sort_column;
-        $last = $this->getLastSorted();
+	public function handleDeletedRow($modelName, $old_id)
+	{
+		$sort_column = $this->plugin->sort_column;
+		$last = $this->getLastSorted();
 
-        $item = $this->model->find($old_id);
+		$item = $this->model->find($old_id);
 
-        $this->sort($modelName, $item->$sort_column, $last->$sort_column);
-    }
+		$this->sort($modelName, $item->$sort_column, $last->$sort_column);
+	}
 
-    public function getLastSorted() {
-        return $this->model->orderby($this->plugin->sort_column, 'desc')->first();
-    }
+	public function getLastSorted()
+	{
+		return $this->model->orderby($this->plugin->sort_column, 'desc')->first();
+	}
 
 }

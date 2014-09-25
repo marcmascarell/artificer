@@ -26,9 +26,10 @@ class GalleryPlugin extends Plugin {
 		);
 	}
 
-    public function boot() {
-        Event::listen(array('artificer.field.pluploadfield.output', 'artificer.field.image.output'), function ($image) {
-            $thumbnails = $this->getThumbnailLayouts();
+	public function boot()
+	{
+		Event::listen(array('artificer.field.pluploadfield.output', 'artificer.field.image.output'), function ($image) {
+			$thumbnails = $this->getThumbnailLayouts();
 
 //            foreach ($thumbnails as $thumbnail) {
 //                if (!$thumbnail['function']($image)) {
@@ -42,8 +43,8 @@ class GalleryPlugin extends Plugin {
 //				// here means thumb already exists
 //			}
 
-        });
-    }
+		});
+	}
 
 //	public function page($page) {
 ////		$test = array('ultra_custom' => array(

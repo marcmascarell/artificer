@@ -119,7 +119,7 @@ class Model {
 		return self::$current;
 	}
 
-    public static function getCurrentClass()
+	public static function getCurrentClass()
 	{
 		return '\\' . self::$current;
 	}

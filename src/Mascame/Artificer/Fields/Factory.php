@@ -92,7 +92,7 @@ class Factory {
 
 			if ($this->isSimilar($name, $type)) {
 				// Gives more importance to similar TYPE than field
-				$points[$type] =+ 2;
+				$points[$type] = + 2;
 			}
 
 			foreach ($fields as $field) {
@@ -186,7 +186,8 @@ class Factory {
 		return $this->related_fields;
 	}
 
-	protected function addRelated() {
+	protected function addRelated()
+	{
 		$related = $this->getRelated();
 
 		if (!empty($related)) {
@@ -198,7 +199,8 @@ class Factory {
 		return $this->modelObject->columns;
 	}
 
-	protected function withRelated() {
+	protected function withRelated()
+	{
 		return $this->addRelated();
 	}
 

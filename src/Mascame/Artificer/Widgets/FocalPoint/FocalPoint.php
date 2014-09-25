@@ -9,8 +9,8 @@ class FocalPoint extends Widget {
 	public function output()
 	{
 		?>
-<!--		<link rel="stylesheet" href="--><?//= $this->package_assets ?><!--/widgets/image-focal-point/style.css">-->
-<!--		<script src="--><?//= $this->package_assets ?><!--/widgets/image-focal-point/jquery.focalpoint.js"></script>-->
+		<!--		<link rel="stylesheet" href="--><? //= $this->package_assets ?><!--/widgets/image-focal-point/style.css">-->
+		<!--		<script src="--><? //= $this->package_assets ?><!--/widgets/image-focal-point/jquery.focalpoint.js"></script>-->
 	<?php
 	}
 

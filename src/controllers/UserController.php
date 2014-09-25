@@ -16,7 +16,7 @@ class UserController extends Artificer {
 	public function login()
 	{
 		$rules = array(
-			'username'    => 'required|email',
+			'username' => 'required|email',
 			'password' => 'required|min:3'
 		);
 
@@ -28,22 +28,23 @@ class UserController extends Artificer {
 				->withInput();
 		}
 
-        $userdata = array(
-            'email'    => Input::get('username'),
-            'password' => Input::get('password')
-        );
+		$userdata = array(
+			'email'    => Input::get('username'),
+			'password' => Input::get('password')
+		);
 
-        if (Auth::attempt($userdata)) {
-            return Redirect::intended('admin.home');
-        }
+		if (Auth::attempt($userdata)) {
+			return Redirect::intended('admin.home');
+		}
 
-        return Redirect::route('admin.login')
-            ->withInput(Input::except('password'))->withErrors($validator);
+		return Redirect::route('admin.login')
+			->withInput(Input::except('password'))->withErrors($validator);
 	}
 
 	public function logout()
 	{
 		Auth::logout();
+
 		return Redirect::route('admin.showlogin');
 	}
 

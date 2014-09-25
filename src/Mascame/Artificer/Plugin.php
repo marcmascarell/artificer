@@ -23,13 +23,13 @@ abstract class Plugin {
 		$this->config = (Option::has($this->configKey)) ? Option::get($this->configKey) : null;
 		$this->slug = str_replace('/', '-', $this->namespace);
 
-        $this->meta();
+		$this->meta();
 	}
 
-    public function boot()
-    {
+	public function boot()
+	{
 
-    }
+	}
 
 	public function meta()
 	{

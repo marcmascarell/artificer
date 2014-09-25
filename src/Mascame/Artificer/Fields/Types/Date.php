@@ -14,14 +14,14 @@ class Date extends Field {
 
 	public function input()
 	{
-        ?>
-        <div class="input-group">
-            <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-            </div>
-            <?php print Form::text($this->name, $this->value, $this->getAttributes()); ?>
-        </div>
-        <?php
+		?>
+		<div class="input-group">
+			<div class="input-group-addon">
+				<i class="fa fa-calendar"></i>
+			</div>
+			<?php print Form::text($this->name, $this->value, $this->getAttributes()); ?>
+		</div>
+	<?php
 	}
 
 }

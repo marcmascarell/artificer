@@ -38,5 +38,4 @@ class PluploadField extends Image {
 	}
 
 
-
 }

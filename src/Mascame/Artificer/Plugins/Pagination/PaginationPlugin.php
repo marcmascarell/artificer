@@ -24,10 +24,11 @@ class PaginationPlugin extends Plugin {
 		$this->options = array();
 	}
 
-    public function boot() {
-        self::$pagination = $this->getPagination(Model::getCurrent());
-        $this->addHooks();
-    }
+	public function boot()
+	{
+		self::$pagination = $this->getPagination(Model::getCurrent());
+		$this->addHooks();
+	}
 
 	public function addHooks()
 	{

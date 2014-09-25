@@ -13,25 +13,26 @@ class ActionConfirmationPlugin extends Plugin {
 		$this->author = 'Marc Mascarell';
 	}
 
-    public function boot() {
-        $this->addHooks();
-    }
+	public function boot()
+	{
+		$this->addHooks();
+	}
 
-    public function addHooks()
-    {
-        Event::listen(array('artificer.view.head-scripts'), function () {
-            ?>
-            <script type="text/javascript">
-                $(function () {
-                    $('a[data-method="delete"]').click(function(event) {
-                        if(!confirm('Confirm?')){
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                    });
-                });
-            </script>
-        <?php
-        });
-    }
+	public function addHooks()
+	{
+		Event::listen(array('artificer.view.head-scripts'), function () {
+			?>
+			<script type="text/javascript">
+				$(function () {
+					$('a[data-method="delete"]').click(function (event) {
+						if (!confirm('Confirm?')) {
+							event.preventDefault();
+							event.stopPropagation();
+						}
+					});
+				});
+			</script>
+		<?php
+		});
+	}
 }

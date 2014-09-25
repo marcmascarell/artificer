@@ -42,7 +42,7 @@ class PublishCommand extends Command {
 	{
 		$package = 'mascame/artificer';
 
-		if (file_exists(base_path() .'/workbench/mascame/artificer/')) {
+		if (file_exists(base_path() . '/workbench/mascame/artificer/')) {
 			$this->call('config:publish', array('--path' => "workbench/mascame/artificer/src/config", 'package' => $package));
 			$this->call('asset:publish', array('--bench' => $package));
 		} else {

@@ -12,7 +12,7 @@ class hasMany extends Relation {
 
 	public function input()
 	{
-		$fields = array_get( \View::getShared(), 'fields');
+		$fields = array_get(\View::getShared(), 'fields');
 		$id = $fields['id']->value;
 
 		$options = $this->fieldOptions;
@@ -25,28 +25,30 @@ class hasMany extends Relation {
 
 		$select = array();
 
-		?><ul class="list-group"><?php
+		?>
+		<ul class="list-group"><?php
 		foreach ($data as $d) {
 			$select[$d['id']] = $d[$options['relationship']['show']];
 
 			$edit_url = \URL::route('admin.edit', array('slug' => $modelObject->models[$modelName]['route'], 'id' => $d['id']));
 			?>
 			<li class="list-group-item">
-				<?=$d[$options['relationship']['show']]?>
+				<?= $d[$options['relationship']['show']] ?>
 				&nbsp;
-				<a href="<?=$edit_url?>" target="_blank">
+				<a href="<?= $edit_url ?>" target="_blank">
 					<i class="fa fa-pencil"></i>
 					Edit
 				</a>
 			</li>
-			<?php
+		<?php
 		}
 		?></ul>
-		<a href="<?=\URL::route('admin.create', array('slug' => $modelObject->models[$modelName]['route']))?>?<?=http_build_query(array($foreign => $id))?>" target="_blank">
+		<a href="<?= \URL::route('admin.create', array('slug' => $modelObject->models[$modelName]['route'])) ?>?<?= http_build_query(array($foreign => $id)) ?>"
+		   target="_blank">
 			<i class="fa fa-plus"></i>
 			New
 		</a>
-		<?php
+<?php
 
 //		return HTML::ul($select, $this->getAttributes());
 	}

@@ -13,8 +13,8 @@ class hasOne extends Relation {
 	public function input()
 	{
 		$options = $this->fieldOptions;
-        $modelName = $options['relationship']['model'];
-        $model = \App::make('artificer-model');
+		$modelName = $options['relationship']['model'];
+		$model = \App::make('artificer-model');
 		$modelClass = '\\' . $modelName;
 
 		$data = $modelClass::all(array('id', $options['relationship']['show']))->toArray();
@@ -27,13 +27,13 @@ class hasOne extends Relation {
 //        dd($model::all(array('id', $options['relationship']['show']))->toArray());
 		print Form::select($this->name, $select, $this->value, $this->getAttributes());
 
-        $new_url = \URL::route('admin.create', array('slug' => $model->models[$modelName]['route']));
-        ?>
-        <a href="<?=$new_url?>" target="_blank">
-            <i class="fa fa-plus"></i>
-            New
-        </a>
-        <?php
+		$new_url = \URL::route('admin.create', array('slug' => $model->models[$modelName]['route']));
+		?>
+		<a href="<?= $new_url ?>" target="_blank">
+			<i class="fa fa-plus"></i>
+			New
+		</a>
+	<?php
 	}
 
 	public function show($value = null)
