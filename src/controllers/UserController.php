@@ -1,5 +1,6 @@
 <?php namespace Mascame\Artificer;
 
+use Mascame\Artificer\Options\AdminOption;
 use View;
 use Validator;
 use Redirect;
@@ -28,13 +29,17 @@ class UserController extends Artificer {
 				->withInput();
 		}
 
-		$userdata = array(
-			'email'    => Input::get('username'),
-			'password' => Input::get('password')
-		);
+		$user = \User::where('email', '=', Input::get('username'))->first();
 
-		if (Auth::attempt($userdata)) {
-			return Redirect::route('admin.home');
+		if (in_array($user->role, AdminOption::get('users.roles'))) {
+			$userdata = array(
+				'email'    => Input::get('username'),
+				'password' => Input::get('password')
+			);
+
+			if (Auth::attempt($userdata)) {
+				return Redirect::route('admin.home');
+			}
 		}
 
 		return Redirect::route('admin.login')

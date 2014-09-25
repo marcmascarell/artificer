@@ -33,5 +33,7 @@ return array(
 
 	'classmap'      => Config::get('artificer::fields.classmap'),
 
-	'models'        => Config::get('artificer::models')
+	'models'        => Config::get('artificer::models'),
+
+	'users'         => Config::get('artificer::users')
 );

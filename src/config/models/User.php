@@ -14,7 +14,7 @@ return array(
 
 	'list'      => array('*'),
 
-	'list-hide' => array('password'),
+	'list-hide' => array('password', 'remember_token', 'confirmation_code'),
 
 	// Optional, else looks for eloquent rules
 	'rules'     => array(
@@ -22,6 +22,14 @@ return array(
 	),
 
 	'fields'    => array(
+		'role' => array(
+			'type' => 'enum',
+			'values' => array(
+				'admin',
+				'editor',
+				'user'
+			)
+		)
 //		'user_id' => array(
 //			'title'        => "Fake Owner",
 //			'relationship' => array(
