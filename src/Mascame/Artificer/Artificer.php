@@ -52,9 +52,27 @@ class Artificer extends Controller {
 	{
 		$this->data = $data;
 
-		$data = (count($data) > 1) ? null : $this->data;
+//		dd($data->getRelations());
+//		foreach ($data as $d) {
+//			foreach ($d->book_attributes as $attribute) {
+//				dd($attribute->name);
+//			}
+//		}
+//		foreach ($data as $d) {
+//
+//			dd($d->attributes);
+//		}
+
+		/*
+		 * We determine if it is the all view
+		 */
+		$data = ($this->isCollection($data)) ? null : $this->data;
 
 		$this->getFields($data);
+	}
+
+	public function isCollection($object) {
+		return is_a($object, 'Illuminate\Database\Eloquent\Collection');
 	}
 
 	/**

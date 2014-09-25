@@ -1,39 +1,68 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
-use Form;
+use HTML;
 
 class hasMany extends Relation {
 
 	public function boot()
 	{
 		//$this->addWidget(new Chosen());
-		$this->addAttributes(array('class' => 'chosen form-control'));
+		$this->addAttributes(array('class' => 'chosen'));
 	}
 
 	public function input()
 	{
-		$options = $this->options;
-		$model = '\\' . $options['relationship']['model'];
+		$fields = array_get( \View::getShared(), 'fields');
+		$id = $fields['id']->value;
 
-		$data = $model::all(array('id', $options['relationship']['show']))->toArray();
+		$options = $this->fieldOptions;
+		$modelObject = \App::make('artificer-model');
+		$modelName = $options['relationship']['model'];
+		$foreign = $this->fieldOptions['relationship']['foreign'];
+		$model = '\\' . $modelName;
+
+		$data = $model::where($foreign, '=', $id)->get(array('id', $options['relationship']['show']))->toArray();
 
 		$select = array();
+
+		?><ul class="list-group"><?php
 		foreach ($data as $d) {
 			$select[$d['id']] = $d[$options['relationship']['show']];
-		}
 
-//        dd($model::all(array('id', $options['relationship']['show']))->toArray());
-		return Form::select($this->name, $select, $this->value, $this->getAttributes());
+			$edit_url = \URL::route('admin.edit', array('slug' => $modelObject->models[$modelName]['route'], 'id' => $d['id']));
+			?>
+			<li class="list-group-item">
+				<?=$d[$options['relationship']['show']]?>
+				&nbsp;
+				<a href="<?=$edit_url?>" target="_blank">
+					<i class="fa fa-pencil"></i>
+					Edit
+				</a>
+			</li>
+			<?php
+		}
+		?></ul>
+		<a href="<?=\URL::route('admin.create', array('slug' => $modelObject->models[$modelName]['route']))?>?<?=http_build_query(array($foreign => $id))?>" target="_blank">
+			<i class="fa fa-plus"></i>
+			New
+		</a>
+		<?php
+
+//		return HTML::ul($select, $this->getAttributes());
 	}
 
-	public function show($value = null)
+	public function show($values = null)
 	{
-		$options = $this->options;
-		$model = '\\' . $options['relationship']['model'];
+		if (!$values->isEmpty()) {
 
-		$data = $model::where('id', '=', $value)->get(array('email'));
+			$show = $this->fieldOptions['relationship']['show'];
 
-		return $data;
+			foreach ($values as $value) {
+				print $value->$show . "<br>";
+			}
+		}
+
+		return null;
 	}
 
 }

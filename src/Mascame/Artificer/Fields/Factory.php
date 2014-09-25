@@ -3,6 +3,7 @@
 use Mascame\Artificer\Model;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Options\FieldOption;
+use Mascame\Artificer\Options\ModelOption;
 use Str;
 use Mascame\Artificer\Options\AdminOption;
 
@@ -12,6 +13,7 @@ class Factory {
 	public $types;
 	public $type_reason;
 	public $fields;
+	public $related_fields;
 	public $modelObject;
 	public $data;
 
@@ -33,21 +35,21 @@ class Factory {
 		$this->classMap = AdminOption::get('classmap');
 		$this->modelObject = $model;
 
-		$this->makeFields();
+		$this->makeFields($this->withRelated());
 	}
 
 
-	public function makeFields()
+	public function makeFields($fields)
 	{
-		foreach ($this->modelObject->columns as $columnName) {
-			$type = $this->autodetectType($columnName, $this->types);
+		foreach ($fields as $field) {
+			$type = $this->autodetectType($field, $this->types);
 			$this->fieldClass = $this->getFieldTypeClass($type);
 
-			$value = (isset($this->data->$columnName)) ? $this->data->$columnName : null;
+			$value = (isset($this->data->$field)) ? $this->data->$field : null;
 //            $columnOptions = $this->options[$this->modelObject->modelName];
 //            $attributes = (isset($columnOptions['attributes'])) ? $columnOptions['attributes'] : array();
 
-			$this->fields[$columnName] = new $this->fieldClass($columnName, $value, $this->modelObject->name);
+			$this->fields[$field] = new $this->fieldClass($field, $value, $this->modelObject->name, $this->isRelation($field));
 		}
 	}
 
@@ -90,7 +92,7 @@ class Factory {
 
 			if ($this->isSimilar($name, $type)) {
 				// Gives more importance to similar TYPE than field
-				$points[$type] = + 2;
+				$points[$type] =+ 2;
 			}
 
 			foreach ($fields as $field) {
@@ -137,10 +139,11 @@ class Factory {
 	 */
 	public function autodetectType($name, $types)
 	{
-		if (FieldOption::has('type', $name)) {
-			$this->type_reason[$name] = 'set by user in model fields';
 
-			return FieldOption::get('type', $name);
+		if (FieldOption::has('type', $name) || FieldOption::has('relationship.type', $name)) {
+			$this->type_reason[$name] = 'set by user in {model}.fields';
+
+			return (FieldOption::has('type', $name)) ? FieldOption::get('type', $name) : FieldOption::get('relationship.type', $name);
 		}
 
 		if ($this->isTypeEqual($name, $types)) {
@@ -150,13 +153,13 @@ class Factory {
 		}
 
 		if ($type = $this->isUserType($name, $types)) {
-			$this->type_reason[$name] = 'set by user general fields';
+			$this->type_reason[$name] = 'set by user in admin.fields';
 
 			return $type;
 		}
 
 		if ($type = $this->isTypeSimilar($name, $types)) {
-			$this->type_reason[$name] = 'similar';
+			$this->type_reason[$name] = 'similar to one in admin.fields';
 
 			return $type;
 		}
@@ -164,6 +167,39 @@ class Factory {
 		$this->type_reason[$name] = 'default';
 
 		return $types['default'][0];
+	}
+
+	protected function isRelation($name)
+	{
+		return in_array($name, $this->related_fields);
+	}
+
+	public function getRelated()
+	{
+		if (!empty($this->related_fields)) return $this->related_fields;
+
+		/*
+		 * We compare columns with config array to determine if there are new fields
+		 */
+		$this->related_fields = array_diff(array_keys(FieldOption::all()), $this->modelObject->columns);
+
+		return $this->related_fields;
+	}
+
+	protected function addRelated() {
+		$related = $this->getRelated();
+
+		if (!empty($related)) {
+			foreach ($related as $field) {
+				$this->modelObject->columns[] = $field;
+			}
+		}
+
+		return $this->modelObject->columns;
+	}
+
+	protected function withRelated() {
+		return $this->addRelated();
 	}
 
 }

@@ -63,6 +63,11 @@ class Model {
 	public $options = array();
 
 	/**
+	 * @var array|mixed
+	 */
+	public $relations = array();
+
+	/**
 	 * @var
 	 */
 	public static $current = null;
@@ -278,6 +283,24 @@ class Model {
 		}
 
 		return '\\' . $modelName;
+	}
+
+	/**
+	 * @return array|mixed
+	 */
+	public function getRelations()
+	{
+		if (!empty($this->relations)) return $this->relations;
+
+		$fields = ModelOption::get('fields');
+
+		foreach ($fields as $field) {
+			if (isset($field['relationship']) && $field['relationship']['method']) {
+				$this->relations = $field['relationship']['method'];
+			}
+		}
+
+		return $this->relations;
 	}
 
 	/**

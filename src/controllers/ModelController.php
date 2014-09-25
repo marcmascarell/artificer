@@ -72,7 +72,7 @@ class ModelController extends Artificer {
 	{
 		$sort = $this->getSort();
 
-		$this->handleData($this->model->orderBy($sort['column'], $sort['direction'])->get());
+		$this->handleData($this->model->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->get());
 
 		return View::make($this->getView('all'))
 			->with('items', $this->data)
@@ -87,7 +87,7 @@ class ModelController extends Artificer {
 	 */
 	public function edit($modelName, $id)
 	{
-		$this->handleData($this->model->findOrFail($id));
+		$this->handleData($this->model->with($this->modelObject->getRelations())->findOrFail($id));
 
 		$form = array(
 			'form_action_route' => 'admin.update',

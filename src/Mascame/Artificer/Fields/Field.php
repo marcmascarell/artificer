@@ -18,18 +18,21 @@ abstract class Field implements FieldInterface {
 	public $options = array();
 	public $fieldOptions = array();
 	public $lists = array();
+	public $relation = false;
 
 
 	/**
 	 * @param $name
 	 * @param null $value
 	 * @param $modelName
+	 * @param $relation
 	 */
-	public function __construct($name, $value = null, $modelName)
+	public function __construct($name, $value = null, $modelName, $relation)
 	{
 		$this->name = $name;
 		$this->value = $value;
 		$this->modelName = $modelName;
+		$this->relation = $relation;
 
 		$this->getOptions();
 		$this->getFieldOptions();
@@ -78,7 +81,7 @@ abstract class Field implements FieldInterface {
 	 */
 	public function getFieldOptions()
 	{
-		$this->fieldOptions = FieldOption::all($this->name);
+		$this->fieldOptions = FieldOption::field($this->name);
 
 		return $this->fieldOptions;
 	}
@@ -340,6 +343,19 @@ abstract class Field implements FieldInterface {
 	public function isHidden()
 	{
 		return $this->isInArray($this->name, ModelOption::get('hidden'));
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isRelation()
+	{
+		return $this->relation;
+	}
+
+	public function getRelationMethod()
+	{
+		return $this->fieldOptions['relationship']['method'];
 	}
 
 }

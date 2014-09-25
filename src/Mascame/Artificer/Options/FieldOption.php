@@ -15,6 +15,11 @@ class FieldOption extends ModelOption {
 
 	public static function all($field = null)
 	{
+		return Option::get(self::$key . '/' . Model::getCurrent() . '.' . self::$subkey);
+	}
+
+	public static function field($field = null)
+	{
 		return Option::get(self::$key . '/' . Model::getCurrent() . '.' . self::$subkey . '.' . $field);
 	}
 

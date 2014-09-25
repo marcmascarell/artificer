@@ -49,8 +49,7 @@
                                 @endforeach
                             @endif
 
-
-                                {{ $field->output() }}
+                            {{ $field->output() }}
 
                         </div>
 				    @endif

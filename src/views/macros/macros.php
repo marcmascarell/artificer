@@ -78,15 +78,21 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 
 			<?php
 			foreach ($data as $d) {
-
 				?>
 				<tr data-id="<?= $d->id ?>" data-sort-id="<?= $d->sort_id ?>">
 
-					<?php foreach ($model['columns'] as $key) {
+					<?php foreach (array_keys($fields) as $key) {
 						if ($fields[$key]->isListed() && !($fields[$key]->isHiddenList())) {
 							?>
 							<td>
-								<?= $fields[$key]->show($d->$key) ?>
+								<?php
+								if ($fields[$key]->isRelation()) {
+									$method = $fields[$key]->getRelationMethod();
+									$fields[$key]->show($d->$method);
+								} else {
+									print $fields[$key]->show($d->$key);
+								}
+								?>
 							</td>
 						<?php
 						}
