@@ -7,7 +7,16 @@ class Checkbox extends Field {
 
 	public function input()
 	{
-		return Form::checkbox($this->name, $this->value, false, $this->getAttributes());
+		?>
+		<div class="checkbox">
+
+			<?php
+			// default
+			print Form::hidden($this->name, 0);
+			print Form::checkbox($this->name, $this->value, false, $this->getAttributes());
+			?>
+		</div>
+		<?php
 	}
 
 }
