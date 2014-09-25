@@ -14,76 +14,62 @@ Route::pattern('username', '[a-z0-9_-]{3,16}');
 
 Route::group(array(
 	'prefix' => LaravelLocalization::setLocale(),
-	'before' => 'LaravelLocalizationRedirectFilter|artificer-auth'
-), function () {
-	Route::group(array('prefix' => 'admin'), function () {
+	'before' => 'LaravelLocalizationRedirectFilter|artificer-auth'),
+	function () {
+		Route::group(array('prefix' => 'admin'), function () {
 
-//    Route::get('user', function()
-//    {
-//        return Schema::getColumnListing('fake');
-//    });
-//    Route::get('index', function() {
-//        new \Mascame\Artificer\Admin;
-//    });
-//    Route::get('index', array('uses' => 'Mascame\Artificer\ModelController@index'));
+			Route::get('/', array('as' => 'admin.home', 'uses' => 'Mascame\Artificer\PageController@home'));
 
-		Route::get('/', array('as' => 'admin.home', 'uses' => 'Mascame\Artificer\PageController@home'));
+			Route::group(array('prefix' => 'user'), function () {
+				Route::get('login', array('as' => 'admin.showlogin', 'uses' => 'Mascame\Artificer\UserController@showLogin'));
+				Route::post('login', array('as' => 'admin.login', 'uses' => 'Mascame\Artificer\UserController@login'))->before('csrf');
+				Route::get('logout', array('as' => 'admin.logout', 'uses' => 'Mascame\Artificer\UserController@logout'));
+			});
 
-		Route::get('login', array('as' => 'admin.showlogin', 'uses' => 'Mascame\Artificer\UserController@showLogin'));
-		Route::post('login', array('as' => 'admin.login', function () {
-			dd('here');
-		}))->before('csrf');
-		Route::post('login', array('as' => 'admin.login', 'uses' => 'Mascame\Artificer\UserController@login'))->before('csrf');
-		Route::get('logout', array('as' => 'admin.logout', 'uses' => 'Mascame\Artificer\UserController@logout'));
+			Route::group(array('prefix' => 'page'), function () {
+				Route::get('plugins', array('as' => 'admin.page.plugins', 'uses' => 'Mascame\Artificer\PageController@plugins'));
+				Route::get('plugin/{slug}/install', array('as' => 'admin.page.plugin.install', 'uses' => 'Mascame\Artificer\PageController@installPlugin'));
+				Route::get('plugin/{slug}/uninstall', array('as' => 'admin.page.plugin.uninstall', 'uses' => 'Mascame\Artificer\PageController@uninstallPlugin'));
+			});
 
-		Route::get('page/plugins', array('as' => 'admin.page.plugins', 'uses' => 'Mascame\Artificer\PageController@plugins'));
-		Route::get('page/plugin/{slug}/install', array('as' => 'admin.page.plugin.install', 'uses' => 'Mascame\Artificer\PageController@installPlugin'));
-		Route::get('page/plugin/{slug}/uninstall', array('as' => 'admin.page.plugin.uninstall', 'uses' => 'Mascame\Artificer\PageController@uninstallPlugin'));
+			Route::group(array('prefix' => 'model'), function () {
+				Route::get('{slug}', array('as' => 'admin.all', 'uses' => 'Mascame\Artificer\ModelController@all'));
+				Route::get('{slug}/create', array('as' => 'admin.create', 'uses' => 'Mascame\Artificer\ModelController@create'));
+				Route::post('{slug}/store', array('as' => 'admin.store', 'uses' => 'Mascame\Artificer\ModelController@store'))->before('csrf');
+				Route::get('{slug}/{id}', array('as' => 'admin.show', 'uses' => 'Mascame\Artificer\ModelController@show'));
+				Route::get('{slug}/{id}/edit', array('as' => 'admin.edit', 'uses' => 'Mascame\Artificer\ModelController@edit'));
+				Route::put('{slug}/{id}', array('as' => 'admin.update', 'uses' => 'Mascame\Artificer\ModelController@update'))->before('csrf');
+				Route::delete('{slug}/{id}', array('as' => 'admin.destroy', 'uses' => 'Mascame\Artificer\ModelController@destroy'))->before('csrf');
+				// Todo: check if this is secure...
+				Route::post('{slug}/{id}/upload', array('as' => 'admin.upload', 'uses' => 'Mascame\Artificer\ModelController@plupload'));
+			});
 
-//	Model
-		Route::get('model/{slug}', array('as' => 'admin.all', 'uses' => 'Mascame\Artificer\ModelController@all'));
-		Route::get('model/{slug}/create', array('as' => 'admin.create', 'uses' => 'Mascame\Artificer\ModelController@create'));
-		Route::post('model/{slug}/store', array('as' => 'admin.store', 'uses' => 'Mascame\Artificer\ModelController@store'))->before('csrf');
-		Route::get('model/{slug}/{id}', array('as' => 'admin.show', 'uses' => 'Mascame\Artificer\ModelController@show'));
-		Route::get('model/{slug}/{id}/edit', array('as' => 'admin.edit', 'uses' => 'Mascame\Artificer\ModelController@edit'));
-		Route::put('model/{slug}/{id}', array('as' => 'admin.update', 'uses' => 'Mascame\Artificer\ModelController@update'))->before('csrf');
-//    Route::patch('{slug}/{id}', array('as' => 'admin.update','uses' => 'Mascame\Artificer\ModelController@update'));
-		Route::delete('model/{slug}/{id}', array('as' => 'admin.destroy', 'uses' => 'Mascame\Artificer\ModelController@destroy'))->before('csrf');
+			//	Route::post('upload', array('as' => 'admin.upload', function()
+			//	{
+			//		return Plupload::receive('file', function ($file)
+			//		{
+			//			$file->move(public_path() . '/uploads/', $file->getClientOriginalName());
+			//
+			//			return 'ready';
+			//		});
+			//	}));
 
-//	Model Sort
-//	Route::post('model/{slug}/sort/{old_id}/{new_id}', array('as' => 'admin.sort', 'uses' => 'Mascame\Artificer\Widgets\Sortable\SortableController@sort'));
-//	Model Pagination
-//	Model File Upload
-// Todo: check if this is secure...
-		Route::post('model/{slug}/{id}/upload', array('as' => 'admin.upload', 'uses' => 'Mascame\Artificer\ModelController@plupload'));
+			$plugins = Config::get('artificer::admin.plugins.installed');
 
-//	Route::post('upload', array('as' => 'admin.upload', function()
-//	{
-//		return Plupload::receive('file', function ($file)
-//		{
-//			$file->move(public_path() . '/uploads/', $file->getClientOriginalName());
-//
-//			return 'ready';
-//		});
-//	}));
+			foreach ($plugins as $pluginNamespace) {
+				$pluginName = explode('/', $pluginNamespace);
+				$pluginName = end($pluginName);
 
-		$plugins = Config::get('artificer::admin.plugins.installed');
+				$plugin = Config::get('artificer::plugins/' . $pluginNamespace . '/' . $pluginName);
 
-		foreach ($plugins as $pluginNamespace) {
-			$pluginName = explode('/', $pluginNamespace);
-			$pluginName = end($pluginName);
-
-			$plugin = Config::get('artificer::plugins/' . $pluginNamespace . '/' . $pluginName);
-
-			if (isset($plugin['routes'])) {
-				$plugin_routes = $plugin['routes'];
-				$plugin_routes();
+				if (isset($plugin['routes'])) {
+					$plugin_routes = $plugin['routes'];
+					$plugin_routes();
+				}
 			}
-		}
 
-	});
+		});
 });
-
 
 //
 //Route::get('test', function() {
@@ -101,5 +87,3 @@ Route::get('gestor1337', function () {
 
 	return Redirect::route('admin.showlogin');
 });
-
-//Route::resource('admin', 'Mascame\Artificer\ModelController');
