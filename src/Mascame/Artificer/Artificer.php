@@ -1,14 +1,11 @@
 <?php namespace Mascame\Artificer;
 
-use Config;
 use Input;
 use File;
 use Mascame\Artificer\Fields\Field;
 use View;
 use Mascame\Artificer\Fields\Factory;
 use Controller;
-use Session;
-use Event;
 use App;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\Option;
@@ -51,17 +48,6 @@ class Artificer extends Controller {
 	public function handleData($data)
 	{
 		$this->data = $data;
-
-//		dd($data->getRelations());
-//		foreach ($data as $d) {
-//			foreach ($d->book_attributes as $attribute) {
-//				dd($attribute->name);
-//			}
-//		}
-//		foreach ($data as $d) {
-//
-//			dd($d->attributes);
-//		}
 
 		/*
 		 * We determine if it is the all view
