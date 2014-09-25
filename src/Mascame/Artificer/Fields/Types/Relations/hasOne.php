@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
 use Form;
+use Input;
 
 class hasOne extends Relation {
 
@@ -24,7 +25,10 @@ class hasOne extends Relation {
 			$select[$d['id']] = $d[$options['relationship']['show']];
 		}
 
-//        dd($model::all(array('id', $options['relationship']['show']))->toArray());
+		if (Input::has($this->name)) {
+			$this->value = Input::get($this->name);
+		}
+
 		print Form::select($this->name, $select, $this->value, $this->getAttributes());
 
 		$new_url = \URL::route('admin.create', array('slug' => $model->models[$modelName]['route']));
