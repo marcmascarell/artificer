@@ -43,6 +43,14 @@
 
                             {{ Form::label($field->title) }}
 
+                            @if ($field->wiki)
+                                <div class="well well-sm">
+                                    <i class="fa fa-info"></i>
+                                    &nbsp;
+                                    <em>{{ $field->wiki }}</em>
+                                </div>
+                            @endif
+
                             @if($errors->has())
                                 @foreach ($errors->get($field->name) as $message)
                                     {{ $message }}

@@ -24,19 +24,30 @@ class hasOne extends Relation {
 		foreach ($data as $d) {
 			$select[$d['id']] = $d[$options['relationship']['show']];
 		}
-
 		if (Input::has($this->name)) {
-			$this->value = Input::get($this->name);
+			$id = Input::get($this->name);
+		} else if (isset($this->value->id)) {
+			$id = $this->value->id;
+		} else {
+			$id = $this->value;
 		}
 
-		print Form::select($this->name, $select, $this->value, $this->getAttributes());
+		print Form::select($this->name, $select, $id, $this->getAttributes());
 
 		$new_url = \URL::route('admin.create', array('slug' => $model->models[$modelName]['route']));
+		$edit_url = \URL::route('admin.edit', array('slug' => $model->models[$modelName]['route'], 'id' => $id));
 		?>
-		<a href="<?= $new_url ?>" target="_blank">
-			<i class="fa fa-plus"></i>
-			New
-		</a>
+		<div class="text-right">
+			<a href="<?= $edit_url ?>" target="_blank">
+				<i class="fa fa-pencil"></i>
+				Edit
+			</a>
+			&nbsp;&nbsp;
+			<a href="<?= $new_url ?>" target="_blank">
+				<i class="fa fa-plus"></i>
+				New
+			</a>
+		</div>
 	<?php
 	}
 
@@ -44,12 +55,20 @@ class hasOne extends Relation {
 	{
 		$value = ($value) ?: $this->value;
 
-		$options = $this->fieldOptions;
-		$model = '\\' . $options['relationship']['model'];
+		if ($value->count() > 1) {
+			throw new \Exception('A record have more than 1 row relationed while marked as hasOne');
+		}
 
-		$data = $model::findOrFail($value);
+		$show = $this->fieldOptions['relationship']['show'];
 
-		return $data->$options['relationship']['show'];
+		print $value->$show;
+
+//		$options = $this->fieldOptions;
+//		$model = '\\' . $options['relationship']['model'];
+//
+//		$data = $model::findOrFail($value);
+//
+//		return $data->$options['relationship']['show'];
 	}
 
 }

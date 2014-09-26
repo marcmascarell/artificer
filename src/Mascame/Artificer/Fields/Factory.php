@@ -13,7 +13,7 @@ class Factory {
 	public $types;
 	public $type_reason;
 	public $fields;
-	public $related_fields;
+	public $related_fields = null;
 	public $modelObject;
 	public $data;
 
@@ -174,12 +174,16 @@ class Factory {
 
 	public function getRelated()
 	{
-		if (!empty($this->related_fields)) return $this->related_fields;
+		if ($this->related_fields != null) return $this->related_fields;
+
+		if (null == $fields = FieldOption::all()) {
+			return $this->related_fields = array();
+		}
 
 		/*
 		 * We compare columns with config array to determine if there are new fields
 		 */
-		$this->related_fields = array_diff(array_keys(FieldOption::all()), $this->modelObject->columns);
+		$this->related_fields = array_diff(array_keys($fields), $this->modelObject->columns);
 
 		return $this->related_fields;
 	}

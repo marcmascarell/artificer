@@ -295,10 +295,14 @@ class Model {
 
 		$fields = ModelOption::get('fields');
 
-		foreach ($fields as $field) {
-			if (isset($field['relationship']) && isset($field['relationship']['method'])) {
-				$this->relations = $field['relationship']['method'];
+		if (!empty($fields)) {
+			foreach ($fields as $field) {
+				if (isset($field['relationship']) && isset($field['relationship']['method'])) {
+					$this->relations = $field['relationship']['method'];
+				}
 			}
+		} else {
+			$this->relations = array();
 		}
 
 		return $this->relations;

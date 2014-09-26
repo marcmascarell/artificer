@@ -19,6 +19,7 @@ abstract class Field implements FieldInterface {
 	public $fieldOptions = array();
 	public $lists = array();
 	public $relation = false;
+	public $wiki;
 
 
 	/**
@@ -41,8 +42,14 @@ abstract class Field implements FieldInterface {
 
 		$this->title = $this->getTitle($this->name);
 		$this->type = $this->getType(get_called_class());
+		$this->wiki = $this->getWiki();
 
 		$this->boot();
+	}
+
+	public function getWiki()
+	{
+		return (isset($this->fieldOptions['wiki'])) ? $this->fieldOptions['wiki'] : null;
 	}
 
 
