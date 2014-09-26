@@ -4,7 +4,7 @@ use Input;
 use File;
 use Mascame\Artificer\Fields\Field;
 use View;
-use Mascame\Artificer\Fields\Factory;
+use Mascame\Artificer\Fields\Factory as FieldFactory;
 use Controller;
 use App;
 use Mascame\Artificer\Options\AdminOption;
@@ -67,7 +67,7 @@ class Artificer extends Controller {
 		/*
 		 * We determine if it is the all view
 		 */
-		$data = ($this->isCollection($data)) ? null : $this->data;
+//        $data = ($this->isCollection($data)) ? $this->modelObject->columns : $data;
 
 		$this->getFields($data);
 	}
@@ -83,10 +83,12 @@ class Artificer extends Controller {
 	 */
 	public function getFields($data)
 	{
-		if ($this->fields == null) {
-			$this->fields = with(new Factory($this->modelObject, $data))->fields;
-			View::share('fields', $this->fields);
-		}
+        if ($this->fields != null) return $this->fields;
+
+        $fieldfactory = new FieldFactory($this->modelObject);
+        $this->fields = $fieldfactory->parseFields($data);
+
+        View::share('fields', $this->fields);
 
 		return $this->fields;
 	}

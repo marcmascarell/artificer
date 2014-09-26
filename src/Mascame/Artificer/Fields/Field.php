@@ -157,7 +157,7 @@ abstract class Field implements FieldInterface {
 	 */
 	public function getType($type_class)
 	{
-		$pieces = explode('\\', $type_class);
+        $pieces = explode('\\', $type_class);
 
 		return strtolower(end($pieces));
 	}

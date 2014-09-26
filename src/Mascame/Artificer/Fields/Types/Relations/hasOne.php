@@ -17,13 +17,29 @@ class hasOne extends Relation {
 		$modelName = $options['relationship']['model'];
 		$model = \App::make('artificer-model');
 		$modelClass = '\\' . $modelName;
+        $show = $options['relationship']['show'];
 
-		$data = $modelClass::all(array('id', $options['relationship']['show']))->toArray();
+        $show_query = (is_array($show)) ? array('*') : array('id', $show);
+		$data = $modelClass::all($show_query)->toArray();
 
 		$select = array();
 		foreach ($data as $d) {
-			$select[$d['id']] = $d[$options['relationship']['show']];
+
+            if (is_array($show)) {
+                $value = '';
+                foreach ($show as $show_key) {
+                    $value .= \Str::title($show_key) . ': ' . $d[$show_key];
+                    if (end($show) != $show_key) {
+                        $value .= ' | ';
+                    }
+                }
+            } else {
+                $value = $d[$show];
+            }
+
+			$select[$d['id']] = $value;
 		}
+
 		if (Input::has($this->name)) {
 			$id = Input::get($this->name);
 		} else if (isset($this->value->id)) {
@@ -41,13 +57,11 @@ class hasOne extends Relation {
 		<div class="text-right">
 			<div class="btn-group">
 
-				<a href="<?=$edit_url?>"
-				   type="button" class="btn btn-default">
+				<a href="<?=$edit_url?>" target="_blank" type="button" class="btn btn-default">
 					<i class="glyphicon glyphicon-edit"></i>
 				</a>
 
-				<a href="<?=$new_url?>"
-				   type="button" class="btn btn-default">
+				<a href="<?=$new_url?>" target="_blank" type="button" class="btn btn-default">
 					<i class="glyphicon glyphicon-plus"></i>
 				</a>
 			</div>
@@ -58,21 +72,32 @@ class hasOne extends Relation {
 	public function show($value = null)
 	{
 		$value = ($value) ?: $this->value;
+        $options = $this->fieldOptions;
+        $show = $options['relationship']['show'];
 
-		if ($value->count() > 1) {
-			throw new \Exception('A record have more than 1 row relationed while marked as hasOne');
+        if (!is_object($value)) {
+            $model = '\\' . $options['relationship']['model'];
+
+            $data = $model::findOrFail($value);
+
+            if (is_array($show)) {
+                foreach ($show as $item) {
+                    print $data->$item . "<br>";
+                }
+                return null;
+            } else {
+                return $data->$show;
+            }
+        }
+
+		if (!$value || $value->count() > 1) {
+			throw new \Exception('The value is null or have more than 1 row relationed while marked as hasOne');
 		}
 
 		$show = $this->fieldOptions['relationship']['show'];
 
 		print $value->$show;
-
-//		$options = $this->fieldOptions;
-//		$model = '\\' . $options['relationship']['model'];
-//
-//		$data = $model::findOrFail($value);
-//
-//		return $data->$options['relationship']['show'];
+        return null;
 	}
 
 }

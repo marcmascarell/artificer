@@ -25,31 +25,38 @@ class Factory {
 	 * @param Model $model
 	 * @param $data
 	 */
-	public function __construct(Model $model, $data)
+	public function __construct(Model $model)
 	{
-		$this->data = $data;
 		$this->types = AdminOption::get('types');
 
 		$this->classMap = AdminOption::get('classmap');
 		$this->modelObject = $model;
-
-		$this->makeFields($this->withRelated());
 	}
 
 
-	public function makeFields($fields)
+    public function parseFieldType($field) {
+        return $this->autodetectType($field);
+    }
+
+    public function parseFieldValue($field) {
+        return (isset($this->data->$field)) ? $this->data->$field : null;
+    }
+
+	public function parseFields($data)
 	{
-		foreach ($fields as $field) {
-			$type = $this->autodetectType($field, $this->types);
-			$this->fieldClass = $this->getFieldTypeClass($type);
+        $this->data = $data;
 
-			$value = (isset($this->data->$field)) ? $this->data->$field : null;
-//            $columnOptions = $this->options[$this->modelObject->modelName];
-//            $attributes = (isset($columnOptions['attributes'])) ? $columnOptions['attributes'] : array();
-
-			$this->fields[$field] = new $this->fieldClass($field, $value, $this->modelObject->name, $this->isRelation($field));
+		foreach ($this->withRelated() as $field) {
+            $this->fields[$field] = $this->make($this->parseFieldType($field), $field, $this->parseFieldValue($field));
 		}
+
+        return $this->fields;
 	}
+
+    public function make($type, $field, $value) {
+        $fieldClass = $this->getFieldTypeClass($type);
+        return new $fieldClass($field, $value, $this->modelObject->name, $this->isRelation($field));
+    }
 
 	/**
 	 * @param $type
@@ -64,6 +71,8 @@ class Factory {
 		}
 
 		throw new \Exception("No supported Field type [{$type}]");
+
+        return false;
 	}
 
 	/**
@@ -135,28 +144,27 @@ class Factory {
 	 * @param $types
 	 * @return bool|int|mixed|string
 	 */
-	public function autodetectType($name, $types)
+	public function autodetectType($name)
 	{
-
 		if (FieldOption::has('type', $name) || FieldOption::has('relationship.type', $name)) {
 			$this->type_reason[$name] = 'set by user in {model}.fields';
 
 			return (FieldOption::has('type', $name)) ? FieldOption::get('type', $name) : FieldOption::get('relationship.type', $name);
 		}
 
-		if ($this->isTypeEqual($name, $types)) {
+		if ($this->isTypeEqual($name, $this->types)) {
 			$this->type_reason[$name] = 'equal';
 
 			return $name;
 		}
 
-		if ($type = $this->isUserType($name, $types)) {
+		if ($type = $this->isUserType($name, $this->types)) {
 			$this->type_reason[$name] = 'set by user in admin.fields';
 
 			return $type;
 		}
 
-		if ($type = $this->isTypeSimilar($name, $types)) {
+		if ($type = $this->isTypeSimilar($name, $this->types)) {
 			$this->type_reason[$name] = 'similar to one in admin.fields';
 
 			return $type;
@@ -164,7 +172,7 @@ class Factory {
 
 		$this->type_reason[$name] = 'default';
 
-		return $types['default'][0];
+		return $this->types['default'][0];
 	}
 
 	protected function isRelation($name)
