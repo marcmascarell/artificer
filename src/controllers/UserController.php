@@ -47,8 +47,8 @@ class UserController extends Artificer {
         Session::set($this->tries_key, $tries);
 
         if ($tries >= $this->max_tries) {
-            Session::forget($this->tries_key);
             $this->ban();
+            Session::forget($this->tries_key);
         }
     }
 
