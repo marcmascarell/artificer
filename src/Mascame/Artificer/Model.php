@@ -138,9 +138,7 @@ class Model {
 	 */
 	public function getModels()
 	{
-		if (!empty($this->models)) {
-			return $this->models;
-		}
+		if (!empty($this->models)) return $this->models;
 
 		$slug = Route::current()->parameter('slug');
 		$models = array();
@@ -163,7 +161,6 @@ class Model {
 //				$models[$modelName]['instance'] = $this->instantiate($modelName);
 			}
 		}
-
 
 		return $models;
 	}
