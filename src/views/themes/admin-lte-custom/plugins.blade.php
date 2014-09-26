@@ -23,7 +23,7 @@
                                     </a>
                                     @endforeach
                                 @endif
-                                    <a href="{{ route('admin.page.plugin.uninstall', str_replace('/', '-', $plugin->namespace)) }}" class="btn btn-default btn-sm">Uninstall</a>
+                                    <a href="{{ route('admin.page.plugin.uninstall', $plugin->slug) }}" class="btn btn-default btn-sm">Uninstall</a>
                             </div>
                         </div>
 
@@ -88,7 +88,7 @@
                                 @endforeach
                                 @endif
 
-                                <a href="{{ route('admin.page.plugin.install', str_replace('/', '-', $plugin->namespace)) }}" class="btn btn-default btn-sm">Install</a>
+                                <a href="{{ route('admin.page.plugin.install', $plugin->slug) }}" class="btn btn-default btn-sm">Install</a>
 
                             </div>
                         </div>

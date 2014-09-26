@@ -21,7 +21,7 @@ abstract class Plugin {
 		$this->namespace = $namespace;
 		$this->configKey = 'plugins/' . $namespace;
 		$this->config = (Option::has($this->configKey)) ? Option::get($this->configKey) : null;
-		$this->slug = str_replace('/', '-', $this->namespace);
+		$this->slug = str_replace('/', '__slash__', $this->namespace);
 
 		$this->meta();
 	}

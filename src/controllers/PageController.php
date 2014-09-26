@@ -33,6 +33,8 @@ class PageController extends Artificer {
 
 	public function pluginOperation($plugin, $operation)
 	{
+		$plugin = str_replace('__slash__', '/', $plugin);
+
 		if ($operation == 'install') {
 			$from = 'uninstalled';
 			$to = 'installed';
@@ -42,8 +44,6 @@ class PageController extends Artificer {
 			$to = 'uninstalled';
 			$message = 'Successfully uninstalled <b>' . $plugin . '</b>';
 		}
-
-		$plugin = str_replace('-', '/', $plugin);
 
 		$plugins = AdminOption::get('plugins');
 
@@ -77,7 +77,12 @@ class PageController extends Artificer {
 
 				$content .= ');';
 
-				File::put(app_path() . '/config/packages/mascame/artificer/plugins.php', $content);
+				$file = app_path() . '/config/packages/mascame/artificer/plugins.php';
+				if (file_exists($file)) {
+					File::put($file, $content);
+				} else {
+					throw new \Exception('No plugins file.');
+				}
 			}
 
 			Notification::success($message);

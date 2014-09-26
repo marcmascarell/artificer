@@ -17,8 +17,6 @@ class Factory {
 	public $modelObject;
 	public $data;
 
-	public static $loadedAssets = array();
-
 	public $namespace = '\Mascame\Artificer\Fields\Types\\';
 
 	public $classMap = array();
