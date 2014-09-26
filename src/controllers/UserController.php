@@ -6,8 +6,51 @@ use Validator;
 use Redirect;
 use Input;
 use Auth;
+use Carbon\Carbon;
+use Session;
 
 class UserController extends Artificer {
+
+    public $max_tries = 3;
+    public $tries_key = 'artificer.user.login.tries';
+    public $ban_time = 5;
+    public $ban_key = 'artificer.user.login.banned';
+
+    public function isBanned() {
+        if (Session::has($this->ban_key)) {
+            $ban = Carbon::parse(Session::get($this->ban_key));
+
+            if (!$ban->isPast()) {
+                return true;
+            }
+        }
+
+        Session::forget($this->ban_key);
+
+        return false;
+    }
+
+    public function ban() {
+        Session::set($this->ban_key, Carbon::now()->addMinutes($this->ban_time));
+    }
+
+
+    public function addAttempt() {
+        $tries = Session::get($this->tries_key);
+
+        if (!$tries) {
+            $tries = 1;
+        } else {
+            $tries++;
+        }
+
+        Session::set($this->tries_key, $tries);
+
+        if ($tries >= $this->max_tries) {
+            Session::forget($this->tries_key);
+            $this->ban();
+        }
+    }
 
 	public function showLogin()
 	{
@@ -16,6 +59,11 @@ class UserController extends Artificer {
 
 	public function login()
 	{
+        if ($this->isBanned()) {
+            return Redirect::route('admin.showlogin')
+                ->withErrors(array("You are banned for too many login attempts"));
+        }
+
 		$rules = array(
 			'username' => 'required|email',
 			'password' => 'required|min:3'
@@ -24,6 +72,8 @@ class UserController extends Artificer {
 		$validator = Validator::make(Input::all(), $rules);
 
 		if ($validator->fails()) {
+            $this->addAttempt();
+
 			return Redirect::route('admin.showlogin')
 				->withErrors($validator)
 				->withInput();
@@ -31,16 +81,19 @@ class UserController extends Artificer {
 
 		$user = \User::where('email', '=', Input::get('username'))->first();
 
-		if (in_array($user->role, AdminOption::get('users.roles'))) {
-			$userdata = array(
-				'email'    => Input::get('username'),
-				'password' => Input::get('password')
-			);
+        if ($user) {
+            if (in_array($user->role, AdminOption::get('users.roles'))) {
 
-			if (Auth::attempt($userdata)) {
-				return Redirect::route('admin.home');
-			}
-		}
+                $userdata = array(
+                    'email'    => Input::get('username'),
+                    'password' => Input::get('password')
+                );
+
+                if (Auth::attempt($userdata)) {
+                    return Redirect::route('admin.home');
+                }
+            }
+        }
 
 		return Redirect::route('admin.login')
 			->withInput(Input::except('password'))->withErrors($validator);

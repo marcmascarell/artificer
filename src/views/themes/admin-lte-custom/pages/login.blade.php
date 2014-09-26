@@ -32,6 +32,8 @@
                        @foreach ($errors->all() as $error)
                           <div>{{ $error }}</div>
                       @endforeach
+
+                      <div>The credentials are not valid.</div>
                     @endif
 
                     <div class="form-group">
