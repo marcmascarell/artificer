@@ -37,16 +37,20 @@ class hasOne extends Relation {
 		$new_url = \URL::route('admin.create', array('slug' => $model->models[$modelName]['route']));
 		$edit_url = \URL::route('admin.edit', array('slug' => $model->models[$modelName]['route'], 'id' => $id));
 		?>
+		<br>
 		<div class="text-right">
-			<a href="<?= $edit_url ?>" target="_blank">
-				<i class="fa fa-pencil"></i>
-				Edit
-			</a>
-			&nbsp;&nbsp;
-			<a href="<?= $new_url ?>" target="_blank">
-				<i class="fa fa-plus"></i>
-				New
-			</a>
+			<div class="btn-group">
+
+				<a href="<?=$edit_url?>"
+				   type="button" class="btn btn-default">
+					<i class="glyphicon glyphicon-edit"></i>
+				</a>
+
+				<a href="<?=$new_url?>"
+				   type="button" class="btn btn-default">
+					<i class="glyphicon glyphicon-plus"></i>
+				</a>
+			</div>
 		</div>
 	<?php
 	}
