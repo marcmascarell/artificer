@@ -67,17 +67,7 @@ class Artificer extends Controller {
 	{
 		$this->data = $data;
 
-		/*
-		 * We determine if it is the all view
-		 */
-//        $data = ($this->isCollection($data)) ? $this->modelObject->columns : $data;
-
 		$this->getFields($data);
-	}
-
-	public function isCollection($object)
-	{
-		return is_a($object, 'Illuminate\Database\Eloquent\Collection');
 	}
 
 	/**
