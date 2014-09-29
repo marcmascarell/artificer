@@ -27,17 +27,20 @@ class Artificer extends Controller {
 	 */
 	public function __construct()
 	{
-		$model = App::make('artificer-model');
-		$this->modelObject = $model;
-		$this->model = $model->model;
-		$this->options = AdminOption::all();
-		$this->plugins = $this->bootPlugins();
 		$this->theme = AdminOption::get('theme');
 
-		View::share('main_title', AdminOption::get('title'));
-		View::share('menu', $this->getMenu());
-		View::share('theme', $this->theme);
-		View::share('fields', array());
+		if (\Auth::check()) {
+			$model = App::make('artificer-model');
+			$this->modelObject = $model;
+			$this->model = $model->model;
+			$this->options = AdminOption::all();
+			$this->plugins = $this->bootPlugins();
+
+			View::share('main_title', AdminOption::get('title'));
+			View::share('menu', $this->getMenu());
+			View::share('theme', $this->theme);
+			View::share('fields', array());
+		}
 	}
 
 	public function getMenu() {
