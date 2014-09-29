@@ -43,7 +43,8 @@ class Artificer extends Controller {
 		}
 	}
 
-	public function getMenu() {
+	public function getMenu()
+	{
 		if (!empty($this->menu)) return $this->menu;
 		$user = \Auth::getUser();
 		$menu = AdminOption::get('menu');
