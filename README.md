@@ -18,6 +18,7 @@ Features
   - Ultra configurable
   - Frontend uses Laravel's blade template engine to avoid complexity
   - Notifications
+  - Simple Login system
 
 Todo
 -----------
@@ -26,7 +27,6 @@ Todo
 * Make plugins more friendly to use
 * Relation fields
 * Localization
-* Login
 * Tests
 * Better assets
 * Improve existing plugins
