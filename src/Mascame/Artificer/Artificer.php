@@ -182,14 +182,10 @@ class Artificer extends Controller {
 	public function bootPlugins()
 	{
 		$plugins = AdminOption::get('plugins');
-
 		$all_plugins = array_merge($plugins['installed'], $plugins['uninstalled']);
 
 		foreach ($all_plugins as $pluginNamespace) {
-			$pluginName = explode('/', $pluginNamespace);
-			$pluginName = end($pluginName);
-
-			$plugin = Option::get('plugins/' . $pluginNamespace . '/' . $pluginName);
+			$plugin = Option::get('plugins/' . $pluginNamespace . '/' . $this->getPluginName($pluginNamespace));
 			$plugin = $plugin['plugin'];
 
 			if (in_array($pluginNamespace, $plugins['installed'])) {
@@ -201,6 +197,12 @@ class Artificer extends Controller {
 		}
 
 		return $this->plugins;
+	}
+
+	public function getPluginName($pluginNamespace) {
+		$pluginName = explode('/', $pluginNamespace);
+
+		return end($pluginName);
 	}
 
 	public function getPlugin($key)
