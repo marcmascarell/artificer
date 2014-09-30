@@ -1,6 +1,6 @@
 <?php
 
-//Auth::loginUsingId(1);
+Auth::loginUsingId(1);
 
 Route::pattern('new_id', '\d+');
 Route::pattern('old_id', '\d+');
@@ -42,8 +42,9 @@ Route::group(array(
 				Route::get('{slug}/{id}/edit', array('as' => 'admin.edit', 'uses' => 'Mascame\Artificer\ModelController@edit'));
 				Route::put('{slug}/{id}', array('as' => 'admin.update', 'uses' => 'Mascame\Artificer\ModelController@update'))->before('csrf');
 				Route::delete('{slug}/{id}', array('as' => 'admin.destroy', 'uses' => 'Mascame\Artificer\ModelController@destroy'))->before('csrf');
-				// Todo: check if this is secure...
-				Route::post('{slug}/{id}/upload', array('as' => 'admin.upload', 'uses' => 'Mascame\Artificer\ModelController@plupload'));
+
+				Event::fire('artificer.routes.model');
+				Route::post('{slug}/{id}/upload', array('as' => 'admin.upload', 'uses' => 'Mascame\Artificer\Plugins\Plupload\PluploadController@plupload'));
 			});
 
 			//	Route::post('upload', array('as' => 'admin.upload', function()
