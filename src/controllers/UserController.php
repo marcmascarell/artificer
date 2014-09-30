@@ -54,6 +54,8 @@ class UserController extends Artificer {
 
 	public function showLogin()
 	{
+		if (Auth::check()) return Redirect::route('admin.home');
+
 		return View::make($this->getView('pages.login'));
 	}
 
