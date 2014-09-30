@@ -4,7 +4,7 @@ return array(
 
 	'classmap' => array(
 		'sort_id' => '\Mascame\Artificer\Plugins\Sortable\SortableField',
-		'image'   => '\Mascame\Artificer\Plugins\Plupload\PluploadField',
+//		'image'   => '\Mascame\Artificer\Plugins\Plupload\PluploadField',
 		'hasOne'  => '\Mascame\Artificer\Fields\Types\Relations\hasOne',
 		'hasMany' => '\Mascame\Artificer\Fields\Types\Relations\hasMany',
 	),

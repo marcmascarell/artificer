@@ -87,49 +87,6 @@ class Artificer extends Controller {
 		return $this->fields;
 	}
 
-	/**
-	 * @param $data
-	 * @return array
-	 */
-	public function handleFiles($data)
-	{
-		$new_data = array();
-
-		foreach ($this->getFields($data) as $field) {
-
-			if ($field->type == 'file' || $field->type == 'image') {
-
-				if (Input::hasFile($field->name)) {
-					$new_data[$field->name] = $this->uploadFile($field->name);
-				} else {
-					unset($data[$field->name]);
-				}
-			}
-		}
-
-		return array_merge($data, $new_data);
-	}
-
-	// This is used for simple upload (no plugins)
-	public function uploadFile($fieldname, $path = null)
-	{
-		if (!$path) {
-			$path = public_path() . '/uploads/';
-		}
-
-		$file = Input::file($fieldname);
-
-		if (!file_exists($path)) {
-			File::makeDirectory($path);
-		}
-
-		$name = time() . $file->getClientOriginalName();
-
-		$file->move($path, $name);
-
-		return $name;
-	}
-
 	public function getSort()
 	{
 		$sort = array();

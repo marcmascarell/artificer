@@ -8,7 +8,7 @@ class Image extends File {
 
 	public function boot()
 	{
-		$this->addWidget(new FocalPoint());
+//		$this->addWidget(new FocalPoint());
 	}
 
 	public function input()

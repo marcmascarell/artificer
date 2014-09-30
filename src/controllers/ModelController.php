@@ -6,8 +6,8 @@ use Input;
 use View;
 use Response;
 use Event;
-use App;
-use JildertMiedema\LaravelPlupload\Facades\Plupload;
+use File;
+use Str;
 
 class ModelController extends Artificer {
 
@@ -44,7 +44,7 @@ class ModelController extends Artificer {
 
 		$model = $this->modelObject->class;
 
-		$model::create($data);
+		$model::create(with($this->handleFiles($data)));
 
 		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
 	}
@@ -120,31 +120,6 @@ class ModelController extends Artificer {
 		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
 	}
 
-	public function plupload($modelName, $id)
-	{
-		$path = public_path() . '/uploads/';
-
-		$item = $this->model->findOrFail($id);
-
-		$response = Plupload::receive('file', function ($file) use ($path) {
-			$this->options['uploaded']['name'] = time() . $file->getClientOriginalName();
-
-			$file = $file->move($path, $this->options['uploaded']['name']);
-
-			$this->options['uploaded']['instance'] = $file;
-		});
-
-		$item->image = $this->options['uploaded']['name'];
-		$item->save();
-
-		return Response::json(array_merge($response,
-			array(
-				'filename'      => $this->options['uploaded']['name'],
-				'file_location' => $path . $this->options['uploaded']['name']
-			)
-		));
-	}
-
 	/**
 	 * Remove the specified resource from storage.
 	 *
@@ -159,6 +134,7 @@ class ModelController extends Artificer {
 				"id"    => $id
 			)
 		);
+
 		Event::fire('artificer.before.destroy', $event_info);
 
 		if ($this->model->destroy($id)) {
@@ -171,5 +147,53 @@ class ModelController extends Artificer {
 		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
 	}
 
+	/**
+	 * @param $data
+	 * @return array
+	 */
+	protected function handleFiles($data)
+	{
+		$new_data = array();
+
+		foreach ($this->getFields($data) as $field) {
+
+			if ($field->type == 'file' || $field->type == 'image') {
+
+				if (Input::hasFile($field->name)) {
+					$new_data[$field->name] = $this->uploadFile($field->name);
+				} else {
+					unset($data[$field->name]);
+				}
+			}
+		}
+
+		return array_merge($data, $new_data);
+	}
+
+	/**
+	 * This is used for simple upload (no plugins)
+	 *
+	 * @param $fieldname
+	 * @param null $path
+	 * @return string
+	 */
+	protected function uploadFile($fieldname, $path = null)
+	{
+		if (!$path) {
+			$path = public_path() . '/uploads/';
+		}
+
+		$file = Input::file($fieldname);
+
+		if (!file_exists($path)) {
+			File::makeDirectory($path);
+		}
+
+		$name = uniqid() . '-' . Str::slug($file->getClientOriginalName());
+
+		$file->move($path, $name);
+
+		return $name;
+	}
 
 }
