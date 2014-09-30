@@ -19,7 +19,7 @@ return array(
 			'accept',
 			'active',
 			'activated',
-			'published',
+//			'published',
 		),
 
 		'password'     => array(
@@ -46,7 +46,7 @@ return array(
 		),
 
 		'boolean'      => array(
-			'published'
+//			'published'
 		),
 
 		'email'        => array(),
@@ -74,6 +74,7 @@ return array(
 			'user_id',
 			'fake_id'
 		),
+		'published' => array(),
 
 		'hasMany'      => array(),
 
