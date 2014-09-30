@@ -60,7 +60,8 @@ class ModelController extends Artificer {
 						'name' => $field->name,
 						'foreign' => $field->getRelationForeignKey(),
 						'related_model' => $field->getRelatedModel(),
-						'model' => ''
+						'model' => $this->modelObject->class,
+						'id' => '' // necesitamos actualizar esto para poder recuperarlo
 					);
 				}
 
@@ -72,6 +73,9 @@ class ModelController extends Artificer {
 
 		$item = $model::create(with($this->handleFiles($data)));
 
+		/**
+		 * Pasamos a las relaciones la id del elemento creado para que puedan actualizarse
+		 */
 		if (count($relations) > 1) {
 			foreach ($relations as $relation) {
 				\Session::set('artificer.'.$relation['related_model'].'.has.belongsTo',
@@ -81,8 +85,11 @@ class ModelController extends Artificer {
 			}
 		}
 
+		/*
+		 * Actualizamos el model
+		 */
 		if (\Session::has('artificer.'.$this->modelObject->name.'.has.belongsTo')) {
-			$data = \Session::has('artificer.'.$this->modelObject->name.'.has.belongsTo');
+			$data = \Session::get('artificer.'.$this->modelObject->name.'.has.belongsTo');
 
 			$item->$data['foreign'] = $data['id'];
 			$item->save();
