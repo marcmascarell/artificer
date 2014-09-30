@@ -5,16 +5,10 @@ use Form;
 use HTML;
 
 
-class Link extends Field {
+class Link extends Text {
 
-
-	public function input()
+	public function show()
 	{
-		return Form::text($this->name, $this->value, $this->getAttributes());
-	}
-
-	public function show($value = null)
-	{
-		return HTML::link($this->getValue($value));
+		return HTML::link($this->value);
 	}
 }

@@ -5,13 +5,13 @@ use Form;
 
 class Checkbox extends Field {
 
-	public function input($value = null)
+	public function input()
 	{
 		?>
 		<div class="checkbox">
 			<?php
 			print Form::hidden($this->name, 0);
-			print Form::checkbox($this->name, 1, $value, $this->getAttributes());
+			print Form::checkbox($this->name, 1, $this->value, $this->getAttributes());
 			?>
 		</div>
 		<?php

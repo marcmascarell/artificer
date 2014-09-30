@@ -15,11 +15,13 @@ return array(
 			'id'
 		),
 
+		'published' => array(),
+
 		'checkbox'     => array(
 			'accept',
 			'active',
+			'boolean',
 			'activated',
-//			'published',
 		),
 
 		'password'     => array(
@@ -43,10 +45,6 @@ return array(
 
 		'option'       => array(
 			'selection',
-		),
-
-		'boolean'      => array(
-//			'published'
 		),
 
 		'email'        => array(),
@@ -74,7 +72,6 @@ return array(
 			'user_id',
 			'fake_id'
 		),
-		'published' => array(),
 
 		'hasMany'      => array(),
 
