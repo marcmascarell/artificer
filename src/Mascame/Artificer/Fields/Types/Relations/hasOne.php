@@ -48,7 +48,7 @@ class hasOne extends Relation {
 			$id = $this->value;
 		}
 
-		print Form::select($this->name, $select, $id, $this->getAttributes());
+		print Form::select($this->name, array('0' => '(none)') + $select, $id, $this->getAttributes());
 
 		$new_url = \URL::route('admin.create', array('slug' => $model->models[$modelName]['route']));
 		$edit_url = \URL::route('admin.edit', array('slug' => $model->models[$modelName]['route'], 'id' => $id));
@@ -72,6 +72,9 @@ class hasOne extends Relation {
 	public function show($value = null)
 	{
 		$value = ($value) ?: $this->value;
+
+		if (!$value) return "<em>(none)</em>";
+
         $options = $this->fieldOptions;
         $show = $options['relationship']['show'];
 
@@ -90,8 +93,8 @@ class hasOne extends Relation {
             }
         }
 
-		if (!$value || $value->count() > 1) {
-			throw new \Exception('The value is null or have more than 1 row relationed while marked as hasOne');
+		if (!$value) {
+			throw new \Exception('The (hasOne) value is null');
 		}
 
 		$show = $this->fieldOptions['relationship']['show'];

@@ -33,10 +33,11 @@ abstract class Field implements FieldInterface {
 		$this->name = $name;
 		$this->value = $value;
 		$this->modelName = $modelName;
-		$this->relation = $relation;
 
 		$this->getOptions();
 		$this->getFieldOptions();
+
+		$this->relation = ($relation || $this->getRelationType()) ? true : false;
 
 		$this->addAttributes(array('class' => 'form-control'));
 
@@ -362,7 +363,21 @@ abstract class Field implements FieldInterface {
 
 	public function getRelationMethod()
 	{
-		return $this->fieldOptions['relationship']['method'];
+		return isset($this->fieldOptions['relationship']['method']) ? $this->fieldOptions['relationship']['method'] : false;
 	}
 
+	public function getRelatedModel()
+	{
+		return isset($this->fieldOptions['relationship']['model']) ? $this->fieldOptions['relationship']['model'] : false;
+	}
+
+	public function getRelationType()
+	{
+		return isset($this->fieldOptions['relationship']['type']) ? $this->fieldOptions['relationship']['type'] : false;
+	}
+
+	public function getRelationForeignKey()
+	{
+		return isset($this->fieldOptions['relationship']['foreign']) ? $this->fieldOptions['relationship']['foreign'] : false;
+	}
 }

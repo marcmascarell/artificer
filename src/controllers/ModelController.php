@@ -42,9 +42,51 @@ class ModelController extends Artificer {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 
+		$this->handleData($data);
+
+		$relations = array();
+
+		foreach($this->fields as $field) {
+			if ($field->isRelation()) {
+
+				if (isset($data[$field->name])) {
+
+				}
+
+				if ($field->getRelationType() == 'belongsTo') {
+//					dd('here ' . 'artificer.'.$field->getRelationedModel().'.has.belongsTo');
+
+					$relation[$field->name] = array(
+						'name' => $field->name,
+						'foreign' => $field->getRelationForeignKey(),
+						'related_model' => $field->getRelatedModel(),
+						'model' => ''
+					);
+				}
+
+				print $field->name . ' ' . $field->getRelationType();
+			}
+		}
+
 		$model = $this->modelObject->class;
 
-		$model::create(with($this->handleFiles($data)));
+		$item = $model::create(with($this->handleFiles($data)));
+
+		if (count($relations) > 1) {
+			foreach ($relations as $relation) {
+				\Session::set('artificer.'.$relation['related_model'].'.has.belongsTo',
+					array('foreign' => $relation['foreign'],
+						  'id' => $item->id)
+				);
+			}
+		}
+
+		if (\Session::has('artificer.'.$this->modelObject->name.'.has.belongsTo')) {
+			$data = \Session::has('artificer.'.$this->modelObject->name.'.has.belongsTo');
+
+			$item->$data['foreign'] = $data['id'];
+			$item->save();
+		}
 
 		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
 	}
@@ -109,11 +151,10 @@ class ModelController extends Artificer {
 		$item = $this->model->findOrFail($id);
 
 		$data = Input::all();
+
 		$validator = Validator::make($data, $this->getRules());
 
-		if ($validator->fails()) {
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+		if ($validator->fails()) return Redirect::back()->withErrors($validator)->withInput();
 
 		$item->update(with($this->handleFiles($data)));
 

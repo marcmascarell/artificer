@@ -63,7 +63,13 @@
 				    @endif
 				@endforeach
 
-				{{ Form::submit('Send', array('class' => "btn btn-default")) }}
+                <div class="text-right">
+                    <button class="btn btn-primary" name="_save" type="submit" value="Desar"><i class="fa fa-save"></i> Desar</button>
+                    {{--{{ Form::submit('Desar', array('class' => "btn btn-primary", "name" => "_save")) }}--}}
+                    {{--{{ Form::submit('Desar i afegir-ne un de nou', array('class' => "btn btn-default", "name" => "_addanother")) }}--}}
+                    {{--{{ Form::submit('Desar i continuar editant', array('class' => "btn btn-default", "name" => "_continue")) }}--}}
+                </div>
+
 			{{ Form::close() }}
 		</div>
 	</div>

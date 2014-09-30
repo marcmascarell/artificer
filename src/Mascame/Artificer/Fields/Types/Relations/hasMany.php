@@ -51,11 +51,14 @@ class hasMany extends Relation {
 			}
 
 		?>
-		<a href="<?= \URL::route('admin.create', array('slug' => $modelObject->models[$modelName]['route'])) ?>?<?= http_build_query(array($foreign => $id)) ?>"
-		   target="_blank">
-			<i class="fa fa-plus"></i>
-			New
-		</a>
+		<div class="text-right">
+			<div class="btn-group">
+
+				<a href="<?= \URL::route('admin.create', array('slug' => $modelObject->models[$modelName]['route'])) ?>?<?= http_build_query(array($foreign => $id)) ?>" target="_blank" type="button" class="btn btn-default">
+					<i class="glyphicon glyphicon-plus"></i>
+				</a>
+			</div>
+		</div>
 <?php
 
 //		return HTML::ul($select, $this->getAttributes());
@@ -63,16 +66,16 @@ class hasMany extends Relation {
 
 	public function show($values = null)
 	{
-		if (!$values->isEmpty()) {
+		if (isset($values) && !$values->isEmpty()) {
 
 			$show = $this->fieldOptions['relationship']['show'];
 
 			foreach ($values as $value) {
 				print $value->$show . "<br>";
 			}
+		} else {
+			print "<em>(none)</em>";
 		}
-
-		return null;
 	}
 
 }

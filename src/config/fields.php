@@ -7,6 +7,7 @@ return array(
 //		'image'   => '\Mascame\Artificer\Plugins\Plupload\PluploadField',
 		'hasOne'  => '\Mascame\Artificer\Fields\Types\Relations\hasOne',
 		'hasMany' => '\Mascame\Artificer\Fields\Types\Relations\hasMany',
+		'belongsTo' => '\Mascame\Artificer\Fields\Types\Relations\belongsTo',
 	),
 
 	'types'    => array(

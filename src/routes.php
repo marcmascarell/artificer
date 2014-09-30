@@ -37,7 +37,7 @@ Route::group(array(
 			Route::group(array('prefix' => 'model'), function () {
 				Route::get('{slug}', array('as' => 'admin.all', 'uses' => 'Mascame\Artificer\ModelController@all'));
 				Route::get('{slug}/create', array('as' => 'admin.create', 'uses' => 'Mascame\Artificer\ModelController@create'));
-				Route::post('{slug}/store', array('as' => 'admin.store', 'uses' => 'Mascame\Artificer\ModelController@store'))->before('csrf');
+				Route::post('{slug}/store', array('as' => 'admin.store', 'uses' => 'Mascame\Artificer\ModelController@store'));
 				Route::get('{slug}/{id}', array('as' => 'admin.show', 'uses' => 'Mascame\Artificer\ModelController@show'));
 				Route::get('{slug}/{id}/edit', array('as' => 'admin.edit', 'uses' => 'Mascame\Artificer\ModelController@edit'));
 				Route::put('{slug}/{id}', array('as' => 'admin.update', 'uses' => 'Mascame\Artificer\ModelController@update'))->before('csrf');

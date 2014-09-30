@@ -5,9 +5,8 @@
 
     <div class="row">
         <div class="col-md-12 text-right">
-            <a href="{{ route('admin.edit', array($model['keyname'], $fields['id']->value)) }}" class="btn btn-primary">
-                <i class="fa fa-plus"></i> Edit
-            </a>
+
+
         </div>
     </div>
 
@@ -37,6 +36,13 @@
                 @endforeach
                 </li>
             </ul>
+
+            <div class="text-right">
+                <a href="{{ route('admin.edit', array($model['route'], $fields['id']->value)) }}" class="btn btn-primary">
+                    <i class="glyphicon glyphicon-edit"></i> Edit
+                </a>
+            </div>
+
         </div>
     </div>
 
