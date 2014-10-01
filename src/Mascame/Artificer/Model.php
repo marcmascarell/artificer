@@ -99,13 +99,9 @@ class Model {
 			$this->name = self::getCurrent();
 			$this->class = $this->getClass($this->name);
 			$this->columns = $this->getColumns($this->getTable());
-
-			// todo: aviodable?
-//			$this->keyname = $this->getRouteName();
 			$this->model = $this->getInstance();
 			$this->table = $this->model->getTable();
 			$this->fillable = $this->model->getFillable();
-
 			$this->options = $this->getOptions();
 
 			$this->share();
@@ -154,12 +150,12 @@ class Model {
 					ModelOption::set('current', $modelName);
 				}
 
-				$models[$modelName]['name'] = $modelName;
-				$models[$modelName]['route'] = strtolower($modelName);
-				$models[$modelName]['options'] = $this->getOptions($modelName);
-				$models[$modelName]['hidden'] = $this->isHidden($modelName);
-
-//				$models[$modelName]['instance'] = $this->instantiate($modelName);
+                $models[$modelName] = array(
+                    'name' => $modelName,
+                    'route' => strtolower($modelName),
+                    'options' => $this->getOptions($modelName),
+                    'hidden' => $this->isHidden($modelName)
+                );
 			}
 		}
 
@@ -170,7 +166,7 @@ class Model {
 	{
 		$modelClass = $this->getClass($modelName);
 
-		return new $modelClass;
+		return $this->models[$modelName]['instance'] = new $modelClass;
 	}
 
 	public function hasInstance($modelName)
@@ -185,7 +181,6 @@ class Model {
 	public function getInstance($modelName = null)
 	{
 		($modelName) ?: $modelName = $this->name;
-
 
 		if ($this->hasInstance($modelName)) {
 			return $this->models[$modelName]['instance'];
