@@ -30,9 +30,7 @@ class PaginationController extends Artificer {
 	{
 		$sort = $this->getSort();
 
-		$this->handleData($this->model->orderBy($sort['column'], $sort['direction'])->paginate(Pagination::$pagination));
-
-		View::share('pagination', Pagination::$pagination);
+		$this->handleData($this->model->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->paginate(Pagination::$pagination));
 
 		return View::make($this->getView('all'))
 			->with('items', $this->data)

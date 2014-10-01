@@ -5,26 +5,26 @@ use Mascame\Artificer\Model;
 
 class ModelOption extends Option {
 
-	public static $key = 'models';
+	public static $key = 'models/';
 
 	public static function get($key = '', $model = null)
 	{
-		return Option::get(self::$key . '/' . self::getModel($model) . '.' . $key);
+		return Option::get(self::$key . self::getModel($model) . '.' . $key);
 	}
 
 	public static function all($model = null)
 	{
-		return Option::get(self::$key . '/' . self::getModel($model));
+		return Option::get(self::$key . self::getModel($model));
 	}
 
 	public static function has($key = '', $model = null)
 	{
-		return Option::has(self::$key . '/' . self::getModel($model) . '.' . $key);
+		return Option::has(self::$key . self::getModel($model) . '.' . $key);
 	}
 
 	public static function model($model = null)
 	{
-		return Option::get(self::$key . '/' . self::getModel($model));
+		return Option::get(self::$key . self::getModel($model));
 	}
 
 	public static function getModel($model)
