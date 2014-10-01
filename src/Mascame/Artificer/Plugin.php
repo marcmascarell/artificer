@@ -12,28 +12,31 @@ abstract class Plugin {
 	public $author;
 	public $config;
 	public $configKey;
-	public $path;
 	public $slug;
-	public $installed = false;
+//	public $installed = false;
 	public $options = array();
 
 	public function __construct($namespace)
 	{
 		$this->namespace = $namespace;
-		$this->name = $this->getName();
-		$this->configKey = $this->namespace . '/' . $this->name;
+		$this->configKey = $this->namespace . '/' . $this->getPluginName();
 		$this->config = $this->getOptions();
 		$this->slug = str_replace('/', '__slash__', $this->namespace);
 
 		$this->meta();
 	}
 
-	public function getName() {
+	public function getPluginName() {
 		$exploded_namespace = explode('/', $this->namespace);
 		end($exploded_namespace);
 
 		return end($exploded_namespace);
 	}
+
+	public function getPluginShowName() {
+		return $this->name;
+	}
+
 
 	public function boot()
 	{
