@@ -10,17 +10,25 @@ use App;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\Option;
 
+// Todo: Make some models forbidden for some users
+
 class Artificer extends Controller {
 
 	public $model = null;
 	public $modelObject = null;
+
 	public $fields = null;
 	public $data;
 	public $options;
+
 	public $plugins = null;
-	public $theme;
+
 	public static $routes;
+
+	public $theme;
+	public $standalone;
 	public $menu = array();
+	protected $master_layout = null;
 
 	/**
 	 * @param Model $model
@@ -36,10 +44,19 @@ class Artificer extends Controller {
 			$this->options = AdminOption::all();
 			$this->plugins = $this->bootPlugins();
 
+			if (\Request::ajax() || Input::has('_standalone')) {
+				$this->master_layout = 'standalone';
+				$this->standalone = true;
+			} else {
+				$this->master_layout = 'base';
+			}
+
 			View::share('main_title', AdminOption::get('title'));
 			View::share('menu', $this->getMenu());
 			View::share('theme', $this->theme);
+			View::share('layout', $this->theme . '.' . $this->master_layout);
 			View::share('fields', array());
+			View::share('standalone', $this->standalone);
 		}
 	}
 

@@ -93,6 +93,7 @@ class Model {
 				'admin.sort',
 				'admin.upload',
 				'admin.pagination',
+				'admin.field',
 			))
 		) {
 			$this->name = self::getCurrent();

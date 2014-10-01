@@ -117,13 +117,17 @@ $(function() {
             $(".left-side, html, body").css("min-height", height + "px");
         }
     }
-    //Fire upon load
-    _fix();
-    //Fire when wrapper is resized
-    $(".wrapper").resize(function() {
+
+    if (!$('body').hasClass('standalone')) {
+        //Fire upon load
         _fix();
-        fix_sidebar();
-    });
+        //Fire when wrapper is resized
+        $(".wrapper").resize(function() {
+            _fix();
+            fix_sidebar();
+        });
+    }
+
 
     //Fix the fixed layout sidebar scroll bug
     fix_sidebar();

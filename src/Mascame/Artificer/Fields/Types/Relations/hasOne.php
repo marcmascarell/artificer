@@ -2,6 +2,7 @@
 
 use Form;
 use Input;
+use URL;
 
 class hasOne extends Relation {
 
@@ -53,10 +54,10 @@ class hasOne extends Relation {
 		$new_url = \URL::route('admin.create', array('slug' => $model->models[$modelName]['route']));
 		$edit_url = \URL::route('admin.edit', array('slug' => $model->models[$modelName]['route'], 'id' => $id));
 		?>
+
 		<br>
 		<div class="text-right">
 			<div class="btn-group">
-
 				<a href="<?=$edit_url?>" target="_blank" type="button" class="btn btn-default">
 					<i class="glyphicon glyphicon-edit"></i>
 				</a>

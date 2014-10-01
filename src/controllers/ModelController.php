@@ -8,6 +8,7 @@ use Response;
 use Event;
 use File;
 use Str;
+use Request;
 
 class ModelController extends Artificer {
 
@@ -36,38 +37,36 @@ class ModelController extends Artificer {
 	public function store()
 	{
 		$data = Input::except('id');
-		$validator = Validator::make($data, $this->getRules());
 
-		if ($validator->fails()) {
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+		$validator = $this->validator($data);
+		if ($validator->fails()) return $this->redirect($validator, 'admin.create');
 
 		$this->handleData($data);
 
-		$relations = array();
-
-		foreach($this->fields as $field) {
-			if ($field->isRelation()) {
-
-				if (isset($data[$field->name])) {
-
-				}
-
-				if ($field->getRelationType() == 'belongsTo') {
-//					dd('here ' . 'artificer.'.$field->getRelationedModel().'.has.belongsTo');
-
-					$relation[$field->name] = array(
-						'name' => $field->name,
-						'foreign' => $field->getRelationForeignKey(),
-						'related_model' => $field->getRelatedModel(),
-						'model' => $this->modelObject->class,
-						'id' => '' // necesitamos actualizar esto para poder recuperarlo
-					);
-				}
-
-				print $field->name . ' ' . $field->getRelationType();
-			}
-		}
+//		$relations = array();
+//
+//		foreach($this->fields as $field) {
+//			if ($field->isRelation()) {
+//
+//				if (isset($data[$field->name])) {
+//
+//				}
+//
+//				if ($field->getRelationType() == 'belongsTo') {
+////					dd('here ' . 'artificer.'.$field->getRelationedModel().'.has.belongsTo');
+//
+//					$relation[$field->name] = array(
+//						'name' => $field->name,
+//						'foreign' => $field->getRelationForeignKey(),
+//						'related_model' => $field->getRelatedModel(),
+//						'model' => $this->modelObject->class,
+//						'id' => '' // necesitamos actualizar esto para poder recuperarlo
+//					);
+//				}
+//
+//				print $field->name . ' ' . $field->getRelationType();
+//			}
+//		}
 
 		$model = $this->modelObject->class;
 
@@ -76,23 +75,27 @@ class ModelController extends Artificer {
 		/**
 		 * Pasamos a las relaciones la id del elemento creado para que puedan actualizarse
 		 */
-		if (count($relations) > 1) {
-			foreach ($relations as $relation) {
-				\Session::set('artificer.'.$relation['related_model'].'.has.belongsTo',
-					array('foreign' => $relation['foreign'],
-						  'id' => $item->id)
-				);
-			}
-		}
+//		if (count($relations) > 1) {
+//			foreach ($relations as $relation) {
+//				\Session::set('artificer.'.$relation['related_model'].'.has.belongsTo',
+//					array('foreign' => $relation['foreign'],
+//						  'id' => $item->id)
+//				);
+//			}
+//		}
+//
+//		/*
+//		 * Actualizamos el model
+//		 */
+//		if (\Session::has('artificer.'.$this->modelObject->name.'.has.belongsTo')) {
+//			$data = \Session::get('artificer.'.$this->modelObject->name.'.has.belongsTo');
+//
+//			$item->$data['foreign'] = $data['id'];
+//			$item->save();
+//		}
 
-		/*
-		 * Actualizamos el model
-		 */
-		if (\Session::has('artificer.'.$this->modelObject->name.'.has.belongsTo')) {
-			$data = \Session::get('artificer.'.$this->modelObject->name.'.has.belongsTo');
-
-			$item->$data['foreign'] = $data['id'];
-			$item->save();
+		if (Request::ajax()) {
+			return Response::json($item->toArray());
 		}
 
 		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
@@ -159,13 +162,30 @@ class ModelController extends Artificer {
 
 		$data = Input::all();
 
-		$validator = Validator::make($data, $this->getRules());
-
-		if ($validator->fails()) return Redirect::back()->withErrors($validator)->withInput();
+		$validator = $this->validator($data);
+		if ($validator->fails()) return $this->redirect($validator, 'admin.edit');
 
 		$item->update(with($this->handleFiles($data)));
 
+		if (Request::ajax()) {
+			return Response::json($item->toArray());
+		}
+
 		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
+	}
+
+	protected function redirect($validator, $route) {
+		if (Input::has('_standalone')) {
+			return Redirect::route($route, array('slug' => Input::get('_standalone')))
+				->withErrors($validator)
+				->withInput();
+		}
+
+		return Redirect::back()->withErrors($validator)->withInput();
+	}
+
+	protected function validator($data) {
+		return Validator::make($data, $this->getRules());
 	}
 
 	/**
@@ -192,7 +212,9 @@ class ModelController extends Artificer {
 			Notification::danger('<b>Failed!</b> The record could not be deleted!');
 		}
 
-		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
+		return Redirect::back();
+
+//		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
 	}
 
 	/**
@@ -242,6 +264,13 @@ class ModelController extends Artificer {
 		$file->move($path, $name);
 
 		return $name;
+	}
+
+	public function getRelatedFieldOutput($modelName, $id, $field)
+	{
+		$this->handleData($this->model->with($this->modelObject->getRelations())->findOrFail($id));
+
+		return $this->fields[$field]->output();
 	}
 
 }

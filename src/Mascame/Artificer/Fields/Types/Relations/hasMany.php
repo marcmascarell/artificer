@@ -1,6 +1,9 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
 use HTML;
+use Request;
+
+// Todo: attach somehow the new created items to the a new item (which have not yet been created)
 
 class hasMany extends Relation {
 
@@ -8,66 +11,83 @@ class hasMany extends Relation {
 	{
 		//$this->addWidget(new Chosen());
 		$this->addAttributes(array('class' => 'chosen'));
+		$this->modelObject = \App::make('artificer-model');
 	}
 
 	public function input()
 	{
-		$fields = array_get(\View::getShared(), 'fields');
-		$id = $fields['id']->value;
-
+		$this->fields = array_get(\View::getShared(), 'fields');
+		$id = $this->fields['id']->value;
 		$options = $this->fieldOptions;
-		$modelObject = \App::make('artificer-model');
-		$modelName = $options['relationship']['model'];
-		$foreign = $this->fieldOptions['relationship']['foreign'];
-		$model = '\\' . $modelName;
+		$this->relation = $options['relationship'];
+		$modelName = $this->relation['model'];
+		$model = $this->modelObject->models[$modelName];
+		$model['class'] = $this->modelObject->getClass($modelName);
+		$this->model = $model;
 
-		$data = $model::where($foreign, '=', $id)->get(array('id', $options['relationship']['show']))->toArray();
+		$data = $model['class']::where($this->relation['foreign'], '=', $id)->get(array('id', $this->relation['show']))->toArray();
 
-		$select = array();
+		$this->showItems($data);
 
+		$this->createURL = $this->createURL($model['route']) . "?" . http_build_query(array($this->relation['foreign'] => $id, '_standalone' => 'true'));
 
-			if (!empty($data)) {
-				?>
+		if (!Request::ajax()) {
+			$this->relationModal();
+		}
+	}
+
+	public function showItems($data)
+	{
+		if (!Request::ajax()) { ?>
+			<div data-refresh-field="<?= \URL::route('admin.field',
+				array('slug'  => $this->modelObject->getRouteName(),
+					  'id'    => $this->fields['id']->value,
+					  'field' => $this->name)) ?>">
+		<?php }
+
+			if (!empty($data)) { ?>
 				<ul class="list-group">
-					<?php foreach ($data as $d) {
-						$select[$d['id']] = $d[$options['relationship']['show']];
-
-						$edit_url = \URL::route('admin.edit', array('slug' => $modelObject->models[$modelName]['route'], 'id' => $d['id']));
-						?>
-						<li class="list-group-item">
-							<?= $d[$options['relationship']['show']] ?>
-							&nbsp;
-							<a href="<?= $edit_url ?>" target="_blank">
-								<i class="fa fa-pencil"></i>
-								Edit
-							</a>
-						</li>
-						<?php
+					<?php foreach ($data as $item) {
+						$this->addItem($item);
 					} ?>
 				</ul>
-				<?php
-			} else {
-				?><div class="well well-sm">No items yet</div><?php
+			<?php } else { ?>
+				<div class="well well-sm">No items yet</div><?php
 			}
 
-		?>
-		<div class="text-right">
-			<div class="btn-group">
-
-				<a href="<?= \URL::route('admin.create', array('slug' => $modelObject->models[$modelName]['route'])) ?>?<?= http_build_query(array($foreign => $id)) ?>" target="_blank" type="button" class="btn btn-default">
-					<i class="glyphicon glyphicon-plus"></i>
-				</a>
+		if (!Request::ajax()) { ?>
 			</div>
-		</div>
-<?php
+		<?php }
+	}
 
-//		return HTML::ul($select, $this->getAttributes());
+	public function addItem($item) {
+		$edit_url = $this->editURL($this->model['route'], $item['id']).'?'. http_build_query(array('_standalone' => 'true'));
+		?>
+		<li class="list-group-item">
+			<?= $item[$this->relation['show']] ?> &nbsp;
+
+			<span class="right">
+				<span class="btn-group">
+					<button class="btn btn-default" data-toggle="modal"
+							data-url="<?=$edit_url?>"
+							data-target="#form-modal-<?= $this->model['route'] ?>">
+						<i class="glyphicon glyphicon-edit"></i>
+					</button>
+					<a data-method="delete" data-token="<?= csrf_token() ?>"
+					   href="<?= route('admin.destroy', array('slug' => $this->model['route'], 'id' => $item['id']), $absolute = true) ?>"
+					   type="button" class="btn btn-default">
+						<i class="glyphicon glyphicon-remove"></i>
+					</a>
+				</span>
+			</span>
+
+		</li>
+		<?php
 	}
 
 	public function show($values = null)
 	{
 		if (isset($values) && !$values->isEmpty()) {
-
 			$show = $this->fieldOptions['relationship']['show'];
 
 			foreach ($values as $value) {

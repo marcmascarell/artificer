@@ -1,4 +1,4 @@
-@extends($theme . '.base')
+@extends($layout)
 
 @section('content-header')
 	<h1>
@@ -21,7 +21,6 @@
 @overwrite
 
 @section('content')
-
 	<div class="row">
 		<div class="col-md-offset-2 col-md-8">
 			<!--array('Mascame\Artificer\Controller@update', array('slug' => $model['route'], 'id' => $items->id))-->

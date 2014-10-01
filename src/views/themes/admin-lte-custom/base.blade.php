@@ -18,21 +18,24 @@
     </head>
     <body class="skin-blue fixed">
         <!-- header logo: style can be found in header.less -->
-        <header class="header">
-			@include($theme . '.partials.header')
-        </header>
+        @section('header')
+            <header class="header">
+                @include($theme . '.partials.header')
+            </header>
+        @show
 
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Left side column. contains the logo and sidebar -->
+
+            @section('sidebar')
             <aside class="left-side sidebar-offcanvas">
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
-                    @section('sidebar')
-                        @include($theme . '.partials.sidebar')
-                    @show
+                    @include($theme . '.partials.sidebar')
                 </section>
                 <!-- /.sidebar -->
             </aside>
+            @show
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
