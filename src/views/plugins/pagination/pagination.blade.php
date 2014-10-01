@@ -2,9 +2,14 @@
 $presenter = new Illuminate\Pagination\BootstrapPresenter($paginator);
 ?>
 
-<?php if ($paginator->getLastPage() > 1): ?>
+<?php
+ if ($paginator->getLastPage() > 1): ?>
     <ul class="pagination">
-        <?php echo $presenter->render(); ?>
+        <?php
+
+        echo $presenter->render();
+
+        ?>
         <li>
             <style>
                 .pagination-modifier {
@@ -18,8 +23,8 @@ $presenter = new Illuminate\Pagination\BootstrapPresenter($paginator);
                 }
             </style>
 
-            {{ Form::open(array('route' => array('admin.pagination', $model['keyname']), 'class' => "pagination-modifier form-inline")) }}
-                {{ Form::text('pagination', null, array('placeholder' => $pagination, 'class' => 'form-control')) }}
+            {{ Form::open(array('route' => array('admin.pagination', $model['route']), 'class' => "pagination-modifier form-inline")) }}
+                {{ Form::text('pagination', null, array('placeholder' => $artificer_pagination, 'class' => 'form-control')) }}
                 {{ Form::submit('Show', array('class' => 'btn')); }}
             {{ Form::close() }}
         </li>

@@ -15,6 +15,7 @@ abstract class Plugin {
 	public $slug;
 //	public $installed = false;
 	public $options = array();
+	public $routes = array();
 
 	public function __construct($namespace)
 	{

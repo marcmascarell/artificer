@@ -1,4 +1,4 @@
-@extends($theme . '.base')
+@extends($layout)
 
 @section('content')
 
@@ -16,8 +16,8 @@
                             </h3>
 
                             <div class="box-tools pull-right">
-                                @if (isset($plugin->options) && !empty($plugin->options))
-                                    @foreach ($plugin->options as $key => $value)
+                                @if (isset($plugin->routes) && !empty($plugin->routes))
+                                    @foreach ($plugin->routes as $key => $value)
                                     <a href="{{ $value['route'] }}" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
                                         {{ $value['title'] }}
                                     </a>
@@ -80,8 +80,8 @@
                             </h3>
 
                             <div class="box-tools pull-right">
-                                @if (isset($plugin->options) && !empty($plugin->options))
-                                @foreach ($plugin->options as $key => $value)
+                                @if (isset($plugin->routes) && !empty($plugin->routes))
+                                @foreach ($plugin->routes as $key => $value)
                                 <a href="{{ $value['route'] }}" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
                                     {{ $value['title'] }}
                                 </a>

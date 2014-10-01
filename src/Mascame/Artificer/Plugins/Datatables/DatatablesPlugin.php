@@ -16,13 +16,6 @@ class DatatablesPlugin extends Plugin {
 		$this->name = 'Datatables';
 		$this->description = 'Datatables for models';
 		$this->author = 'Marc Mascarell';
-		$this->options = array(
-//			'configuration' => array(
-//				'title' => 'Config',
-//				'icon'  => '',
-//				'route' => route('artificer.plugin.datatables.configuration', array('slug' => $this->slug))
-//			)
-		);
 	}
 
 	public function boot()

@@ -1,4 +1,4 @@
-@extends($theme . '.base')
+@extends($layout)
 
 @section('content-header')
 	<h1>

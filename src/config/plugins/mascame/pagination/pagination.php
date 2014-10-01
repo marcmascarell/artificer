@@ -8,6 +8,6 @@ return array(
 		Route::post('model/{slug}/pagination', array('as' => 'admin.pagination', 'uses' => '\Mascame\Artificer\Plugins\Pagination\PaginationController@paginate'));
 	},
 
-	'view'     => 'admin::plugins.pagination.pagination',
+	'view'     => 'artificer::plugins.pagination.pagination',
 	'per_page' => 15
 );

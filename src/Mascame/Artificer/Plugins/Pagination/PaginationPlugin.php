@@ -1,19 +1,16 @@
 <?php namespace Mascame\Artificer\Plugins\Pagination;
 
-use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Model;
 use Mascame\Artificer\Plugin;
-use Config;
-use View;
 use Event;
 use Input;
 use Paginator;
 use Session;
-use Mascame\Artificer\Options\Option;
 
 class PaginationPlugin extends Plugin {
 
 	public static $pagination;
+	public static $per_page_key;
 
 	public function meta()
 	{
@@ -21,12 +18,17 @@ class PaginationPlugin extends Plugin {
 		$this->name = 'Pagination';
 		$this->description = 'Provides Laravel pagination to models';
 		$this->author = 'Marc Mascarell';
-		$this->options = array();
+		$this->routes = array();
 	}
 
 	public function boot()
 	{
-		self::$pagination = $this->getPagination(Model::getCurrent());
+		self::$per_page_key = $this->configKey .'.per_page';
+		self::$pagination = $this->getPagination();
+		Paginator::setViewName($this->getOption('view'));
+
+		\View::share('artificer_pagination', self::$pagination);
+
 		$this->addHooks();
 	}
 
@@ -40,17 +42,14 @@ class PaginationPlugin extends Plugin {
 	/**
 	 * @return mixed
 	 */
-	public function getPagination($config)
+	public function getPagination()
 	{
-		$key = $config . '.' . Option::$config_path . 'pagination.per_page';
-		Paginator::setViewName(Config::get($this->configKey . '/pagination.view'));
-
-		if (Session::has($key)) {
-			return Session::get($key);
+		if (Session::has(self::$per_page_key)) {
+			return Session::get(self::$per_page_key);
 		}
 
-		$items_per_page = Config::get($this->configKey . '/pagination.per_page');
-		Session::set($key, $items_per_page);
+		$items_per_page = $this->getOption('per_page');
+		Session::set(self::$per_page_key, $items_per_page);
 
 		return $items_per_page;
 	}
@@ -61,9 +60,8 @@ class PaginationPlugin extends Plugin {
 	 */
 	public static function setPagination($number, $config = null)
 	{
-		$key = $config . '.' . Option::$config_path . 'pagination.per_page';
 		self::$pagination = $number;
-		Session::set($key, $number);
+		Session::set(self::$per_page_key, $number);
 	}
 
 }

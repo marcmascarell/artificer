@@ -1,5 +1,5 @@
 @extends($theme . '.base')
-ta
+
 @section('header')
 @overwrite
 
