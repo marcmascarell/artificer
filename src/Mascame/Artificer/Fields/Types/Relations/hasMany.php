@@ -2,6 +2,8 @@
 
 use HTML;
 use Request;
+use Route;
+use Session;
 
 // Todo: attach somehow the new created items to the a new item (which have not yet been created)
 
@@ -25,9 +27,21 @@ class hasMany extends Relation {
 		$model['class'] = $this->modelObject->getClass($modelName);
 		$this->model = $model;
 
-		$data = $model['class']::where($this->relation['foreign'], '=', $id)->get(array('id', $this->relation['show']))->toArray();
+        if ((Route::currentRouteName() == 'admin.create' || Route::currentRouteName() == 'admin.field')
+            && Session::has('_set_relation_on_create_'.$this->modelObject->name)) {
+            $relateds = Session::get('_set_relation_on_create_'.$this->modelObject->name);
 
-		$this->showItems($data);
+            $related_ids = array();
+            foreach ($relateds as $related) {
+                $related_ids[] = $related['id'];
+            }
+
+            $data = $relateds[0]['modelClass']::whereIn('id', $related_ids)->get()->toArray();
+        } else {
+            $data = $model['class']::where($this->relation['foreign'], '=', $id)->get(array('id', $this->relation['show']))->toArray();
+        }
+
+        $this->showItems($data);
 
 		$this->createURL = $this->createURL($model['route']) . "?" . http_build_query(array($this->relation['foreign'] => $id, '_standalone' => 'true'));
 
@@ -41,7 +55,7 @@ class hasMany extends Relation {
 		if (!Request::ajax()) { ?>
 			<div data-refresh-field="<?= \URL::route('admin.field',
 				array('slug'  => $this->modelObject->getRouteName(),
-					  'id'    => $this->fields['id']->value,
+					  'id'    => ($this->fields['id']->value) ? $this->fields['id']->value : 0,
 					  'field' => $this->name)) ?>">
 		<?php }
 

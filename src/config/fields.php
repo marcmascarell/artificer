@@ -12,7 +12,7 @@ return array(
 
 	'types'    => array(
 		// field_type => array('fieldname_1', 'fieldname_1')
-		'integer'      => array(
+		'key'      => array(
 			'id'
 		),
 

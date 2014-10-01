@@ -9,6 +9,7 @@ use Event;
 use File;
 use Str;
 use Request;
+use Session;
 
 class ModelController extends Artificer {
 
@@ -43,8 +44,6 @@ class ModelController extends Artificer {
 
 		$this->handleData($data);
 
-//		$relations = array();
-//
 //		foreach($this->fields as $field) {
 //			if ($field->isRelation()) {
 //
@@ -72,27 +71,36 @@ class ModelController extends Artificer {
 
 		$item = $model::create(with($this->handleFiles($data)));
 
-		/**
-		 * Pasamos a las relaciones la id del elemento creado para que puedan actualizarse
-		 */
-//		if (count($relations) > 1) {
-//			foreach ($relations as $relation) {
-//				\Session::set('artificer.'.$relation['related_model'].'.has.belongsTo',
-//					array('foreign' => $relation['foreign'],
-//						  'id' => $item->id)
-//				);
-//			}
-//		}
+        $relation_on_create = '_set_relation_on_create';
+        if (Input::has($relation_on_create)) {
+            $relateds = array(
+                'id' => $item->id,
+                'modelClass' => $this->modelObject->class,
+                'foreign' => Input::get('_set_relation_on_create_foreign')
+            );
+
+//            if (Session::has($relation_on_create . '_' . Input::get($relation_on_create))) {
+//                $existent_relateds = Session::get($relation_on_create . '_' . Input::get($relation_on_create));
 //
-//		/*
-//		 * Actualizamos el model
-//		 */
-//		if (\Session::has('artificer.'.$this->modelObject->name.'.has.belongsTo')) {
-//			$data = \Session::get('artificer.'.$this->modelObject->name.'.has.belongsTo');
-//
-//			$item->$data['foreign'] = $data['id'];
-//			$item->save();
-//		}
+//                $relateds = $existent_relateds + $relateds;
+//            }
+
+            Session::push($relation_on_create . '_' . Input::get($relation_on_create), $relateds);
+        }
+
+        if (Session::has($relation_on_create . '_' . $this->modelObject->name)) {
+            $relations = Session::get($relation_on_create . '_' . $this->modelObject->name);
+
+            foreach ($relations as $relation) {
+                $related_item = $relation['modelClass']::find($relation['id']);
+                $related_item->$relation['foreign'] = $item->id;
+                $related_item->save();
+            }
+
+            Session::forget($relation_on_create . '_' . $this->modelObject->name);
+        }
+
+//        dd(Session::get($relation_on_create . '_' . Input::get($relation_on_create)));
 
 		if (Request::ajax()) {
 			return Response::json($item->toArray());
@@ -268,9 +276,25 @@ class ModelController extends Artificer {
 
 	public function getRelatedFieldOutput($modelName, $id, $field)
 	{
-		$this->handleData($this->model->with($this->modelObject->getRelations())->findOrFail($id));
+        if ($id != 0) {
+            $this->handleData($this->model->with($this->modelObject->getRelations())->findOrFail($id));
+        } else {
+            if (Session::has('_set_relation_on_create_'.$this->modelObject->name)) {
+                $relateds = Session::get('_set_relation_on_create_'.$this->modelObject->name);
+                $related_ids = array();
+                foreach ($relateds as $related) {
+                    $related_ids[] = $related['id'];
+                }
 
-		return $this->fields[$field]->output();
+                $data = $relateds[0]['modelClass']::whereIn('id', $related_ids)->get();
+
+                $this->handleData($data);
+            } else {
+                return null;
+            }
+        }
+
+        return $this->fields[$field]->output();
 	}
 
 }

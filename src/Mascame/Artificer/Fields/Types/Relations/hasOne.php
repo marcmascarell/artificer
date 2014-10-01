@@ -3,6 +3,7 @@
 use Form;
 use Input;
 use URL;
+use Request;
 
 class hasOne extends Relation {
 
@@ -51,23 +52,25 @@ class hasOne extends Relation {
 
 		print Form::select($this->name, array('0' => '(none)') + $select, $id, $this->getAttributes());
 
-		$new_url = \URL::route('admin.create', array('slug' => $model->models[$modelName]['route']));
-		$edit_url = \URL::route('admin.edit', array('slug' => $model->models[$modelName]['route'], 'id' => $id));
-		?>
+        if (!Request::ajax()) {
+            $new_url = \URL::route('admin.create', array('slug' => $model->models[$modelName]['route']));
+            $edit_url = \URL::route('admin.edit', array('slug' => $model->models[$modelName]['route'], 'id' => $id));
+            ?>
 
-		<br>
-		<div class="text-right">
-			<div class="btn-group">
-				<a href="<?=$edit_url?>" target="_blank" type="button" class="btn btn-default">
-					<i class="glyphicon glyphicon-edit"></i>
-				</a>
+            <br>
+            <div class="text-right">
+                <div class="btn-group">
+                    <a href="<?= $edit_url ?>" target="_blank" type="button" class="btn btn-default">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
 
-				<a href="<?=$new_url?>" target="_blank" type="button" class="btn btn-default">
-					<i class="glyphicon glyphicon-plus"></i>
-				</a>
-			</div>
-		</div>
-	<?php
+                    <a href="<?= $new_url ?>" target="_blank" type="button" class="btn btn-default">
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </a>
+                </div>
+            </div>
+        <?php
+        }
 	}
 
 	public function show($value = null)

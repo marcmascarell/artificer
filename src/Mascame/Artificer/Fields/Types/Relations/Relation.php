@@ -1,7 +1,9 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
 use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Model;
 use URL;
+use Route;
 
 class Relation extends Field {
 
@@ -71,6 +73,11 @@ class Relation extends Field {
 					var $form = $('.modal-body form');
 
 					$form.prepend('<input type="hidden" name="_standalone" value="<?=$this->model['route']?>">');
+
+                    <?php if (Route::currentRouteName() == 'admin.create') { ?>
+                    $form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=Model::getCurrent()?>">');
+                    $form.prepend('<input type="hidden" name="_set_relation_on_create_foreign" value="<?=$this->relation['foreign']?>">');
+                    <?php } ?>
 
 					$form.submit(function (e) {
 						e.preventDefault();
