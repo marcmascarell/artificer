@@ -4,6 +4,8 @@ return array(
 
 	'classmap' => array(
 		'sort_id' => '\Mascame\Artificer\Plugins\Sortable\SortableField',
+		'bool' => '\Mascame\Artificer\Fields\Types\Checkbox',
+		'boolean' => '\Mascame\Artificer\Fields\Types\Checkbox',
 //		'image'   => '\Mascame\Artificer\Plugins\Plupload\PluploadField',
 		'hasOne'  => '\Mascame\Artificer\Fields\Types\Relations\hasOne',
 		'hasMany' => '\Mascame\Artificer\Fields\Types\Relations\hasMany',
@@ -54,7 +56,7 @@ return array(
 			'url'
 		),
 
-		'date'         => array(
+		'datetime'         => array(
 			'_at'
 		),
 

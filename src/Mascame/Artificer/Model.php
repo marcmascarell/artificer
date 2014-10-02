@@ -9,7 +9,7 @@ use Str;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\AdminOption;
 
-
+// Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
 class Model {
 
 	/**

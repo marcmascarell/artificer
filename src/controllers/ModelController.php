@@ -44,29 +44,6 @@ class ModelController extends Artificer {
 
 		$this->handleData($data);
 
-//		foreach($this->fields as $field) {
-//			if ($field->isRelation()) {
-//
-//				if (isset($data[$field->name])) {
-//
-//				}
-//
-//				if ($field->getRelationType() == 'belongsTo') {
-////					dd('here ' . 'artificer.'.$field->getRelationedModel().'.has.belongsTo');
-//
-//					$relation[$field->name] = array(
-//						'name' => $field->name,
-//						'foreign' => $field->getRelationForeignKey(),
-//						'related_model' => $field->getRelatedModel(),
-//						'model' => $this->modelObject->class,
-//						'id' => '' // necesitamos actualizar esto para poder recuperarlo
-//					);
-//				}
-//
-//				print $field->name . ' ' . $field->getRelationType();
-//			}
-//		}
-
 		$model = $this->modelObject->class;
 
 		$item = $model::create(with($this->handleFiles($data)));
@@ -78,12 +55,6 @@ class ModelController extends Artificer {
                 'modelClass' => $this->modelObject->class,
                 'foreign' => Input::get('_set_relation_on_create_foreign')
             );
-
-//            if (Session::has($relation_on_create . '_' . Input::get($relation_on_create))) {
-//                $existent_relateds = Session::get($relation_on_create . '_' . Input::get($relation_on_create));
-//
-//                $relateds = $existent_relateds + $relateds;
-//            }
 
             Session::push($relation_on_create . '_' . Input::get($relation_on_create), $relateds);
         }
@@ -99,8 +70,6 @@ class ModelController extends Artificer {
 
             Session::forget($relation_on_create . '_' . $this->modelObject->name);
         }
-
-//        dd(Session::get($relation_on_create . '_' . Input::get($relation_on_create)));
 
 		if (Request::ajax()) {
 			return Response::json($item->toArray());

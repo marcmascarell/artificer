@@ -28,6 +28,9 @@
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/js/AdminLTE/dashboard.js') }}" type="text/javascript"></script>
+<script src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/js/moment-with-locales.min.js') }}" type="text/javascript"></script>
+
+<script src="{{ asset('packages/mascame/artificer/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
 
 <script src="{{ asset('packages/mascame/artificer/core/restfulizer.js') }}"></script>
 

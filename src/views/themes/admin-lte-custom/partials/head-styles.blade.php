@@ -20,4 +20,6 @@
 
 <link href="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/style.css') }}" rel="stylesheet" type="text/css" />
 
+<link href="{{ asset('packages/mascame/artificer/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" />
+
 
