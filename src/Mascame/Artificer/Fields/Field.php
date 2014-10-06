@@ -242,7 +242,7 @@ abstract class Field implements FieldInterface {
 	{
 		Event::fire('artificer.field.' . $this->type . '.output', $this->value);
 
-		if ($this->isHidden() || Route::currentRouteName() == 'admin.create') {
+		if ($this->isHidden()) {
 			return null;
 		} else if ($this->isGuarded()) {
 			return $this->guarded();
