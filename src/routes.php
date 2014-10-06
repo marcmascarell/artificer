@@ -40,8 +40,8 @@ Route::group(array(
 				Route::post('{slug}/store', array('as' => 'admin.store', 'uses' => 'Mascame\Artificer\ModelController@store'));
 				Route::get('{slug}/{id}', array('as' => 'admin.show', 'uses' => 'Mascame\Artificer\ModelController@show'));
 				Route::get('{slug}/{id}/edit', array('as' => 'admin.edit', 'uses' => 'Mascame\Artificer\ModelController@edit'));
-				Route::put('{slug}/{id}', array('as' => 'admin.update', 'uses' => 'Mascame\Artificer\ModelController@update'))->before('csrf');
-				Route::delete('{slug}/{id}', array('as' => 'admin.destroy', 'uses' => 'Mascame\Artificer\ModelController@destroy'))->before('csrf');
+				Route::put('{slug}/{id}', array('as' => 'admin.update', 'uses' => 'Mascame\Artificer\ModelController@update'));
+				Route::delete('{slug}/{id}', array('as' => 'admin.destroy', 'uses' => 'Mascame\Artificer\ModelController@destroy'));
 
 				Route::get('{slug}/{id}/field/{name}', array('as' => 'admin.field', 'uses' => 'Mascame\Artificer\ModelController@getRelatedFieldOutput'));
 

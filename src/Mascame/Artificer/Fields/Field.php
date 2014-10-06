@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Fields;
 
 use Event;
+use Route;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\FieldOption;
 
@@ -241,7 +242,7 @@ abstract class Field implements FieldInterface {
 	{
 		Event::fire('artificer.field.' . $this->type . '.output', $this->value);
 
-		if ($this->isHidden()) {
+		if ($this->isHidden() || Route::currentRouteName() == 'admin.create') {
 			return null;
 		} else if ($this->isGuarded()) {
 			return $this->guarded();

@@ -7,7 +7,6 @@ return array(
 		'mascame/gallery',
 		'mascame/datatables',
 		'mascame/plupload',
-		'mascame/action-confirmation',
 	),
 
 	'uninstalled' => array(
