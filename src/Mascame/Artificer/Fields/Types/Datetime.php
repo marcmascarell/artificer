@@ -25,8 +25,8 @@ class DateTime extends Field {
 	<?php
 	}
 
-	public function show($value = null) {
-		$date = Carbon::parse($this->getValue($value));
+	public function show() {
+		$date = Carbon::parse($this->value);
 		return $date->format('d-m-Y H:i:s');
 	}
 

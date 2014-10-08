@@ -190,14 +190,24 @@ abstract class Field implements FieldInterface {
 	}
 
 
-	/**
-	 * @param null $value
-	 * @return null
-	 */
-	public function show($value = null)
+    /**
+     * @return null
+     */
+	public function show()
 	{
-		return $this->getValue($value);
+		return $this->value;
 	}
+
+    /**
+     * @param null $value
+     * @return null
+     */
+    public function display($value = null)
+    {
+        $this->getValue($value);
+
+        return $this->show($value);
+    }
 
 
 	/**
@@ -206,9 +216,15 @@ abstract class Field implements FieldInterface {
 	 */
 	public function getValue($value = null)
 	{
-		$value = ($value) ? $value : $this->value;
+        if (!$value) {
+            $value = $this->value;
 
-		return $value;
+            if (!$value) {
+                $value = $this->fieldOption('default');
+            }
+        }
+
+		return $this->value = $value;
 	}
 
 
@@ -247,6 +263,8 @@ abstract class Field implements FieldInterface {
 		} else if ($this->isGuarded()) {
 			return $this->guarded();
 		}
+
+        $this->value = $this->getValue();
 
 		if (isset($this->fieldOptions['input'])) {
 			return $this->userInput($this->fieldOptions['input']);

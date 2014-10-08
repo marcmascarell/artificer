@@ -7,8 +7,8 @@ use HTML;
 
 class Link extends Text {
 
-	public function show($value = null)
+	public function show()
 	{
-		return HTML::link($this->getValue($value));
+		return HTML::link($this->value);
 	}
 }

@@ -27,9 +27,9 @@ class Image extends File {
 		print Form::file($this->name);
 	}
 
-	public function show($value = null)
+	public function show()
 	{
-		$value = $this->getValue($value);
+		$value = $this->value;
 
 		if (!$value) {
 			return '<div class="well well-sm">No file</div>';

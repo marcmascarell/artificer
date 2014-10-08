@@ -36,7 +36,7 @@
 			); }}
 
 				@foreach ($fields as $field)
-                    @if ( ! $field->isHidden() && (Route::currentRouteName() == 'admin.create' && $field->name != 'id'))
+                    @unless ( $field->isHidden() || (Route::currentRouteName() == 'admin.create' && $field->name == 'id'))
                         <div class="form-group">
                             ({{ $field->type }})
 
@@ -59,7 +59,7 @@
                             {{ $field->output() }}
 
                         </div>
-				    @endif
+				    @endunless
 				@endforeach
 
                 <div class="text-right">
