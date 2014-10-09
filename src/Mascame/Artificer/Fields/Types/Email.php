@@ -11,11 +11,9 @@ class Email extends Field {
 		return Form::email($this->name, $this->value, $this->getAttributes());
 	}
 
-	public function show($value = null)
+	public function show()
 	{
-		$value = $this->getValue($value);
-
-		return HTML::mailto($value, $value);
+		return HTML::mailto($this->value, $this->value);
 	}
 
 }

@@ -8,11 +8,12 @@
  *
  * Ex:
  *     <a href="post/1" data-method="delete">destroy</a>
- *     // Will trigger the route Route::delete('post/(:id)')
  *
  */
 $(function () {
-    $('[data-method]').append(function () {
+    var $button = $('[data-method]');
+
+   $button.append(function () {
         return "\n" +
         "<form action='" + $(this).attr('href') + "' method='POST' style='display:none'>\n" +
         "   <input type='hidden' name='_method' value='" + $(this).attr('data-method') + "'>\n" +
@@ -20,6 +21,12 @@ $(function () {
         "</form>\n"
     })
         .removeAttr('href')
-        .attr('style', 'cursor:pointer;')
-        .attr('onclick', '$(this).find("form").submit();');
+        .attr('style', 'cursor:pointer;');
+
+   $button.on('click', function() {
+       if (confirm('Confirm?')) {
+           $(this).find("form").submit();
+       }
+
+   });
 });

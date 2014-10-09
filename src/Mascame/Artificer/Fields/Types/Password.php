@@ -10,7 +10,7 @@ class Password extends Field {
 		return Form::password($this->name, $this->getAttributes());
 	}
 
-	public function show($value = null)
+	public function show()
 	{
 		return $this->hidden();
 	}
