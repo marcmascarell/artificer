@@ -112,7 +112,11 @@ class Artificer extends Controller {
 			$sort['column'] = Input::get('sort_by');
 			$sort['direction'] = Input::get('direction');
 		} else {
-			$sort['column'] = 'sort_id';
+			if ($this->modelObject->hasColumn('sort_id')) {
+				$sort['column'] = 'sort_id';
+			} else {
+				$sort['column'] = 'id';
+			}
 			$sort['direction'] = 'asc';
 		}
 

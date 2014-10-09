@@ -111,6 +111,10 @@ class Model {
 		View::share('models', $this->models);
 	}
 
+	public function hasColumn($column) {
+		return (is_array($column) && in_array($column, $this->columns)) ? true : false;
+	}
+
 	public static function getCurrent()
 	{
 		return self::$current;
