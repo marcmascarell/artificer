@@ -1,7 +1,5 @@
 <?php
 
-Auth::loginUsingId(1);
-
 Route::pattern('new_id', '\d+');
 Route::pattern('old_id', '\d+');
 Route::pattern('id', '\d+');
