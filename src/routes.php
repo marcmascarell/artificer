@@ -1,5 +1,6 @@
 <?php
 
+
 Route::pattern('new_id', '\d+');
 Route::pattern('old_id', '\d+');
 Route::pattern('id', '\d+');
