@@ -12,6 +12,8 @@ return array(
 	// Not updatable, not editable
 	'guarded'   => array('id'),
 
+	'permissions' => array('admin'),
+
 	'list'      => array('*'),
 
 	'list-hide' => array('password', 'remember_token', 'confirmation_code'),

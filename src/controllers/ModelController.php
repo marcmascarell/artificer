@@ -30,6 +30,25 @@ class ModelController extends Artificer {
 		return View::make($this->getView('edit'))->with('items', $this->data)->with($form);
 	}
 
+	private function filterInputData() {
+		if ($this->modelObject->isGuarded()) {
+			return $this->except($this->modelObject->options['guarded'], Input::only($this->modelObject->columns));
+		}
+
+		return Input::except('id');
+	}
+
+	private function except($keys, $values)
+	{
+		$keys = is_array($keys) ? $keys : func_get_args();
+
+		$results = $values;
+
+		array_forget($results, $keys);
+
+		return $results;
+	}
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -37,7 +56,7 @@ class ModelController extends Artificer {
 	 */
 	public function store()
 	{
-		$data = Input::except('id');
+		$data = $this->filterInputData();
 
 		$validator = $this->validator($data);
 		if ($validator->fails()) return $this->redirect($validator, 'admin.create');
@@ -45,6 +64,8 @@ class ModelController extends Artificer {
 		$this->handleData($data);
 
 		$model = $this->modelObject->class;
+
+		$this->model->guard($this->modelObject->options['guarded']);
 
 		$item = $model::create(with($this->handleFiles($data)));
 
@@ -137,7 +158,7 @@ class ModelController extends Artificer {
 	{
 		$item = $this->model->findOrFail($id);
 
-		$data = Input::all();
+		$data = $this->filterInputData();
 
 		$validator = $this->validator($data);
 		if ($validator->fails()) return $this->redirect($validator, 'admin.edit');
@@ -166,6 +187,7 @@ class ModelController extends Artificer {
 	}
 
 	/**
+
 	 * Remove the specified resource from storage.
 	 *
 	 * @param  int $id

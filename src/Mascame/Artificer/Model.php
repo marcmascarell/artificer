@@ -327,4 +327,12 @@ class Model {
 
 		View::share('model', $model);
 	}
+
+	public function isGuarded() {
+		return (isset($this->options['guarded']) && !empty($this->options['guarded'])) ? true : false;
+	}
+
+	public function isFillable() {
+		return (isset($this->options['fillable']) && !empty($this->options['fillable'])) ? true : false;
+	}
 }

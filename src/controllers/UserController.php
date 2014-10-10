@@ -84,7 +84,9 @@ class UserController extends Artificer {
 		$user = \User::where('email', '=', Input::get('username'))->first();
 
         if ($user) {
-            if (in_array($user->role, AdminOption::get('users.roles'))) {
+			$role_colum = AdminOption::get('auth.role_column');
+
+            if (in_array($user->$role_colum, AdminOption::get('auth.roles'))) {
 
                 $userdata = array(
                     'email'    => Input::get('username'),

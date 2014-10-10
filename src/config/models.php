@@ -8,7 +8,10 @@ return array(
 
 	'hidden' => array(
 		'BookAttribute'
+	),
+
+	'permissions' => array(
+		'admin' => array('*'),
+		'user' => 'User'
 	)
-
-
 );

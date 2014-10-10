@@ -35,5 +35,5 @@ return array(
 
 	'models'        => Config::get('artificer::models'),
 
-	'users'         => Config::get('artificer::users')
+	'auth'          => Config::get('artificer::auth')
 );

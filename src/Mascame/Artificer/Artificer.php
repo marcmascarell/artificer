@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer;
 
 use Input;
+use Auth;
 use File;
 use Mascame\Artificer\Fields\Field;
 use View;
@@ -9,6 +10,7 @@ use Controller;
 use App;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\Option;
+use Mascame\Artificer\Permit;
 
 // Todo: Make some models forbidden for some users
 
@@ -37,8 +39,13 @@ class Artificer extends Controller {
 	{
 		$this->theme = AdminOption::get('theme');
 
-		if (\Auth::check()) {
+		if (Auth::check()) {
 			$model = App::make('artificer-model');
+
+			if (!Permit::access($model->name)) {
+				App::abort('403');
+			}
+
 			$this->modelObject = $model;
 			$this->model = $model->model;
 			$this->options = AdminOption::all();
