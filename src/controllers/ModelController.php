@@ -11,7 +11,7 @@ use Str;
 use Request;
 use Session;
 
-class ModelController extends Artificer {
+class ModelController extends BaseModelController {
 
 	/**
 	 * Show the form for creating a new resource.

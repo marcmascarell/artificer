@@ -28,9 +28,9 @@ Route::group(array(
 			});
 
 			Route::group(array('prefix' => 'page'), function () {
-				Route::get('plugins', array('as' => 'admin.page.plugins', 'uses' => 'Mascame\Artificer\PageController@plugins'));
-				Route::get('plugin/{slug}/install', array('as' => 'admin.page.plugin.install', 'uses' => 'Mascame\Artificer\PageController@installPlugin'));
-				Route::get('plugin/{slug}/uninstall', array('as' => 'admin.page.plugin.uninstall', 'uses' => 'Mascame\Artificer\PageController@uninstallPlugin'));
+				Route::get('plugins', array('as' => 'admin.page.plugins', 'uses' => 'Mascame\Artificer\PluginController@plugins'));
+				Route::get('plugin/{slug}/install', array('as' => 'admin.page.plugin.install', 'uses' => 'Mascame\Artificer\PluginController@installPlugin'));
+				Route::get('plugin/{slug}/uninstall', array('as' => 'admin.page.plugin.uninstall', 'uses' => 'Mascame\Artificer\PluginController@uninstallPlugin'));
 			});
 
 			Route::group(array('prefix' => 'model'), function () {

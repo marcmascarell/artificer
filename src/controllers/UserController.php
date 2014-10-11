@@ -9,7 +9,7 @@ use Auth;
 use Carbon\Carbon;
 use Session;
 
-class UserController extends Artificer {
+class UserController extends BaseController {
 
     public $max_tries = 3;
     public $tries_key = 'artificer.user.login.tries';

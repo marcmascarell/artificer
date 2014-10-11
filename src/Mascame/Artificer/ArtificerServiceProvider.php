@@ -30,6 +30,10 @@ class ArtificerServiceProvider extends ServiceProvider {
 			return new Model();
 		});
 
+        App::singleton('artificer-plugin-manager', function () {
+            return new PluginManager();
+        });
+
 		$this->app['artificer'] = $this->app->share(function ($app) {
 			return new PublishCommand();
 		});
