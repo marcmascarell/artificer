@@ -2,29 +2,26 @@
 
 use Input;
 use Auth;
+use Mascame\Artificer\Permit\ModelPermit;
 use View;
 use Mascame\Artificer\Fields\Factory as FieldFactory;
 use App;
 use Mascame\Artificer\BaseController;
-
 
 // Todo: Make some models forbidden for some users
 
 class BaseModelController extends BaseController {
 
     public $model = null;
-    public $modelObject = null;
+
 
     public function __construct()
     {
         parent::__construct();
 
-        if (Auth::check()) {
-            $model = App::make('artificer-model');
+        if (!Auth::check() || !ModelPermit::access()) App::abort('403');
 
-            $this->modelObject = $model;
-            $this->model = $model->model;
-        }
+        $this->model = $this->modelObject->model;
     }
 
 

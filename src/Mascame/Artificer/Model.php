@@ -1,5 +1,6 @@
 <?php namespace Mascame\Artificer;
 
+use Mascame\Artificer\Permit\ModelPermit;
 use View;
 use Schema;
 use File;
@@ -153,6 +154,8 @@ class Model {
 					self::$current = $modelName;
 					ModelOption::set('current', $modelName);
 				}
+
+                if (!ModelPermit::access($modelName)) continue;
 
                 $models[$modelName] = array(
                     'name' => $modelName,

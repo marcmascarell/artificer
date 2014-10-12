@@ -27,6 +27,8 @@ class BaseController extends Controller {
     public $menu = array();
     protected $master_layout = null;
 
+    public $modelObject = null;
+
     /**
      * @param Model $model
      */
@@ -38,6 +40,7 @@ class BaseController extends Controller {
             $this->options = AdminOption::all();
 
             App::make('artificer-plugin-manager')->boot();
+            $this->modelObject = App::make('artificer-model');
 
             if (\Request::ajax() || Input::has('_standalone')) {
                 $this->master_layout = 'standalone';
@@ -58,18 +61,10 @@ class BaseController extends Controller {
     public function getMenu()
     {
         if (!empty($this->menu)) return $this->menu;
-        $user = \Auth::getUser();
         $menu = AdminOption::get('menu');
 
-        foreach ($menu as $menu_item) {
-            if ($menu_item['user_access'] == '*'
-                || $menu_item['user_access'] == $user->role
-                || (is_array($menu_item['user_access'])
-                    && isset($menu_item['user_access'][0])
-                    && $menu_item['user_access'][0] == '*')
-                || (is_array($menu_item['user_access'])
-                    && in_array($user->role, $menu_item['user_access']))
-            ) {
+        foreach ($menu as $menu_key => $menu_item) {
+            if (Permit\MenuPermit::access($menu_key)) {
                 $this->menu[] = $menu_item;
             }
         }

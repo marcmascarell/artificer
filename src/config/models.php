@@ -12,6 +12,6 @@ return array(
 
 	'permissions' => array(
 		'admin' => array('*'),
-		'user' => 'User'
+		'user' => array('User')
 	)
 );
