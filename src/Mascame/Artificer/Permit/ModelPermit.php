@@ -14,7 +14,7 @@ class ModelPermit extends Permit {
 
         $model_permissions = ModelOption::get('permissions', $model);
 
-        return self::hasPermission($model_permissions, $model);
+        return self::hasPermission($model_permissions);
 	}
 
 	public static function to($action)
@@ -23,17 +23,17 @@ class ModelPermit extends Permit {
 
         $model_permissions = ModelOption::get('action_permissions.'.$action, $model);
 
-        return self::hasPermission($model_permissions, $model);
+        return self::hasPermission($model_permissions, self::getRole());
 	}
 
-    public static function hasPermission($permissions, $model = null) {
+    public static function hasPermission($permissions) {
         if (is_array($permissions) && !empty($permissions)) {
 
             if ($permissions[0] == '*') {
                 return true;
             }
 
-            if (in_array($model, $permissions)) {
+            if (in_array(self::getRole(), $permissions)) {
                 return true;
             }
         } if (!is_array($permissions) || !$permissions) {

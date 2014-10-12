@@ -11,6 +11,7 @@ use File;
 use Str;
 use Redirect;
 use Validator;
+use Route;
 
 
 class BaseModelController extends BaseController {
@@ -25,8 +26,27 @@ class BaseModelController extends BaseController {
         if (!Auth::check() || !ModelPermit::access()) App::abort('403');
 
         $this->model = $this->modelObject->model;
+
+        $this->checkPermissions();
     }
 
+    protected function checkPermissions() {
+        $permit = array(
+            'view' => ModelPermit::to('view'),
+            'update' => ModelPermit::to('update'),
+            'create' => ModelPermit::to('create'),
+            'delete' => ModelPermit::to('delete'),
+        );
+
+        if (Route::currentRouteName() == 'admin.store' && !$permit['create']) App::abort('403');
+        if (Route::currentRouteName() == 'admin.create' && !$permit['create']) App::abort('403');
+        if (Route::currentRouteName() == 'admin.update' && !$permit['update']) App::abort('403');
+        if (Route::currentRouteName() == 'admin.edit' && !$permit['edit']) App::abort('403');
+        if (Route::currentRouteName() == 'admin.destroy' && !$permit['delete']) App::abort('403');
+        if (Route::currentRouteName() == 'admin.show' && !$permit['view']) App::abort('403');
+
+        View::share('permit', $permit);
+    }
 
     /**
      * @param $data

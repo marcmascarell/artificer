@@ -41,10 +41,8 @@ function getSortIcon($table_name, $sort)
 	return null;
 }
 
-HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort) {
-	$showEdit = true;
-	$showDelete = true;
-	$showView = true;
+HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort,
+                               $showView = true, $showEdit = true, $showDelete = true ) {
 	?>
 	<div class="table-responsive">
 		<table class="table table-bordered table-striped datatable"

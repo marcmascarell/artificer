@@ -32,7 +32,11 @@
     </div>
 
     @if (!$items->isEmpty())
-        {{ HTML::table($model, $items, $fields, $models[$model['name']]['options'], $sort) }}
+        {{ HTML::table($model, $items, $fields, $models[$model['name']]['options'], $sort,
+        $permit['show_view'],
+        $permit['show_update'],
+        $permit['show_delete'])
+        }}
 
         {{ Form::open(array('route' => array('admin.sort', $model['route'], '', ''))) }}
             {{ Form::submit('Submit!', array('class' => 'hidden', 'id' => 'sort-submit')); }}
