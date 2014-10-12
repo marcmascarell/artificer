@@ -1,13 +1,10 @@
 <?php namespace Mascame\Artificer;
 
 use Redirect;
-use Validator;
 use Input;
 use View;
 use Response;
 use Event;
-use File;
-use Str;
 use Request;
 use Session;
 
@@ -28,25 +25,6 @@ class ModelController extends BaseModelController {
 		);
 
 		return View::make($this->getView('edit'))->with('items', $this->data)->with($form);
-	}
-
-	private function filterInputData() {
-		if ($this->modelObject->isGuarded()) {
-			return $this->except($this->modelObject->options['guarded'], Input::only($this->modelObject->columns));
-		}
-
-		return Input::except('id');
-	}
-
-	private function except($keys, $values)
-	{
-		$keys = is_array($keys) ? $keys : func_get_args();
-
-		$results = $values;
-
-		array_forget($results, $keys);
-
-		return $results;
 	}
 
 	/**
@@ -172,20 +150,6 @@ class ModelController extends BaseModelController {
 		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
 	}
 
-	protected function redirect($validator, $route) {
-		if (Input::has('_standalone')) {
-			return Redirect::route($route, array('slug' => Input::get('_standalone')))
-				->withErrors($validator)
-				->withInput();
-		}
-
-		return Redirect::back()->withErrors($validator)->withInput();
-	}
-
-	protected function validator($data) {
-		return Validator::make($data, $this->getRules());
-	}
-
 	/**
 
 	 * Remove the specified resource from storage.
@@ -214,78 +178,6 @@ class ModelController extends BaseModelController {
 		return Redirect::back();
 
 //		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
-	}
-
-	/**
-	 * @param $data
-	 * @return array
-	 */
-	protected function handleFiles($data)
-	{
-		$new_data = array();
-
-		foreach ($this->getFields($data) as $field) {
-
-			if ($field->type == 'file' || $field->type == 'image') {
-
-				if (Input::hasFile($field->name)) {
-					$new_data[$field->name] = $this->uploadFile($field->name);
-				} else {
-					unset($data[$field->name]);
-				}
-			}
-		}
-
-		return array_merge($data, $new_data);
-	}
-
-	/**
-	 * This is used for simple upload (no plugins)
-	 *
-	 * @param $fieldname
-	 * @param null $path
-	 * @return string
-	 */
-	protected function uploadFile($fieldname, $path = null)
-	{
-		if (!$path) {
-			$path = public_path() . '/uploads/';
-		}
-
-		$file = Input::file($fieldname);
-
-		if (!file_exists($path)) {
-			File::makeDirectory($path);
-		}
-
-		$name = uniqid() . '-' . Str::slug($file->getClientOriginalName());
-
-		$file->move($path, $name);
-
-		return $name;
-	}
-
-	public function getRelatedFieldOutput($modelName, $id, $field)
-	{
-        if ($id != 0) {
-            $this->handleData($this->model->with($this->modelObject->getRelations())->findOrFail($id));
-        } else {
-            if (Session::has('_set_relation_on_create_'.$this->modelObject->name)) {
-                $relateds = Session::get('_set_relation_on_create_'.$this->modelObject->name);
-                $related_ids = array();
-                foreach ($relateds as $related) {
-                    $related_ids[] = $related['id'];
-                }
-
-                $data = $relateds[0]['modelClass']::whereIn('id', $related_ids)->get();
-
-                $this->handleData($data);
-            } else {
-                return null;
-            }
-        }
-
-        return $this->fields[$field]->output();
 	}
 
 }

@@ -8,10 +8,6 @@ use File;
 
 class PluginController extends BaseController {
 
-	public function home()
-	{
-		return Redirect::to(AdminOption::get('default_route'));
-	}
 
 	public function plugins()
 	{

@@ -10,8 +10,4 @@ return array(
 		'BookAttribute'
 	),
 
-	'permissions' => array(
-		'admin' => array('*'),
-		'user' => array('User')
-	)
 );

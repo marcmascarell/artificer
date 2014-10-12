@@ -4,7 +4,8 @@ return array(
 
 	'roles' => array(
 		'admin',
-		'editor'
+		'editor',
+        'user'
 	),
 
 	'role_column' => 'role',
