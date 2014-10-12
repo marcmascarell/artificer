@@ -4,6 +4,9 @@ use \Mascame\Artificer\Options\AdminOption;
 use \Mascame\Artificer\Options\ModelOption;
 
 Route::filter('artificer-auth', function () {
+    $roles = AdminOption::get('auth.roles');
+    $role_column = AdminOption::get('auth.role_column');
+
     if (Auth::guest()
         && Route::currentRouteName() != 'admin.showlogin'
         && Route::currentRouteName() != 'admin.login'
@@ -17,23 +20,10 @@ Route::filter('artificer-auth', function () {
         {
             return Redirect::route('admin.showlogin');
         }
+    } else if (Auth::check()
+        && Route::currentRouteName() != 'admin.logout') {
+        if (!in_array(Auth::user()->$role_column, $roles)) {
+            return Redirect::route('admin.logout');
+        }
     }
-});
-
-Route::filter('artificer-permission', function () {
-
-	$role = AdminOption::get('auth.role_column');
-
-	dd(\Mascame\Artificer\Model::$current);
-
-	$permissions = ModelOption::get('permissions');
-
-	dd($permissions);
-
-	if (Auth::user()->$role)
-	{
-		dd('yeah');
-	} else {
-
-	}
 });

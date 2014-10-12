@@ -8,7 +8,6 @@ use Mascame\Artificer\Fields\Factory as FieldFactory;
 use App;
 use Mascame\Artificer\BaseController;
 
-// Todo: Make some models forbidden for some users
 
 class BaseModelController extends BaseController {
 

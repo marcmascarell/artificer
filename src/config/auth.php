@@ -9,9 +9,5 @@ return array(
 
 	'role_column' => 'role',
 
-	'permissions' => array(
-		'models' => array(
 
-		)
-	)
 );
