@@ -17,6 +17,7 @@ return array(
 		'admin.edit'    => 'update',
 		'admin.destroy' => 'delete',
 		'admin.show'    => 'view',
+		'admin.all'     => 'view',
 	),
 
 );

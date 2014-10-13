@@ -44,9 +44,13 @@ class ModelPermit extends Permit {
     }
 
 	public static function routeAction($route) {
-		ModelOption::get('route_permission.'.$route, Model::getCurrent());
+		$route_permission = AdminOption::get('models.route_permission');
 
-		App::abort('403', 'Insufficient privileges');
+		if (in_array($route, array_keys($route_permission))) {
+			if (!ModelPermit::to($route_permission[$route])) {
+				App::abort('403', 'Insufficient privileges');
+			}
+		}
 	}
 
 } 
