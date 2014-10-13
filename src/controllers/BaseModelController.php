@@ -76,7 +76,7 @@ class BaseModelController extends BaseController {
 
 		View::share('fields', $this->fields);
 
-		return (array)$this->fields;
+		return $this->fields;
 	}
 
 	/**
