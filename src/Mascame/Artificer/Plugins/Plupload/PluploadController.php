@@ -2,9 +2,10 @@
 
 use Mascame\Artificer\Artificer;
 use JildertMiedema\LaravelPlupload\Facades\Plupload;
+use Mascame\Artificer\BaseModelController;
 use Response;
 
-class PluploadController extends Artificer {
+class PluploadController extends BaseModelController {
 
 
 	public function configuration()

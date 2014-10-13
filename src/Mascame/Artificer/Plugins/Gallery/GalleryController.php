@@ -1,9 +1,10 @@
 <?php namespace Mascame\Artificer\Plugins\Gallery;
 
 use Mascame\Artificer\Artificer;
+use Mascame\Artificer\BaseModelController;
 use View;
 
-class GalleryController extends Artificer {
+class GalleryController extends BaseModelController {
 
 
 	public function configuration()

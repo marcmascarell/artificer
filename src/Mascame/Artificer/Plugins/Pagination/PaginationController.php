@@ -1,15 +1,16 @@
 <?php namespace Mascame\Artificer\Plugins\Pagination;
 
+use Mascame\Artificer\BaseModelController;
 use Redirect;
 use Mascame\Artificer\Artificer;
 use Input;
 use Mascame\Artificer\Plugins\Pagination\PaginationPlugin as Pagination;
 use View;
 
-class PaginationController extends Artificer {
+class PaginationController extends BaseModelController {
 
 	/**
-	 * @param $modelName
+	 * @param null $modelName
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function paginate($modelName = null)
@@ -21,10 +22,8 @@ class PaginationController extends Artificer {
 	}
 
 	/**
-	 * Display the specified post.
-	 *
-	 * @param  int $id
-	 * @return Response
+	 * @param $modelName
+	 * @return $this
 	 */
 	public function all($modelName)
 	{

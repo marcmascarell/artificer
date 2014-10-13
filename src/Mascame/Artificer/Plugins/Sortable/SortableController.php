@@ -1,10 +1,11 @@
 <?php namespace Mascame\Artificer\Plugins\Sortable;
 
+use Mascame\Artificer\BaseModelController;
 use Redirect;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Notification;
 
-class SortableController extends Artificer {
+class SortableController extends BaseModelController {
 
 	public $old_id;
 	public $new_id;
