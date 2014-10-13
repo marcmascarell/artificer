@@ -17,7 +17,8 @@ use Route;
 class BaseModelController extends BaseController {
 
 	/**
-	 * @var Model
+	 * The Eloquent model instance
+	 * @var \Eloquent
 	 */
 	protected $model;
 
