@@ -1,9 +1,6 @@
 <?php namespace Mascame\Artificer\Permit;
 
-use Auth;
-use Mascame\Artificer\Model;
 use Mascame\Artificer\Options\AdminOption;
-use Mascame\Artificer\Options\ModelOption;
 
 class MenuPermit extends Permit {
 

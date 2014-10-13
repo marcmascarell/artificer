@@ -7,7 +7,6 @@ use Config;
 use View;
 use Image;
 use Event;
-use Str;
 
 class GalleryPlugin extends Plugin {
 

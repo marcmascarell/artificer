@@ -25,6 +25,9 @@ class PluginController extends BaseController {
 		return $this->pluginOperation($plugin, 'uninstall');
 	}
 
+	/**
+	 * @param string $operation
+	 */
 	public function pluginOperation($plugin, $operation)
 	{
 		$plugin = str_replace('__slash__', '/', $plugin);

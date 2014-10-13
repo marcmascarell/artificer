@@ -1,7 +1,6 @@
 <?php namespace Mascame\Artificer;
 
 use Illuminate\Support\ServiceProvider;
-use Config;
 use App;
 
 

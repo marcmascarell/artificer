@@ -93,7 +93,6 @@ class ModelController extends BaseModelController {
 	/**
 	 * Display the specified post.
 	 *
-	 * @param  int $id
 	 * @return Response
 	 */
 	public function all($modelName)

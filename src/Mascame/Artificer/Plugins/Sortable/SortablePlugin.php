@@ -3,7 +3,6 @@
 use Mascame\Artificer\Plugin;
 use Event;
 use App;
-use Mascame\Notify\Notify;
 
 class SortablePlugin extends Plugin {
 

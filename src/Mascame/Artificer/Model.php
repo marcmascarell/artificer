@@ -5,8 +5,6 @@ use View;
 use Schema;
 use File;
 use Route;
-use Config;
-use Str;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\AdminOption;
 
@@ -276,7 +274,6 @@ class Model {
 	}
 
 	/**
-	 * @param bool $modelClass
 	 * @return mixed
 	 */
 	public function getTable($modelName = null)

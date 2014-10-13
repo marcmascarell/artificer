@@ -3,7 +3,6 @@
 use Mascame\Artificer\Model;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Options\FieldOption;
-use Mascame\Artificer\Options\ModelOption;
 use Str;
 use Mascame\Artificer\Options\AdminOption;
 

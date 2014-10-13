@@ -1,6 +1,5 @@
 <?php namespace Mascame\Artificer\Plugins\Plupload;
 
-use Form;
 use Mascame\Artificer\Widgets\FocalPoint\FocalPoint;
 use Mascame\Artificer\Plugins\Plupload\PluploadWidget;
 use Mascame\Artificer\Fields\Types\Image;
