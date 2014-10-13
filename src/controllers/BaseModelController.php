@@ -19,7 +19,7 @@ class BaseModelController extends BaseController {
 	/**
 	 * @var null
 	 */
-	public $model = null;
+	protected $model;
 
 	/**
 	 *
@@ -60,7 +60,7 @@ class BaseModelController extends BaseController {
 	/**
 	 * @param $data
 	 */
-	public function handleData($data)
+	protected function handleData($data)
 	{
 		$this->data = $data;
 
@@ -71,7 +71,7 @@ class BaseModelController extends BaseController {
 	 * @param $data
 	 * @return null
 	 */
-	public function getFields($data)
+	protected function getFields($data)
 	{
 		if ($this->fields != null) return $this->fields;
 
@@ -80,13 +80,13 @@ class BaseModelController extends BaseController {
 
 		View::share('fields', $this->fields);
 
-		return $this->fields;
+		return (array)$this->fields;
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getSort()
+	protected function getSort()
 	{
 		$sort = array();
 
@@ -108,7 +108,7 @@ class BaseModelController extends BaseController {
 	/**
 	 * @return array
 	 */
-	public function getRules()
+	protected function getRules()
 	{
 		if (isset($this->options['rules'])) {
 			return $this->options['rules'];
@@ -123,7 +123,7 @@ class BaseModelController extends BaseController {
 	 * @param $items
 	 * @return null
 	 */
-	public static function getCurrentModelId($items)
+	protected static function getCurrentModelId($items)
 	{
 		if (isset($items->id)) {
 			return $items->id;

@@ -2,7 +2,6 @@
 
 class Artificer  {
 
-
 	public static function assets()
 	{
 		return BaseController::assets();
