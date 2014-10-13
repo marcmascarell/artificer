@@ -48,12 +48,7 @@ class BaseModelController extends BaseController {
 			'delete' => ModelPermit::to('delete'),
 		);
 
-		if (Route::currentRouteName() == 'admin.store' && !$permit['create']) App::abort('403', 'Insufficient privileges');
-		if (Route::currentRouteName() == 'admin.create' && !$permit['create']) App::abort('403', 'Insufficient privileges');
-		if (Route::currentRouteName() == 'admin.update' && !$permit['update']) App::abort('403', 'Insufficient privileges');
-		if (Route::currentRouteName() == 'admin.edit' && !$permit['update']) App::abort('403', 'Insufficient privileges');
-		if (Route::currentRouteName() == 'admin.destroy' && !$permit['delete']) App::abort('403', 'Insufficient privileges');
-		if (Route::currentRouteName() == 'admin.show' && !$permit['view']) App::abort('403', 'Insufficient privileges');
+		ModelPermit::routeAction(Route::currentRouteName());
 
 		View::share('permit', $permit);
 	}

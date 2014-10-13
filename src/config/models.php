@@ -2,12 +2,21 @@
 
 return array(
 
-	'directories' => array(
+	'directories'      => array(
 		app_path() . '/models'
 	),
 
-	'hidden' => array(
+	'hidden'           => array(
 		'BookAttribute'
+	),
+
+	'route_permission' => array(
+		'admin.store'   => 'create',
+		'admin.create'  => 'create',
+		'admin.update'  => 'update',
+		'admin.edit'    => 'update',
+		'admin.destroy' => 'delete',
+		'admin.show'    => 'view',
 	),
 
 );

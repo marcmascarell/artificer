@@ -1,6 +1,6 @@
 <?php namespace Mascame\Artificer\Permit;
 
-use Auth;
+use App;
 use Mascame\Artificer\Model;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\ModelOption;
@@ -42,5 +42,11 @@ class ModelPermit extends Permit {
 
         return false;
     }
+
+	public static function routeAction($route) {
+		ModelOption::get('route_permission.'.$route, Model::getCurrent());
+
+		App::abort('403', 'Insufficient privileges');
+	}
 
 } 
