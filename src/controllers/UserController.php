@@ -89,13 +89,7 @@ class UserController extends BaseController {
 
 		$validator = Validator::make(Input::all(), $rules);
 
-		if ($validator->fails()) {
-            $this->addAttempt();
-
-			return Redirect::route('admin.model.showlogin')
-				->withErrors($validator)
-				->withInput();
-		}
+		if ($validator->fails()) return $this->onFailValidation($validator);
 
         if ($this->isValidUser($this->getUser())) return Redirect::route('admin.home');
 
@@ -103,6 +97,13 @@ class UserController extends BaseController {
 			->withInput(Input::except('password'))->withErrors(array('The user credentials are not correct or does not have access'));
 	}
 
+    protected function onFailValidation($validator) {
+        $this->addAttempt();
+
+        return Redirect::route('admin.model.showlogin')
+            ->withErrors($validator)
+            ->withInput();
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Model|null|static
      */
