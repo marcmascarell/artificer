@@ -215,9 +215,7 @@ abstract class Field implements FieldInterface {
 	 */
 	public function getValue($value = null)
 	{
-        if (!$value) {
-			$value = $this->fieldOption('default');
-        }
+        if (!$value) return $this->value = $this->fieldOption('default');
 
 		return $this->value = $value;
 	}
