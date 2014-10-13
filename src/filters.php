@@ -30,5 +30,6 @@ Route::filter('artificer-auth', function () {
 Route::filter('artificer-localization', function () {
 	$langs = AdminOption::get('localization.user_locales');
 
+	LaravelLocalization::setLocale(array_keys($langs)[0]);
 	LaravelLocalization::setSupportedLocales($langs);
 });
