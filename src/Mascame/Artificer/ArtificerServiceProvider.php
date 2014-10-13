@@ -34,11 +34,11 @@ class ArtificerServiceProvider extends ServiceProvider {
             return new PluginManager();
         });
 
-		$this->app['artificer'] = $this->app->share(function ($app) {
+		App::bind('artificer-command-publish', function () {
 			return new PublishCommand();
 		});
 
-		$this->commands('artificer');
+		$this->commands('artificer-command-publish');
 	}
 
 	/**
