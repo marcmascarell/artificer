@@ -16,17 +16,10 @@ class PluploadController extends BaseModelController {
 	public function plupload($modelName, $id)
 	{
 		$path = public_path() . '/uploads/';
-
 		$item = $this->model->find($id);
 
 		if (!$item) {
-			$response = Plupload::receive('file', function ($file) use ($path) {
-				$this->options['uploaded']['name'] = time() . $file->getClientOriginalName();
-
-				$file = $file->move($path, $this->options['uploaded']['name']);
-
-				$this->options['uploaded']['instance'] = $file;
-			});
+			$response = $this->recieveFile($path);
 
 			$item->image = $this->options['uploaded']['name'];
 			$item->save();
@@ -41,5 +34,15 @@ class PluploadController extends BaseModelController {
 
 		return Response::json(array('test' => 'here'));
 	}
+
+    protected function recieveFile($path) {
+        return Plupload::receive('file', function ($file) use ($path) {
+            $this->options['uploaded']['name'] = time() . $file->getClientOriginalName();
+
+            $file = $file->move($path, $this->options['uploaded']['name']);
+
+            $this->options['uploaded']['instance'] = $file;
+        });
+    }
 
 }
