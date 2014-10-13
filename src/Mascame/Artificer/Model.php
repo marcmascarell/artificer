@@ -327,16 +327,40 @@ class Model {
 		$fields = ModelOption::get('fields');
 
 		if (!empty($fields)) {
-			foreach ($fields as $field) {
-				if (isset($field['relationship']) && isset($field['relationship']['method'])) {
-					$this->relations = $field['relationship']['method'];
-				}
-			}
+			$this->relations[] = $this->getFieldsWithRelations($fields);
 		}
 
 		return $this->relations;
 	}
 
+	/**
+	 * @param $field
+	 * @return bool
+	 */
+	private function hasRelation($field) {
+		return isset($field['relationship']) && isset($field['relationship']['method']);
+	}
+
+	/**
+	 * @param $fields
+	 * @return array
+	 */
+	private function getFieldsWithRelations($fields) {
+		$relations = array();
+
+		foreach ($fields as $field) {
+			if ($this->hasRelation($field)) {
+				$relations = $field['relationship']['method'];
+			}
+		}
+
+		return $relations;
+	}
+
+	/**
+	 * @param $modelName
+	 * @return bool
+	 */
 	public function isHidden($modelName)
 	{
 		return (in_array($modelName, AdminOption::get('models.hidden'))) ? true : false;
@@ -360,10 +384,16 @@ class Model {
 		View::share('model', $model);
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isGuarded() {
 		return (isset($this->options['guarded']) && !empty($this->options['guarded'])) ? true : false;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isFillable() {
 		return (isset($this->options['fillable']) && !empty($this->options['fillable'])) ? true : false;
 	}
