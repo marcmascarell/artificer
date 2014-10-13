@@ -16,7 +16,7 @@ class UserController extends BaseController {
     public $ban_time = 5;
     public $ban_key = 'artificer.user.login.banned';
 
-    public function isBanned() {
+	private function isBanned() {
         if (Session::has($this->ban_key)) {
             $ban = Carbon::parse(Session::get($this->ban_key));
 
@@ -30,12 +30,11 @@ class UserController extends BaseController {
         return false;
     }
 
-    public function ban() {
+    private function ban() {
         Session::set($this->ban_key, Carbon::now()->addMinutes($this->ban_time));
     }
 
-
-    public function addAttempt() {
+	private function addAttempt() {
         $tries = Session::get($this->tries_key);
 
         if (!$tries) {
