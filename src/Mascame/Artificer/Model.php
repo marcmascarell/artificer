@@ -135,6 +135,17 @@ class Model {
 		return (isset($this->models[self::$current]['route'])) ? $this->models[self::$current]['route'] : null;
 	}
 
+	protected function isCurrent($modelName) {
+		$slug = Route::current()->parameter('slug');
+
+		return (!self::$current && $slug == $modelName || $slug == strtolower($modelName));
+	}
+
+	protected function setCurrent($modelName) {
+		self::$current = $modelName;
+		ModelOption::set('current', $modelName);
+	}
+
 	/**
 	 * @param $directory
 	 * @return array
@@ -142,14 +153,12 @@ class Model {
 	protected function scanModelsDirectory($directory)
 	{
 		$models = array();
-		$slug = Route::current()->parameter('slug');
 
 		foreach (File::allFiles($directory) as $modelPath) {
 			$modelName = $this->getFromFileName($modelPath);
 
-			if (!self::$current && $slug == $modelName || $slug == strtolower($modelName)) {
-				self::$current = $modelName;
-				ModelOption::set('current', $modelName);
+			if ($this->isCurrent($modelName)) {
+				$this->setCurrent($modelName);
 			}
 
 			if (!ModelPermit::access($modelName)) continue;
@@ -163,6 +172,11 @@ class Model {
 		}
 
 		return $models;
+	}
+
+	private function getModel()
+	{
+
 	}
 
 	/**
