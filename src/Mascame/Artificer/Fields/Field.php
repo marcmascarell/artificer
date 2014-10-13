@@ -378,21 +378,26 @@ abstract class Field implements FieldInterface {
 
 	public function getRelationMethod()
 	{
-		return isset($this->fieldOptions['relationship']['method']) ? $this->fieldOptions['relationship']['method'] : false;
+		return $this->getRelationAttribute('method');
 	}
 
 	public function getRelatedModel()
 	{
-		return isset($this->fieldOptions['relationship']['model']) ? $this->fieldOptions['relationship']['model'] : false;
+		return $this->getRelationAttribute('model');
 	}
 
 	public function getRelationType()
 	{
-		return isset($this->fieldOptions['relationship']['type']) ? $this->fieldOptions['relationship']['type'] : false;
+		return $this->getRelationAttribute('type');
 	}
 
 	public function getRelationForeignKey()
 	{
-		return isset($this->fieldOptions['relationship']['foreign']) ? $this->fieldOptions['relationship']['foreign'] : false;
+		return $this->getRelationAttribute('foreign');
+	}
+
+	public function getRelationAttribute($attribute)
+	{
+		return isset($this->fieldOptions['relationship'][$attribute]) ? $this->fieldOptions['relationship'][$attribute] : false;
 	}
 }
