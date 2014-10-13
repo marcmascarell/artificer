@@ -81,7 +81,13 @@ class Model {
 		$this->models = $this->getModels();
 		$this->tables = $this->getTables($this->models);
 
-		// Todo: improve this condition-....
+		$this->getCurrentModel();
+
+		View::share('tables', $this->tables);
+		View::share('models', $this->models);
+	}
+
+	private function getCurrentModel() {
 		if (in_array(Route::currentRouteName(),
 			array(
 				'admin.all',
@@ -107,9 +113,6 @@ class Model {
 
 			$this->share();
 		}
-
-		View::share('tables', $this->tables);
-		View::share('models', $this->models);
 	}
 
 	public function hasColumn($column) {
