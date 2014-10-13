@@ -28,7 +28,7 @@ class GalleryPlugin extends Plugin {
 	public function boot()
 	{
 		Event::listen(array('artificer.field.pluploadfield.output', 'artificer.field.image.output'), function ($image) {
-			$thumbnails = $this->getThumbnailLayouts();
+//			$thumbnails = $this->getThumbnailLayouts();
 
 //            foreach ($thumbnails as $thumbnail) {
 //                if (!$thumbnail['function']($image)) {
