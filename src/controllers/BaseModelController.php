@@ -166,7 +166,7 @@ class BaseModelController extends BaseController {
 
 		foreach ($this->getFields($data) as $field) {
 
-			if ($field->type == 'file' || $field->type == 'image') {
+			if ($this->isFileInput($field->type)) {
 
 				if (Input::hasFile($field->name)) {
 					$new_data[$field->name] = $this->uploadFile($field->name);
@@ -178,6 +178,10 @@ class BaseModelController extends BaseController {
 
 		return array_merge($data, $new_data);
 	}
+
+    protected function isFileInput($type) {
+        return ($type == 'file' || $type == 'image');
+    }
 
 	/**
 	 * This is used for simple upload (no plugins)
