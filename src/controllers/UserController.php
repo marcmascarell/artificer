@@ -79,10 +79,18 @@ class UserController extends BaseController {
 				->withInput();
 		}
 
-		$user = \User::where('email', '=', Input::get('username'))->first();
+        if ($this->isValidUser()) return Redirect::route('admin.home');
+
+		return Redirect::route('admin.login')
+			->withInput(Input::except('password'))->withErrors(array('The user credentials are not correct or does not have access'));
+	}
+
+    public function isValidUser()
+    {
+        $user = \User::where('email', '=', Input::get('username'))->first();
 
         if ($user) {
-			$role_colum = AdminOption::get('auth.role_column');
+            $role_colum = AdminOption::get('auth.role_column');
 
             if (in_array($user->$role_colum, AdminOption::get('auth.roles'))) {
 
@@ -92,14 +100,13 @@ class UserController extends BaseController {
                 );
 
                 if (Auth::attempt($userdata)) {
-                    return Redirect::route('admin.home');
+                    return true;
                 }
             }
         }
 
-		return Redirect::route('admin.login')
-			->withInput(Input::except('password'))->withErrors(array('The user credentials are not correct or does not have access'));
-	}
+        return false;
+    }
 
 	public function logout()
 	{
