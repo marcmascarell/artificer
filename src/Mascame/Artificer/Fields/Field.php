@@ -300,7 +300,7 @@ abstract class Field implements FieldInterface {
 	{
 		$list = ($this->hasList($list)) ? $this->options[$list] : array();
 
-		if ($list == '*' || is_array($list) && isset($list[0]) && $list[0] == '*') {
+		if (is_array($list) && isset($list[0]) && $list[0] == '*') {
 			return true;
 		}
 
