@@ -174,11 +174,6 @@ class Model {
 		return $models;
 	}
 
-	private function getModel()
-	{
-
-	}
-
 	/**
 	 * @param $models
 	 * @return array
