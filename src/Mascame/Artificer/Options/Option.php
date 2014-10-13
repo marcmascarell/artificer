@@ -26,6 +26,9 @@ class Option {
 		return Option::get(self::$config_path . $key);
 	}
 
+	/**
+	 * @param string $key
+	 */
 	public static function set($key, $value)
 	{
 		Config::set(self::$config_path . $key, $value);

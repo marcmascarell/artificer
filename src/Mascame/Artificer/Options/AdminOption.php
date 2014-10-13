@@ -4,6 +4,9 @@ class AdminOption extends Option {
 
 	public static $key = 'admin';
 
+	/**
+	 * @param string $key
+	 */
 	public static function get($key = null)
 	{
 		return Option::get(self::$key . '.' . $key);

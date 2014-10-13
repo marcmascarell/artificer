@@ -2,14 +2,11 @@
 
 use Input;
 use Auth;
-use File;
 use Mascame\Artificer\Fields\Field;
 use View;
-use Mascame\Artificer\Fields\Factory as FieldFactory;
 use Controller;
 use App;
 use Mascame\Artificer\Options\AdminOption;
-use Mascame\Artificer\Options\Option;
 use Mascame\Artificer\Permit;
 
 // Todo: Make some models forbidden for some users
@@ -30,7 +27,6 @@ class BaseController extends Controller {
     public $modelObject = null;
 
     /**
-     * @param Model $model
      */
     public function __construct()
     {
@@ -72,6 +68,9 @@ class BaseController extends Controller {
         return $this->menu;
     }
 
+    /**
+     * @param string $view
+     */
     public function getView($view)
     {
         return $this->theme . '.' . $view;

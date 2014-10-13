@@ -1,6 +1,5 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
-use HTML;
 use Request;
 use Route;
 use Session;

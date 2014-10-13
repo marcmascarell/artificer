@@ -2,7 +2,6 @@
 
 use Form;
 use Str;
-use Mascame\Artificer\Widgets\FocalPoint\Focalpoint;
 
 class Image extends File {
 

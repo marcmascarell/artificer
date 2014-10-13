@@ -1,7 +1,5 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Fields\Field;
-use Form;
 use HTML;
 
 

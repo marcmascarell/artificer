@@ -236,7 +236,7 @@ class BaseModelController extends BaseController {
 
 	/**
 	 * @param $validator
-	 * @param $route
+	 * @param string $route
 	 * @return $this
 	 */
 	protected function redirect($validator, $route)

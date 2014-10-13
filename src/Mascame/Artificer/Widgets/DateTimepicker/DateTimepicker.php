@@ -1,7 +1,6 @@
 <?php namespace Mascame\Artificer\Widgets\DateTimepicker;
 
 use Mascame\Artificer\Widgets\Widget;
-use Lang;
 
 class DateTimepicker extends Widget {
 
