@@ -134,6 +134,7 @@ class UserController extends BaseController {
     }
 
     /**
+     * @param \Illuminate\Database\Eloquent\Model|null $user
      * @return bool
      */
     protected function isValidUser($user)

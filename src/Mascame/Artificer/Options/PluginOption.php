@@ -6,6 +6,7 @@ class PluginOption extends Option {
 
 	/**
 	 * @param string $plugin
+	 * @param string $key
 	 */
 	public static function get($key = null, $plugin = null)
 	{

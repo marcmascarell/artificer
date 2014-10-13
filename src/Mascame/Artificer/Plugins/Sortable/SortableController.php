@@ -58,6 +58,7 @@ class SortableController extends BaseModelController {
     /**
      * @param $old_sort_id
      * @param $new_sort_id
+     * @param string $direction
      */
     protected function reorder($direction, $old_sort_id, $new_sort_id)
     {
