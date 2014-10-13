@@ -11,10 +11,12 @@ use Session;
 
 class UserController extends BaseController {
 
-    public $max_tries = 3;
     public $tries_key = 'artificer.user.login.tries';
-    public $ban_time = 5;
     public $ban_key = 'artificer.user.login.banned';
+
+	private function unban() {
+		Session::forget($this->ban_key);
+	}
 
 	private function isBanned() {
         if (Session::has($this->ban_key)) {
@@ -25,13 +27,13 @@ class UserController extends BaseController {
             }
         }
 
-        Session::forget($this->ban_key);
+        $this->unban();
 
         return false;
     }
 
     private function ban() {
-        Session::set($this->ban_key, Carbon::now()->addMinutes($this->ban_time));
+        Session::set($this->ban_key, Carbon::now()->addMinutes(AdminOption::get('auth.ban_time')));
     }
 
 	private function addAttempt() {
@@ -45,7 +47,7 @@ class UserController extends BaseController {
 
         Session::set($this->tries_key, $tries);
 
-        if ($tries >= $this->max_tries) {
+        if ($tries >= AdminOption::get('auth.max_login_attempts')) {
             $this->ban();
             Session::forget($this->tries_key);
         }
@@ -60,10 +62,7 @@ class UserController extends BaseController {
 
 	public function login()
 	{
-        if ($this->isBanned()) {
-            return Redirect::route('admin.showlogin')
-                ->withErrors(array("You are banned for too many login attempts"));
-        }
+		if ($this->isBanned()) return Redirect::route('admin.showlogin')->withErrors(array("You are banned for too many login attempts"));
 
 		$rules = array(
 			'username' => 'required|email',
@@ -99,7 +98,7 @@ class UserController extends BaseController {
         }
 
 		return Redirect::route('admin.login')
-			->withInput(Input::except('password'))->withErrors($validator);
+			->withInput(Input::except('password'))->withErrors(array('The user credentials are not correct or does not have access'));
 	}
 
 	public function logout()

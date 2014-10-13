@@ -33,9 +33,9 @@
 
     @if (!$items->isEmpty())
         {{ HTML::table($model, $items, $fields, $models[$model['name']]['options'], $sort,
-        $permit['show_view'],
-        $permit['show_update'],
-        $permit['show_delete'])
+        $permit['view'],
+        $permit['update'],
+        $permit['delete'])
         }}
 
         {{ Form::open(array('route' => array('admin.sort', $model['route'], '', ''))) }}
