@@ -97,7 +97,7 @@ class UserController extends BaseController {
 				->withInput();
 		}
 
-        if ($this->isValidUser()) return Redirect::route('admin.home');
+        if ($this->isValidUser($this->getUser())) return Redirect::route('admin.home');
 
 		return Redirect::route('admin.login')
 			->withInput(Input::except('password'))->withErrors(array('The user credentials are not correct or does not have access'));
@@ -135,9 +135,9 @@ class UserController extends BaseController {
     /**
      * @return bool
      */
-    protected function isValidUser()
+    protected function isValidUser($user)
     {
-        if ($user = $this->getUser()) {
+        if ($user) {
             if ($this->attemptLogin($user)) return true;
         }
 
