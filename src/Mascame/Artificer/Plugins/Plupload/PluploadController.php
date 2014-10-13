@@ -35,6 +35,9 @@ class PluploadController extends BaseModelController {
 		return Response::json(array('test' => 'here'));
 	}
 
+    /**
+     * @param string $path
+     */
     protected function recieveFile($path) {
         return Plupload::receive('file', function ($file) use ($path) {
             $this->options['uploaded']['name'] = time() . $file->getClientOriginalName();

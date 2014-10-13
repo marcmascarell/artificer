@@ -55,6 +55,11 @@ class PluginController extends BaseController {
 		return Redirect::route('admin.page.plugins');
 	}
 
+    /**
+     * @param string $from
+     * @param string $to
+     * @param string $message
+     */
     protected function modifyPluginsFile($plugins, $plugin, $from, $to, $message) {
         try {
             if (($key = array_search($plugin, $plugins[$from])) !== false) {

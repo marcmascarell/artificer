@@ -75,7 +75,7 @@ abstract class Field implements FieldInterface {
 
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 * @param $value
 	 */
 	public function fieldSet($key, $value)
