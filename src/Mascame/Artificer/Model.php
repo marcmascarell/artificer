@@ -2,6 +2,7 @@
 
 use Mascame\Artificer\Permit\ModelPermit;
 use View;
+use Str;
 use Schema;
 use File;
 use Route;
@@ -150,24 +151,27 @@ class Model {
 		$models = array();
 
 		foreach (File::allFiles($directory) as $modelPath) {
-			$modelName = $this->getFromFileName($modelPath);
+            $modelName = $this->getFromFileName($modelPath);
 
-			if ($this->isCurrent($modelName)) {
-				$this->setCurrent($modelName);
-			}
+            if (!ModelPermit::access($modelName)) continue;
 
-			if (!ModelPermit::access($modelName)) continue;
-
-			$models[$modelName] = array(
-				'name'    => $modelName,
-				'route'   => strtolower($modelName),
-				'options' => $this->getOptions($modelName),
-				'hidden'  => $this->isHidden($modelName)
-			);
+            $models[$modelName] = $this->getModelData($modelName);
 		}
 
 		return $models;
 	}
+
+    private function getModelData($modelName)
+    {
+        if ($this->isCurrent($modelName)) $this->setCurrent($modelName);
+
+        return array(
+            'name'    => $modelName,
+            'route'   => strtolower($modelName),
+            'options' => $this->getOptions($modelName),
+            'hidden'  => $this->isHidden($modelName)
+        );
+    }
 
 	/**
 	 * @param $models
