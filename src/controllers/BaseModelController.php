@@ -17,7 +17,7 @@ use Route;
 class BaseModelController extends BaseController {
 
 	/**
-	 * @var null
+	 * @var Model
 	 */
 	protected $model;
 
@@ -123,7 +123,7 @@ class BaseModelController extends BaseController {
 	 * @param $items
 	 * @return null
 	 */
-	protected static function getCurrentModelId($items)
+	public static function getCurrentModelId($items)
 	{
 		if (isset($items->id)) {
 			return $items->id;
