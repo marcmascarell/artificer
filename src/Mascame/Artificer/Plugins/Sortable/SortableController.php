@@ -63,7 +63,7 @@ class SortableController extends BaseModelController {
 			Notification::success('<b>Success!</b> The table has been reordered!', true);
 		}
 
-		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
+		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
 	}
 
 	public function handleDeletedRow($modelName, $old_id)

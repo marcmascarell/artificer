@@ -53,8 +53,8 @@ class hasOne extends Relation {
 		print Form::select($this->name, array('0' => '(none)') + $select, $id, $this->getAttributes());
 
         if (!Request::ajax()) {
-            $new_url = \URL::route('admin.create', array('slug' => $model->models[$modelName]['route']));
-            $edit_url = \URL::route('admin.edit', array('slug' => $model->models[$modelName]['route'], 'id' => $id));
+            $new_url = \URL::route('admin.model.create', array('slug' => $model->models[$modelName]['route']));
+            $edit_url = \URL::route('admin.model.edit', array('slug' => $model->models[$modelName]['route'], 'id' => $id));
             ?>
 
             <br>

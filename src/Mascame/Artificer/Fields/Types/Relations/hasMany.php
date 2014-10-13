@@ -27,7 +27,7 @@ class hasMany extends Relation {
 		$model['class'] = $this->modelObject->getClass($modelName);
 		$this->model = $model;
 
-        if ((Route::currentRouteName() == 'admin.create' || Route::currentRouteName() == 'admin.field')
+        if ((Route::currentRouteName() == 'admin.model.create' || Route::currentRouteName() == 'admin.model.field')
             && Session::has('_set_relation_on_create_'.$this->modelObject->name)) {
             $relateds = Session::get('_set_relation_on_create_'.$this->modelObject->name);
 
@@ -53,7 +53,7 @@ class hasMany extends Relation {
 	public function showItems($data)
 	{
 		if (!Request::ajax()) { ?>
-			<div data-refresh-field="<?= \URL::route('admin.field',
+			<div data-refresh-field="<?= \URL::route('admin.model.field',
 				array('slug'  => $this->modelObject->getRouteName(),
 					  'id'    => ($this->fields['id']->value) ? $this->fields['id']->value : 0,
 					  'field' => $this->name)) ?>">
@@ -88,7 +88,7 @@ class hasMany extends Relation {
 						<i class="glyphicon glyphicon-edit"></i>
 					</button>
 					<a data-method="delete" data-token="<?= csrf_token() ?>"
-					   href="<?= route('admin.destroy', array('slug' => $this->model['route'], 'id' => $item['id']), $absolute = true) ?>"
+					   href="<?= route('admin.model.destroy', array('slug' => $this->model['route'], 'id' => $item['id']), $absolute = true) ?>"
 					   type="button" class="btn btn-default">
 						<i class="glyphicon glyphicon-remove"></i>
 					</a>

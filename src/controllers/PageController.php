@@ -9,7 +9,7 @@ class PageController extends BaseController {
 	{
         $first_model = head($this->modelObject->models);
 
-		return Redirect::route('admin.all', array('slug' => $first_model['route']));
+		return Redirect::route('admin.model.all', array('slug' => $first_model['route']));
 	}
 
 }

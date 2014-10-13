@@ -38,7 +38,7 @@
             </ul>
 
             <div class="text-right">
-                <a href="{{ route('admin.edit', array($model['route'], $fields['id']->value)) }}" class="btn btn-primary">
+                <a href="{{ route('admin.model.edit', array($model['route'], $fields['id']->value)) }}" class="btn btn-primary">
                     <i class="glyphicon glyphicon-edit"></i> Edit
                 </a>
             </div>

@@ -25,7 +25,7 @@
 
     <div class="row">
         <div class="col-md-12 text-right">
-            <a href="{{ route('admin.create', $model['route']) }}" class="btn btn-primary">
+            <a href="{{ route('admin.model.create', $model['route']) }}" class="btn btn-primary">
                 <i class="fa fa-plus"></i> New
             </a>
         </div>
@@ -38,7 +38,7 @@
         $permit['delete'])
         }}
 
-        {{ Form::open(array('route' => array('admin.sort', $model['route'], '', ''))) }}
+        {{ Form::open(array('route' => array('admin.model.sort', $model['route'], '', ''))) }}
             {{ Form::submit('Submit!', array('class' => 'hidden', 'id' => 'sort-submit')); }}
         {{ Form::close() }}
     @else

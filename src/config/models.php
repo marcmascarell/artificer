@@ -11,13 +11,13 @@ return array(
 	),
 
 	'route_permission' => array(
-		'admin.store'   => 'create',
-		'admin.create'  => 'create',
-		'admin.update'  => 'update',
-		'admin.edit'    => 'update',
-		'admin.destroy' => 'delete',
-		'admin.show'    => 'view',
-		'admin.all'     => 'view',
+		'admin.model.store'   => 'create',
+		'admin.model.create'  => 'create',
+		'admin.model.update'  => 'update',
+		'admin.model.edit'    => 'update',
+		'admin.model.destroy' => 'delete',
+		'admin.model.show'    => 'view',
+		'admin.model.all'     => 'view',
 	),
 
 );

@@ -20,7 +20,7 @@ class ModelController extends BaseModelController {
 		$this->handleData(new $this->modelObject->class);
 
 		$form = array(
-			'form_action_route' => 'admin.store',
+			'form_action_route' => 'admin.model.store',
 			'form_method'       => 'post'
 		);
 
@@ -37,7 +37,7 @@ class ModelController extends BaseModelController {
 		$data = $this->filterInputData();
 
 		$validator = $this->validator($data);
-		if ($validator->fails()) return $this->redirect($validator, 'admin.create');
+		if ($validator->fails()) return $this->redirect($validator, 'admin.model.create');
 
 		$this->handleData($data);
 
@@ -74,7 +74,7 @@ class ModelController extends BaseModelController {
 			return Response::json($item->toArray());
 		}
 
-		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
+		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
 	}
 
 	/**
@@ -118,7 +118,7 @@ class ModelController extends BaseModelController {
 		$this->handleData($this->model->with($this->modelObject->getRelations())->findOrFail($id));
 
 		$form = array(
-			'form_action_route' => 'admin.update',
+			'form_action_route' => 'admin.model.update',
 			'form_method'       => 'put'
 		);
 
@@ -139,7 +139,7 @@ class ModelController extends BaseModelController {
 		$data = $this->filterInputData();
 
 		$validator = $this->validator($data);
-		if ($validator->fails()) return $this->redirect($validator, 'admin.edit');
+		if ($validator->fails()) return $this->redirect($validator, 'admin.model.edit');
 
 		$item->update(with($this->handleFiles($data)));
 
@@ -147,7 +147,7 @@ class ModelController extends BaseModelController {
 			return Response::json($item->toArray());
 		}
 
-		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
+		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
 	}
 
 	/**
@@ -177,7 +177,7 @@ class ModelController extends BaseModelController {
 
 		return Redirect::back();
 
-//		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
+//		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
 	}
 
 }

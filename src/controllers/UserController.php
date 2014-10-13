@@ -62,7 +62,7 @@ class UserController extends BaseController {
 
 	public function login()
 	{
-		if ($this->isBanned()) return Redirect::route('admin.showlogin')->withErrors(array("You are banned for too many login attempts"));
+		if ($this->isBanned()) return Redirect::route('admin.model.showlogin')->withErrors(array("You are banned for too many login attempts"));
 
 		$rules = array(
 			'username' => 'required|email',
@@ -74,7 +74,7 @@ class UserController extends BaseController {
 		if ($validator->fails()) {
             $this->addAttempt();
 
-			return Redirect::route('admin.showlogin')
+			return Redirect::route('admin.model.showlogin')
 				->withErrors($validator)
 				->withInput();
 		}
@@ -105,7 +105,7 @@ class UserController extends BaseController {
 	{
 		Auth::logout();
 
-		return Redirect::route('admin.showlogin');
+		return Redirect::route('admin.model.showlogin');
 	}
 
 }

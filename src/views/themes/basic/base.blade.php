@@ -132,7 +132,7 @@
 <!--            <ul>-->
 <!--                @foreach ($models as $m)-->
 <!--                    <li>-->
-<!--                        <a href="{{ route('admin.all', array('slug' => $m['route'])) }}">-->
+<!--                        <a href="{{ route('admin.model.all', array('slug' => $m['route'])) }}">-->
 <!--                            @if (isset($m['options']['title']))-->
 <!--                                {{ $m['options']['title'] }}-->
 <!--                            @else-->
@@ -161,7 +161,7 @@
 
 						@foreach ($models as $m)
 						<li>
-							<a href="{{ route('admin.all', array('slug' => $m['route'])) }}">
+							<a href="{{ route('admin.model.all', array('slug' => $m['route'])) }}">
 								@if (isset($m['options']['title']))
 								{{ $m['options']['title'] }}
 								@else

@@ -48,7 +48,7 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 		<table class="table table-bordered table-striped datatable"
 			   data-page="<?= Paginator::getCurrentPage() ?>"
 			   data-start="<?= $data[0]->sort_id ?>"
-			   data-sort-url="<?= URL::route("admin.sort", array($model['route'], 'replace_old_id', 'replace_new_id')) ?>">
+			   data-sort-url="<?= URL::route("admin.model.sort", array($model['route'], 'replace_old_id', 'replace_new_id')) ?>">
 			<thead>
 			<tr>
 				<?php foreach ($fields as $field) {
@@ -100,7 +100,7 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 						<td class="text-center">
 							<div class="btn-group">
 								<?php if ($showEdit) { ?>
-									<a href="<?= route('admin.edit', array('slug' => $model['route'], 'id' => $d->id), $absolute = true) ?>"
+									<a href="<?= route('admin.model.edit', array('slug' => $model['route'], 'id' => $d->id), $absolute = true) ?>"
 									   type="button" class="btn btn-default">
 										<i class="glyphicon glyphicon-edit"></i>
 									</a>
@@ -115,7 +115,7 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 
 								<?php if ($showDelete) { ?>
 									<a data-method="delete" data-token="<?= csrf_token() ?>"
-									   href="<?= route('admin.destroy', array('slug' => $model['route'], 'id' => $d->id), $absolute = true) ?>"
+									   href="<?= route('admin.model.destroy', array('slug' => $model['route'], 'id' => $d->id), $absolute = true) ?>"
 									   type="button" class="btn btn-default">
 										<i class="glyphicon glyphicon-remove"></i>
 									</a>
@@ -135,7 +135,7 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 
 //HTML::macro('table_php', function($model, $data = array(), $fields, $options, $showEdit = true, $showDelete = true, $showView = true){
 //
-//    $table = '<table class="table table-bordered table-striped" data-page="'.Paginator::getCurrentPage().'" data-start="'.$data[0]->sort_id.'" data-sort-url="'.URL::route("admin.sort", array($model['keyname'],'replace_old_id','replace_new_id')).'">';
+//    $table = '<table class="table table-bordered table-striped" data-page="'.Paginator::getCurrentPage().'" data-start="'.$data[0]->sort_id.'" data-sort-url="'.URL::route("admin.model.sort", array($model['keyname'],'replace_old_id','replace_new_id')).'">';
 //
 //    $table .='<tr>';
 //
@@ -162,14 +162,14 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 //        {
 //            $table .= '<td>';
 //            if ($showEdit)
-//                $table .= '<a href="'. route('admin.edit', array('slug' => $model['keyname'], 'id' => $d->id), $absolute = true) .'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i></a> ';
+//                $table .= '<a href="'. route('admin.model.edit', array('slug' => $model['keyname'], 'id' => $d->id), $absolute = true) .'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i></a> ';
 //            if ($showView)
 //                $table .= '<a href="' . $model['keyname'] . '/' . $d->id . '" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a> ';
 //            if ($showDelete)
 //
 //
-//                $table .= '<a data-method="delete" href="' . route('admin.destroy', array('slug' => $model['keyname'], 'id' => $d->id), $absolute = true) . '" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a> ';
-////                    $table .= '<a href="' . route('admin.destroy', array('slug' => $model['keyname'], 'id' => $d->id), $absolute = true) . '" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</a> ';
+//                $table .= '<a data-method="delete" href="' . route('admin.model.destroy', array('slug' => $model['keyname'], 'id' => $d->id), $absolute = true) . '" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a> ';
+////                    $table .= '<a href="' . route('admin.model.destroy', array('slug' => $model['keyname'], 'id' => $d->id), $absolute = true) . '" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</a> ';
 //            $table .= '</td>';
 //        }
 //

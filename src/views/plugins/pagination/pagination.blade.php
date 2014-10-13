@@ -23,7 +23,7 @@ $presenter = new Illuminate\Pagination\BootstrapPresenter($paginator);
                 }
             </style>
 
-            {{ Form::open(array('route' => array('admin.pagination', $model['route']), 'class' => "pagination-modifier form-inline")) }}
+            {{ Form::open(array('route' => array('admin.model.pagination', $model['route']), 'class' => "pagination-modifier form-inline")) }}
                 {{ Form::text('pagination', null, array('placeholder' => $artificer_pagination, 'class' => 'form-control')) }}
                 {{ Form::submit('Show', array('class' => 'btn')); }}
             {{ Form::close() }}

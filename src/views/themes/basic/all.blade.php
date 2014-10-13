@@ -10,7 +10,7 @@
 
 {{ HTML::table($model, $items, $fields, $models[$model['name']]['options'], $sort) }}
 
-{{ Form::open(array('route' => array('admin.sort', $model['keyname'], '', ''))) }}
+{{ Form::open(array('route' => array('admin.model.sort', $model['keyname'], '', ''))) }}
     {{ Form::submit('Submit!', array('class' => 'hidden', 'id' => 'sort-submit')); }}
 {{ Form::close() }}
 

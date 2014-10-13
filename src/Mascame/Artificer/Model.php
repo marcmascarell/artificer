@@ -87,21 +87,12 @@ class Model {
 		View::share('models', $this->models);
 	}
 
-	private function getCurrentModel() {
-		if (in_array(Route::currentRouteName(),
-			array(
-				'admin.all',
-				'admin.show',
-				'admin.edit',
-				'admin.update',
-				'admin.create',
-				'admin.store',
-				'admin.destroy',
-				'admin.sort',
-				'admin.upload',
-				'admin.pagination',
-				'admin.field',
-			))
+	/**
+	 *
+	 */
+	private function getCurrentModel()
+	{
+		if (Str::startsWith(Route::currentRouteName(), 'admin.model.')
 		) {
 			$this->name = self::getCurrent();
 			$this->class = $this->getClass($this->name);
@@ -115,7 +106,8 @@ class Model {
 		}
 	}
 
-	public function hasColumn($column) {
+	public function hasColumn($column)
+	{
 		return (is_array($column) && in_array($column, $this->columns)) ? true : false;
 	}
 
@@ -138,13 +130,15 @@ class Model {
 		return (isset($this->models[self::$current]['route'])) ? $this->models[self::$current]['route'] : null;
 	}
 
-	protected function isCurrent($modelName) {
+	protected function isCurrent($modelName)
+	{
 		$slug = Route::current()->parameter('slug');
 
 		return (!self::$current && $slug == $modelName || $slug == strtolower($modelName));
 	}
 
-	protected function setCurrent($modelName) {
+	protected function setCurrent($modelName)
+	{
 		self::$current = $modelName;
 		ModelOption::set('current', $modelName);
 	}
@@ -167,10 +161,10 @@ class Model {
 			if (!ModelPermit::access($modelName)) continue;
 
 			$models[$modelName] = array(
-				'name' => $modelName,
-				'route' => strtolower($modelName),
+				'name'    => $modelName,
+				'route'   => strtolower($modelName),
 				'options' => $this->getOptions($modelName),
-				'hidden' => $this->isHidden($modelName)
+				'hidden'  => $this->isHidden($modelName)
 			);
 		}
 
@@ -181,7 +175,8 @@ class Model {
 	 * @param $models
 	 * @return array
 	 */
-	private function mergeModelDirectories($models) {
+	private function mergeModelDirectories($models)
+	{
 		$merged_models = array();
 
 		foreach ($models as $key => $model) {
@@ -349,7 +344,8 @@ class Model {
 	 * @param $field
 	 * @return bool
 	 */
-	private function hasRelation($field) {
+	private function hasRelation($field)
+	{
 		return isset($field['relationship']) && isset($field['relationship']['method']);
 	}
 
@@ -357,7 +353,8 @@ class Model {
 	 * @param $fields
 	 * @return array
 	 */
-	private function getFieldsWithRelations($fields) {
+	private function getFieldsWithRelations($fields)
+	{
 		$relations = array();
 
 		foreach ($fields as $field) {
@@ -399,14 +396,16 @@ class Model {
 	/**
 	 * @return bool
 	 */
-	public function isGuarded() {
+	public function isGuarded()
+	{
 		return (isset($this->options['guarded']) && !empty($this->options['guarded'])) ? true : false;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function isFillable() {
+	public function isFillable()
+	{
 		return (isset($this->options['fillable']) && !empty($this->options['fillable'])) ? true : false;
 	}
 }

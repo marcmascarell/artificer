@@ -45,7 +45,7 @@
 
 			    @if (!$m['hidden'])
                     <li>
-                        <a href="{{ route('admin.all', array('slug' => $m['route'])) }}">
+                        <a href="{{ route('admin.model.all', array('slug' => $m['route'])) }}">
                             <i class="fa fa-angle-right"></i>
                             @if (isset($m['options']['title']))
                                 {{ $m['options']['title'] }}

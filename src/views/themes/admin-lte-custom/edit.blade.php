@@ -31,12 +31,12 @@
                 'id' => 'admin-form',
                 'method' => $form_method,
                 'files' => true,
-                'data-file-upload' => URL::route("admin.upload", array($model["route"], \Mascame\Artificer\Artificer::getCurrentModelId($items)))
+                'data-file-upload' => URL::route("admin.model.upload", array($model["route"], \Mascame\Artificer\Artificer::getCurrentModelId($items)))
                 )
 			); }}
 
 				@foreach ($fields as $field)
-                    @unless ( $field->isHidden() || (Route::currentRouteName() == 'admin.create' && $field->name == 'id'))
+                    @unless ( $field->isHidden() || (Route::currentRouteName() == 'admin.model.create' && $field->name == 'id'))
                         <div class="form-group">
                             ({{ $field->type }})
 

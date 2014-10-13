@@ -14,11 +14,11 @@ class Relation extends Field {
 	public $createURL;
 
 	public function editURL($model_route, $id) {
-		return URL::route('admin.edit', array('slug' => $model_route, 'id' => $id));
+		return URL::route('admin.model.edit', array('slug' => $model_route, 'id' => $id));
 	}
 
 	public function createURL($model_route) {
-		return URL::route('admin.create', array('slug' => $model_route));
+		return URL::route('admin.model.create', array('slug' => $model_route));
 	}
 
 	public function relationModal()
@@ -74,7 +74,7 @@ class Relation extends Field {
 
 					$form.prepend('<input type="hidden" name="_standalone" value="<?=$this->model['route']?>">');
 
-                    <?php if (Route::currentRouteName() == 'admin.create') { ?>
+                    <?php if (Route::currentRouteName() == 'admin.model.create') { ?>
                     $form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=Model::getCurrent()?>">');
                     $form.prepend('<input type="hidden" name="_set_relation_on_create_foreign" value="<?=$this->relation['foreign']?>">');
                     <?php } ?>

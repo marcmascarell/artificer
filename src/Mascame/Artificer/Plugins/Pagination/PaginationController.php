@@ -18,7 +18,7 @@ class PaginationController extends BaseModelController {
 		$pagination = Input::get('pagination');
 		Pagination::setPagination($pagination, $modelName);
 
-		return Redirect::route('admin.all', array('slug' => $this->modelObject->getRouteName()));
+		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
 	}
 
 	/**

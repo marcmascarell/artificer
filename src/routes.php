@@ -22,7 +22,7 @@ Route::group(array(
 			Route::get('/', array('as' => 'admin.home', 'uses' => 'Mascame\Artificer\PageController@home'));
 
 			Route::group(array('prefix' => 'user'), function () {
-				Route::get('login', array('as' => 'admin.showlogin', 'uses' => 'Mascame\Artificer\UserController@showLogin'));
+				Route::get('login', array('as' => 'admin.model.showlogin', 'uses' => 'Mascame\Artificer\UserController@showLogin'));
 				Route::post('login', array('as' => 'admin.login', 'uses' => 'Mascame\Artificer\UserController@login'))->before('csrf');
 				Route::get('logout', array('as' => 'admin.logout', 'uses' => 'Mascame\Artificer\UserController@logout'));
 			});
@@ -34,21 +34,21 @@ Route::group(array(
 			});
 
 			Route::group(array('prefix' => 'model'), function () {
-				Route::get('{slug}', array('as' => 'admin.all', 'uses' => 'Mascame\Artificer\ModelController@all'));
-				Route::get('{slug}/create', array('as' => 'admin.create', 'uses' => 'Mascame\Artificer\ModelController@create'));
-				Route::post('{slug}/store', array('as' => 'admin.store', 'uses' => 'Mascame\Artificer\ModelController@store'));
-				Route::get('{slug}/{id}', array('as' => 'admin.show', 'uses' => 'Mascame\Artificer\ModelController@show'));
-				Route::get('{slug}/{id}/edit', array('as' => 'admin.edit', 'uses' => 'Mascame\Artificer\ModelController@edit'));
-				Route::put('{slug}/{id}', array('as' => 'admin.update', 'uses' => 'Mascame\Artificer\ModelController@update'));
-				Route::delete('{slug}/{id}', array('as' => 'admin.destroy', 'uses' => 'Mascame\Artificer\ModelController@destroy'));
+				Route::get('{slug}', array('as' => 'admin.model.all', 'uses' => 'Mascame\Artificer\ModelController@all'));
+				Route::get('{slug}/create', array('as' => 'admin.model.create', 'uses' => 'Mascame\Artificer\ModelController@create'));
+				Route::post('{slug}/store', array('as' => 'admin.model.store', 'uses' => 'Mascame\Artificer\ModelController@store'));
+				Route::get('{slug}/{id}', array('as' => 'admin.model.show', 'uses' => 'Mascame\Artificer\ModelController@show'));
+				Route::get('{slug}/{id}/edit', array('as' => 'admin.model.edit', 'uses' => 'Mascame\Artificer\ModelController@edit'));
+				Route::put('{slug}/{id}', array('as' => 'admin.model.update', 'uses' => 'Mascame\Artificer\ModelController@update'));
+				Route::delete('{slug}/{id}', array('as' => 'admin.model.destroy', 'uses' => 'Mascame\Artificer\ModelController@destroy'));
 
-				Route::get('{slug}/{id}/field/{name}', array('as' => 'admin.field', 'uses' => 'Mascame\Artificer\ModelController@getRelatedFieldOutput'));
+				Route::get('{slug}/{id}/field/{name}', array('as' => 'admin.model.field', 'uses' => 'Mascame\Artificer\ModelController@getRelatedFieldOutput'));
 
 				Event::fire('artificer.routes.model');
-				Route::post('{slug}/{id}/upload', array('as' => 'admin.upload', 'uses' => 'Mascame\Artificer\Plugins\Plupload\PluploadController@plupload'));
+				Route::post('{slug}/{id}/upload', array('as' => 'admin.model.upload', 'uses' => 'Mascame\Artificer\Plugins\Plupload\PluploadController@plupload'));
 			});
 
-			//	Route::post('upload', array('as' => 'admin.upload', function()
+			//	Route::post('upload', array('as' => 'admin.model.upload', function()
 			//	{
 			//		return Plupload::receive('file', function ($file)
 			//		{
@@ -89,5 +89,5 @@ Route::get('gestor1337', function () {
 		return Redirect::route('admin.home');
 	}
 
-	return Redirect::route('admin.showlogin');
+	return Redirect::route('admin.model.showlogin');
 });
