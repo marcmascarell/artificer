@@ -42,7 +42,9 @@ class SortableController extends BaseModelController {
 		if (!empty($item)) {
 			$item->$sort_column = 0;
 
-			$this->reorder($old_sort_id, $new_sort_id);
+            $direction = ($old_sort_id < $new_sort_id) ? 'bigger' : 'smaller';
+
+			$this->reorder($direction, $old_sort_id, $new_sort_id);
 
 			$item->$sort_column = $this->new_id;
 			$item->save();
@@ -57,10 +59,8 @@ class SortableController extends BaseModelController {
      * @param $old_sort_id
      * @param $new_sort_id
      */
-    protected function reorder($old_sort_id, $new_sort_id)
+    protected function reorder($direction, $old_sort_id, $new_sort_id)
     {
-        $direction = ($old_sort_id < $new_sort_id) ? 'bigger' : 'smaller';
-
         if ($direction == 'bigger') {
             while ($old_sort_id <= $new_sort_id) {
                 $new = $old_sort_id - 1;
