@@ -136,35 +136,66 @@ class Model {
 	}
 
 	/**
+	 * @param $directory
+	 * @return array
+	 */
+	protected function scanModelsDirectory($directory)
+	{
+		$models = array();
+		$slug = Route::current()->parameter('slug');
+
+		foreach (File::allFiles($directory) as $modelPath) {
+			$modelName = $this->getFromFileName($modelPath);
+
+			if (!self::$current && $slug == $modelName || $slug == strtolower($modelName)) {
+				self::$current = $modelName;
+				ModelOption::set('current', $modelName);
+			}
+
+			if (!ModelPermit::access($modelName)) continue;
+
+			$models[$modelName] = array(
+				'name' => $modelName,
+				'route' => strtolower($modelName),
+				'options' => $this->getOptions($modelName),
+				'hidden' => $this->isHidden($modelName)
+			);
+		}
+
+		return $models;
+	}
+
+	/**
+	 * @param $models
+	 * @return array
+	 */
+	private function mergeModelDirectories($models) {
+		$merged_models = array();
+
+		foreach ($models as $key => $model) {
+			foreach ($model as $name => $values) {
+				$merged_models[$name] = $values;
+			}
+		}
+
+		return $merged_models;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getModels()
 	{
 		if (!empty($this->models)) return $this->models;
 
-		$slug = Route::current()->parameter('slug');
 		$models = array();
 		$model_directories = AdminOption::get('models.directories');
 
 		foreach ($model_directories as $directory) {
-			foreach (File::allFiles($directory) as $modelPath) {
-				$modelName = $this->getFromFileName($modelPath);
-
-				if (!self::$current && $slug == $modelName || $slug == strtolower($modelName)) {
-					self::$current = $modelName;
-					ModelOption::set('current', $modelName);
-				}
-
-                if (!ModelPermit::access($modelName)) continue;
-
-                $models[$modelName] = array(
-                    'name' => $modelName,
-                    'route' => strtolower($modelName),
-                    'options' => $this->getOptions($modelName),
-                    'hidden' => $this->isHidden($modelName)
-                );
-			}
+			$models[] = $this->scanModelsDirectory($directory);
 		}
+
+		$models = $this->mergeModelDirectories($models);
 
 		return $models;
 	}
