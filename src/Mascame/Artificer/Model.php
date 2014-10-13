@@ -301,8 +301,6 @@ class Model {
 					$this->relations = $field['relationship']['method'];
 				}
 			}
-		} else {
-			$this->relations = array();
 		}
 
 		return $this->relations;
