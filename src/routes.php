@@ -15,7 +15,7 @@ Route::pattern('username', '[a-z0-9_-]{3,16}');
 
 Route::group(array(
 	'prefix' => LaravelLocalization::setLocale(),
-	'before' => 'LaravelLocalizationRedirectFilter|artificer-auth'),
+	'before' => 'artificer-auth|artificer-localization|LaravelLocalizationRedirectFilter'),
 	function () {
 		Route::group(array('prefix' => 'admin'), function () {
 

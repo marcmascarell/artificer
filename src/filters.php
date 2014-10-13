@@ -1,7 +1,6 @@
 <?php
 
 use \Mascame\Artificer\Options\AdminOption;
-use \Mascame\Artificer\Options\ModelOption;
 
 Route::filter('artificer-auth', function () {
     $roles = AdminOption::get('auth.roles');
@@ -26,4 +25,10 @@ Route::filter('artificer-auth', function () {
             return Redirect::route('admin.logout');
         }
     }
+});
+
+Route::filter('artificer-localization', function () {
+	$langs = AdminOption::get('localization.user_locales');
+
+	LaravelLocalization::setSupportedLocales($langs);
 });
