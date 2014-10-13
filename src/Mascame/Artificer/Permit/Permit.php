@@ -25,10 +25,8 @@ abstract class Permit extends Auth {
     public static function hasPermission($permissions = null) {
         if (!$permissions) return true;
 
-        if (is_array($permissions) && !empty($permissions)) {
-            if (self::hasRole($permissions)) {
-                return true;
-            }
+        if (is_array($permissions) && !empty($permissions) && self::hasRole($permissions)) {
+            return true;
         }
 
         return false;
