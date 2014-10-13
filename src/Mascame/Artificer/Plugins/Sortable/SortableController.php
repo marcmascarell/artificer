@@ -42,20 +42,7 @@ class SortableController extends BaseModelController {
 		if (!empty($item)) {
 			$item->$sort_column = 0;
 
-			$direction = ($old_sort_id < $new_sort_id) ? 'bigger' : 'smaller';
-
-			if ($direction == 'bigger') {
-				while ($old_sort_id <= $new_sort_id) {
-					$new = $old_sort_id - 1;
-					$this->updateSort($old_sort_id, $new);
-					$old_sort_id ++;
-				}
-			} else {
-				while ($old_sort_id >= $new_sort_id) {
-					$this->updateSort($old_sort_id, $old_sort_id + 1);
-					$old_sort_id --;
-				}
-			}
+			$this->reorder($old_sort_id, $new_sort_id);
 
 			$item->$sort_column = $this->new_id;
 			$item->save();
@@ -65,6 +52,28 @@ class SortableController extends BaseModelController {
 
 		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
 	}
+
+    /**
+     * @param $old_sort_id
+     * @param $new_sort_id
+     */
+    protected function reorder($old_sort_id, $new_sort_id)
+    {
+        $direction = ($old_sort_id < $new_sort_id) ? 'bigger' : 'smaller';
+
+        if ($direction == 'bigger') {
+            while ($old_sort_id <= $new_sort_id) {
+                $new = $old_sort_id - 1;
+                $this->updateSort($old_sort_id, $new);
+                $old_sort_id ++;
+            }
+        } else {
+            while ($old_sort_id >= $new_sort_id) {
+                $this->updateSort($old_sort_id, $old_sort_id + 1);
+                $old_sort_id --;
+            }
+        }
+    }
 
 	public function handleDeletedRow($modelName, $old_id)
 	{
