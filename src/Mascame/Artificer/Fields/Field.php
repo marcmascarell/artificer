@@ -291,6 +291,13 @@ abstract class Field implements FieldInterface {
 		return false;
 	}
 
+	/**
+	 * @param $array
+	 * @return bool
+	 */
+	protected function isAll($array) {
+		return (is_array($array) && isset($array[0]) && $array[0] == '*');
+	}
 
 	/**
 	 * @param string $list
@@ -300,7 +307,7 @@ abstract class Field implements FieldInterface {
 	{
 		$list = ($this->hasList($list)) ? $this->options[$list] : array();
 
-		if (is_array($list) && isset($list[0]) && $list[0] == '*') {
+		if ($this->isAll($list)) {
 			return true;
 		}
 
