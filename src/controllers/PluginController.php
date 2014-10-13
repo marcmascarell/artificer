@@ -50,45 +50,49 @@ class PluginController extends BaseController {
 			return Redirect::route('admin.page.plugins');
 		}
 
-		try {
-			if (($key = array_search($plugin, $plugins[$from])) !== false) {
-				unset($plugins[$from][$key]);
-				$plugins[$to][] = $plugin;
-
-				$content = "<?php" . PHP_EOL . PHP_EOL;
-//				$content .= 'return ' . var_export($plugins, true);
-//				$content .= ';';
-				$content .= 'return array(' . PHP_EOL . PHP_EOL;
-
-				$content .= "\t" . '"installed" => array(' . PHP_EOL;
-				foreach ($plugins['installed'] as $plugin) {
-					$content .= "\t\t" . '"' . $plugin . '",' . PHP_EOL;
-				}
-				$content .= "\t" . '),' . PHP_EOL . PHP_EOL;
-
-				$content .= "\t" . '"uninstalled" => array(' . PHP_EOL;
-				foreach ($plugins['uninstalled'] as $plugin) {
-					$content .= "\t\t" . '"' . $plugin . '",' . PHP_EOL;
-				}
-				$content .= "\t" . '),' . PHP_EOL . PHP_EOL;
-
-				$content .= ');';
-
-				$file = app_path() . '/config/packages/mascame/artificer/plugins.php';
-				if (file_exists($file)) {
-					File::put($file, $content);
-				} else {
-					throw new \Exception('No plugins file.');
-				}
-			}
-
-			Notification::success($message);
-		} catch (\Exception $e) {
-			throw new \Exception("Failed to modify plugins config");
-		}
+		$this->modifyPluginsFile($plugins, $plugin, $from, $to, $message);
 
 		return Redirect::route('admin.page.plugins');
-
 	}
+
+    protected function modifyPluginsFile($plugins, $plugin, $from, $to, $message) {
+        try {
+            if (($key = array_search($plugin, $plugins[$from])) !== false) {
+                unset($plugins[$from][$key]);
+                $plugins[$to][] = $plugin;
+
+                $content = "<?php" . PHP_EOL . PHP_EOL;
+//				$content .= 'return ' . var_export($plugins, true);
+//				$content .= ';';
+                $content .= 'return array(' . PHP_EOL . PHP_EOL;
+
+                $content .= "\t" . '"installed" => array(' . PHP_EOL;
+                foreach ($plugins['installed'] as $plugin) {
+                    $content .= "\t\t" . '"' . $plugin . '",' . PHP_EOL;
+                }
+                $content .= "\t" . '),' . PHP_EOL . PHP_EOL;
+
+                $content .= "\t" . '"uninstalled" => array(' . PHP_EOL;
+                foreach ($plugins['uninstalled'] as $plugin) {
+                    $content .= "\t\t" . '"' . $plugin . '",' . PHP_EOL;
+                }
+                $content .= "\t" . '),' . PHP_EOL . PHP_EOL;
+
+                $content .= ');';
+
+                $file = app_path() . '/config/packages/mascame/artificer/plugins.php';
+                if (file_exists($file)) {
+                    File::put($file, $content);
+                } else {
+                    throw new \Exception('No plugins file.');
+                }
+            }
+
+            Notification::success($message);
+
+        } catch (\Exception $e) {
+            throw new \Exception("Failed to modify plugins config");
+        }
+    }
 
 }
