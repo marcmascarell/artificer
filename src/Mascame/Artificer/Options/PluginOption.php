@@ -15,15 +15,15 @@ class PluginOption extends Option {
 	/**
 	 * @param string $plugin
 	 */
-	public static function has($key = '', $plugin = null)
+	public static function has($key, $plugin = null)
 	{
-		return Option::has(self::$key . '.' . $key);
+		return Option::has(self::$key . $plugin. '.' . $key);
 	}
 
 	/**
 	 * @param string $plugin
 	 */
-	public static function set($key = '', $value, $plugin = null)
+	public static function set($key, $value, $plugin = null)
 	{
 		Option::set(self::$key . $plugin . '.' . $key, $value);
 	}
