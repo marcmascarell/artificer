@@ -70,8 +70,6 @@ class Factory {
 		}
 
 		throw new \Exception("No supported Field type [{$type}]");
-
-        return false;
 	}
 
 	/**
