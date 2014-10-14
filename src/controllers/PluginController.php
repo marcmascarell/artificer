@@ -50,34 +50,22 @@ class PluginController extends BaseController {
 			return Redirect::route('admin.page.plugins');
 		}
 
-		$this->modifyPluginsFile($plugins, $plugin, $from, $to, $message);
+		$this->makeOperation($plugins, $plugin, $from, $to, $message);
 
 		return Redirect::route('admin.page.plugins');
 	}
 
-    /**
-     * @param string $from
-     * @param string $to
-     * @param string $message
-     */
-    protected function modifyPluginsFile($plugins, $plugin, $from, $to, $message) {
-        try {
-            if (($key = array_search($plugin, $plugins[$from])) !== false) {
-                unset($plugins[$from][$key]);
-                $plugins[$to][] = $plugin;
+	/**
+	 * @param string $from
+	 * @param string $to
+	 * @param string $message
+	 */
+	protected function makeOperation($plugins, $plugin, $from, $to, $message)
+	{
+		try {
+			$file = app_path() . '/config/packages/mascame/artificer/plugins.php';
 
-				$content = $this->addArrayConfigStart();
-				$content .= $this->addArrayWrapper('installed', $this->addArrayValues($plugins['installed']));
-				$content .= $this->addArrayWrapper('uninstalled', $this->addArrayValues($plugins['uninstalled']));
-				$content .= $this->addArrayConfigEnd();
-
-				$file = app_path() . '/config/packages/mascame/artificer/plugins.php';
-				if (file_exists($file)) {
-					File::put($file, $content);
-				} else {
-					throw new \Exception('No plugins file.');
-				}
-			}
+			$this->modifyFile($file, $plugins, $plugin, $from, $to);
 
 			Notification::success($message);
 		} catch (\Exception $e) {
@@ -85,6 +73,30 @@ class PluginController extends BaseController {
 		}
 
 		return Redirect::route('admin.page.plugins');
+	}
+
+	/**
+	 * @param $file
+	 * @param $plugins
+	 * @param $plugin
+	 * @param $to
+	 * @throws \Exception
+	 */
+	protected function modifyFile($file, $plugins, $plugin, $from, $to)
+	{
+		if (($key = array_search($plugin, $plugins[$from])) !== false) {
+			unset($plugins[$from][$key]);
+			$plugins[$to][] = $plugin;
+
+			$content = $this->addArrayConfigStart();
+			$content .= $this->addArrayWrapper('installed', $this->addArrayValues($plugins['installed']));
+			$content .= $this->addArrayWrapper('uninstalled', $this->addArrayValues($plugins['uninstalled']));
+			$content .= $this->addArrayConfigEnd();
+
+			if (!file_exists($file)) throw new \Exception('No plugins file.');
+
+			File::put($file, $content);
+		}
 	}
 
 	/**
