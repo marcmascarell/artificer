@@ -1,7 +1,6 @@
 <?php namespace Mascame\Artificer\Fields;
 
 use Event;
-use Route;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\FieldOption;
 
@@ -56,7 +55,7 @@ abstract class Field implements FieldInterface {
 
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 * @return bool
 	 */
 	public function fieldHas($key)
@@ -66,7 +65,7 @@ abstract class Field implements FieldInterface {
 
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 * @return mixed
 	 */
 	public function fieldOption($key)
@@ -76,7 +75,7 @@ abstract class Field implements FieldInterface {
 
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 * @param $value
 	 */
 	public function fieldSet($key, $value)
@@ -141,7 +140,7 @@ abstract class Field implements FieldInterface {
 
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 * @param $value
 	 * @return array|mixed
 	 */
@@ -154,7 +153,7 @@ abstract class Field implements FieldInterface {
 	}
 
 	/**
-	 * @param $type_class
+	 * @param string $type_class
 	 * @return string
 	 */
 	public function getType($type_class)
@@ -216,9 +215,7 @@ abstract class Field implements FieldInterface {
 	 */
 	public function getValue($value = null)
 	{
-        if (!$value) {
-			$value = $this->fieldOption('default');
-        }
+        if (!$value) return $this->value = $this->fieldOption('default');
 
 		return $this->value = $value;
 	}
@@ -403,6 +400,9 @@ abstract class Field implements FieldInterface {
 		return $this->getRelationAttribute('foreign');
 	}
 
+	/**
+	 * @param string $attribute
+	 */
 	public function getRelationAttribute($attribute)
 	{
 		return isset($this->fieldOptions['relationship'][$attribute]) ? $this->fieldOptions['relationship'][$attribute] : false;

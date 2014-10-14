@@ -1,6 +1,5 @@
 <?php namespace Mascame\Artificer\Plugin;
 
-use Mascame\Artificer\Options\AdminOption as Option;
 use Mascame\Artificer\Options\PluginOption;
 
 abstract class Plugin implements PluginInterface {
@@ -54,6 +53,9 @@ abstract class Plugin implements PluginInterface {
 		return $this->options;
 	}
 
+	/**
+	 * @param string $key
+	 */
 	public function getOption($key)
 	{
 		return PluginOption::get($key, $this->configKey);

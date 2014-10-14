@@ -58,10 +58,10 @@ class PaginationPlugin extends Plugin {
 	/**
 	 * @param $number
 	 */
-	public static function setPagination($number, $config = null)
+	public static function setPagination($number, $modelName)
 	{
 		self::$pagination = $number;
-		Session::set(self::$per_page_key, $number);
+		Session::set(self::$per_page_key . '.' . $modelName, $number);
 	}
 
 }

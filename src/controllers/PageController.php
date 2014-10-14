@@ -1,7 +1,6 @@
 <?php namespace Mascame\Artificer;
 
 use Redirect;
-use Mascame\Artificer\Options\AdminOption;
 
 class PageController extends BaseController {
 

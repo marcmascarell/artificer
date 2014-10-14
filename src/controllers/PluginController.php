@@ -25,6 +25,9 @@ class PluginController extends BaseController {
 		return $this->pluginOperation($plugin, 'uninstall');
 	}
 
+	/**
+	 * @param string $operation
+	 */
 	public function pluginOperation($plugin, $operation)
 	{
 		$plugin = str_replace('__slash__', '/', $plugin);
@@ -47,12 +50,22 @@ class PluginController extends BaseController {
 			return Redirect::route('admin.page.plugins');
 		}
 
-		try {
-			if (($key = array_search($plugin, $plugins[$from])) !== false) {
-				unset($plugins[$from][$key]);
-				$plugins[$to][] = $plugin;
+		$this->modifyPluginsFile($plugins, $plugin, $from, $to, $message);
 
-				// Todo: extract array manipulation to his own class
+		return Redirect::route('admin.page.plugins');
+	}
+
+    /**
+     * @param string $from
+     * @param string $to
+     * @param string $message
+     */
+    protected function modifyPluginsFile($plugins, $plugin, $from, $to, $message) {
+        try {
+            if (($key = array_search($plugin, $plugins[$from])) !== false) {
+                unset($plugins[$from][$key]);
+                $plugins[$to][] = $plugin;
+
 				$content = $this->addArrayConfigStart();
 				$content .= $this->addArrayWrapper('installed', $this->addArrayValues($plugins['installed']));
 				$content .= $this->addArrayWrapper('uninstalled', $this->addArrayValues($plugins['uninstalled']));

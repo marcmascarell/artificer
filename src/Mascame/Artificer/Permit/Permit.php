@@ -6,15 +6,26 @@ abstract class Permit extends Auth {
 
 	protected static $role = null;
 
-	public static function access($to) {
-
+    /**
+     * @param $to
+     */
+	public static function access()
+    {
+        return false;
 	}
 
-	public static function to($action)
+    /**
+     * @param $action
+     */
+	public static function to()
 	{
-
+        return false;
 	}
 
+    /**
+     * @param string $role_column
+     * @return null
+     */
 	public static function getRole($role_column = 'role')
 	{
 		if (!static::$role) static::$role = Auth::user()->$role_column;
@@ -22,4 +33,36 @@ abstract class Permit extends Auth {
 		return static::$role;
 	}
 
+    /**
+     * @param null $permissions
+     * @return bool
+     */
+    public static function hasPermission($permissions = null)
+    {
+        if (!$permissions) return true;
+
+        if (self::userHasPermission($permissions)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $permissions
+     * @return bool
+     */
+    private static function userHasPermission($permissions)
+    {
+       return (is_array($permissions) && !empty($permissions) && self::hasAcceptableRole($permissions));
+    }
+
+    /**
+     * @param $permissions
+     * @return bool
+     */
+    private static function hasAcceptableRole($permissions)
+    {
+        return (in_array(self::getRole(), $permissions) || $permissions[0] == '*');
+    }
 } 

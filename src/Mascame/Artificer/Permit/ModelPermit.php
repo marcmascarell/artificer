@@ -26,23 +26,6 @@ class ModelPermit extends Permit {
         return self::hasPermission($model_permissions, self::getRole());
 	}
 
-    public static function hasPermission($permissions) {
-        if (is_array($permissions) && !empty($permissions)) {
-
-            if ($permissions[0] == '*') {
-                return true;
-            }
-
-            if (in_array(self::getRole(), $permissions)) {
-                return true;
-            }
-        } if (!is_array($permissions) || !$permissions) {
-            return true;
-        }
-
-        return false;
-    }
-
 	public static function routeAction($route) {
 		$route_permission = AdminOption::get('models.route_permission');
 

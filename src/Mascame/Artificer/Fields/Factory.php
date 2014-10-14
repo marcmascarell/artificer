@@ -3,7 +3,6 @@
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Options\FieldOption;
-use Mascame\Artificer\Options\ModelOption;
 use Str;
 use Mascame\Artificer\Options\AdminOption;
 
@@ -71,8 +70,6 @@ class Factory {
 		}
 
 		throw new \Exception("No supported Field type [{$type}]");
-
-        return false;
 	}
 
 	/**
@@ -85,6 +82,29 @@ class Factory {
 		return (in_array($name, array_keys($types))) ? $name : false;
 	}
 
+    /**
+     * @param $fields
+     * @param $name
+     * @param $type
+     * @return int
+     */
+    public function getSimilarityPoints($fields, $name, $type)
+    {
+        $points = 0;
+
+        if ($this->isSimilar($name, $type)) {
+            // Gives more importance to similar TYPE than field
+            $points =+ 2;
+        }
+
+        foreach ($fields as $field) {
+            if ($this->isSimilar($name, $field)) {
+                $points++;
+            }
+        }
+
+        return $points;
+    }
 	/**
 	 * @param $name
 	 * @param $types
@@ -95,18 +115,7 @@ class Factory {
 		$points = array();
 
 		foreach ($types as $type => $fields) {
-			$points[$type] = 0;
-
-			if ($this->isSimilar($name, $type)) {
-				// Gives more importance to similar TYPE than field
-				$points[$type] = + 2;
-			}
-
-			foreach ($fields as $field) {
-				if ($this->isSimilar($name, $field)) {
-					$points[$type] ++;
-				}
-			}
+            $points[$type] = $this->getSimilarityPoints($fields, $name, $type);
 		}
 
 		if (max($points) > 0) {

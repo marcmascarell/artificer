@@ -2,21 +2,18 @@
 
 use Input;
 use Auth;
-use File;
 use Mascame\Artificer\Fields\Field;
 use View;
-use Mascame\Artificer\Fields\Factory as FieldFactory;
 use Controller;
 use App;
 use Mascame\Artificer\Options\AdminOption;
-use Mascame\Artificer\Options\Option;
 use Mascame\Artificer\Permit;
 
 // Todo: Make some models forbidden for some users
 
 class BaseController extends Controller {
 
-    public $fields = null;
+    public $fields = array();
     public $data;
     public $options;
 
@@ -30,11 +27,11 @@ class BaseController extends Controller {
     public $modelObject = null;
 
     /**
-     * @param Model $model
      */
     public function __construct()
     {
         $this->theme = AdminOption::get('theme');
+        $this->master_layout = 'base';
 
         if (Auth::check()) {
             $this->options = AdminOption::all();
@@ -42,20 +39,26 @@ class BaseController extends Controller {
             App::make('artificer-plugin-manager')->boot();
             $this->modelObject = App::make('artificer-model');
 
-            if (\Request::ajax() || Input::has('_standalone')) {
+            if ($this->isStandAlone()) {
                 $this->master_layout = 'standalone';
                 $this->standalone = true;
-            } else {
-                $this->master_layout = 'base';
             }
 
-            View::share('main_title', AdminOption::get('title'));
-            View::share('menu', $this->getMenu());
-            View::share('theme', $this->theme);
-            View::share('layout', $this->theme . '.' . $this->master_layout);
-            View::share('fields', array());
-            View::share('standalone', $this->standalone);
+            $this->share();
         }
+    }
+
+    protected function share() {
+        View::share('main_title', AdminOption::get('title'));
+        View::share('menu', $this->getMenu());
+        View::share('theme', $this->theme);
+        View::share('layout', $this->theme . '.' . $this->master_layout);
+        View::share('fields', array());
+        View::share('standalone', $this->standalone);
+    }
+
+    public function isStandAlone() {
+        return (\Request::ajax() || Input::has('_standalone'));
     }
 
     public function getMenu()
@@ -72,6 +75,9 @@ class BaseController extends Controller {
         return $this->menu;
     }
 
+    /**
+     * @param string $view
+     */
     public function getView($view)
     {
         return $this->theme . '.' . $view;

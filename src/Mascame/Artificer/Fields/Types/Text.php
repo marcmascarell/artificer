@@ -3,7 +3,6 @@
 use Mascame\Artificer\Fields\Field;
 use Form;
 //use Mascame\Artificer\Widgets\FocalPoint;
-use Plugin\Sortable\SortableWidget;
 
 
 class Text extends Field {

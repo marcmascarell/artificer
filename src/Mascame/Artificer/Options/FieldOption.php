@@ -1,7 +1,6 @@
 <?php namespace Mascame\Artificer\Options;
 
 use Mascame\Artificer\Model;
-use Config;
 
 class FieldOption extends ModelOption {
 

@@ -1,6 +1,5 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Fields\Field;
 use Form;
 
 class Enum extends Select {
