@@ -22,27 +22,53 @@ class ArtificerServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->package('mascame/artificer');
+
+		$this->requireFiles();
+
+		$this->addModel();
+		$this->addLocalization();
+		$this->addPluginManager();
+
+		$this->addPublishCommand();
+	}
+
+	private function requireFiles()
+	{
 		require_once __DIR__ . '/../../filters.php';
 		require_once __DIR__ . '/../../routes.php';
 		require_once __DIR__ . '/../../views/macros/macros.php';
+	}
 
-		App::singleton('artificer-model', function () {
-			return new Model();
-		});
+	private function addPublishCommand()
+	{
+		$command_key = 'artificer-command-publish';
 
-		App::singleton('artificer-localization', function () {
-			return new Localization();
-		});
-
-        App::singleton('artificer-plugin-manager', function () {
-            return new PluginManager();
-        });
-
-		App::bind('artificer-command-publish', function () {
+		App::bind($command_key, function () {
 			return new PublishCommand();
 		});
 
-		$this->commands('artificer-command-publish');
+		$this->commands($command_key);
+	}
+
+	private function addModel()
+	{
+		App::singleton('artificer-model', function () {
+			return new Model();
+		});
+	}
+
+	private function addLocalization()
+	{
+		App::singleton('artificer-localization', function () {
+			return new Localization();
+		});
+	}
+
+	private function addPluginManager()
+	{
+		App::singleton('artificer-plugin-manager', function () {
+			return new PluginManager();
+		});
 	}
 
 	/**
