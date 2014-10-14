@@ -165,9 +165,7 @@ class BaseModelController extends BaseController {
 		$new_data = array();
 
 		foreach ($this->getFields($data) as $field) {
-
 			if ($this->isFileInput($field->type)) {
-
 				if (Input::hasFile($field->name)) {
 					$new_data[$field->name] = $this->uploadFile($field->name);
 				} else {
@@ -192,15 +190,11 @@ class BaseModelController extends BaseController {
 	 */
 	protected function uploadFile($fieldname, $path = null)
 	{
-		if (!$path) {
-			$path = public_path() . '/uploads/';
-		}
+		if (!$path) $path = public_path() . '/uploads/';
 
 		$file = Input::file($fieldname);
 
-		if (!file_exists($path)) {
-			File::makeDirectory($path);
-		}
+		if (!file_exists($path)) File::makeDirectory($path);
 
 		$name = uniqid() . '-' . Str::slug($file->getClientOriginalName());
 
