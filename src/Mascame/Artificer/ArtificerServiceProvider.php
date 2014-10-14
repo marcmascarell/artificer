@@ -3,6 +3,7 @@
 use Illuminate\Support\ServiceProvider;
 use Config;
 use App;
+use Mascame\Artificer\Model\Model;
 
 
 class ArtificerServiceProvider extends ServiceProvider {

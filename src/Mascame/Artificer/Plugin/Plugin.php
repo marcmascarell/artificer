@@ -1,4 +1,4 @@
-<?php namespace Mascame\Artificer;
+<?php namespace Mascame\Artificer\Plugin;
 
 use Mascame\Artificer\Options\AdminOption as Option;
 use Mascame\Artificer\Options\PluginOption;

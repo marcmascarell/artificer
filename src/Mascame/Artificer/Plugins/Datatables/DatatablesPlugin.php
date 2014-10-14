@@ -1,7 +1,7 @@
 <?php namespace Mascame\Artificer\Plugins\Datatables;
 
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Plugin;
+use Mascame\Artificer\Plugin\Plugin;
 use Config;
 use View;
 use Image;

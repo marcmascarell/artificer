@@ -1,6 +1,6 @@
 <?php namespace Mascame\Artificer\Plugins\Plupload;
 
-use Mascame\Artificer\Plugin;
+use Mascame\Artificer\Plugin\Plugin;
 use Event;
 use Route;
 

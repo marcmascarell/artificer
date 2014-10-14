@@ -1,7 +1,7 @@
 <?php namespace Mascame\Artificer\Plugins\Pagination;
 
 use Mascame\Artificer\Model;
-use Mascame\Artificer\Plugin;
+use Mascame\Artificer\Plugin\Plugin;
 use Event;
 use Input;
 use Paginator;
