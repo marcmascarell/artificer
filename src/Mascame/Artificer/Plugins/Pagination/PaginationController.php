@@ -25,12 +25,12 @@ class PaginationController extends BaseModelController {
 	 * @param $modelName
 	 * @return $this
 	 */
-	public function all($modelName)
+	public function all($modelName, $data = null, $sort = null)
 	{
 		$sort = $this->getSort();
 
 		$data = $this->model->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->paginate(Pagination::$pagination);
 
-		return parent::all($data, $sort);
+		return parent::all($modelName, $data, $sort);
 	}
 }
