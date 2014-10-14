@@ -13,7 +13,7 @@ use Mascame\Artificer\Permit;
 
 class BaseController extends Controller {
 
-    public $fields = array();
+    public $fields;
     public $data;
     public $options;
 
