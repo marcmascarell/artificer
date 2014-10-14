@@ -99,11 +99,9 @@ class ModelController extends BaseModelController {
 	{
 		$sort = $this->getSort();
 
-		$this->handleData($this->model->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->get());
+		$data = $this->model->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->get();
 
-		return View::make($this->getView('all'))
-			->with('items', $this->data)
-			->with('sort', $sort);
+		parent::all($data, $sort);
 	}
 
 	/**

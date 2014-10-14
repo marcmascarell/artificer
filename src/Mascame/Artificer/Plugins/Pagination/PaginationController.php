@@ -29,10 +29,8 @@ class PaginationController extends BaseModelController {
 	{
 		$sort = $this->getSort();
 
-		$this->handleData($this->model->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->paginate(Pagination::$pagination));
+		$data = $this->model->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->paginate(Pagination::$pagination);
 
-		return View::make($this->getView('all'))
-			->with('items', $this->data)
-			->with('sort', $sort);
+		parent::all($data, $sort);
 	}
 }

@@ -258,4 +258,12 @@ class BaseModelController extends BaseController {
 	{
 		return Validator::make($data, $this->getRules());
 	}
+
+	protected function all($data = null, $sort) {
+		$this->handleData($data);
+
+		return View::make($this->getView('all'))
+			->with('items', $this->data)
+			->with('sort', $sort);
+	}
 }
