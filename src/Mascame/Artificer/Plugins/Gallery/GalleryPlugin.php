@@ -16,7 +16,7 @@ class GalleryPlugin extends Plugin {
 		$this->name = 'Gallery';
 		$this->description = 'Simple gallery';
 		$this->author = 'Marc Mascarell';
-		$this->routes = array(
+		$this->addRoutes = array(
 			'configuration' => array(
 				'title' => 'Config',
 				'icon'  => '',

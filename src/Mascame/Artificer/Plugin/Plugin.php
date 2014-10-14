@@ -1,9 +1,11 @@
 <?php namespace Mascame\Artificer\Plugin;
 
 use Mascame\Artificer\Options\PluginOption;
+use App;
 
 abstract class Plugin implements PluginInterface {
 
+	protected $manager;
 	public $version;
 	public $namespace;
 	public $name;
@@ -12,7 +14,7 @@ abstract class Plugin implements PluginInterface {
 	public $config;
 	public $configKey;
 	public $slug;
-//	public $installed = false;
+	public $installed = false;
 	public $options = array();
 	public $routes = array();
 
@@ -22,6 +24,9 @@ abstract class Plugin implements PluginInterface {
 		$this->configKey = $this->namespace . '/' . $this->getPluginName();
 		$this->config = $this->getOptions();
 		$this->slug = str_replace('/', '__slash__', $this->namespace);
+
+		$this->manager = App::make('artificer-plugin-manager');
+		$this->installed = ($this->manager->isInstalled($namespace)) ? true : false;
 
 		$this->meta();
 	}
@@ -36,6 +41,11 @@ abstract class Plugin implements PluginInterface {
 		return $this->name;
 	}
 
+	public function addRoutes($array) {
+		if ($this->installed) {
+			$this->routes = $array;
+		}
+	}
 
 	public function boot()
 	{
