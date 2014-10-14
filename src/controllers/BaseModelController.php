@@ -248,11 +248,20 @@ class BaseModelController extends BaseController {
 		return Redirect::back()->withErrors($validator)->withInput();
 	}
 
+	/**
+	 * @param $data
+	 * @return \Illuminate\Validation\Validator
+	 */
 	protected function validator($data)
 	{
 		return Validator::make($data, $this->getRules());
 	}
 
+	/**
+	 * @param null $data
+	 * @param $sort
+	 * @return $this
+	 */
 	protected function all($data = null, $sort) {
 		$this->handleData($data);
 
