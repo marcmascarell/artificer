@@ -79,7 +79,12 @@ class Factory {
 	 */
 	public function isTypeEqual($name, $types)
 	{
-		return (in_array($name, array_keys($types))) ? $name : false;
+		if (in_array($name, array_keys($types))) {
+			$this->setTypeReason($name, 'equal');
+			return true;
+		}
+
+		return false;
 	}
 
     /**
@@ -119,6 +124,7 @@ class Factory {
 		}
 
 		if (max($points) > 0) {
+			$this->setTypeReason($name, 'similar to one in admin.fields');
 			return array_search(max($points), $points);
 		}
 
@@ -137,12 +143,33 @@ class Factory {
 		|| Str::contains($haystack, $needle) ? true : false;
 	}
 
+	/**
+	 * @param $name
+	 * @param $types
+	 * @return bool|int|string
+	 */
 	public function isUserType($name, $types)
 	{
 		foreach ($types as $type => $fields) {
 			if (in_array($name, $fields)) {
+				$this->setTypeReason($name, 'set by user in admin.fields');
 				return $type;
 			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param $name
+	 * @return bool|mixed
+	 */
+	public function isTypeInModelConfig($name) {
+		if (FieldOption::has('type', $name) || FieldOption::has('relationship.type', $name))
+		{
+			$this->setTypeReason($name, 'set by user in {model}.fields');
+
+			return (FieldOption::has('type', $name)) ? FieldOption::get('type', $name) : FieldOption::get('relationship.type', $name);
 		}
 
 		return false;
@@ -155,33 +182,18 @@ class Factory {
 	 */
 	public function autodetectType($name)
 	{
-		if (FieldOption::has('type', $name) || FieldOption::has('relationship.type', $name)) {
-			$this->type_reason[$name] = 'set by user in {model}.fields';
+		if ($type = $this->isTypeInModelConfig($name)) return $type;
+		if ($this->isTypeEqual($name, $this->types)) return $name;
+		if ($type = $this->isUserType($name, $this->types)) return $type;
+		if ($type = $this->isTypeSimilar($name, $this->types)) return $type;
 
-			return (FieldOption::has('type', $name)) ? FieldOption::get('type', $name) : FieldOption::get('relationship.type', $name);
-		}
-
-		if ($this->isTypeEqual($name, $this->types)) {
-			$this->type_reason[$name] = 'equal';
-
-			return $name;
-		}
-
-		if ($type = $this->isUserType($name, $this->types)) {
-			$this->type_reason[$name] = 'set by user in admin.fields';
-
-			return $type;
-		}
-
-		if ($type = $this->isTypeSimilar($name, $this->types)) {
-			$this->type_reason[$name] = 'similar to one in admin.fields';
-
-			return $type;
-		}
-
-		$this->type_reason[$name] = 'default';
+		$this->setTypeReason($name, 'default');
 
 		return $this->types['default'][0];
+	}
+
+	protected function setTypeReason($name, $value) {
+		$this->type_reason[$name] = $value;
 	}
 
 	protected function isRelation($name)
