@@ -258,11 +258,12 @@ class BaseModelController extends BaseController {
 	}
 
 	/**
+	 * @param $modelName
 	 * @param null $data
 	 * @param $sort
 	 * @return $this
 	 */
-	protected function all($data = null, $sort) {
+	protected function all($modelName, $data = null, $sort) {
 		$this->handleData($data);
 
 		return View::make($this->getView('all'))

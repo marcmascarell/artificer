@@ -95,13 +95,13 @@ class ModelController extends BaseModelController {
 	 *
 	 * @return Response
 	 */
-	public function all($modelName)
+	public function all($modelName, $data = null, $sort = null)
 	{
 		$sort = $this->getSort();
 
 		$data = $this->model->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->get();
 
-		parent::all($data, $sort);
+		parent::all($modelName, $data, $sort);
 	}
 
 	/**
