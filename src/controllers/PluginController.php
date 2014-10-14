@@ -87,16 +87,31 @@ class PluginController extends BaseController {
 		return Redirect::route('admin.page.plugins');
 	}
 
+	/**
+	 * @return string
+	 */
+	protected function addArrayConfigStart()
+	{
+		$content = "<?php" . PHP_EOL . PHP_EOL;
+		$content .= 'return array(' . PHP_EOL . PHP_EOL;
+
+		return $content;
+	}
+
+	/**
+	 * @param $key
+	 * @return string
+	 */
 	protected function addArrayKeyStart($key)
 	{
 		return "\t" . '"' . $key . '" => array(' . PHP_EOL;
 	}
 
-	protected function addArrayKeyEnd()
-	{
-		return "\t" . '),' . PHP_EOL . PHP_EOL;
-	}
-
+	/**
+	 * @param $key
+	 * @param $values
+	 * @return string
+	 */
 	protected function addArrayWrapper($key, $values)
 	{
 		$content = $this->addArrayKeyStart($key);
@@ -106,6 +121,18 @@ class PluginController extends BaseController {
 		return $content;
 	}
 
+	/**
+	 * @return string
+	 */
+	protected function addArrayKeyEnd()
+	{
+		return "\t" . '),' . PHP_EOL . PHP_EOL;
+	}
+
+	/**
+	 * @param $array
+	 * @return string
+	 */
 	protected function addArrayValues($array)
 	{
 		$content = '';
@@ -117,14 +144,9 @@ class PluginController extends BaseController {
 		return $content;
 	}
 
-	protected function addArrayConfigStart()
-	{
-		$content = "<?php" . PHP_EOL . PHP_EOL;
-		$content .= 'return array(' . PHP_EOL . PHP_EOL;
-
-		return $content;
-	}
-
+	/**
+	 * @return string
+	 */
 	protected function addArrayConfigEnd()
 	{
 		return ');';
