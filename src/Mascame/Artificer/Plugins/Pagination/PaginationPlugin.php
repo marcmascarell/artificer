@@ -18,7 +18,6 @@ class PaginationPlugin extends Plugin {
 		$this->name = 'Pagination';
 		$this->description = 'Provides Laravel pagination to models';
 		$this->author = 'Marc Mascarell';
-		$this->routes = array();
 	}
 
 	public function boot()

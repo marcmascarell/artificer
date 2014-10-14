@@ -14,7 +14,6 @@ class PluploadPlugin extends Plugin {
 		$this->name = 'Plupload';
 		$this->description = 'Plupload widget and field for uploading images';
 		$this->author = 'Marc Mascarell';
-		$this->routes = array();
 	}
 
 	public function boot()

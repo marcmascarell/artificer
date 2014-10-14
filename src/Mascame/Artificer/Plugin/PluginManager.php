@@ -9,27 +9,39 @@ class PluginManager {
 
 	public function getAll()
 	{
-		return ($this->plugins) ? $this->plugins : null;
-	}
+		if ($this->plugins) return $this->plugins;
 
-	public function boot()
-	{
 		$plugins = AdminOption::get('plugins');
 		$all_plugins = array_merge($plugins['installed'], $plugins['uninstalled']);
 
 		foreach ($all_plugins as $pluginNamespace) {
 			$plugin = Option::get('plugins/' . $pluginNamespace . '/' . $this->getName($pluginNamespace));
-			$plugin = $plugin['plugin'];
+			$pluginClass = $plugin['plugin'];
 
 			if (in_array($pluginNamespace, $plugins['installed'])) {
-				$this->plugins['installed'][$pluginNamespace] = new $plugin($pluginNamespace);
-				$this->plugins['installed'][$pluginNamespace]->boot();
+				$this->plugins['installed'][$pluginNamespace] = $pluginClass;
 			} else {
-				$this->plugins['uninstalled'][$pluginNamespace] = new $plugin($pluginNamespace);
+				$this->plugins['uninstalled'][$pluginNamespace] = $pluginClass;
 			}
 		}
 
 		return $this->plugins;
+	}
+
+	public function boot()
+	{
+		$plugins = $this->getAll();
+
+		foreach ($plugins['installed'] as $namespace => $pluginClass) {
+			$plugins['installed'][$namespace] = new $pluginClass($namespace);
+			$plugins['installed'][$namespace]->boot();
+		}
+
+		foreach ($plugins['uninstalled'] as $namespace => $pluginClass) {
+			$plugins['uninstalled'][$namespace] = new $pluginClass($namespace);
+		}
+
+		return $this->plugins = $plugins;
 	}
 
 	public function getName($pluginNamespace)
@@ -46,9 +58,13 @@ class PluginManager {
 		return $this->plugins['uninstalled'][$key];
 	}
 
+	public function getInstalledPlugins() {
+		return (isset($this->plugins['installed']) && !empty($this->plugins['installed'])) ? $this->plugins['installed'] : array();
+	}
+
 	public function isInstalled($key)
 	{
-		return (array_key_exists($key, $this->plugins['installed']));
+		return (array_key_exists($key, $this->getInstalledPlugins()));
 	}
 
 }

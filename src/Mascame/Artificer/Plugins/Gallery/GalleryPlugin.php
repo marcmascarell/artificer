@@ -16,11 +16,11 @@ class GalleryPlugin extends Plugin {
 		$this->name = 'Gallery';
 		$this->description = 'Simple gallery';
 		$this->author = 'Marc Mascarell';
-		$this->addRoutes = array(
+		$this->routes = array(
 			'configuration' => array(
 				'title' => 'Config',
 				'icon'  => '',
-				'route' => route('artificer.plugin.gallery.configuration', $this->slug)
+				'route' => $this->route('artificer.plugin.gallery.configuration', $this->slug)
 			)
 		);
 	}
