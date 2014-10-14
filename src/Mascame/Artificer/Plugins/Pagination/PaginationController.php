@@ -31,6 +31,6 @@ class PaginationController extends BaseModelController {
 
 		$data = $this->model->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->paginate(Pagination::$pagination);
 
-		parent::all($data, $sort);
+		return parent::all($data, $sort);
 	}
 }

@@ -101,7 +101,7 @@ class ModelController extends BaseModelController {
 
 		$data = $this->model->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->get();
 
-		parent::all($modelName, $data, $sort);
+		return parent::all($modelName, $data, $sort);
 	}
 
 	/**
