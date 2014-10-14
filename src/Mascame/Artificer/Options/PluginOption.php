@@ -16,7 +16,7 @@ class PluginOption extends Option {
 	/**
 	 * @param string $plugin
 	 */
-	public static function has($key, $plugin = null)
+	public static function has($key = '', $plugin = null)
 	{
 		return Option::has(self::$key . $plugin. '.' . $key);
 	}

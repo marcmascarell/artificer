@@ -9,7 +9,7 @@ abstract class Permit extends Auth {
     /**
      * @param $to
      */
-	public static function access()
+	public static function access($to)
     {
         return false;
 	}
@@ -17,7 +17,7 @@ abstract class Permit extends Auth {
     /**
      * @param $action
      */
-	public static function to()
+	public static function to($action)
 	{
         return false;
 	}
