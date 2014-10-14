@@ -36,7 +36,6 @@ class Localization  {
 
 	protected function detectColumnLang($column) {
 		foreach ($this->getLanguageEndings() as $locale => $ending) {
-			print "tried " . $locale;
 			if (Str::endsWith($column, $ending)) {
 				return $locale;
 			}
