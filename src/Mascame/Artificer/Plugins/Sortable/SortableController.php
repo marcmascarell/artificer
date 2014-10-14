@@ -63,18 +63,34 @@ class SortableController extends BaseModelController {
     protected function reorder($direction, $old_sort_id, $new_sort_id)
     {
         if ($direction == 'bigger') {
-            while ($old_sort_id <= $new_sort_id) {
-                $new = $old_sort_id - 1;
-                $this->updateSort($old_sort_id, $new);
-                $old_sort_id ++;
-            }
+        	$this->upSort($old_sort_id, $new_sort_id);
         } else {
-            while ($old_sort_id >= $new_sort_id) {
-                $this->updateSort($old_sort_id, $old_sort_id + 1);
-                $old_sort_id --;
-            }
-        }
+			$this->downSort($old_sort_id, $new_sort_id);
+		}
     }
+
+	/**
+	 * @param $old_sort_id
+	 * @param $new_sort_id
+	 */
+	protected function upSort($old_sort_id, $new_sort_id) {
+		while ($old_sort_id <= $new_sort_id) {
+			$new = $old_sort_id - 1;
+			$this->updateSort($old_sort_id, $new);
+			$old_sort_id ++;
+		}
+	}
+
+	/**
+	 * @param $old_sort_id
+	 * @param $new_sort_id
+	 */
+	protected function downSort($old_sort_id, $new_sort_id) {
+		while ($old_sort_id >= $new_sort_id) {
+			$this->updateSort($old_sort_id, $old_sort_id + 1);
+			$old_sort_id --;
+		}
+	}
 
 	public function handleDeletedRow($modelName, $old_id)
 	{
