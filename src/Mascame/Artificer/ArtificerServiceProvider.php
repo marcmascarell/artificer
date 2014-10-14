@@ -30,6 +30,10 @@ class ArtificerServiceProvider extends ServiceProvider {
 			return new Model();
 		});
 
+		App::singleton('artificer-localization', function () {
+			return new Localization();
+		});
+
         App::singleton('artificer-plugin-manager', function () {
             return new PluginManager();
         });
