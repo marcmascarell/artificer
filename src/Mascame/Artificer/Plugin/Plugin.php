@@ -3,7 +3,7 @@
 use Mascame\Artificer\Options\AdminOption as Option;
 use Mascame\Artificer\Options\PluginOption;
 
-abstract class Plugin {
+abstract class Plugin implements PluginInterface {
 
 	public $version;
 	public $namespace;
@@ -29,7 +29,6 @@ abstract class Plugin {
 
 	public function getPluginName() {
 		$exploded_namespace = explode('/', $this->namespace);
-		end($exploded_namespace);
 
 		return end($exploded_namespace);
 	}

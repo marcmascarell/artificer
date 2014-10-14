@@ -52,24 +52,11 @@ class PluginController extends BaseController {
 				unset($plugins[$from][$key]);
 				$plugins[$to][] = $plugin;
 
-				$content = "<?php" . PHP_EOL . PHP_EOL;
-//				$content .= 'return ' . var_export($plugins, true);
-//				$content .= ';';
-				$content .= 'return array(' . PHP_EOL . PHP_EOL;
-
-				$content .= "\t" . '"installed" => array(' . PHP_EOL;
-				foreach ($plugins['installed'] as $plugin) {
-					$content .= "\t\t" . '"' . $plugin . '",' . PHP_EOL;
-				}
-				$content .= "\t" . '),' . PHP_EOL . PHP_EOL;
-
-				$content .= "\t" . '"uninstalled" => array(' . PHP_EOL;
-				foreach ($plugins['uninstalled'] as $plugin) {
-					$content .= "\t\t" . '"' . $plugin . '",' . PHP_EOL;
-				}
-				$content .= "\t" . '),' . PHP_EOL . PHP_EOL;
-
-				$content .= ');';
+				// Todo: extract array manipulation to his own class
+				$content = $this->addArrayConfigStart();
+				$content .= $this->addArrayWrapper('installed', $this->addArrayValues($plugins['installed']));
+				$content .= $this->addArrayWrapper('uninstalled', $this->addArrayValues($plugins['uninstalled']));
+				$content .= $this->addArrayConfigEnd();
 
 				$file = app_path() . '/config/packages/mascame/artificer/plugins.php';
 				if (file_exists($file)) {
@@ -85,7 +72,49 @@ class PluginController extends BaseController {
 		}
 
 		return Redirect::route('admin.page.plugins');
+	}
 
+	protected function addArrayKeyStart($key)
+	{
+		return "\t" . '"' . $key . '" => array(' . PHP_EOL;
+	}
+
+	protected function addArrayKeyEnd()
+	{
+		return "\t" . '),' . PHP_EOL . PHP_EOL;
+	}
+
+	protected function addArrayWrapper($key, $values)
+	{
+		$content = $this->addArrayKeyStart($key);
+		$content .= $values;
+		$content .= $this->addArrayKeyEnd();
+
+		return $content;
+	}
+
+	protected function addArrayValues($array)
+	{
+		$content = '';
+
+		foreach ($array as $value) {
+			$content .= "\t\t" . '"' . $value . '",' . PHP_EOL;
+		}
+
+		return $content;
+	}
+
+	protected function addArrayConfigStart()
+	{
+		$content = "<?php" . PHP_EOL . PHP_EOL;
+		$content .= 'return array(' . PHP_EOL . PHP_EOL;
+
+		return $content;
+	}
+
+	protected function addArrayConfigEnd()
+	{
+		return ');';
 	}
 
 }
