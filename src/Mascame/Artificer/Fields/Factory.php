@@ -32,15 +32,26 @@ class Factory {
 		$this->modelObject = $model;
 	}
 
-
+	/**
+	 * @param $field
+	 * @return bool|int|mixed|string
+	 */
     public function parseFieldType($field) {
         return $this->autodetectType($field);
     }
 
+	/**
+	 * @param $field
+	 * @return null
+	 */
     public function parseFieldValue($field) {
         return (isset($this->data->$field)) ? $this->data->$field : null;
     }
 
+	/**
+	 * @param $data
+	 * @return mixed
+	 */
 	public function parseFields($data)
 	{
         $this->data = $data;
@@ -192,15 +203,26 @@ class Factory {
 		return $this->types['default'][0];
 	}
 
+	/**
+	 * @param $name
+	 * @param $value
+	 */
 	protected function setTypeReason($name, $value) {
 		$this->type_reason[$name] = $value;
 	}
 
+	/**
+	 * @param $name
+	 * @return bool
+	 */
 	protected function isRelation($name)
 	{
 		return in_array($name, $this->related_fields);
 	}
 
+	/**
+	 * @return array|null
+	 */
 	public function getRelated()
 	{
 		if ($this->related_fields != null) return $this->related_fields;
@@ -217,6 +239,9 @@ class Factory {
 		return $this->related_fields;
 	}
 
+	/**
+	 * @return array
+	 */
 	protected function addRelated()
 	{
 		$related = $this->getRelated();
@@ -230,6 +255,9 @@ class Factory {
 		return $this->modelObject->columns;
 	}
 
+	/**
+	 * @return array
+	 */
 	protected function withRelated()
 	{
 		return $this->addRelated();
