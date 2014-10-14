@@ -1,6 +1,6 @@
 <?php namespace Mascame\Artificer\Fields;
 
-use Mascame\Artificer\Model;
+use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Options\FieldOption;
 use Mascame\Artificer\Options\ModelOption;
