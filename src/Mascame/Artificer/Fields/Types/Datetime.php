@@ -10,7 +10,7 @@ class DateTime extends Field {
 	public function boot()
 	{
 		$this->addWidget(new DateTimepicker());
-		$this->addAttributes(array('class' => 'form-control datetimepicker', 'data-date-format' => 'YYYY-MM-DD HH:mm:ss'));
+		$this->attributes->add(array('class' => 'form-control datetimepicker', 'data-date-format' => 'YYYY-MM-DD HH:mm:ss'));
 	}
 
 	public function input()
@@ -20,7 +20,7 @@ class DateTime extends Field {
 			<div class="input-group-addon">
 				<i class="fa fa-calendar"></i>
 			</div>
-			<?php print Form::text($this->name, $this->value, $this->getAttributes()); ?>
+			<?php print Form::text($this->name, $this->value, $this->attributes->all()); ?>
 		</div>
 	<?php
 	}

@@ -1,7 +1,7 @@
 <?php namespace Mascame\Artificer\Permit;
 
 use App;
-use Mascame\Artificer\Model;
+use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\ModelOption;
 

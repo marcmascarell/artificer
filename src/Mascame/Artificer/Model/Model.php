@@ -213,6 +213,8 @@ class Model {
 	{
 		$modelClass = $this->getClass($modelName);
 
+        if (!class_exists($modelClass)) throw new \Exception("Unable to instantiate {$modelClass}");
+
 		return $this->models[$modelName]['instance'] = new $modelClass;
 	}
 

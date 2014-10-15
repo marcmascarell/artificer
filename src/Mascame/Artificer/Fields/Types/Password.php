@@ -7,7 +7,7 @@ class Password extends Field {
 
 	public function input()
 	{
-		return Form::password($this->name, $this->getAttributes());
+		return Form::password($this->name, $this->attributes->all());
 	}
 
 	public function show()

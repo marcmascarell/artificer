@@ -13,7 +13,7 @@ class Text extends Field {
 
 	public function input()
 	{
-		return Form::text($this->name, $this->value, $this->getAttributes());
+		return Form::text($this->name, $this->value, $this->attributes->all());
 	}
 
 	public function guarded()

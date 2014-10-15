@@ -1,6 +1,8 @@
 <?php namespace Mascame\Artificer\Fields;
 
 use Event;
+use App;
+use Mascame\Artificer\Localization;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\FieldOption;
 
@@ -15,11 +17,25 @@ abstract class Field implements FieldInterface {
 	public $value;
 	public $output;
 	public static $widgets = array();
-	public $options = array();
-	public $fieldOptions = array();
+    /**
+     * @var FieldOptions
+     */
+	public $options;
 	public $lists = array();
-	public $relation = false;
+    /**
+     * @var FieldRelation
+     */
+	public $relation;
+    /**
+     * @var Localization
+     */
+	public $localization;
+	public $locale;
 	public $wiki;
+    /**
+     * @var FieldAttributes
+     */
+    public $attributes;
 
 
 	/**
@@ -34,122 +50,25 @@ abstract class Field implements FieldInterface {
 		$this->value = $value;
 		$this->modelName = $modelName;
 
-		$this->getOptions();
-		$this->getFieldOptions();
+        $this->options = new FieldOptions($this->name);
+		$this->relation = new FieldRelation($relation, $this->options->getExistent('relationship'));
+		$this->attributes = new FieldAttributes($this->options->getExistent('attributes'), $this->options);
 
-		$this->relation = ($relation || $this->getRelationType()) ? true : false;
-
-		$this->addAttributes(array('class' => 'form-control'));
+		$this->attributes->add(array('class' => 'form-control'));
 
 		$this->title = $this->getTitle($this->name);
 		$this->type = $this->getType(get_called_class());
 		$this->wiki = $this->getWiki();
+
+        $this->localization = App::make('artificer-localization');
+        $this->locale = $this->getLocale();
 
 		$this->boot();
 	}
 
 	public function getWiki()
 	{
-		return (isset($this->fieldOptions['wiki'])) ? $this->fieldOptions['wiki'] : null;
-	}
-
-
-	/**
-	 * @param string $key
-	 * @return bool
-	 */
-	public function fieldHas($key)
-	{
-		return FieldOption::has($key, $this->name);
-	}
-
-
-	/**
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function fieldOption($key)
-	{
-		return FieldOption::get($key, $this->name);
-	}
-
-
-	/**
-	 * @param string $key
-	 * @param $value
-	 */
-	public function fieldSet($key, $value)
-	{
-		FieldOption::set($key, $value, $this->name);
-	}
-
-
-	/**
-	 * @return array|mixed
-	 */
-	public function getFieldOptions()
-	{
-		$this->fieldOptions = FieldOption::field($this->name);
-
-		return $this->fieldOptions;
-	}
-
-
-	/**
-	 * @return array|mixed
-	 */
-	public function getOptions()
-	{
-		$this->options = ModelOption::all();
-
-		return $this->options;
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function getAttributes()
-	{
-		return (isset($this->fieldOptions['attributes'])) ? $this->fieldOptions['attributes'] : array();
-	}
-
-	/**
-	 * @param $key
-	 * @return array
-	 */
-	public function getAttribute($key)
-	{
-		return (isset($this->fieldOptions['attributes'][$key])) ? $this->fieldOptions['attributes'][$key] : array();
-	}
-
-
-	/**
-	 * @param array $attributes
-	 * @return array
-	 */
-	public function addAttributes($attributes = array())
-	{
-		$this->addFieldOption('attributes', array_merge($this->getAttributes(), $attributes));
-
-		// Refresh options
-		$this->getFieldOptions();
-
-		return $this->getAttributes();
-	}
-
-
-	/**
-	 * @param string $key
-	 * @param $value
-	 * @return array|mixed
-	 */
-	public function addFieldOption($key, $value)
-	{
-		$this->fieldSet($key, $value);
-
-		// Refresh options
-		return $this->getFieldOptions();
+		return $this->options->getExistent('wiki');
 	}
 
 	/**
@@ -215,7 +134,7 @@ abstract class Field implements FieldInterface {
 	 */
 	public function getValue($value = null)
 	{
-        if (!$value) return $this->value = $this->fieldOption('default');
+        if (!$value) return $this->value = $this->options->getExistent('default', null);
 
 		return $this->value = $value;
 	}
@@ -259,8 +178,8 @@ abstract class Field implements FieldInterface {
 
         $this->value = $this->getValue();
 
-		if (isset($this->fieldOptions['input'])) {
-			return $this->userInput($this->fieldOptions['input']);
+		if ($this->options->has('input')) {
+			return $this->userInput($this->options->get('input'));
 		}
 
 		return $this->input();
@@ -281,7 +200,7 @@ abstract class Field implements FieldInterface {
 	 */
 	public function hasList($list = 'list')
 	{
-		if (isset($this->options[$list])) {
+		if ($this->options->has($list)) {
 			return true;
 		}
 
@@ -302,7 +221,7 @@ abstract class Field implements FieldInterface {
 	 */
 	public function isListed($list = 'list')
 	{
-		$list = ($this->hasList($list)) ? $this->options[$list] : array();
+		$list = $this->options->getExistent($list);
 
 		if ($this->isAll($list)) {
 			return true;
@@ -347,8 +266,8 @@ abstract class Field implements FieldInterface {
 	 */
 	public function getTitle($name)
 	{
-		if ($this->fieldHas('title')) {
-			return $this->fieldOption('title');
+		if ($this->options->has('title')) {
+			return $this->options->get('title');
 		}
 
 		return $name;
@@ -377,34 +296,24 @@ abstract class Field implements FieldInterface {
 	 */
 	public function isRelation()
 	{
-		return $this->relation;
+		return $this->relation->isRelation();
 	}
 
-	public function getRelationMethod()
-	{
-		return $this->getRelationAttribute('method');
-	}
+    public function isLocalized() {
+        if ($this->getLocale()) {
+            return true;
+        }
 
-	public function getRelatedModel()
-	{
-		return $this->getRelationAttribute('model');
-	}
+        return false;
+    }
 
-	public function getRelationType()
-	{
-		return $this->getRelationAttribute('type');
-	}
+    public function getLocale() {
+        if ($this->locale) return $this->locale;
 
-	public function getRelationForeignKey()
-	{
-		return $this->getRelationAttribute('foreign');
-	}
+        if ($lang = $this->localization->parseColumnLang($this->name)) {
+            return $this->locale = $lang;
+        }
 
-	/**
-	 * @param string $attribute
-	 */
-	public function getRelationAttribute($attribute)
-	{
-		return isset($this->fieldOptions['relationship'][$attribute]) ? $this->fieldOptions['relationship'][$attribute] : false;
-	}
+        return false;
+    }
 }

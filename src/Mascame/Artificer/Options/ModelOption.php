@@ -1,6 +1,6 @@
 <?php namespace Mascame\Artificer\Options;
 
-use Mascame\Artificer\Model;
+use Mascame\Artificer\Model\Model;
 
 class ModelOption extends Option {
 

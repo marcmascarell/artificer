@@ -9,7 +9,7 @@ class Date extends Field {
 	public function boot()
 	{
 		$this->addWidget(new Datepicker());
-		$this->addAttributes(array('class' => 'form-control datepicker'));
+		$this->attributes->add(array('class' => 'form-control datepicker'));
 	}
 
 	public function input()
@@ -19,7 +19,7 @@ class Date extends Field {
 			<div class="input-group-addon">
 				<i class="fa fa-calendar"></i>
 			</div>
-			<?php print Form::text($this->name, $this->value, $this->getAttributes()); ?>
+			<?php print Form::text($this->name, $this->value, $this->attributes->all()); ?>
 		</div>
 	<?php
 	}

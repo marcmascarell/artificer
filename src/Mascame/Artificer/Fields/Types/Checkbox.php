@@ -11,7 +11,7 @@ class Checkbox extends Field {
 		<div class="checkbox">
 			<?php
 			print Form::hidden($this->name, 0);
-			print Form::checkbox($this->name, 1, $this->value, $this->getAttributes());
+			print Form::checkbox($this->name, 1, $this->value, $this->attributes->all());
 			?>
 		</div>
 		<?php

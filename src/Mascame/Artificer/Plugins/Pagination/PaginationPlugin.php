@@ -1,6 +1,6 @@
 <?php namespace Mascame\Artificer\Plugins\Pagination;
 
-use Mascame\Artificer\Model;
+use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Plugin\Plugin;
 use Event;
 use Input;

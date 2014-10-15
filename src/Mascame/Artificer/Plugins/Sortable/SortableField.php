@@ -17,6 +17,6 @@ class SortableField extends Field {
 
 		$count = DB::table($table)->count();
 
-		return Form::select($this->name, array_combine(range(1, $count), range(1, $count)), $this->value, $this->getAttributes());
+		return Form::select($this->name, array_combine(range(1, $count), range(1, $count)), $this->value, $this->attributes->all());
 	}
 }

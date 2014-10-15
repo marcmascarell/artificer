@@ -11,7 +11,7 @@ class hasMany extends Relation {
 	public function boot()
 	{
 		//$this->addWidget(new Chosen());
-		$this->addAttributes(array('class' => 'chosen'));
+		$this->attributes->add(array('class' => 'chosen'));
 		$this->modelObject = \App::make('artificer-model');
 	}
 
@@ -19,7 +19,7 @@ class hasMany extends Relation {
 	{
 		$this->fields = array_get(\View::getShared(), 'fields');
 		$id = $this->fields['id']->value;
-		$options = $this->fieldOptions;
+		$options = $this->options;
 		$this->relation = $options['relationship'];
 		$modelName = $this->relation['model'];
 		$model = $this->modelObject->models[$modelName];
@@ -101,7 +101,7 @@ class hasMany extends Relation {
 	public function show($values = null)
 	{
 		if (isset($values) && !$values->isEmpty()) {
-			$show = $this->fieldOptions['relationship']['show'];
+			$show = $this->options['relationship']['show'];
 
 			foreach ($values as $value) {
 				print $value->$show . "<br>";

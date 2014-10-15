@@ -6,8 +6,8 @@ class Enum extends Select {
 
 	public function input()
 	{
-		$values = $this->fieldOptions['values'];
+		$values = $this->options['values'];
 
-		return Form::select($this->name, array_combine($values, $values), $this->value, $this->getAttributes());
+		return Form::select($this->name, array_combine($values, $values), $this->value, $this->attributes->all());
 	}
 }

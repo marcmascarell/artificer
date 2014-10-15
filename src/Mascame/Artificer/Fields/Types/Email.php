@@ -8,7 +8,7 @@ class Email extends Field {
 
 	public function input()
 	{
-		return Form::email($this->name, $this->value, $this->getAttributes());
+		return Form::email($this->name, $this->value, $this->attributes->all());
 	}
 
 	public function show()

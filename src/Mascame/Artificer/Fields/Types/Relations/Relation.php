@@ -1,7 +1,7 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
 use Mascame\Artificer\Fields\Field;
-use Mascame\Artificer\Model;
+use Mascame\Artificer\Model\Model;
 use URL;
 use Route;
 
@@ -9,7 +9,6 @@ class Relation extends Field {
 
 	public $modelObject;
 	public $model;
-	public $relation;
 	public $fields;
 	public $createURL;
 

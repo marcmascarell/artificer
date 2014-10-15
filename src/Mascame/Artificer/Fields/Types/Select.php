@@ -7,7 +7,7 @@ class Select extends Field {
 
 	public function input()
 	{
-		return Form::select($this->name, $this->value, false, $this->getAttributes());
+		return Form::select($this->name, $this->value, false, $this->attributes->all());
 	}
 
 	public function outputRange($start, $end)

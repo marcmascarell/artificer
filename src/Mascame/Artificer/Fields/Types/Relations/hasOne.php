@@ -10,16 +10,15 @@ class hasOne extends Relation {
 	public function boot()
 	{
 		//$this->addWidget(new Chosen());
-		$this->addAttributes(array('class' => 'chosen form-control'));
+		$this->attributes->add(array('class' => 'chosen form-control'));
 	}
 
 	public function input()
 	{
-		$options = $this->fieldOptions;
-		$modelName = $options['relationship']['model'];
+		$modelName = $this->relation->getRelatedModel();
 		$model = \App::make('artificer-model');
 		$modelClass = '\\' . $modelName;
-        $show = $options['relationship']['show'];
+        $show = $this->relation->getShow();
 
         $show_query = (is_array($show)) ? array('*') : array('id', $show);
 		$data = $modelClass::all($show_query)->toArray();
@@ -50,7 +49,7 @@ class hasOne extends Relation {
 			$id = $this->value;
 		}
 
-		print Form::select($this->name, array('0' => '(none)') + $select, $id, $this->getAttributes());
+		print Form::select($this->name, array('0' => '(none)') + $select, $id, $this->attributes->all());
 
         if (!Request::ajax()) {
             $new_url = \URL::route('admin.model.create', array('slug' => $model->models[$modelName]['route']));
@@ -79,11 +78,10 @@ class hasOne extends Relation {
 
 		if (!$value) return "<em>(none)</em>";
 
-        $options = $this->fieldOptions;
-        $show = $options['relationship']['show'];
+        $show = $this->relation->getShow();
 
         if (!is_object($value)) {
-            $model = '\\' . $options['relationship']['model'];
+            $model = '\\' . $this->relation->getRelatedModel();
 
             $data = $model::findOrFail($value);
 
@@ -101,7 +99,7 @@ class hasOne extends Relation {
 			throw new \Exception('The (hasOne) value is null');
 		}
 
-		$show = $this->fieldOptions['relationship']['show'];
+		$show = $this->options['relationship']['show'];
 
 		print $value->$show;
         return null;
