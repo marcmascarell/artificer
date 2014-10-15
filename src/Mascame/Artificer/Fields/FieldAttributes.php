@@ -9,12 +9,12 @@ use Mascame\Artificer\Options\FieldOption;
 class FieldAttributes {
 
     protected $options;
-    protected $fieldOption;
+    protected $fieldOptions;
     
-	public function __construct($options, $fieldOption)
+	public function __construct($options, FieldOptions $fieldOptions)
 	{
-		$this->options;
-        $this->fieldOption = $fieldOption;
+		$this->options = $options;
+        $this->fieldOptions = $fieldOptions;
 	}
 
 	/**
@@ -22,7 +22,7 @@ class FieldAttributes {
 	 */
 	public function all()
 	{
-		return $this->fieldOption->getExistent('attributes', array());
+		return $this->fieldOptions->getExistent('attributes', array());
 	}
 
 	/**
@@ -36,9 +36,9 @@ class FieldAttributes {
 
     public function add($attributes = array())
     {
-        $this->fieldOption->add('attributes', array_merge($this->all(), $attributes));
+        $this->fieldOptions->add('attributes', array_merge($this->all(), $attributes));
 
-        return $this->fieldOption->all();
+        return $this->fieldOptions->all();
     }
     
 }
