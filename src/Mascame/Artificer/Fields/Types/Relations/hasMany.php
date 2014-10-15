@@ -19,9 +19,8 @@ class hasMany extends Relation {
 	{
 		$this->fields = array_get(\View::getShared(), 'fields');
 		$id = $this->fields['id']->value;
-		$options = $this->options;
-		$this->relation = $options['relationship'];
-		$modelName = $this->relation['model'];
+
+		$modelName = $this->relation->getRelatedModel();
 		$model = $this->modelObject->models[$modelName];
 		$model['class'] = $this->modelObject->getClass($modelName);
 		$this->model = $model;
@@ -37,12 +36,12 @@ class hasMany extends Relation {
 
             $data = $relateds[0]['modelClass']::whereIn('id', $related_ids)->get()->toArray();
         } else {
-            $data = $model['class']::where($this->relation['foreign'], '=', $id)->get(array('id', $this->relation['show']))->toArray();
+            $data = $model['class']::where($this->relation['foreign'], '=', $id)->get(array('id', $this->relation->getShow()))->toArray();
         }
 
         $this->showItems($data);
 
-		$this->createURL = $this->createURL($model['route']) . "?" . http_build_query(array($this->relation['foreign'] => $id, '_standalone' => 'true'));
+		$this->createURL = $this->createURL($model['route']) . "?" . http_build_query(array($this->relation->getForeignKey() => $id, '_standalone' => 'true'));
 
 		if (!Request::ajax()) {
 			$this->relationModal();
@@ -77,7 +76,7 @@ class hasMany extends Relation {
 		$edit_url = $this->editURL($this->model['route'], $item['id']).'?'. http_build_query(array('_standalone' => 'true'));
 		?>
 		<li class="list-group-item">
-			<?= $item[$this->relation['show']] ?> &nbsp;
+			<?= $item[$this->relation->getShow()] ?> &nbsp;
 
 			<span class="right">
 				<span class="btn-group">
@@ -101,7 +100,7 @@ class hasMany extends Relation {
 	public function show($values = null)
 	{
 		if (isset($values) && !$values->isEmpty()) {
-			$show = $this->options['relationship']['show'];
+			$show = $this->relation->getShow();
 
 			foreach ($values as $value) {
 				print $value->$show . "<br>";
