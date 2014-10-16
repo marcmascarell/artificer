@@ -12,10 +12,7 @@ use Mascame\Artificer\Options\AdminOption;
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
 class Model {
 
-	/**
-	 * @var array
-	 */
-	public $tables;
+	public $schema;
 
 	/**
 	 * @var array
@@ -43,11 +40,6 @@ class Model {
 	public $keyname;
 
 	/**
-	 * @var array
-	 */
-	public $columns;
-
-	/**
 	 * @var
 	 */
 	public $table;
@@ -72,170 +64,149 @@ class Model {
 	 */
 	public static $current = null;
 
-	/**
-	 *
-	 */
-	public function __construct()
+	public function __construct(ModelSchema $schema)
 	{
-		$this->models = $this->getModels();
-		$this->tables = $this->getTables($this->models);
+		$this->schema = $schema;
 
 		$this->getCurrentModel();
-
-		View::share('tables', $this->tables);
-		View::share('models', $this->models);
+		$this->share();
 	}
 
 	/**
 	 *
 	 */
-	private function getCurrentModel()
+	public function share()
 	{
+		View::share('tables', $this->schema->tables);
+		View::share('models', $this->getCurrentModelsData());
+		View::share('model', $this->getCurrentModelData());
+	}
+
+	private function getCurrentModelsData() {
+		foreach ($this->schema->models as $modelName => $model) {
+			$this->schema->models[$modelName]['options'] = $this->getOptions($modelName);
+			$this->schema->models[$modelName]['hidden'] = $this->isHidden($modelName);
+		}
+
+		return $this->schema->models;
+	}
+
+	/**
+	 * @param $modelName
+	 * @return bool
+	 */
+	public function isHidden($modelName)
+	{
+		return (in_array($modelName, AdminOption::get('models.hidden'))) ? true : false;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isGuarded()
+	{
+		return (isset($this->options['guarded']) && !empty($this->options['guarded'])) ? true : false;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isFillable()
+	{
+		return (isset($this->options['fillable']) && !empty($this->options['fillable'])) ? true : false;
+	}
+
+	/**
+	 *
+	 */
+	private function getCurrentModelName()
+	{
+		if ($this->name) return $this->name;
+
+		foreach ($this->schema->models as $modelName => $model) {
+			if ($this->isCurrent($modelName)) {
+				$this->setCurrent($modelName);
+				return $this->name = $modelName;
+			}
+		}
+
+		return null;
+	}
+
+	public function getCurrentModel() {
 		if (Str::startsWith(Route::currentRouteName(), 'admin.model.')
 		) {
-			$this->name = self::getCurrent();
+			$this->name = $this->getCurrentModelName();
 			$this->class = $this->getClass($this->name);
-			$this->columns = $this->getColumns($this->getTable());
-			$this->model = $this->getInstance();
+			$this->model = $this->schema->getInstance($this->name, true);
 			$this->table = $this->model->getTable();
+			$this->columns = $this->schema->getColumns($this->table);
 			$this->fillable = $this->model->getFillable();
 			$this->options = $this->getOptions();
-
-			$this->share();
 		}
 	}
 
-	public function hasColumn($column)
+	/**
+	 *
+	 */
+	private function getCurrentModelData()
 	{
-		return (is_array($column) && in_array($column, $this->columns)) ? true : false;
+		return array(
+			'class'    => $this->class,
+			'name'     => $this->getCurrentModelName(),
+			'route'    => $this->getRouteName(),
+			'table'    => $this->table,
+			'columns'  => $this->schema->columns,
+			'fillable' => $this->fillable,
+			'hidden'   => $this->isHidden($this->name),
+		);
 	}
 
+	/**
+	 * @param $model
+	 * @return bool
+	 */
+	protected function isCurrent($modelName)
+	{
+		$slug = Route::current()->parameter('slug');
+
+		return (isset($this->schema->models[$modelName]['route']) && $this->schema->models[$modelName]['route'] == $slug);
+	}
+
+	/**
+	 * @return null
+	 */
 	public static function getCurrent()
 	{
 		return self::$current;
 	}
 
+	/**
+	 * @return string
+	 */
 	public static function getCurrentClass()
 	{
 		return '\\' . self::$current;
 	}
 
+	/**
+	 * @param null $model
+	 * @return null
+	 */
 	public function getRouteName($model = null)
 	{
-		if ($model) {
-			return $this->models[$model]['route'];
-		}
+		if ($model) return $this->schema->models[$model]['route'];
 
-		return (isset($this->models[self::$current]['route'])) ? $this->models[self::$current]['route'] : null;
+		return (isset($this->schema->models[self::$current]['route'])) ? $this->schema->models[self::$current]['route'] : null;
 	}
 
-	protected function isCurrent($modelName)
-	{
-		$slug = Route::current()->parameter('slug');
-
-		return (!self::$current && $slug == $modelName || $slug == strtolower($modelName));
-	}
-
+	/**
+	 * @param $modelName
+	 */
 	protected function setCurrent($modelName)
 	{
 		self::$current = $modelName;
 		ModelOption::set('current', $modelName);
-	}
-
-	/**
-	 * @param $directory
-	 * @return array
-	 */
-	protected function scanModelsDirectory($directory)
-	{
-		$models = array();
-
-		foreach (File::allFiles($directory) as $modelPath) {
-            $modelName = $this->getFromFileName($modelPath);
-
-            if (!ModelPermit::access($modelName)) continue;
-
-            $models[$modelName] = $this->getModelData($modelName);
-		}
-
-		return $models;
-	}
-
-    private function getModelData($modelName)
-    {
-        if ($this->isCurrent($modelName)) $this->setCurrent($modelName);
-
-        return array(
-            'name'    => $modelName,
-            'route'   => strtolower($modelName),
-            'options' => $this->getOptions($modelName),
-            'hidden'  => $this->isHidden($modelName)
-        );
-    }
-
-	/**
-	 * @param $models
-	 * @return array
-	 */
-	private function mergeModelDirectories($models)
-	{
-		$merged_models = array();
-
-		foreach ($models as $key => $model) {
-			foreach ($model as $name => $values) {
-				$merged_models[$name] = $values;
-			}
-		}
-
-		return $merged_models;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getModels()
-	{
-		if (!empty($this->models)) return $this->models;
-
-		$models = array();
-		$model_directories = AdminOption::get('models.directories');
-
-		foreach ($model_directories as $directory) {
-			$models[] = $this->scanModelsDirectory($directory);
-		}
-
-		$models = $this->mergeModelDirectories($models);
-
-		return $models;
-	}
-
-	public function instantiate($modelName)
-	{
-		$modelClass = $this->getClass($modelName);
-
-        if (!class_exists($modelClass)) throw new \Exception("Unable to instantiate {$modelClass}");
-
-		return $this->models[$modelName]['instance'] = new $modelClass;
-	}
-
-	public function hasInstance($modelName)
-	{
-		return (isset($this->models[$modelName]['instance'])) ? true : false;
-	}
-
-	/**
-	 * @param null $modelName
-	 * @return mixed
-	 */
-	public function getInstance($modelName = null)
-	{
-		($modelName) ?: $modelName = $this->name;
-
-		if ($this->hasInstance($modelName)) {
-			return $this->models[$modelName]['instance'];
-		}
-
-		return $this->instantiate($modelName);
 	}
 
 	/**
@@ -252,75 +223,13 @@ class Model {
 	}
 
 	/**
-	 * @param $model
-	 * @return mixed
-	 */
-	public function getFromFileName($model)
-	{
-		$piece = explode('/', $model);
-
-		return str_replace('.php', '', end($piece));
-	}
-
-	/**
-	 * @param $models
-	 * @return array
-	 */
-	public function getTables($models)
-	{
-		$tables = array();
-
-		foreach ($models as $model) {
-			$table = $this->getTable($model['name']);
-			$this->models[$model['name']]['table'] = $table;
-			$tables[] = $table;
-		}
-
-		return $tables;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getTable($modelName = null)
-	{
-		if (!$modelName) {
-			$modelName = $this->name;
-		}
-
-		if (isset($this->models[$modelName]['table'])) {
-			return $this->models[$modelName]['table'];
-		}
-
-		return $this->getInstance($modelName)->getTable();
-	}
-
-	/**
-	 * @param $table
-	 * @return bool
-	 */
-	public function hasTable($table)
-	{
-		return Schema::hasTable($table);
-	}
-
-	/**
-	 * @param $table
-	 * @return array
-	 */
-	public function getColumns($table)
-	{
-		return Schema::getColumnListing($table);
-	}
-
-	/**
 	 * @param $modelName
 	 * @return string
 	 */
 	public function getClass($modelName)
 	{
-		if (false !== $key = array_search($modelName, array_keys($this->models))) {
-			$modelName = array_keys($this->models);
+		if (false !== $key = array_search($modelName, array_keys($this->schema->models))) {
+			$modelName = array_keys($this->schema->models);
 			$modelName = $modelName[$key];
 		}
 
@@ -369,46 +278,5 @@ class Model {
 		return $relations;
 	}
 
-	/**
-	 * @param $modelName
-	 * @return bool
-	 */
-	public function isHidden($modelName)
-	{
-		return (in_array($modelName, AdminOption::get('models.hidden'))) ? true : false;
-	}
 
-	/**
-	 *
-	 */
-	public function share()
-	{
-		$model = array(
-			'class'    => $this->class,
-			'name'     => $this->name,
-			'route'    => $this->getRouteName(),
-			'table'    => $this->table,
-			'columns'  => $this->columns,
-			'fillable' => $this->fillable,
-			'hidden'   => $this->isHidden($this->name),
-		);
-
-		View::share('model', $model);
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isGuarded()
-	{
-		return (isset($this->options['guarded']) && !empty($this->options['guarded'])) ? true : false;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isFillable()
-	{
-		return (isset($this->options['fillable']) && !empty($this->options['fillable'])) ? true : false;
-	}
 }

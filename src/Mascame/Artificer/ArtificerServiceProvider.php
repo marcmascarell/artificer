@@ -3,6 +3,8 @@
 use Illuminate\Support\ServiceProvider;
 use App;
 use Mascame\Artificer\Model\Model;
+use Mascame\Artificer\Model\ModelObtainer;
+use Mascame\Artificer\Model\ModelSchema;
 use Mascame\Artificer\Plugin\PluginManager;
 
 
@@ -54,7 +56,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	private function addModel()
 	{
 		App::singleton('artificer-model', function () {
-			return new Model();
+			return new Model(new ModelSchema(new ModelObtainer()));
 		});
 	}
 

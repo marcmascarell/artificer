@@ -30,7 +30,7 @@ class SortablePlugin extends Plugin {
 	{
 		$model = App::make('artificer-model');
 
-		if (is_array($model->columns) && in_array($this->sort_column, $model->columns)) {
+		if (is_array($model->schema->columns) && in_array($this->sort_column, $model->schema->columns)) {
 			Event::listen(array('artificer.view.head-scripts'), function () {
 				?>
 				<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">

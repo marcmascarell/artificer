@@ -90,7 +90,7 @@ class BaseModelController extends BaseController {
 			$sort['column'] = Input::get('sort_by');
 			$sort['direction'] = Input::get('direction');
 		} else {
-			if ($this->modelObject->hasColumn('sort_id')) {
+			if ($this->modelObject->schema->hasColumn('sort_id')) {
 				$sort['column'] = 'sort_id';
 			} else {
 				$sort['column'] = 'id';
