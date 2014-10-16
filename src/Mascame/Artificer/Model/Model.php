@@ -73,6 +73,7 @@ class Model {
 	public function __construct(ModelSchema $schema)
 	{
 		$this->schema = $schema;
+		$this->relations = new ModelRelation();
 
 		$this->getCurrentModel();
 		$this->share();
@@ -233,42 +234,7 @@ class Model {
 	 */
 	public function getRelations()
 	{
-		if (!empty($this->relations)) return $this->relations;
-
-		$fields = ModelOption::get('fields');
-
-		if (!empty($fields)) {
-			$this->relations[] = $this->getFieldsWithRelations($fields);
-		}
-
-		return $this->relations;
+		return $this->relations->get();
 	}
-
-	/**
-	 * @param $field
-	 * @return bool
-	 */
-	private function hasRelation($field)
-	{
-		return isset($field['relationship']) && isset($field['relationship']['method']);
-	}
-
-	/**
-	 * @param $fields
-	 * @return array
-	 */
-	private function getFieldsWithRelations($fields)
-	{
-		$relations = array();
-
-		foreach ($fields as $field) {
-			if ($this->hasRelation($field)) {
-				$relations = $field['relationship']['method'];
-			}
-		}
-
-		return $relations;
-	}
-
 
 }
