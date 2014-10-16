@@ -133,7 +133,7 @@ class ModelSchema {
 	 * @param null $modelName
 	 * @return mixed
 	 */
-	public function getInstance($modelName = null, $test = false)
+	public function getInstance($modelName = null)
 	{
 		($modelName) ?: $modelName = $this->name;
 
