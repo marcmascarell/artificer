@@ -184,7 +184,7 @@ class Model {
 	 */
 	public static function getCurrent()
 	{
-		return self::$current;
+		return (isset(self::$current)) ? self::$current : null;
 	}
 
 	/**
