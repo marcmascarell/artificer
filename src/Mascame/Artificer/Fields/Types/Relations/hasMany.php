@@ -22,7 +22,7 @@ class hasMany extends Relation {
 		$id = $this->fields['id']->value;
 
 		$modelName = $this->relation->getRelatedModel();
-		$model = $this->modelObject->models[$modelName];
+		$model = $this->modelObject->schema->models[$modelName];
 		$model['class'] = $this->modelObject->schema->getClass($modelName);
 		$this->model = $model;
 
@@ -42,7 +42,7 @@ class hasMany extends Relation {
 
         $this->showItems($data);
 
-		$this->createURL = $this->createURL($this->modelObject->getRouteName()) . "?" . http_build_query(array($this->relation->getForeignKey() => $id, '_standalone' => 'true'));
+		$this->createURL = $this->createURL($this->model['route']) . "?" . http_build_query(array($this->relation->getForeignKey() => $id, '_standalone' => 'true'));
 
 		if (!Request::ajax()) {
 			$this->relationModal();
@@ -53,7 +53,7 @@ class hasMany extends Relation {
 	{
 		if (!Request::ajax()) { ?>
 			<div data-refresh-field="<?= \URL::route('admin.model.field',
-				array('slug'  => $this->modelObject->getRouteName(),
+				array('slug'  => $this->model['route'],
 					  'id'    => ($this->fields['id']->value) ? $this->fields['id']->value : 0,
 					  'field' => $this->name)) ?>">
 		<?php }
@@ -74,7 +74,7 @@ class hasMany extends Relation {
 	}
 
 	public function addItem($item) {
-		$edit_url = $this->editURL($this->modelObject->getRouteName(), $item['id']).'?'. http_build_query(array('_standalone' => 'true'));
+		$edit_url = $this->editURL($this->model['route'], $item['id']).'?'. http_build_query(array('_standalone' => 'true'));
 		?>
 		<li class="list-group-item">
 			<?= $item[$this->relation->getShow()] ?> &nbsp;
@@ -83,11 +83,11 @@ class hasMany extends Relation {
 				<span class="btn-group">
 					<button class="btn btn-default" data-toggle="modal"
 							data-url="<?=$edit_url?>"
-							data-target="#form-modal-<?= $this->modelObject->getRouteName() ?>">
+							data-target="#form-modal-<?= $this->model['route'] ?>">
 						<i class="glyphicon glyphicon-edit"></i>
 					</button>
 					<a data-method="delete" data-token="<?= csrf_token() ?>"
-					   href="<?= route('admin.model.destroy', array('slug' => $this->modelObject->getRouteName(), 'id' => $item['id']), $absolute = true) ?>"
+					   href="<?= route('admin.model.destroy', array('slug' => $this->model['route'], 'id' => $item['id']), $absolute = true) ?>"
 					   type="button" class="btn btn-default">
 						<i class="glyphicon glyphicon-remove"></i>
 					</a>

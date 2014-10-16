@@ -1,5 +1,6 @@
 <?php namespace Mascame\Artificer;
 
+use Mascame\Artificer\Model\Model;
 use Redirect;
 use Input;
 use View;
@@ -34,7 +35,7 @@ class ModelController extends BaseModelController {
 	 */
 	public function store()
 	{
-		$data = $this->filterInputData();
+        $data = $this->filterInputData();
 
 		$validator = $this->validator($data);
 		if ($validator->fails()) return $this->redirect($validator, 'admin.model.create');
