@@ -22,7 +22,7 @@ class hasMany extends Relation {
 
 		$modelName = $this->relation->getRelatedModel();
 		$model = $this->modelObject->models[$modelName];
-		$model['class'] = $this->modelObject->getClass($modelName);
+		$model['class'] = $this->modelObject->schema->getClass($modelName);
 		$this->model = $model;
 
         if ((Route::currentRouteName() == 'admin.model.create' || Route::currentRouteName() == 'admin.model.field')
