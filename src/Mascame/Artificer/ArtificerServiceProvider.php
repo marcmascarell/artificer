@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use App;
+use Mascame\Artificer\Fields\AbstractField;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
@@ -81,15 +82,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		/*
-     * Register the service provider for the dependency.
-     */
-//		$this->app->register('JildertMiedema\LaravelPlupload\LaravelPluploadServiceProvider');
-//		/*
-//		 * Create aliases for the dependency.
-//		 */
-//		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
-//		$loader->alias('Plupload', 'JildertMiedema\LaravelPlupload\Facades\Plupload');
+
 	}
 
 	/**

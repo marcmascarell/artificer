@@ -7,7 +7,7 @@ Route::filter('artificer-auth', function () {
     $role_column = AdminOption::get('auth.role_column');
 
     if (Auth::guest()
-        && Route::currentRouteName() != 'admin.model.showlogin'
+        && Route::currentRouteName() != 'admin.showlogin'
         && Route::currentRouteName() != 'admin.login'
     )
     {

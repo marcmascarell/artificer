@@ -40,6 +40,7 @@
                         <div class="form-group">
                             ({{ $field->type }})
 
+                            <?php Event::fire('artificer.before.edit.title', $field, $halt = false); ?>
                             {{ Form::label($field->title) }}
 
                             @if ($field->wiki)
@@ -56,6 +57,7 @@
                                 @endforeach
                             @endif
 
+                            <?php Event::fire('artificer.before.edit.output', $field, $halt = false); ?>
                             {{ $field->output() }}
 
                         </div>

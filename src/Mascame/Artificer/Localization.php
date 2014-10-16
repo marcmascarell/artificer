@@ -14,28 +14,40 @@ class Localization  {
 	/**
 	 * @var array
 	 */
-	protected $locales;
+	protected $locales = array();
 
 
 	public function __construct() {
 		$closure = AdminOption::get('localization.lang_detection');
-		$this->locales = $this->getLocales();
+		$this->locales = $this->getConfigLocales();
 
 		if ($closure && Artificer::is_closure($closure)) {
 			$this->lang_closure = $closure;
 		}
 	}
 
+    public function getConfigLocales() {
+        return (!empty($this->locales)) ? $this->locales : $this->locales = AdminOption::get('localization.locales');
+    }
+
 	/**
 	 * @return array
 	 */
 	public function getLocales() {
-		$locales = AdminOption::get('localization.locales');
+        $this->locales = $this->getConfigLocales();
 
-		if (is_array($locales)) return array_keys($locales);
+		if (is_array($this->locales)) return array_keys($this->locales);
 
 		return array();
 	}
+
+    public function getLocaleNative($locale) {
+        $this->locales = $this->getConfigLocales();
+
+        if (is_array($this->locales[$locale])) return $this->locales[$locale]['native'];
+
+        return array();
+    }
 
 	/**
 	 * @param $column
@@ -69,7 +81,7 @@ class Localization  {
 	protected function getLanguageEndings() {
 		$endings = array();
 
-		foreach ($this->locales as $locale) {
+		foreach ($this->getLocales() as $locale) {
 			$endings[$locale] = '_' . $locale;
 		}
 

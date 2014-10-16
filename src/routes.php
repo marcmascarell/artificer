@@ -22,7 +22,7 @@ Route::group(array(
 			Route::get('/', array('as' => 'admin.home', 'uses' => 'Mascame\Artificer\PageController@home'));
 
 			Route::group(array('prefix' => 'user'), function () {
-				Route::get('login', array('as' => 'admin.model.showlogin', 'uses' => 'Mascame\Artificer\UserController@showLogin'));
+				Route::get('login', array('as' => 'admin.showlogin', 'uses' => 'Mascame\Artificer\UserController@showLogin'));
 				Route::post('login', array('as' => 'admin.login', 'uses' => 'Mascame\Artificer\UserController@login'))->before('csrf');
 				Route::get('logout', array('as' => 'admin.logout', 'uses' => 'Mascame\Artificer\UserController@logout'));
 			});

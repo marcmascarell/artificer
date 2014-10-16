@@ -86,9 +86,7 @@ class FieldOptions {
 
 
     public function getExistent($key, $default = array()) {
-        if ($this->has($key)) {
-            return $this->get($key);
-        }
+        if ($this->has($key)) return $this->get($key);
 
         return $default;
     }

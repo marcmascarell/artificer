@@ -3,6 +3,7 @@
 use Event;
 use App;
 use Mascame\Artificer\Localization;
+use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\FieldOption;
 
@@ -38,12 +39,12 @@ abstract class AbstractField implements FieldInterface {
     public $attributes;
 
 
-	/**
-	 * @param $name
-	 * @param null $value
-	 * @param $modelName
-	 * @param $relation
-	 */
+    /**
+     * @param $name
+     * @param null $value
+     * @param $modelName
+     * @param $relation
+     */
 	public function __construct($name, $value = null, $modelName, $relation)
 	{
 		$this->name = $name;
@@ -59,9 +60,6 @@ abstract class AbstractField implements FieldInterface {
 		$this->title = $this->getTitle($this->name);
 		$this->type = $this->getType(get_called_class());
 		$this->wiki = $this->getWiki();
-
-        $this->localization = App::make('artificer-localization');
-        $this->locale = $this->getLocale();
 
 		$this->boot();
 	}
@@ -299,21 +297,5 @@ abstract class AbstractField implements FieldInterface {
 		return $this->relation->isRelation();
 	}
 
-    public function isLocalized() {
-        if ($this->getLocale()) {
-            return true;
-        }
 
-        return false;
-    }
-
-    public function getLocale() {
-        if ($this->locale) return $this->locale;
-
-        if ($lang = $this->localization->parseColumnLang($this->name)) {
-            return $this->locale = $lang;
-        }
-
-        return false;
-    }
 }
