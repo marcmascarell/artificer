@@ -12,6 +12,9 @@ use Mascame\Artificer\Options\AdminOption;
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
 class Model {
 
+	/**
+	 * @var ModelSchema
+	 */
 	public $schema;
 
 	/**
@@ -64,6 +67,9 @@ class Model {
 	 */
 	public static $current = null;
 
+	/**
+	 * @param ModelSchema $schema
+	 */
 	public function __construct(ModelSchema $schema)
 	{
 		$this->schema = $schema;
@@ -137,7 +143,7 @@ class Model {
 		if (Str::startsWith(Route::currentRouteName(), 'admin.model.')
 		) {
 			$this->name = $this->getCurrentModelName();
-			$this->class = $this->getClass($this->name);
+			$this->class = $this->schema->getClass($this->name);
 			$this->model = $this->schema->getInstance($this->name, true);
 			$this->table = $this->model->getTable();
 			$this->columns = $this->schema->getColumns($this->table);
@@ -220,20 +226,6 @@ class Model {
 		}
 
 		return ModelOption::model($model);
-	}
-
-	/**
-	 * @param $modelName
-	 * @return string
-	 */
-	public function getClass($modelName)
-	{
-		if (false !== $key = array_search($modelName, array_keys($this->schema->models))) {
-			$modelName = array_keys($this->schema->models);
-			$modelName = $modelName[$key];
-		}
-
-		return '\\' . $modelName;
 	}
 
 	/**

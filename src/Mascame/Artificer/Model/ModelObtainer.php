@@ -2,7 +2,6 @@
 
 use Mascame\Artificer\Permit\ModelPermit;
 use File;
-use Route;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\AdminOption;
 

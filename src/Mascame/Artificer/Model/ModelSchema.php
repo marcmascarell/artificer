@@ -1,11 +1,7 @@
 <?php namespace Mascame\Artificer\Model;
 
 use Mascame\Artificer\Permit\ModelPermit;
-use View;
-use Str;
 use Schema;
-use File;
-use Route;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\AdminOption;
 
