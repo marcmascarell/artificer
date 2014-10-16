@@ -3,7 +3,7 @@
 use Mascame\Artificer\Options\PluginOption;
 use App;
 
-abstract class Plugin implements PluginInterface {
+abstract class AbstractPlugin implements PluginInterface {
 
 	/**
 	 * @var

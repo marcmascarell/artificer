@@ -44,6 +44,10 @@ class PluginManager {
 		return $this->plugins = $plugins;
 	}
 
+	public function make($plugin) {
+		return ($this->isInstalled($plugin)) ? $this->plugins['installed'][$plugin] : null;
+	}
+
 	public function getName($pluginNamespace)
 	{
 		$pluginName = explode('/', $pluginNamespace);

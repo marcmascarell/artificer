@@ -1,9 +1,9 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Fields\AbstractField;
 use Form;
 
-class Select extends Field {
+class Select extends AbstractField {
 
 	public function input()
 	{

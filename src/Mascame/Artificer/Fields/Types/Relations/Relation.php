@@ -1,12 +1,15 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
-use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Fields\AbstractField;
 use Mascame\Artificer\Model\Model;
 use URL;
 use Route;
 
-class Relation extends Field {
+class Relation extends AbstractField {
 
+	/**
+	 * @var Model;
+	 */
 	public $modelObject;
 	public $model;
 	public $fields;
@@ -27,14 +30,14 @@ class Relation extends Field {
 			<div class="btn-group">
 				<button class="btn btn-default" data-toggle="modal"
 						data-url="<?=$this->createURL?>"
-						data-target="#form-modal-<?= $this->model['route'] ?>">
+						data-target="#form-modal-<?= $this->modelObject->getRouteName() ?>">
 					<i class="glyphicon glyphicon-plus"></i>
 				</button>
 			</div>
 		</div>
 
 		<!-- Modal -->
-		<div class="modal fade standalone" id="form-modal-<?= $this->model['route'] ?>" tabindex="-1" role="dialog"
+		<div class="modal fade standalone" id="form-modal-<?= $this->modelObject->getRouteName() ?>" tabindex="-1" role="dialog"
 			 aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -54,7 +57,7 @@ class Relation extends Field {
 		</div>
 
 		<script>
-			var $modal = $('#form-modal-<?=$this->model['route']?>');
+			var $modal = $('#form-modal-<?=$this->modelObject->getRouteName()?>');
 			var $modal_body = $(".modal-body");
 			var url = null;
 
@@ -71,7 +74,7 @@ class Relation extends Field {
 
 					var $form = $('.modal-body form');
 
-					$form.prepend('<input type="hidden" name="_standalone" value="<?=$this->model['route']?>">');
+					$form.prepend('<input type="hidden" name="_standalone" value="<?=$this->modelObject->getRouteName()?>">');
 
                     <?php if (Route::currentRouteName() == 'admin.model.create') { ?>
                     $form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=Model::getCurrent()?>">');

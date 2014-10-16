@@ -6,7 +6,7 @@ use Mascame\Artificer\Localization;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\FieldOption;
 
-abstract class Field implements FieldInterface {
+abstract class AbstractField implements FieldInterface {
 
 	public $type;
 	public $title;

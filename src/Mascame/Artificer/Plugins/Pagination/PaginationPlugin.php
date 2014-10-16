@@ -1,13 +1,13 @@
 <?php namespace Mascame\Artificer\Plugins\Pagination;
 
 use Mascame\Artificer\Model\Model;
-use Mascame\Artificer\Plugin\Plugin;
+use Mascame\Artificer\Plugin\AbstractPlugin;
 use Event;
 use Input;
 use Paginator;
 use Session;
 
-class PaginationPlugin extends Plugin {
+class PaginationPlugin extends AbstractPlugin {
 
 	public static $pagination;
 	public static $per_page_key;

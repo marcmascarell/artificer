@@ -1,9 +1,9 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Fields\AbstractField;
 use Form;
 
-class Radio extends Field {
+class Radio extends AbstractField {
 
 	public function input()
 	{

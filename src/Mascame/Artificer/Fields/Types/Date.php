@@ -1,10 +1,10 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Fields\AbstractField;
 use Form;
 use Mascame\Artificer\Widgets\Datepicker\Datepicker;
 
-class Date extends Field {
+class Date extends AbstractField {
 
 	public function boot()
 	{

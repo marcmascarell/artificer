@@ -1,5 +1,7 @@
 <?php namespace Mascame\Artificer;
 
+use App;
+
 class Artificer  {
 
 	public static function assets()
@@ -15,4 +17,7 @@ class Artificer  {
 		return is_object($t) && ($t instanceof \Closure);
 	}
 
+	public static function getPlugin($plugin) {
+		return with(App::make('artificer-plugin-manager'))->make($plugin);
+	}
 }

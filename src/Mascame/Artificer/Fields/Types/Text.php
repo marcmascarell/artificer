@@ -1,11 +1,11 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Fields\AbstractField;
 use Form;
 //use Mascame\Artificer\Widgets\FocalPoint;
 
 
-class Text extends Field {
+class Text extends AbstractField {
 
 	public function boot()
 	{

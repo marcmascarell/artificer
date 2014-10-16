@@ -1,9 +1,9 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Fields\AbstractField;
 use Form;
 
-class Checkbox extends Field {
+class Checkbox extends AbstractField {
 
 	public function input()
 	{

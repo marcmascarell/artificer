@@ -1,14 +1,14 @@
 <?php namespace Mascame\Artificer\Plugins\Datatables;
 
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Plugin\Plugin;
+use Mascame\Artificer\Plugin\AbstractPlugin;
 use Config;
 use View;
 use Image;
 use Event;
 use Route;
 
-class DatatablesPlugin extends Plugin {
+class DatatablesPlugin extends AbstractPlugin {
 
 	public function meta()
 	{

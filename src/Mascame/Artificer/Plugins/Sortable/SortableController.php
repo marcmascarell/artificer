@@ -16,7 +16,7 @@ class SortableController extends BaseModelController {
 	{
 		parent::__construct();
 
-		$this->plugin = $this->getPlugin('mascame/sortable');
+		$this->plugin = Artificer::getPlugin('mascame/sortable');
 	}
 
 	public function updateSort($old, $new)

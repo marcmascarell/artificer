@@ -1,11 +1,11 @@
 <?php namespace Mascame\Artificer\Plugins\Plupload;
 
-use Mascame\Artificer\Plugin\Plugin;
+use Mascame\Artificer\Plugin\AbstractPlugin;
 use Event;
 use Route;
 
 
-class PluploadPlugin extends Plugin {
+class PluploadPlugin extends AbstractPlugin {
 
 
 	public function meta()
