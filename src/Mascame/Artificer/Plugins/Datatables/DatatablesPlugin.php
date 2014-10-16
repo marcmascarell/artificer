@@ -2,11 +2,7 @@
 
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Plugin\AbstractPlugin;
-use Config;
-use View;
-use Image;
 use Event;
-use Route;
 
 class DatatablesPlugin extends AbstractPlugin {
 
