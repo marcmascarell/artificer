@@ -17,7 +17,7 @@ Route::filter('artificer-auth', function () {
         }
         else
         {
-            return Redirect::route('admin.model.showlogin');
+            return Redirect::route('admin.showlogin');
         }
     } else if (Auth::check()
         && Route::currentRouteName() != 'admin.logout') {
