@@ -1,8 +1,8 @@
 <?php namespace Mascame\Artificer\Widgets\Datepicker;
 
-use Mascame\Artificer\Widgets\Widget;
+use Mascame\Artificer\Widgets\AbstractWidget;
 
-class Datepicker extends Widget {
+class Datepicker extends AbstractWidget {
 
 	public function output()
 	{

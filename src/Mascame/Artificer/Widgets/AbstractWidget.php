@@ -1,6 +1,6 @@
 <?php namespace Mascame\Artificer\Widgets;
 
-class Widget {
+abstract class AbstractWidget {
 
 	public $name;
 	public $package_assets = '/packages/mascame/artificer';

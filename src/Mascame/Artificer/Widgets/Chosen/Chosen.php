@@ -1,8 +1,8 @@
 <?php namespace Mascame\Artificer\Widgets\Chosen;
 
-use Mascame\Artificer\Widgets\Widget;
+use Mascame\Artificer\Widgets\AbstractWidget;
 
-class Chosen extends Widget {
+class Chosen extends AbstractWidget {
 
 	public function output()
 	{

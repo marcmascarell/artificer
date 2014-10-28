@@ -1,10 +1,10 @@
 <?php namespace Mascame\Artificer\Widgets\FocalPoint;
 
-use Mascame\Artificer\Widgets\Widget as Widget;
+use Mascame\Artificer\Widgets\AbstractWidget as Widget;
 
 // This widget requires a column on database like "sort_id" to work
 
-class FocalPoint extends Widget {
+class FocalPoint extends AbstractWidget {
 
 	public function output()
 	{

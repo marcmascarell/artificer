@@ -34,6 +34,10 @@ class FieldAttributes {
 		return (isset($this->options[$key])) ? $this->options[$key] : array();
 	}
 
+    /**
+     * @param array $attributes
+     * @return array|mixed
+     */
     public function add($attributes = array())
     {
         $this->fieldOptions->add('attributes', array_merge($this->all(), $attributes));

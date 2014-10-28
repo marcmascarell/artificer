@@ -1,8 +1,8 @@
 <?php namespace Mascame\Artificer\Widgets\CKeditor;
 
-use Mascame\Artificer\Widgets\Widget;
+use Mascame\Artificer\Widgets\AbstractWidget;
 
-class CKeditor extends Widget {
+class CKeditor extends AbstractWidget {
 
 	public function output()
 	{

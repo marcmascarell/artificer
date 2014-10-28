@@ -7,7 +7,7 @@ use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\FieldOption;
 
-abstract class AbstractField implements FieldInterface {
+class Field implements FieldInterface {
 
 	public $type;
 	public $title;

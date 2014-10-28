@@ -6,7 +6,7 @@ use Mascame\Artificer\Options\FieldOption;
 use Str;
 use Mascame\Artificer\Options\AdminOption;
 
-class Factory {
+class FieldFactory {
 
 	public $fieldClass;
 	public $types;

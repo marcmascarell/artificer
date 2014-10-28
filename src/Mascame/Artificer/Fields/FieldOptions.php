@@ -84,7 +84,11 @@ class FieldOptions {
 		return $this->all();
 	}
 
-
+    /**
+     * @param $key
+     * @param array $default
+     * @return array|mixed
+     */
     public function getExistent($key, $default = array()) {
         if ($this->has($key)) return $this->get($key);
 
