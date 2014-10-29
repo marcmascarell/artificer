@@ -15,7 +15,7 @@ class ModelRelation {
 
 		$fields = ModelOption::get('fields');
 
-		if (!empty($fields)) return array();
+		if (empty($fields)) return array();
 
 		return $this->relations = $this->getFieldsWithRelations($fields);
 	}

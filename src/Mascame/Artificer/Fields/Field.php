@@ -219,7 +219,7 @@ class Field implements FieldInterface {
 	 */
 	public function isListed($list = 'list')
 	{
-		$list = $this->options->getExistent($list);
+		$list = $this->options->model[$list];
 
 		if ($this->isAll($list)) {
 			return true;

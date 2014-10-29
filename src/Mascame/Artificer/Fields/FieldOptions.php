@@ -10,11 +10,13 @@ class FieldOptions {
 
     protected $name;
     protected $options;
-    protected $modelOptions;
+    public $model;
 
 	public function __construct($name)
 	{
         $this->name = $name;
+        $this->options = $this->all();
+        $this->model = $this->model();
 	}
 
 	/**
@@ -55,9 +57,7 @@ class FieldOptions {
 	 */
 	public function all()
 	{
-		$this->options = FieldOption::field($this->name);
-
-		return (array) $this->options;
+		return (array) $this->options = FieldOption::field($this->name);
 	}
 
 
@@ -66,9 +66,7 @@ class FieldOptions {
 	 */
 	public function model()
 	{
-		$this->modelOptions = ModelOption::all();
-
-		return $this->modelOptions;
+		return $this->model = ModelOption::all();
 	}
 
 	/**

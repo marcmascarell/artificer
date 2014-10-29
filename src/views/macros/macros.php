@@ -85,7 +85,7 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 							<td>
 								<?php
 								if ($fields[$key]->isRelation()) {
-									$method = $fields[$key]->getRelationMethod();
+									$method = $fields[$key]->relation->getMethod();
 									$fields[$key]->display($d->$method);
 								} else {
 									print $fields[$key]->display($d->$key);

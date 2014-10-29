@@ -1,11 +1,11 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
 use Carbon\Carbon;
-use Mascame\Artificer\Fields\AbstractField;
+use Mascame\Artificer\Fields\Field;
 use Form;
 use Mascame\Artificer\Widgets\DateTimepicker\DateTimepicker;
 
-class DateTime extends AbstractField {
+class DateTime extends Field {
 
 	public function boot()
 	{

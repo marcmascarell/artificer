@@ -1,10 +1,10 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Fields\AbstractField;
+use Mascame\Artificer\Fields\Field;
 use Form;
 use HTML;
 
-class Email extends AbstractField {
+class Email extends Field {
 
 	public function input()
 	{

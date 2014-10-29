@@ -4,7 +4,7 @@ use Input;
 use Auth;
 use Mascame\Artificer\Permit\ModelPermit;
 use View;
-use Mascame\Artificer\Fields\Factory as FieldFactory;
+use Mascame\Artificer\Fields\FieldFactory;
 use App;
 use Session;
 use File;
