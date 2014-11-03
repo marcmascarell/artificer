@@ -31,7 +31,33 @@
         </div>
     </div>
 
+
     @if (!$items->isEmpty())
+        <div class="row">
+            <div class="col-md-offset-8 col-md-4">
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{ Form::open(array('route' => array('admin.model.filter', $model['route']), 'method' => 'post')) }}
+                            @foreach($fields as $field)
+                                {{ $field->title }}
+                                {{ $field->displayFilter() }}
+                            @endforeach
+
+                            <div class="text-right">
+                                <button type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+
+                        {{ Form::close() }}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
         {{ HTML::table($model, $items, $fields, $models[$model['name']]['options'], $sort,
         $permit['view'],
         $permit['update'],

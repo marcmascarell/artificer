@@ -28,6 +28,29 @@ class ModelController extends BaseModelController {
 		return View::make($this->getView('edit'))->with('items', $this->data)->with($form);
 	}
 
+    /**
+     * @param $modelName
+     * @return $this
+     */
+    public function filter($modelName) {
+        $this->handleData($this->model->firstOrFail());
+
+        $sort = $this->getSort();
+
+        $data = $this->model->where(function($query) {
+
+            foreach (Input::all() as $name => $value) {
+                if ($value != '' && isset($this->fields[$name])) {
+                    $this->fields[$name]->filter($query, $value);
+                }
+            }
+
+            return $query;
+        })->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->get();
+
+        return parent::all($modelName, $data, $sort);
+    }
+
 	/**
 	 * Store a newly created resource in storage.
 	 *

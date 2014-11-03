@@ -2,6 +2,7 @@
 
 use Event;
 use App;
+use Illuminate\Database\Query\Builder;
 use Mascame\Artificer\Localization;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Options\ModelOption;
@@ -296,6 +297,19 @@ class Field implements FieldInterface {
 	{
 		return $this->relation->isRelation();
 	}
+
+    /**
+     * @param $query Builder
+     * @param $value
+     * @return mixed
+     */
+    public function filter($query, $value) {
+        return $query->where($query, $value);
+    }
+
+    public function displayFilter() {
+
+    }
 
 
 }
