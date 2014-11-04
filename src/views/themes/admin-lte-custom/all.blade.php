@@ -36,16 +36,25 @@
         <div class="row">
             <div class="col-md-offset-8 col-md-4">
 
-                <div class="panel panel-default">
-                    <div class="panel-body">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">
+                        <i class="fa fa-filter"></i> Filter
+                        </h3>
+                    </div>
+                    <div class="box-body">
                         {{ Form::open(array('route' => array('admin.model.filter', $model['route']), 'method' => 'post')) }}
                             @foreach($fields as $field)
-                                {{ $field->title }}
+                                @if ($field->hasFilter())
+                                    {{ Str::title($field->title) }}
+                                @endif
                                 {{ $field->displayFilter() }}
                             @endforeach
 
+                            <br>
+
                             <div class="text-right">
-                                <button type="submit">
+                                <button type="submit" class="btn btn-default">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>

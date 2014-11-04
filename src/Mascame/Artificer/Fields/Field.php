@@ -307,8 +307,18 @@ class Field implements FieldInterface {
         return $query->where($query, $value);
     }
 
+    /**
+     * @return bool
+     */
     public function displayFilter() {
+        return false;
+    }
 
+    /**
+     * @return bool
+     */
+    public function hasFilter() {
+        return ($this->displayFilter()) ? true : false;
     }
 
 

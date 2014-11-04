@@ -1,10 +1,10 @@
 <?php namespace Mascame\Artificer\Plugins\Pagination;
 
+use Illuminate\Pagination\Paginator;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Plugin\AbstractPlugin;
 use Event;
 use Input;
-use Paginator;
 use Session;
 
 class PaginationPlugin extends AbstractPlugin {

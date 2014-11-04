@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Paginator;
+
 function isHidden($key, $hidden)
 {
 	return (!isset($hidden) || (isset($hidden) && !in_array($key, $hidden))) ? true : false;
