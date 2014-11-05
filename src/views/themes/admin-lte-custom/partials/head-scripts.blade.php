@@ -33,6 +33,7 @@
 <script src="{{ asset('packages/mascame/artificer/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
 
 <script src="{{ asset('packages/mascame/artificer/core/restfulizer.js') }}"></script>
+<script src="{{ asset('packages/mascame/artificer/themes/admin-lte-custom/js/artificer.js') }}"></script>
 
 <!-- AdminLTE for demo purposes -->
 <!-- Can change color skin and toggle fixed layout -->

@@ -100,7 +100,7 @@ class UserController extends BaseController {
     protected function onFailValidation($validator) {
         $this->addAttempt();
 
-        return Redirect::route('admin.model.showlogin')
+        return Redirect::route('admin.model.login')
             ->withErrors($validator)
             ->withInput();
     }
