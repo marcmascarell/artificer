@@ -6,7 +6,7 @@ return array(
 
 //	'default_route' => route('admin.model.all', array('slug' => 'user'), $absolute = true),
 
-	'theme'        => 'artificer::themes.admin-lte-custom',
+	'theme'        => 'artificer-default-theme',
 
 	'list'         => array(
 		'hidden'     => array(

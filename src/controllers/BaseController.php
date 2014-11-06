@@ -30,7 +30,7 @@ class BaseController extends Controller {
      */
     public function __construct()
     {
-        $this->theme = AdminOption::get('theme');
+        $this->theme = AdminOption::get('theme') . '::';
         $this->master_layout = 'base';
 
         if (Auth::check()) {
@@ -80,7 +80,7 @@ class BaseController extends Controller {
      */
     public function getView($view)
     {
-        return $this->theme . '.' . $view;
+        return $this->theme . $view;
     }
 
     public static function assets()
