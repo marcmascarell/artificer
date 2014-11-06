@@ -57,9 +57,7 @@ Optional dependency for Plupload plugin:
     "jildertmiedema/laravel-plupload": "dev-master"
     'JildertMiedema\LaravelPlupload\LaravelPluploadServiceProvider'
 
-Add the a theme:
-
-The default theme is [mascame/artificer-default-theme](https://github.com/marcmascarell/artificer-default-theme/)
+Add a theme. Default: [mascame/artificer-default-theme](https://github.com/marcmascarell/artificer-default-theme/)
 
 Usage
 --------------
