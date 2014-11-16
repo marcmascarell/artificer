@@ -2,7 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use App;
-use Mascame\Artificer\Fields\AbstractField;
+use Config;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
@@ -26,6 +26,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->package('mascame/artificer');
+        Config::addNamespace('artificer', 'mascame/artificer');
 
 		$this->requireFiles();
 
