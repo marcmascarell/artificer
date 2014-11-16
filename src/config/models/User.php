@@ -12,7 +12,6 @@ return array(
 	// Not updatable, not editable
 	'guarded'   => array('id'),
 
-	'permissions' => array('admin'),
 
 	'list'      => array('*'),
 
