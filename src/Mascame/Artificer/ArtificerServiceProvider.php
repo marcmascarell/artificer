@@ -26,7 +26,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	public function boot()
 	{
         $this->package('mascame/artificer');
-//        Config::addNamespace('artificer', app_path('config/mascame/artificer'));
+        Config::addNamespace('artificer', app_path('config/packages/mascame/artificer'));
 
 
         $this->requireFiles();
