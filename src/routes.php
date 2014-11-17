@@ -61,18 +61,19 @@ Route::group(array(
 
 			$plugins = Config::get('artificer::admin.plugins.installed');
 
-			foreach ($plugins as $pluginNamespace) {
-				$pluginName = explode('/', $pluginNamespace);
-				$pluginName = end($pluginName);
+            if (is_array($plugins)) {
+                foreach ($plugins as $pluginNamespace) {
+                    $pluginName = explode('/', $pluginNamespace);
+                    $pluginName = end($pluginName);
 
-				$plugin = Config::get('artificer::plugins/' . $pluginNamespace . '/' . $pluginName);
+                    $plugin = Config::get('artificer::plugins/' . $pluginNamespace . '/' . $pluginName);
 
-				if (isset($plugin['routes'])) {
-					$plugin_routes = $plugin['routes'];
-					$plugin_routes();
-				}
-			}
-
+                    if (isset($plugin['routes'])) {
+                        $plugin_routes = $plugin['routes'];
+                        $plugin_routes();
+                    }
+                }
+            }
 		});
 });
 
