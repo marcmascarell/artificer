@@ -32,14 +32,18 @@ class PluginManager {
 	{
 		$plugins = $this->getAll();
 
-		foreach ($plugins['installed'] as $namespace => $pluginClass) {
-			$plugins['installed'][$namespace] = new $pluginClass($namespace);
-			$plugins['installed'][$namespace]->boot();
-		}
+        if (isset($plugins['installed'])) {
+            foreach ($plugins['installed'] as $namespace => $pluginClass) {
+                $plugins['installed'][$namespace] = new $pluginClass($namespace);
+                $plugins['installed'][$namespace]->boot();
+            }
+        }
 
-		foreach ($plugins['uninstalled'] as $namespace => $pluginClass) {
-			$plugins['uninstalled'][$namespace] = new $pluginClass($namespace);
-		}
+        if (isset($plugins['uninstalled'])) {
+            foreach ($plugins['uninstalled'] as $namespace => $pluginClass) {
+                $plugins['uninstalled'][$namespace] = new $pluginClass($namespace);
+            }
+        }
 
 		return $this->plugins = $plugins;
 	}

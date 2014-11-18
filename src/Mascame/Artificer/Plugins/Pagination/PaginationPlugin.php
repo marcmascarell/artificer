@@ -24,7 +24,7 @@ class PaginationPlugin extends AbstractPlugin {
 	{
 		self::$per_page_key = $this->configKey .'.per_page';
 		self::$pagination = $this->getPagination();
-		Paginator::setViewName($this->getOption('view'));
+		\App::make('paginator')->setViewName($this->getOption('view'));
 
 		\View::share('artificer_pagination', self::$pagination);
 
