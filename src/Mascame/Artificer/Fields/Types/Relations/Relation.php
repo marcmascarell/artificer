@@ -31,7 +31,7 @@ class Relation extends Field {
 				<button class="btn btn-default" data-toggle="modal"
 						data-url="<?=$this->createURL?>"
 						data-target="#form-modal-<?= $this->modelObject->getRouteName() ?>">
-					<i class="glyphicon glyphicon-plus"></i>
+					<i class="fa fa-plus"></i>
 				</button>
 			</div>
 		</div>

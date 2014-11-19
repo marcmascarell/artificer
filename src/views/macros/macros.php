@@ -104,14 +104,14 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 								<?php if ($showEdit) { ?>
 									<a href="<?= route('admin.model.edit', array('slug' => $model['route'], 'id' => $d->id), $absolute = true) ?>"
 									   type="button" class="btn btn-default">
-										<i class="glyphicon glyphicon-edit"></i>
+										<i class="fa fa-edit"></i>
 									</a>
 								<?php } ?>
 
 								<?php if ($showView) { ?>
 									<a href="<?= $model['route'] . '/' . $d->id ?>" type="button"
 									   class="btn btn-default">
-										<i class="glyphicon glyphicon-eye-open"></i>
+										<i class="fa fa-eye"></i>
 									</a>
 								<?php } ?>
 
@@ -119,7 +119,7 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 									<a data-method="delete" data-token="<?= csrf_token() ?>"
 									   href="<?= route('admin.model.destroy', array('slug' => $model['route'], 'id' => $d->id), $absolute = true) ?>"
 									   type="button" class="btn btn-default">
-										<i class="glyphicon glyphicon-remove"></i>
+										<i class="fa fa-remove"></i>
 									</a>
 								<?php } ?>
 							</div>
@@ -134,51 +134,3 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 	</div>
 <?php
 });
-
-//HTML::macro('table_php', function($model, $data = array(), $fields, $options, $showEdit = true, $showDelete = true, $showView = true){
-//
-//    $table = '<table class="table table-bordered table-striped" data-page="'.Paginator::getCurrentPage().'" data-start="'.$data[0]->sort_id.'" data-sort-url="'.URL::route("admin.model.sort", array($model['keyname'],'replace_old_id','replace_new_id')).'">';
-//
-//    $table .='<tr>';
-//
-//    foreach ($fields as $field)
-//    {
-//        $table .= '<th>' . Str::title($field->title) . '</th>';
-//    }
-//
-//    if ($showEdit || $showDelete || $showView ) {
-//        $table .= '<th></th>';
-//    }
-//
-//    $table .= '</tr><tbody class="sortable">';
-//
-//    foreach ( $data as $d )
-//    {
-//        $table .= '<tr data-id="'. $d->id .'"  data-sort-id="'. $d->sort_id .'">';
-//
-//        foreach($model['columns'] as $key) {
-//            $table .= '<td>' . $fields[$key]->show($d->$key) . '</td>';
-//        }
-//
-//        if ($showEdit || $showDelete || $showView )
-//        {
-//            $table .= '<td>';
-//            if ($showEdit)
-//                $table .= '<a href="'. route('admin.model.edit', array('slug' => $model['keyname'], 'id' => $d->id), $absolute = true) .'" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i></a> ';
-//            if ($showView)
-//                $table .= '<a href="' . $model['keyname'] . '/' . $d->id . '" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a> ';
-//            if ($showDelete)
-//
-//
-//                $table .= '<a data-method="delete" href="' . route('admin.model.destroy', array('slug' => $model['keyname'], 'id' => $d->id), $absolute = true) . '" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a> ';
-////                    $table .= '<a href="' . route('admin.model.destroy', array('slug' => $model['keyname'], 'id' => $d->id), $absolute = true) . '" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</a> ';
-//            $table .= '</td>';
-//        }
-//
-//        $table .= '</tr>';
-//    }
-//
-//    $table .= '</tbody></table>';
-//
-//    return $table;
-//});

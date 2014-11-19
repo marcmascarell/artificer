@@ -84,12 +84,12 @@ class hasMany extends Relation {
 					<button class="btn btn-default" data-toggle="modal"
 							data-url="<?=$edit_url?>"
 							data-target="#form-modal-<?= $this->model['route'] ?>">
-						<i class="glyphicon glyphicon-edit"></i>
+						<i class="fa fa-edit"></i>
 					</button>
 					<a data-method="delete" data-token="<?= csrf_token() ?>"
 					   href="<?= route('admin.model.destroy', array('slug' => $this->model['route'], 'id' => $item['id']), $absolute = true) ?>"
 					   type="button" class="btn btn-default">
-						<i class="glyphicon glyphicon-remove"></i>
+						<i class="fa fa-remove"></i>
 					</a>
 				</span>
 			</span>

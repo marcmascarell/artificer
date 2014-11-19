@@ -60,11 +60,11 @@ class hasOne extends Relation {
             <div class="text-right">
                 <div class="btn-group">
                     <a href="<?= $edit_url ?>" target="_blank" type="button" class="btn btn-default">
-                        <i class="glyphicon glyphicon-edit"></i>
+                        <i class="fa fa-edit"></i>
                     </a>
 
                     <a href="<?= $new_url ?>" target="_blank" type="button" class="btn btn-default">
-                        <i class="glyphicon glyphicon-plus"></i>
+                        <i class="fa fa-plus"></i>
                     </a>
                 </div>
             </div>
