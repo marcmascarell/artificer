@@ -22,7 +22,8 @@ class PaginationPlugin extends AbstractPlugin {
 
 	public function boot()
 	{
-		self::$per_page_key = $this->configKey .'.per_page';
+        // Todo: fix the plugin
+		self::$per_page_key = $this->configKey .'.per_page' . '.' . Model::getCurrent();
 		self::$pagination = $this->getPagination();
 		\App::make('paginator')->setViewName($this->getOption('view'));
 
@@ -60,7 +61,7 @@ class PaginationPlugin extends AbstractPlugin {
 	public static function setPagination($number, $modelName)
 	{
 		self::$pagination = $number;
-		Session::set(self::$per_page_key . '.' . $modelName, $number);
+		Session::set(self::$per_page_key, $number);
 	}
 
 }

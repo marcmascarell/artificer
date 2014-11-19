@@ -196,6 +196,7 @@ class ModelController extends BaseModelController {
 			Notification::danger('<b>Failed!</b> The record could not be deleted!');
 		}
 
+        // Todo: change to all when coming from filter
 		return Redirect::back();
 
 //		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
