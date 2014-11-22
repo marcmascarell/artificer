@@ -55,6 +55,7 @@ class BaseController extends Controller {
         View::share('layout', $this->theme . '.' . $this->master_layout);
         View::share('fields', array());
         View::share('standalone', $this->standalone);
+        View::share('icon', AdminOption::get('icons'));
     }
 
     public function isStandAlone() {

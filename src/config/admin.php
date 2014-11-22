@@ -21,6 +21,21 @@ return array(
 		'showable' => array(),
 	),
 
+    'icons' => array(
+        'edit' => 'fa fa-pencil',
+        'filter' => 'fa fa-filter',
+        'new' => 'fa fa-plus',
+        'search' => 'fa fa-search',
+        'dashboard' => 'fa fa-dashboard',
+        'models' => 'fa fa-th',
+        'info' => 'fa fa-info',
+        'save' => 'fa fa-save',
+        'show' => 'fa fa-eye',
+        'delete' => 'fa fa-remove',
+        'sort-up' => 'fa-long-arrow-up',
+        'sort-down' => 'fa-long-arrow-down',
+    ),
+
 //	'routes' => Config::get('artificer::routes'),
 
 	'menu'         => Config::get('artificer::menu'),

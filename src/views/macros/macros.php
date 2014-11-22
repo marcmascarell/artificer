@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Paginator;
+use \Mascame\Artificer\Options\AdminOption;
 
 function isHidden($key, $hidden)
 {
@@ -32,12 +33,12 @@ function getSortIcon($table_name, $sort)
 {
 	if ($sort['column'] == $table_name) {
 		if ($sort['direction'] == 'desc') {
-			$icon = 'fa-long-arrow-down';
+			$icon = AdminOption::get('icons.sort-down');
 		} else {
-			$icon = 'fa-long-arrow-up';
+			$icon = AdminOption::get('icons.sort-up');
 		}
 
-		return '<i class="fa ' . $icon . '"></i>';
+		return '<i class="' . $icon . '"></i>';
 	}
 
 	return null;
@@ -104,14 +105,14 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 								<?php if ($showEdit) { ?>
 									<a href="<?= route('admin.model.edit', array('slug' => $model['route'], 'id' => $d->id), $absolute = true) ?>"
 									   type="button" class="btn btn-default">
-										<i class="fa fa-edit"></i>
+										<i class="<?= AdminOption::get('icons.edit') ?>"></i>
 									</a>
 								<?php } ?>
 
 								<?php if ($showView) { ?>
-									<a href="<?= $model['route'] . '/' . $d->id ?>" type="button"
+									<a href="<?= route('admin.model.show', array('slug' => $model['route'], 'id' => $d->id), $absolute = true) ?>" type="button"
 									   class="btn btn-default">
-										<i class="fa fa-eye"></i>
+										<i class="<?= AdminOption::get('icons.show') ?>"></i>
 									</a>
 								<?php } ?>
 
@@ -119,7 +120,7 @@ HTML::macro('table', function ($model, $data = array(), $fields, $options, $sort
 									<a data-method="delete" data-token="<?= csrf_token() ?>"
 									   href="<?= route('admin.model.destroy', array('slug' => $model['route'], 'id' => $d->id), $absolute = true) ?>"
 									   type="button" class="btn btn-default">
-										<i class="fa fa-remove"></i>
+										<i class="<?= AdminOption::get('icons.delete')  ?>"></i>
 									</a>
 								<?php } ?>
 							</div>
