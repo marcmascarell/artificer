@@ -21,6 +21,29 @@ class PaginationController extends BaseModelController {
 		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
 	}
 
+    /**
+     * @param $modelName
+     * @return $this
+     */
+    public function filter($modelName) {
+        $this->handleData($this->model->firstOrFail());
+
+        $sort = $this->getSort();
+
+        $data = $this->model->where(function($query) {
+
+            foreach (Input::all() as $name => $value) {
+                if ($value != '' && isset($this->fields[$name])) {
+                    $this->fields[$name]->filter($query, $value);
+                }
+            }
+
+            return $query;
+        })->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->paginate(Pagination::$pagination);
+
+        return parent::all($modelName, $data, $sort);
+    }
+
 	/**
 	 * @param $modelName
 	 * @return $this

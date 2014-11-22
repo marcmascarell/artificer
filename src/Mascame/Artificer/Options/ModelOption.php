@@ -5,6 +5,7 @@ use Mascame\Artificer\Model\Model;
 class ModelOption extends Option {
 
 	public static $key = 'models/';
+	public static $default_model = 'models.default_model';
 
 	public static function get($key = '', $model = null)
 	{
@@ -30,4 +31,10 @@ class ModelOption extends Option {
 	{
 		return ($model) ? $model : Model::getCurrent();
 	}
+
+    public static function getDefault($key = '') {
+        $key = (isset($key) && !empty($key)) ? '.' . $key : null;
+
+        return Option::get(self::$default_model . $key);
+    }
 }

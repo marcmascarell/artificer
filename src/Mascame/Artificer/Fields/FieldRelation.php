@@ -1,6 +1,5 @@
 <?php namespace Mascame\Artificer\Fields;
 
-use Event;
 use Mascame\Artificer\Localization;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\FieldOption;

@@ -222,9 +222,7 @@ class Field implements FieldInterface {
 	{
 		$list = $this->options->model[$list];
 
-		if ($this->isAll($list)) {
-			return true;
-		}
+		if ($this->isAll($list)) return true;
 
 		return $this->isInArray($this->name, $list);
 	}
@@ -265,9 +263,7 @@ class Field implements FieldInterface {
 	 */
 	public function getTitle($name)
 	{
-		if ($this->options->has('title')) {
-			return $this->options->get('title');
-		}
+		if ($this->options->has('title')) return $this->options->get('title');
 
 		return $name;
 	}
@@ -278,7 +274,7 @@ class Field implements FieldInterface {
 	 */
 	public function isGuarded()
 	{
-		return $this->isInArray($this->name, ModelOption::get('guarded'));
+		return $this->isInArray($this->name, $this->options->model['guarded']);
 	}
 
 
@@ -287,7 +283,7 @@ class Field implements FieldInterface {
 	 */
 	public function isHidden()
 	{
-		return $this->isInArray($this->name, ModelOption::get('hidden'));
+		return $this->isInArray($this->name, $this->options->model['hidden']);
 	}
 
 	/**

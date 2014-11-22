@@ -1,7 +1,5 @@
 <?php namespace Mascame\Artificer\Fields;
 
-use Event;
-use App;
 use Mascame\Artificer\Localization;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\FieldOption;
@@ -12,6 +10,9 @@ class FieldOptions {
     protected $options;
     public $model;
 
+    /**
+     * @param $name
+     */
 	public function __construct($name)
 	{
         $this->name = $name;
@@ -66,7 +67,12 @@ class FieldOptions {
 	 */
 	public function model()
 	{
-		return $this->model = ModelOption::all();
+        if (isset($this->model)) return $this->model;
+
+        $model = ModelOption::all();
+        $default_model = ModelOption::getDefault();
+
+		return $this->model = (!empty($model)) ? array_merge_recursive($model, $default_model) : ModelOption::getDefault();
 	}
 
 	/**
