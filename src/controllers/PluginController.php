@@ -1,5 +1,6 @@
 <?php namespace Mascame\Artificer;
 
+use Mascame\Arrayer\Arrayer;
 use Redirect;
 use View;
 use App;
@@ -88,80 +89,10 @@ class PluginController extends BaseController {
 			unset($plugins[$from][$key]);
 			$plugins[$to][] = $plugin;
 
-			$content = $this->addArrayConfigStart();
-			$content .= $this->addArrayWrapper('installed', $this->addArrayValues($plugins['installed']));
-			$content .= $this->addArrayWrapper('uninstalled', $this->addArrayValues($plugins['uninstalled']));
-			$content .= $this->addArrayConfigEnd();
-
 			if (!file_exists($file)) throw new \Exception('No plugins file.');
 
-			File::put($file, $content);
+			File::put($file, with(new Arrayer($plugins))->getContent());
 		}
-	}
-
-	/**
-	 * @return string
-	 */
-	protected function addArrayConfigStart()
-	{
-		$content = "<?php" . PHP_EOL . PHP_EOL;
-		$content .= 'return array(' . PHP_EOL . PHP_EOL;
-
-		return $content;
-	}
-
-	/**
-	 * @param $key
-	 * @return string
-	 */
-	protected function addArrayKeyStart($key)
-	{
-		return "\t" . '"' . $key . '" => array(' . PHP_EOL;
-	}
-
-	/**
-	 * @param $key
-	 * @param $values
-	 * @return string
-	 */
-	protected function addArrayWrapper($key, $values)
-	{
-		$content = $this->addArrayKeyStart($key);
-		$content .= $values;
-		$content .= $this->addArrayKeyEnd();
-
-		return $content;
-	}
-
-	/**
-	 * @return string
-	 */
-	protected function addArrayKeyEnd()
-	{
-		return "\t" . '),' . PHP_EOL . PHP_EOL;
-	}
-
-	/**
-	 * @param $array
-	 * @return string
-	 */
-	protected function addArrayValues($array)
-	{
-		$content = '';
-
-		foreach ($array as $value) {
-			$content .= "\t\t" . '"' . $value . '",' . PHP_EOL;
-		}
-
-		return $content;
-	}
-
-	/**
-	 * @return string
-	 */
-	protected function addArrayConfigEnd()
-	{
-		return ');';
 	}
 
 }
