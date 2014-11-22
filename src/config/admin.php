@@ -32,8 +32,8 @@ return array(
         'save' => 'fa fa-save',
         'show' => 'fa fa-eye',
         'delete' => 'fa fa-remove',
-        'sort-up' => 'fa-long-arrow-up',
-        'sort-down' => 'fa-long-arrow-down',
+        'sort-up' => 'fa fa-long-arrow-up',
+        'sort-down' => 'fa fa-long-arrow-down',
     ),
 
 //	'routes' => Config::get('artificer::routes'),
