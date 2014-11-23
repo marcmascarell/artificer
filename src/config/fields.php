@@ -3,7 +3,6 @@
 return array(
 
 	'classmap' => array(
-//		'sort_id' => '\Mascame\Artificer\Plugins\Sortable\SortableField',
 		'bool' => '\Mascame\Artificer\Fields\Types\Checkbox',
 		'boolean' => '\Mascame\Artificer\Fields\Types\Checkbox',
 //		'image'   => '\Mascame\Artificer\Plugins\Plupload\PluploadField',
@@ -67,8 +66,6 @@ return array(
 		),
 
 		'image_center' => array(),
-
-		'sort_id'      => array(),
 
 		'hasOne'       => array(
 			'_id',
