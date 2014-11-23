@@ -13,7 +13,7 @@ class Artificer  {
         return BaseModelController::getCurrentModelId($items);
     }
 
-	public static function is_closure($t) {
+	public static function isClosure($t) {
 		return is_object($t) && ($t instanceof \Closure);
 	}
 

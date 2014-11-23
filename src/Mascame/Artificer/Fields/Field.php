@@ -175,7 +175,7 @@ class Field implements FieldInterface {
 			return $this->guarded();
 		}
 
-        $this->value = $this->getValue();
+        $this->value = $this->getValue($this->value);
 
 		if ($this->options->has('input')) {
 			return $this->userInput($this->options->get('input'));

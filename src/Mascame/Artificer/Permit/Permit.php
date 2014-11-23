@@ -41,9 +41,7 @@ abstract class Permit extends Auth {
     {
         if (!$permissions) return true;
 
-        if (self::userHasPermission($permissions)) {
-            return true;
-        }
+        if (self::userHasPermission($permissions)) return true;
 
         return false;
     }
@@ -54,14 +52,16 @@ abstract class Permit extends Auth {
      */
     private static function userHasPermission($permissions)
     {
-       return (is_array($permissions) && !empty($permissions) && self::hasAcceptableRole($permissions));
+       return (is_array($permissions)
+               && !empty($permissions)
+               && self::hasNeededRole($permissions));
     }
 
     /**
      * @param $permissions
      * @return bool
      */
-    private static function hasAcceptableRole($permissions)
+    private static function hasNeededRole($permissions)
     {
         return (in_array(self::getRole(), $permissions) || $permissions[0] == '*');
     }

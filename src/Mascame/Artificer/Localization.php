@@ -21,7 +21,7 @@ class Localization  {
 		$closure = AdminOption::get('localization.lang_detection');
 		$this->locales = $this->getConfigLocales();
 
-		if ($closure && Artificer::is_closure($closure)) {
+		if ($closure && Artificer::isClosure($closure)) {
 			$this->lang_closure = $closure;
 		}
 	}

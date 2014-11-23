@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer;
 
 use Mascame\Arrayer\Arrayer;
+use Mascame\Artificer\Plugin\PluginManager;
 use Redirect;
 use View;
 use App;
@@ -64,7 +65,7 @@ class PluginController extends BaseController {
 	protected function makeOperation($plugins, $plugin, $from, $to, $message)
 	{
 		try {
-			$file = app_path() . '/config/packages/mascame/artificer/plugins.php';
+			$file = PluginManager::$plugins_config_file;
 
 			$this->modifyFile($file, $plugins, $plugin, $from, $to);
 

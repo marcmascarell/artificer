@@ -15,6 +15,11 @@ class Relation extends Field {
 	public $fields;
 	public $createURL;
 
+    public function boot()
+    {
+        $this->modelObject = \App::make('artificer-model');
+    }
+
 	public function editURL($model_route, $id) {
 		return URL::route('admin.model.edit', array('slug' => $model_route, 'id' => $id));
 	}

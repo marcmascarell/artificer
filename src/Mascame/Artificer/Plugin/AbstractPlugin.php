@@ -33,12 +33,12 @@ abstract class AbstractPlugin implements PluginInterface {
 	/**
 	 * @var array|mixed
 	 */
-	public $config;
+//	public $config;
 
 	/**
 	 * @var string
 	 */
-	public $configKey;
+	public $configFile;
 
 	/**
 	 * @var mixed
@@ -53,7 +53,7 @@ abstract class AbstractPlugin implements PluginInterface {
 	/**
 	 * @var array
 	 */
-	public $options = array();
+//	public $options = array();
 
 	/**
 	 * @var bool
@@ -65,25 +65,34 @@ abstract class AbstractPlugin implements PluginInterface {
 	 */
 	protected $manager;
 
+    /**
+     * @var PluginOption
+     */
+    protected $option;
+
 	/**
 	 * @param $namespace
 	 */
 	public function __construct($namespace)
 	{
 		$this->namespace = $namespace;
-		$this->configKey = $this->namespace . '/' . $this->getPluginName();
-		$this->config = $this->getOptions();
-		$this->slug = str_replace('/', '__slash__', $this->namespace);
+        $this->configFile = $this->getPluginName();
+        $this->option = new PluginOption($namespace, $this->configFile);
+        $this->slug = str_replace('/', '__slash__', $this->namespace);
+        $this->manager = App::make('artificer-plugin-manager');
+        $this->installed = $this->isInstalled();
+//        $this->config = $this->getOptions();
 
-		$this->manager = App::make('artificer-plugin-manager');
-		$this->installed = $this->isInstalled();
-
-		$this->meta();
+        $this->meta();
 	}
 
 	abstract public function boot();
 
 	abstract public function meta();
+
+    protected function setDefaultConfigFile($file) {
+        $this->option->setConfigFile($file);
+    }
 
 	/**
 	 * @return bool
@@ -131,38 +140,38 @@ abstract class AbstractPlugin implements PluginInterface {
 	/**
 	 * @return array|mixed
 	 */
-	public function getOptions()
-	{
-		$this->options = PluginOption::all($this->configKey);
-		return $this->options;
-	}
-
-	/**
-	 * @param string $key
-	 */
-	public function getOption($key)
-	{
-		return PluginOption::get($key, $this->configKey);
-	}
-
-	/**
-	 * @param $key
-	 * @return bool
-	 */
-	public function hasOption($key)
-	{
-		return PluginOption::has($key, $this->configKey);
-	}
-
-	/**
-	 * @param $key
-	 * @param $value
-	 */
-	public function setOption($key, $value)
-	{
-		PluginOption::set($key, $value, $this->configKey);
-
-		// refresh options
-		$this->getOptions();
-	}
+//	public function getOptions()
+//	{
+//		$this->options = PluginOption::all($this->configKey);
+//		return $this->options;
+//	}
+//
+//	/**
+//	 * @param string $key
+//	 */
+//	public function getOption($key)
+//	{
+//		return PluginOption::get($key, $this->configKey);
+//	}
+//
+//	/**
+//	 * @param $key
+//	 * @return bool
+//	 */
+//	public function hasOption($key)
+//	{
+//		return PluginOption::has($key, $this->configKey);
+//	}
+//
+//	/**
+//	 * @param $key
+//	 * @param $value
+//	 */
+//	public function setOption($key, $value)
+//	{
+//		PluginOption::set($key, $value, $this->configKey);
+//
+//		// refresh options
+//		$this->getOptions();
+//	}
 }

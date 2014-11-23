@@ -9,6 +9,7 @@ class hasOne extends Relation {
 
 	public function boot()
 	{
+        parent::boot();
 		//$this->addWidget(new Chosen());
 		$this->attributes->add(array('class' => 'chosen form-control'));
 	}
@@ -16,12 +17,12 @@ class hasOne extends Relation {
 	public function input()
 	{
 		$modelName = $this->relation->getRelatedModel();
-		$model = \App::make('artificer-model');
-		$modelClass = '\\' . $modelName;
+		$model = $this->modelObject->schema->models[$modelName];
+        $model['class'] = $this->modelObject->schema->getClass($modelName);
         $show = $this->relation->getShow();
 
         $show_query = (is_array($show)) ? array('*') : array('id', $show);
-		$data = $modelClass::all($show_query)->toArray();
+		$data = $model['class']::all($show_query)->toArray();
 
 		$select = array();
 		foreach ($data as $d) {
@@ -30,6 +31,7 @@ class hasOne extends Relation {
                 $value = '';
                 foreach ($show as $show_key) {
                     $value .= \Str::title($show_key) . ': ' . $d[$show_key];
+
                     if (end($show) != $show_key) {
                         $value .= ' | ';
                     }
@@ -52,8 +54,8 @@ class hasOne extends Relation {
 		print Form::select($this->name, array('0' => '(none)') + $select, $id, $this->attributes->all());
 
         if (!Request::ajax()) {
-            $new_url = \URL::route('admin.model.create', array('slug' => $model->models[$modelName]['route']));
-            $edit_url = \URL::route('admin.model.edit', array('slug' => $model->models[$modelName]['route'], 'id' => $id));
+            $new_url = \URL::route('admin.model.create', array('slug' => $model['route']));
+            $edit_url = \URL::route('admin.model.edit', array('slug' => $model['route'], 'id' => $id));
             ?>
 
             <br>

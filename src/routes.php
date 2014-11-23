@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Events to inject plugins wont work because routes are loaded before plugins
+ */
 
 Route::pattern('new_id', '\d+');
 Route::pattern('old_id', '\d+');
@@ -12,6 +15,12 @@ Route::pattern('integer', '\d+');
 //Route::pattern('base', '[a-zA-Z0-9]+');
 Route::pattern('slug', '[a-z0-9_-]+');
 Route::pattern('username', '[a-z0-9_-]{3,16}');
+
+// this works
+//Event::listen('artificer.routes.model', function() {
+//    Route::get('moco', array('uses' => 'Mascame\Artificer\ModelController@getRelatedFieldOutput'));
+//
+//});
 
 Route::group(array(
 	'prefix' => LaravelLocalization::setLocale(),
@@ -59,20 +68,26 @@ Route::group(array(
 			//		});
 			//	}));
 
-			$plugins = Config::get('artificer::admin.plugins.installed');
+//			$plugins = Config::get('artificer::admin.plugins.installed');
+//
+//            if (is_array($plugins)) {
+//                foreach ($plugins as $pluginNamespace) {
+//                    $pluginName = explode('/', $pluginNamespace);
+//                    $pluginName = end($pluginName);
+//
+//                    $plugin = Config::get('artificer::plugins/' . $pluginNamespace . '/' . $pluginName);
+//
+//                    if (isset($plugin['routes'])) {
+//                        $plugin_routes = $plugin['routes'];
+//                        $plugin_routes();
+//                    }
+//                }
+//            }
 
-            if (is_array($plugins)) {
-                foreach ($plugins as $pluginNamespace) {
-                    $pluginName = explode('/', $pluginNamespace);
-                    $pluginName = end($pluginName);
+            $plugin_routes = \Mascame\Artificer\Plugin\PluginManager::getRoutes();
 
-                    $plugin = Config::get('artificer::plugins/' . $pluginNamespace . '/' . $pluginName);
-
-                    if (isset($plugin['routes'])) {
-                        $plugin_routes = $plugin['routes'];
-                        $plugin_routes();
-                    }
-                }
+            foreach ($plugin_routes as $routes) {
+                $routes();
             }
 		});
 });

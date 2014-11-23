@@ -1,39 +1,73 @@
 <?php namespace Mascame\Artificer\Options;
 
-class PluginOption extends Option {
+use Config;
 
-	public static $key = 'plugins/';
+class PluginOption {
 
+    /**
+     * @var string
+     */
+	public $namespace;
+
+    /**
+     * @var string
+     */
+    public $configFile;
+
+    /**
+     * @param $namespace
+     */
+    public function __construct($namespace, $configFile) {
+        $exploded_namespace = explode('/', $namespace);
+        $this->namespace = end($exploded_namespace) . '::';    
+        $this->configFile = $configFile;
+    }
+    
 	/**
 	 * @param string $plugin
 	 * @param string $key
 	 */
-	public static function get($key = null, $plugin = null)
+	public function get($key = null, $configFile = null)
 	{
-		return Option::get(self::$key . $plugin . '.' . $key);
+        return Config::get($this->namespace . $this->getFile($configFile) . '.' . $key);
 	}
 
 	/**
 	 * @param string $plugin
 	 */
-	public static function has($key = '', $plugin = null)
+	public function has($key = '', $configFile = null)
 	{
-		return Option::has(self::$key . $plugin. '.' . $key);
+		return Config::has($this->namespace . $this->getFile($configFile) . '.' . $key);
 	}
 
 	/**
 	 * @param string $plugin
 	 */
-	public static function set($key, $value, $plugin = null)
+	public function set($key, $value, $configFile = null)
 	{
-		Option::set(self::$key . $plugin . '.' . $key, $value);
+        Config::set($this->namespace . $this->getFile($configFile) . '.' . $key, $value);
 	}
 
 	/**
 	 * @param string $key
 	 */
-	public static function all($key = null)
+	public function all($key = null, $configFile = null)
 	{
-		return Option::get(self::$key . $key);
+		return Config::get($this->namespace . $this->getFile($configFile) . '.' . $key);
 	}
+
+    /**
+     * @param null $configFile
+     * @return null|string
+     */
+    protected function getFile($configFile = null) {
+        return ($configFile) ? $configFile : $this->configFile;
+    }
+
+    /**
+     * @param $file
+     */
+    public function setConfigFile($file) {
+        $this->configFile = $file;
+    }
 }

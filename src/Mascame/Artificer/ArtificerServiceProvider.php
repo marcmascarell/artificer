@@ -42,7 +42,6 @@ class ArtificerServiceProvider extends ServiceProvider {
 	{
 		require_once __DIR__ . '/../../filters.php';
 		require_once __DIR__ . '/../../routes.php';
-		require_once __DIR__ . '/../../views/macros/macros.php';
 	}
 
 	private function addPublishCommand()

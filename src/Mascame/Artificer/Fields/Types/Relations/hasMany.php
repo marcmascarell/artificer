@@ -11,14 +11,14 @@ class hasMany extends Relation {
 
 	public function boot()
 	{
+        parent::boot();
 		//$this->addWidget(new Chosen());
 		$this->attributes->add(array('class' => 'chosen'));
-		$this->modelObject = \App::make('artificer-model');
 	}
 
 	public function input()
 	{
-		$this->fields = array_get(\View::getShared(), 'fields');
+        $this->fields = array_get(\View::getShared(), 'fields');
 		$id = $this->fields['id']->value;
 
 		$modelName = $this->relation->getRelatedModel();
