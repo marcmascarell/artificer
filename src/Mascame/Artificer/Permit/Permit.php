@@ -41,8 +41,7 @@ abstract class Permit extends Auth {
     {
         if (!$permissions) return true;
 
-        if (is_array($permissions) && !empty($permissions)
-            && self::hasNeededRole($permissions)) return true;
+        if (is_array($permissions) && self::hasNeededRole($permissions)) return true;
 
         return false;
     }
