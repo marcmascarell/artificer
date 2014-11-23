@@ -31,11 +31,6 @@ abstract class AbstractPlugin implements PluginInterface {
 	public $author;
 
 	/**
-	 * @var array|mixed
-	 */
-//	public $config;
-
-	/**
 	 * @var string
 	 */
 	public $configFile;
@@ -49,11 +44,6 @@ abstract class AbstractPlugin implements PluginInterface {
 	 * @var array
 	 */
 	public $routes = array();
-
-	/**
-	 * @var array
-	 */
-//	public $options = array();
 
 	/**
 	 * @var bool
@@ -90,6 +80,9 @@ abstract class AbstractPlugin implements PluginInterface {
 
 	abstract public function meta();
 
+    /**
+     * @param $file
+     */
     protected function setDefaultConfigFile($file) {
         $this->option->setConfigFile($file);
     }
@@ -130,48 +123,6 @@ abstract class AbstractPlugin implements PluginInterface {
 	 * @return null|string
 	 */
 	protected function route($route, $params = array()) {
-		if ($this->isInstalled()) {
-			return route($route, $params);
-		}
-
-		return null;
+        return ($this->isInstalled()) ? route($route, $params) : null;
 	}
-
-	/**
-	 * @return array|mixed
-	 */
-//	public function getOptions()
-//	{
-//		$this->options = PluginOption::all($this->configKey);
-//		return $this->options;
-//	}
-//
-//	/**
-//	 * @param string $key
-//	 */
-//	public function getOption($key)
-//	{
-//		return PluginOption::get($key, $this->configKey);
-//	}
-//
-//	/**
-//	 * @param $key
-//	 * @return bool
-//	 */
-//	public function hasOption($key)
-//	{
-//		return PluginOption::has($key, $this->configKey);
-//	}
-//
-//	/**
-//	 * @param $key
-//	 * @param $value
-//	 */
-//	public function setOption($key, $value)
-//	{
-//		PluginOption::set($key, $value, $this->configKey);
-//
-//		// refresh options
-//		$this->getOptions();
-//	}
 }
