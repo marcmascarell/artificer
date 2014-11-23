@@ -68,6 +68,8 @@ class PluginManager {
                 $instances[$namespace] = \App::make($namespace);
                 $instances[$namespace]->boot();
 
+                self::$plugins['installed'][$key] = $instances[$namespace];
+
                 if (isset(self::$fields[$namespace]) && !empty(self::$fields[$namespace])) {
                     $fields = AdminOption::get('classmap');
 
@@ -85,10 +87,11 @@ class PluginManager {
         if (isset($plugins['uninstalled'])) {
             foreach ($plugins['uninstalled'] as $key => $namespace) {
                 $instances[$namespace] = \App::make($namespace);
+                self::$plugins['uninstalled'][$key] = $instances[$namespace];
             }
         }
-
-		return $this->instances = $instances;
+//dd(self::$plugins);
+		return self::$plugins;
 	}
 
     /**
