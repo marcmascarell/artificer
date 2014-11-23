@@ -167,7 +167,7 @@ class Field implements FieldInterface {
 	 */
 	public function output()
 	{
-		Event::fire('artificer.field.' . $this->type . '.output', $this->value);
+		Event::fire('artificer.field.' . $this->type . '.before.output', $this->value);
 
 		if ($this->isHidden()) {
 			return null;

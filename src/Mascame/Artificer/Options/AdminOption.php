@@ -25,4 +25,12 @@ class AdminOption extends Option {
 
 		return Option::get($key);
 	}
+
+    /**
+     * @param string $key
+     */
+    public static function set($key, $value)
+    {
+        Option::set(self::$key . '.' . $key, $value);
+    }
 }

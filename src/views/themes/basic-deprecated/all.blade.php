@@ -4,7 +4,7 @@
 <h2>{{ $model['name'] }}</h2>
 
 <?php //echo $items->appends(Input::except('page'))->links(); ?>
-<?php Event::fire('artificer.before.list', $items, $halt = false);  ?>
+<?php Event::fire('artificer.view.all.before.showList', $items, $halt = false);  ?>
 @include('admin::partials.before_list')
 
 
@@ -15,7 +15,7 @@
 {{ Form::close() }}
 
 @include('admin::partials.after_list')
-<?php Event::fire('artificer.after.list', $items, $halt = false);  ?>
+<?php Event::fire('artificer.view.all.after.showList', $items, $halt = false);  ?>
 
 
 @stop

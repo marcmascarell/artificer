@@ -26,7 +26,7 @@ class DatatablesPlugin extends AbstractPlugin {
 	}
 
     public function addHeadStylesListener() {
-        Event::listen(array('artificer.view.head-styles'), function () {
+        Event::listen(array('artificer.view.head.styles'), function () {
             ?>
             <!-- DATA TABLES -->
             <link
@@ -37,7 +37,7 @@ class DatatablesPlugin extends AbstractPlugin {
     }
 
     public function addHeadScriptsListener() {
-        Event::listen(array('artificer.view.head-scripts'), function () {
+        Event::listen(array('artificer.view.head.scripts'), function () {
             ?>
             <!-- DATA TABES SCRIPT -->
             <script

@@ -3,7 +3,7 @@
 return array(
 
 	'classmap' => array(
-		'sort_id' => '\Mascame\Artificer\Plugins\Sortable\SortableField',
+//		'sort_id' => '\Mascame\Artificer\Plugins\Sortable\SortableField',
 		'bool' => '\Mascame\Artificer\Fields\Types\Checkbox',
 		'boolean' => '\Mascame\Artificer\Fields\Types\Checkbox',
 //		'image'   => '\Mascame\Artificer\Plugins\Plupload\PluploadField',

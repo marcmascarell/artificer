@@ -86,8 +86,8 @@ Route::group(array(
 
             $plugin_routes = \Mascame\Artificer\Plugin\PluginManager::getRoutes();
 
-            foreach ($plugin_routes as $routes) {
-                $routes();
+            foreach ($plugin_routes as $pluginNamespace => $closure) {
+                $closure();
             }
 		});
 });
