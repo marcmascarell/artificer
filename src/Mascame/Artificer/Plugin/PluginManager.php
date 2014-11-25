@@ -46,6 +46,10 @@ class PluginManager {
      */
 	public $plugins_config_file = '/config/packages/mascame/artificer/plugins.php';
 
+    /**
+     * @param null $pluginNamespace
+     * @param null $plugins_config_file
+     */
     public function __construct($pluginNamespace = null, $plugins_config_file = null) {
         if ($pluginNamespace) {
             $this->pluginNamespace = $pluginNamespace;
@@ -68,15 +72,21 @@ class PluginManager {
         if (!isset($plugins['installed'])) $plugins['installed'] = array();
         if (!isset($plugins['uninstalled'])) $plugins['uninstalled'] = array();
 
-        $config_plugins = array_merge($plugins['installed'], $plugins['uninstalled']);
-        $new_added = array_diff(self::$added_plugins, $config_plugins);
-
-        if (!empty($new_added) || count($config_plugins) != count(self::$added_plugins)) {
-            $this->generatePluginsFile($plugins);
-        }
+        if ($this->hasModifiedPlugins($plugins)) $this->generatePluginsFile($plugins);
 
 		return self::$plugins = $plugins;
 	}
+
+    /**
+     * @param $plugins
+     * @return bool
+     */
+    protected function hasModifiedPlugins($plugins) {
+        $config_plugins = array_merge($plugins['installed'], $plugins['uninstalled']);
+        $new_added = array_diff(self::$added_plugins, $config_plugins);
+
+        return (!empty($new_added) || count($config_plugins) != count(self::$added_plugins));
+    }
 
     /**
      * @param $plugins
@@ -103,31 +113,39 @@ class PluginManager {
 	public function boot()
 	{
         $plugins = $this->getAll();
-        $instances = array();
 
-        if (isset($plugins['installed'])) {
-            foreach ($plugins['installed'] as $key => $pluginNamespace) {
-                $this->instances[$pluginNamespace] = \App::make($pluginNamespace);
-                $this->instances[$pluginNamespace]->boot();
-
-                self::$plugins['installed'][$key] = $instances[$pluginNamespace];
-
-                $this->addFields($pluginNamespace);
-
-                self::$installed_plugins_routes[] = (isset(self::$routes[$pluginNamespace])) ? self::$routes[$pluginNamespace] : null;
-            }
-        }
-
-        if (isset($plugins['uninstalled'])) {
-            foreach ($plugins['uninstalled'] as $key => $pluginNamespace) {
-                $this->instances[$pluginNamespace] = \App::make($pluginNamespace);
-                self::$plugins['uninstalled'][$key] = $instances[$pluginNamespace];
-            }
-        }
+        if (isset($plugins['installed'])) $this->bootInstalled($plugins['installed']);
+        if (isset($plugins['uninstalled'])) $this->bootUninstalled($plugins['uninstalled']);
 
 		return self::$plugins;
 	}
 
+    /**
+     * @param $plugins
+     */
+    protected function bootInstalled($plugins) {
+        foreach ($plugins as $key => $pluginNamespace) {
+            $this->instances[$pluginNamespace] = \App::make($pluginNamespace);
+            $this->instances[$pluginNamespace]->boot();
+
+            self::$plugins['installed'][$key] = $this->instances[$pluginNamespace];
+
+            $this->addFields($pluginNamespace);
+
+            self::$installed_plugins_routes[] = (isset(self::$routes[$pluginNamespace])) ? self::$routes[$pluginNamespace] : null;
+        }
+    }
+
+    /**
+     * @param $plugins
+     */
+    protected function bootUninstalled($plugins)
+    {
+        foreach ($plugins['uninstalled'] as $key => $pluginNamespace) {
+            $this->instances[$pluginNamespace] = \App::make($pluginNamespace);
+            self::$plugins['uninstalled'][$key] = $this->instances[$pluginNamespace];
+        }
+    }
 
     /**
      * @param $pluginNamespace
