@@ -141,7 +141,7 @@ class PluginManager {
      */
     protected function bootUninstalled($plugins)
     {
-        foreach ($plugins['uninstalled'] as $key => $pluginNamespace) {
+        foreach ($plugins as $key => $pluginNamespace) {
             $this->instances[$pluginNamespace] = \App::make($pluginNamespace);
             self::$plugins['uninstalled'][$key] = $this->instances[$pluginNamespace];
         }
