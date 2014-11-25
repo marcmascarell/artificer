@@ -6,21 +6,54 @@ use Mascame\Artificer\Options\Option;
 
 class PluginManager {
 
+    /**
+     * @var null
+     */
 	public $pluginNamespace;
-	protected $instances = array();
-    protected static $added_plugins = array();
-    protected static $fields = array();
-    protected static $routes = array();
-    protected static $plugins = array();
-    public static $installed_plugins_routes = array();
-	public static $plugins_config_file = '/config/packages/mascame/artificer/plugins.php';
 
-    public function __construct($pluginNamespace = null) {
+    /**
+     * @var array
+     */
+	protected $instances = array();
+
+    /**
+     * @var array
+     */
+    protected static $added_plugins = array();
+
+    /**
+     * @var array
+     */
+    protected static $fields = array();
+
+    /**
+     * @var array
+     */
+    protected static $routes = array();
+
+    /**
+     * @var array
+     */
+    protected static $plugins = array();
+
+    /**
+     * @var array
+     */
+    public static $installed_plugins_routes = array();
+
+    /**
+     * @var string
+     */
+	public $plugins_config_file = '/config/packages/mascame/artificer/plugins.php';
+
+    public function __construct($pluginNamespace = null, $plugins_config_file = null) {
         if ($pluginNamespace) {
             $this->pluginNamespace = $pluginNamespace;
 
             $this->addPlugin($pluginNamespace);
         }
+
+        $this->plugins_config_file = ($plugins_config_file) ? $plugins_config_file : app_path() . $this->plugins_config_file;
     }
     
     /**
@@ -61,7 +94,7 @@ class PluginManager {
         }
 
         $arrayer = new Arrayer($plugins);
-        \File::put(self::$plugins_config_file, $arrayer->getContent());
+        \File::put($this->plugins_config_file, $arrayer->getContent());
     }
 
     /**
@@ -69,41 +102,41 @@ class PluginManager {
      */
 	public function boot()
 	{
-        self::$plugins_config_file = app_path() . self::$plugins_config_file;
         $plugins = $this->getAll();
         $instances = array();
 
         if (isset($plugins['installed'])) {
-            foreach ($plugins['installed'] as $key => $namespace) {
-                $instances[$namespace] = \App::make($namespace);
-                $instances[$namespace]->boot();
+            foreach ($plugins['installed'] as $key => $pluginNamespace) {
+                $this->instances[$pluginNamespace] = \App::make($pluginNamespace);
+                $this->instances[$pluginNamespace]->boot();
 
-                self::$plugins['installed'][$key] = $instances[$namespace];
+                self::$plugins['installed'][$key] = $instances[$pluginNamespace];
 
-                $this->addFields($namespace);
+                $this->addFields($pluginNamespace);
 
-                self::$installed_plugins_routes[] = (isset(self::$routes[$namespace])) ? self::$routes[$namespace] : null;
+                self::$installed_plugins_routes[] = (isset(self::$routes[$pluginNamespace])) ? self::$routes[$pluginNamespace] : null;
             }
         }
 
         if (isset($plugins['uninstalled'])) {
-            foreach ($plugins['uninstalled'] as $key => $namespace) {
-                $instances[$namespace] = \App::make($namespace);
-                self::$plugins['uninstalled'][$key] = $instances[$namespace];
+            foreach ($plugins['uninstalled'] as $key => $pluginNamespace) {
+                $this->instances[$pluginNamespace] = \App::make($pluginNamespace);
+                self::$plugins['uninstalled'][$key] = $instances[$pluginNamespace];
             }
         }
 
 		return self::$plugins;
 	}
 
+
     /**
-     * @param $namespace
+     * @param $pluginNamespace
      */
-    protected function addFields($namespace) {
-        if (isset(self::$fields[$namespace]) && !empty(self::$fields[$namespace])) {
+    protected function addFields($pluginNamespace) {
+        if (isset(self::$fields[$pluginNamespace]) && !empty(self::$fields[$pluginNamespace])) {
             $fields = AdminOption::get('classmap');
 
-            foreach (self::$fields[$namespace] as $field => $class) {
+            foreach (self::$fields[$pluginNamespace] as $field => $class) {
                 $fields[$field] = $class;
             }
 
