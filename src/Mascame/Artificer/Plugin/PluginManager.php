@@ -32,27 +32,37 @@ class PluginManager {
 
 		$plugins = AdminOption::get('plugins');
 
-        if (!isset($plugins['installed'])) {
-            $plugins['installed'] = array();
-        }
+        if (!isset($plugins['installed'])) $plugins['installed'] = array();
+        if (!isset($plugins['uninstalled'])) $plugins['uninstalled'] = array();
 
-        if (!isset($plugins['uninstalled'])) {
-            $plugins['uninstalled'] = array();
-        }
+        $config_plugins = array_merge($plugins['installed'], $plugins['uninstalled']);
+        $new_added = array_diff(self::$added_plugins, $config_plugins);
 
-        $new_added = array_diff(self::$added_plugins, array_merge($plugins['installed'], $plugins['uninstalled']));
-
-        if (!empty($new_added)) {
-            foreach ($new_added as $pluginNamespace) {
-                $plugins['uninstalled'][] = $pluginNamespace;
-            }
-
-            $arrayer = new Arrayer($plugins);
-            \File::put(self::$plugins_config_file, $arrayer->getContent());
+        if (!empty($new_added) || count($config_plugins) != count(self::$added_plugins)) {
+            $this->generatePluginsFile($plugins);
         }
 
 		return self::$plugins = $plugins;
 	}
+
+    /**
+     * @param $plugins
+     */
+    protected function generatePluginsFile($plugins) {
+        $old_plugins = $plugins;
+        $plugins = array();
+
+        foreach (self::$added_plugins as $pluginNamespace) {
+            if (in_array($pluginNamespace, $old_plugins['installed'])) {
+                $plugins['installed'][] = $pluginNamespace;
+            } else {
+                $plugins['uninstalled'][] = $pluginNamespace;
+            }
+        }
+
+        $arrayer = new Arrayer($plugins);
+        \File::put(self::$plugins_config_file, $arrayer->getContent());
+    }
 
     /**
      * @return mixed
@@ -70,17 +80,9 @@ class PluginManager {
 
                 self::$plugins['installed'][$key] = $instances[$namespace];
 
-                if (isset(self::$fields[$namespace]) && !empty(self::$fields[$namespace])) {
-                    $fields = AdminOption::get('classmap');
+                $this->addFields($namespace);
 
-                    foreach (self::$fields[$namespace] as $field => $class) {
-                        $fields[$field] = $class;
-                    }
-
-                    AdminOption::set('classmap', $fields);
-                }
-
-                self::$installed_plugins_routes[] = self::$routes[$namespace];
+                self::$installed_plugins_routes[] = (isset(self::$routes[$namespace])) ? self::$routes[$namespace] : null;
             }
         }
 
@@ -90,9 +92,24 @@ class PluginManager {
                 self::$plugins['uninstalled'][$key] = $instances[$namespace];
             }
         }
-//dd(self::$plugins);
+
 		return self::$plugins;
 	}
+
+    /**
+     * @param $namespace
+     */
+    protected function addFields($namespace) {
+        if (isset(self::$fields[$namespace]) && !empty(self::$fields[$namespace])) {
+            $fields = AdminOption::get('classmap');
+
+            foreach (self::$fields[$namespace] as $field => $class) {
+                $fields[$field] = $class;
+            }
+
+            AdminOption::set('classmap', $fields);
+        }
+    }
 
     /**
      * @param $plugin
