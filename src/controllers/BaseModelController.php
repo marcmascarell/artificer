@@ -1,5 +1,7 @@
 <?php namespace Mascame\Artificer;
 
+use Illuminate\Routing\Redirector;
+use Illuminate\Routing\Router;
 use Input;
 use Auth;
 use Mascame\Artificer\Permit\ModelPermit;

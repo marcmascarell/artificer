@@ -196,6 +196,10 @@ class ModelController extends BaseModelController {
 			Notification::danger('<b>Failed!</b> The record could not be deleted!');
 		}
 
+        if (Request::ajax()) {
+            return Response::json(array());
+        }
+
         // Todo: change to all when coming from filter
 		return Redirect::back();
 
