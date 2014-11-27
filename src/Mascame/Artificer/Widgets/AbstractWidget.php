@@ -3,7 +3,7 @@
 abstract class AbstractWidget {
 
 	public $name;
-	public $package_assets = '/packages/mascame/artificer';
+	public $package_assets = '/packages/mascame/artificer-widgets';
 
 	public function __construct()
 	{

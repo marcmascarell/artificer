@@ -1,6 +1,6 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Widgets\CKeditor\CKeditor;
+use Mascame\ArtificerWidgets\CKeditor\CKeditor;
 
 class Wysiwyg extends Textarea {
 

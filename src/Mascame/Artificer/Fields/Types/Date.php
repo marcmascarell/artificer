@@ -2,7 +2,7 @@
 
 use Mascame\Artificer\Fields\Field;
 use Form;
-use Mascame\Artificer\Widgets\Datepicker\Datepicker;
+use Mascame\ArtificerWidgets\Datepicker\Datepicker;
 
 class Date extends Field {
 

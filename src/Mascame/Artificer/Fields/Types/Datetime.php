@@ -3,7 +3,7 @@
 use Carbon\Carbon;
 use Mascame\Artificer\Fields\Field;
 use Form;
-use Mascame\Artificer\Widgets\DateTimepicker\DateTimepicker;
+use Mascame\ArtificerWidgets\DateTimepicker\DateTimepicker;
 
 class DateTime extends Field {
 
