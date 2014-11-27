@@ -48,7 +48,7 @@ Publish assets and config
 php artisan artificer:publish
 ```
 
-Add plugins you need (soon... you can find them in my repos).
+Add plugins you need (soon... you can find them in my repos). Please, be aware some plugins are under heavy development.
 
 Add a theme. Default: [mascame/artificer-default-theme](https://github.com/marcmascarell/artificer-default-theme/)
 
