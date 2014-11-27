@@ -47,15 +47,8 @@ Publish assets and config
 ```sh
 php artisan artificer:publish
 ```
-Require this dependency:
 
-    "intervention/image": "2.*"
-    'Intervention\Image\ImageServiceProvider'
-
-Optional dependency for Plupload plugin:
-
-    "jildertmiedema/laravel-plupload": "dev-master"
-    'JildertMiedema\LaravelPlupload\LaravelPluploadServiceProvider'
+Add plugins you need (soon... you can find them in my repos).
 
 Add a theme. Default: [mascame/artificer-default-theme](https://github.com/marcmascarell/artificer-default-theme/)
 
