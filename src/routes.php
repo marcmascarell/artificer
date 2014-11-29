@@ -101,10 +101,10 @@ Route::group(array(
 //	return View::make('admin::themes.admin-lte-custom.pages.examples.lockscreen');
 //});
 
-Route::get('gestor1337', function () {
-	if (Auth::check()) {
-		return Redirect::route('admin.home');
-	}
-
-	return Redirect::route('admin.model.showlogin');
-});
+//Route::get('gestor1337', function () {
+//	if (Auth::check()) {
+//		return Redirect::route('admin.home');
+//	}
+//
+//	return Redirect::route('admin.model.showlogin');
+//});

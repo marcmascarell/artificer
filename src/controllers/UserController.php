@@ -80,7 +80,7 @@ class UserController extends BaseController {
      */
 	public function login()
 	{
-		if ($this->isBanned()) return Redirect::route('admin.model.showlogin')->withErrors(array("You are banned for too many login attempts"));
+		if ($this->isBanned()) return Redirect::route('admin.user.showlogin')->withErrors(array("You are banned for too many login attempts"));
 
 		$rules = array(
 			'username' => 'required|email',
