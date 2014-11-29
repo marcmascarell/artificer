@@ -80,7 +80,7 @@ class UserController extends BaseController {
      */
 	public function login()
 	{
-		if ($this->isBanned()) return Redirect::route('admin.user.showlogin')->withErrors(array("You are banned for too many login attempts"));
+		if ($this->isBanned()) return Redirect::route('admin.showlogin')->withErrors(array("You are banned for too many login attempts"));
 
 		$rules = array(
 			'username' => 'required|email',
@@ -100,7 +100,7 @@ class UserController extends BaseController {
     protected function onFailValidation($validator) {
         $this->addAttempt();
 
-        return Redirect::route('admin.model.login')
+        return Redirect::route('admin.login')
             ->withErrors($validator)
             ->withInput();
     }
@@ -117,7 +117,7 @@ class UserController extends BaseController {
      */
     protected function attemptLogin($user) {
         $role_colum = AdminOption::get('auth.role_column');
-
+        dd($user->$role_colum);
         if (in_array($user->$role_colum, AdminOption::get('auth.roles'))) {
 
             $userdata = array(
@@ -125,9 +125,8 @@ class UserController extends BaseController {
                 'password' => Input::get('password')
             );
 
-            if (Auth::attempt($userdata)) {
-                return true;
-            }
+            if (Auth::attempt($userdata)) return true;
+
         }
 
         return false;
@@ -153,7 +152,7 @@ class UserController extends BaseController {
 	{
 		Auth::logout();
 
-		return Redirect::route('admin.model.showlogin');
+		return Redirect::route('admin.showlogin');
 	}
 
 }
