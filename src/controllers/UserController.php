@@ -28,9 +28,7 @@ class UserController extends BaseController {
         if (Session::has($this->ban_key)) {
             $ban = Carbon::parse(Session::get($this->ban_key));
 
-            if (!$ban->isPast()) {
-                return true;
-            }
+            if (!$ban->isPast()) return true;
         }
 
         $this->unban();
@@ -117,7 +115,6 @@ class UserController extends BaseController {
      */
     protected function attemptLogin($user) {
         $role_colum = AdminOption::get('auth.role_column');
-        dd($user->$role_colum);
         if (in_array($user->$role_colum, AdminOption::get('auth.roles'))) {
 
             $userdata = array(
@@ -126,7 +123,6 @@ class UserController extends BaseController {
             );
 
             if (Auth::attempt($userdata)) return true;
-
         }
 
         return false;
