@@ -28,21 +28,21 @@ class Relation extends Field {
 		return URL::route('admin.model.create', array('slug' => $model_route));
 	}
 
-	public function relationModal()
+	public function relationModal($relatedModelRouteName)
 	{
 		?>
 		<div class="text-right">
 			<div class="btn-group">
 				<button class="btn btn-default" data-toggle="modal"
 						data-url="<?=$this->createURL?>"
-						data-target="#form-modal-<?= $this->modelObject->getRouteName() ?>">
+						data-target="#form-modal-<?= $relatedModelRouteName ?>">
 					<i class="fa fa-plus"></i>
 				</button>
 			</div>
 		</div>
 
 		<!-- Modal -->
-		<div class="modal fade standalone" id="form-modal-<?= $this->modelObject->getRouteName() ?>" tabindex="-1" role="dialog"
+		<div class="modal fade standalone" id="form-modal-<?= $relatedModelRouteName ?>" tabindex="-1" role="dialog"
 			 aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -62,7 +62,7 @@ class Relation extends Field {
 		</div>
 
 		<script>
-			var $modal = $('#form-modal-<?=$this->modelObject->getRouteName()?>');
+			var $modal = $('#form-modal-<?=$relatedModelRouteName?>');
 			var $modal_body = $(".modal-body");
 			var url = null;
 
@@ -79,7 +79,7 @@ class Relation extends Field {
 
 					var $form = $('.modal-body form');
 
-					$form.prepend('<input type="hidden" name="_standalone" value="<?=$this->modelObject->getRouteName()?>">');
+					$form.prepend('<input type="hidden" name="_standalone" value="<?=$relatedModelRouteName?>">');
 
                     <?php if (Route::currentRouteName() == 'admin.model.create') { ?>
                     $form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=Model::getCurrent()?>">');

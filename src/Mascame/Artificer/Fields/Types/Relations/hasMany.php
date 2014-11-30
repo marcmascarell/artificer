@@ -45,7 +45,7 @@ class hasMany extends Relation {
 		$this->createURL = $this->createURL($this->model['route']) . "?" . http_build_query(array($this->relation->getForeignKey() => $id, '_standalone' => 'true'));
 
 		if (!Request::ajax()) {
-			$this->relationModal();
+			$this->relationModal($this->model['route']);
 		}
 	}
 
