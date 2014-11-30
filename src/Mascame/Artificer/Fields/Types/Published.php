@@ -7,7 +7,7 @@ class Published extends Checkbox {
 		if ($this->value) {
 			?>
 				<div class="text-center">
-					<i class="glyphicon glyphicon-globe" title="Published"></i>
+					<i class="fa fa-globe" title="Published"></i>
 				</div>
 			<?php
 		}
