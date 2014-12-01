@@ -23,6 +23,9 @@
         "mascame/notify": "dev-master",
         "mascame/arrayer": "1.*"
     },
+    "require-dev": {
+        "sami/sami": "2.0.0"
+    },
     "autoload": {
         "classmap": [
             "src/commands",

@@ -7,6 +7,7 @@ use Mascame\Artificer\Localization;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\FieldOption;
+use Mascame\Artificer\Widgets\AbstractWidget;
 
 class Field implements FieldInterface {
 
@@ -86,7 +87,7 @@ class Field implements FieldInterface {
 	 * @param $widget
 	 * @return bool
 	 */
-	public function addWidget($widget)
+	public function addWidget(AbstractWidget $widget)
 	{
 		if (!in_array($widget->name, self::$widgets)) {
 			self::$widgets[$widget->name] = $widget;
@@ -98,9 +99,11 @@ class Field implements FieldInterface {
 	}
 
 
-	/*
-	 * Used to load custom assets, widgets, ...
-	 */
+    /**
+     * Used to load custom assets, widgets, ...
+     *
+     * @return bool
+     */
 	public function boot()
 	{
 		return false;
