@@ -52,15 +52,23 @@ class Field implements FieldInterface {
 		$this->name = $name;
 		$this->value = $value;
 		$this->modelName = $modelName;
+        $this->type = $this->getType(get_called_class());
 
-        $this->options = new FieldOptions($this->name);
+        $this->options = new FieldOptions($this->name, $this->type);
 		$this->relation = new FieldRelation($relation, $this->options->getExistent('relationship'));
-		$this->attributes = new FieldAttributes($this->options->getExistent('attributes'), $this->options);
+        $this->attributes = new FieldAttributes($this->options->getExistent('attributes'), $this->options);
 
-		$this->attributes->add(array('class' => 'form-control'));
+        if (!$this->attributes->has('class')) {
+            $this->attributes->add(array('class' => 'form-control'));
+        }
+
+//                if ($this->name == 'created_at') {
+//            dd($this->options);
+//            dd($this->options->getExistent('attributes'));
+////            dd($this->options->getExistent('attributes'));
+//        }
 
 		$this->title = $this->getTitle($this->name);
-		$this->type = $this->getType(get_called_class());
 		$this->wiki = $this->getWiki();
 
 		$this->boot();
@@ -102,11 +110,16 @@ class Field implements FieldInterface {
     /**
      * Used to load custom assets, widgets, ...
      *
-     * @return bool
      */
 	public function boot()
 	{
-		return false;
+        if ($this->options->has('widgets')) {
+            $widgets = $this->options->get('widgets');
+
+            foreach ($widgets as $widget) {
+                $this->addWidget($widget);
+            }
+        }
 	}
 
 
@@ -196,19 +209,6 @@ class Field implements FieldInterface {
 		return '<div class="label label-warning">Hidden data</div>';
 	}
 
-
-	/**
-	 * @return bool
-	 */
-	public function hasList($list = 'list')
-	{
-		if ($this->options->has($list)) {
-			return true;
-		}
-
-		return false;
-	}
-
 	/**
 	 * @param $array
 	 * @return bool
@@ -221,9 +221,9 @@ class Field implements FieldInterface {
 	 * @param string $list
 	 * @return bool
 	 */
-	public function isListed($list = 'list')
+	public function isListed($list = 'show')
 	{
-		$list = $this->options->model[$list];
+		$list = $this->options->model['list'][$list];
 
 		if ($this->isAll($list)) return true;
 
@@ -236,7 +236,7 @@ class Field implements FieldInterface {
 	 */
 	public function isHiddenList()
 	{
-		return $this->isListed('list-hide');
+		return $this->isListed('hide');
 	}
 
 

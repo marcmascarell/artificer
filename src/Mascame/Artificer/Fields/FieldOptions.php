@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Fields;
 
 use Mascame\Artificer\Localization;
+use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\FieldOption;
 
@@ -8,15 +9,18 @@ class FieldOptions {
 
     protected $name;
     protected $options;
+    protected $default_options;
     public $model;
 
     /**
      * @param $name
      */
-	public function __construct($name)
+	public function __construct($name, $type)
 	{
         $this->name = $name;
-        $this->options = $this->all();
+        $this->default_options = AdminOption::get('types.' . $type);
+        $this->options = array_merge($this->all(), $this->default_options);
+
         $this->model = $this->model();
 	}
 
@@ -26,7 +30,7 @@ class FieldOptions {
 	 */
 	public function has($key)
 	{
-		return FieldOption::has($key, $this->name);
+		return (isset($this->options[$key]));
 	}
 
 
@@ -36,7 +40,7 @@ class FieldOptions {
 	 */
 	public function get($key)
 	{
-		return FieldOption::get($key, $this->name);
+		return $this->options[$key];
 	}
 
 

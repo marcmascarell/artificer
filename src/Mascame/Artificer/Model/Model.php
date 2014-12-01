@@ -22,6 +22,11 @@ class Model {
 	 */
 	public $models;
 
+    /**
+     * @var array
+     */
+    public $columns;
+
 	/**
 	 * @var mixed
 	 */

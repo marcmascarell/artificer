@@ -6,12 +6,6 @@ use Mascame\ArtificerWidgets\Datepicker\Datepicker;
 
 class Date extends Field {
 
-	public function boot()
-	{
-		$this->addWidget(new Datepicker());
-		$this->attributes->add(array('class' => 'form-control datepicker'));
-	}
-
 	public function input()
 	{
 		?>

@@ -8,10 +8,6 @@ use Input;
 
 class Text extends Field {
 
-	public function boot()
-	{
-	}
-
 	public function input()
 	{
 		return Form::text($this->name, $this->value, $this->attributes->all());

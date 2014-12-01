@@ -13,6 +13,10 @@ class FieldFactory {
 	public $type_reason;
 	public $fields;
 	public $related_fields = null;
+
+    /**
+     * @var Model
+     */
 	public $modelObject;
 	public $data;
 
@@ -130,9 +134,11 @@ class FieldFactory {
 	{
 		$points = array();
 
-		foreach ($types as $type => $fields) {
-            $points[$type] = $this->getSimilarityPoints($fields, $name, $type);
-		}
+        foreach ($types as $type => $data) {
+            if (!isset($data['autodetect'])) continue;
+
+            $points[$type] = $this->getSimilarityPoints($data['autodetect'], $name, $type);
+        }
 
 		if (max($points) > 0) {
 			$this->setTypeReason($name, 'similar to one in admin.fields');
@@ -161,8 +167,12 @@ class FieldFactory {
 	 */
 	public function isUserType($name, $types)
 	{
-		foreach ($types as $type => $fields) {
-			if (in_array($name, $fields)) {
+        if (!isset($types['autodetect'])) return false;
+
+		foreach ($types as $type => $data) {
+            if (!isset($data['autodetect'])) continue;
+
+			if (in_array($name, $data['autodetect'])) {
 				$this->setTypeReason($name, 'set by user in admin.fields');
 				return $type;
 			}
@@ -200,7 +210,7 @@ class FieldFactory {
 
 		$this->setTypeReason($name, 'default');
 
-		return $this->types['default'][0];
+		return $this->types['default'];
 	}
 
 	/**

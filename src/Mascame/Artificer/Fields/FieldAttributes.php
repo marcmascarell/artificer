@@ -33,12 +33,28 @@ class FieldAttributes {
 	}
 
     /**
+     * @param $key
+     * @return bool
+     */
+    public function has($key)
+    {
+        return (isset($this->options[$key]));
+    }
+
+    /**
      * @param array $attributes
      * @return array|mixed
      */
     public function add($attributes = array())
     {
-        $this->fieldOptions->add('attributes', array_merge($this->all(), $attributes));
+        $current_attributes = $this->all();
+
+        if (is_array($current_attributes)) {
+            $this->fieldOptions->add('attributes', array_merge($current_attributes, $attributes));
+        } else {
+            $this->fieldOptions->add('attributes', $attributes);
+        }
+
 
         return $this->fieldOptions->all();
     }

@@ -7,12 +7,6 @@ use Mascame\ArtificerWidgets\DateTimepicker\DateTimepicker;
 
 class DateTime extends Field {
 
-	public function boot()
-	{
-		$this->addWidget(new DateTimepicker());
-		$this->attributes->add(array('class' => 'form-control datetimepicker', 'data-date-format' => 'YYYY-MM-DD HH:mm:ss'));
-	}
-
 	public function input()
 	{
 		?>

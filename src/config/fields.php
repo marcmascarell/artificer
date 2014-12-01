@@ -1,5 +1,8 @@
 <?php
 
+use Mascame\ArtificerWidgets\DateTimepicker\DateTimepicker;
+use Mascame\ArtificerWidgets\Datepicker\Datepicker;
+
 return array(
 
 	'classmap' => array(
@@ -14,67 +17,117 @@ return array(
 	'types'    => array(
 		// field_type => array('fieldname_1', 'fieldname_1')
 		'key'      => array(
-			'id'
+            'autodetect' => array(
+                'id'
+            )
 		),
 
 		'published' => array(),
 
 		'checkbox'     => array(
-			'accept',
-			'active',
-			'boolean',
-			'activated',
+            'autodetect' => array(
+                'accept',
+                'active',
+                'boolean',
+                'activated',
+            ),
 		),
 
 		'password'     => array(
-			'password'
+            'autodetect' => array(
+                'password'
+            ),
 		),
 
 		'text'         => array(
-			'title',
-			'username',
-			'name'
+            'autodetect' => array(
+                'title',
+                'username',
+                'name'
+            ),
 		),
 
 		'textarea'     => array(
-			''
+
 		),
 
 		'wysiwyg'      => array(
-			'body',
-			'text'
+            'autodetect' => array(
+                'body',
+                'text'
+            ),
 		),
 
 		'option'       => array(
-			'selection',
+            'autodetect' => array(
+                'selection',
+            ),
 		),
 
 		'email'        => array(),
 
 		'link'         => array(
-			'url'
-		),
+            'autodetect' => array(
+                'url'
+            ),
+        ),
 
-		'datetime'         => array(
-			'_at'
+
+
+        'datetime'         => array(
+            'autodetect' => array(
+                '_at'
+            ),
+
+            "attributes" => array(
+                'class' => 'form-control datetimepicker', 'data-date-format' => 'YYYY-MM-DD HH:mm:ss',
+
+            ),
+
+            'widgets' => array(
+                new DateTimepicker(),
+            )
+
+        ),
+
+		'date'         => array(
+            'autodetect' => array(
+                '_at'
+            ),
+
+            "attributes" => array(
+                'class' => 'form-control datepicker',
+
+            ),
+
+            'widgets' => array(
+                new Datepicker(),
+            )
+
 		),
 
 		'file'         => array(),
 
 		'image'        => array(
-			'image'
+            'autodetect' => array(
+                'image'
+            ),
 		),
 
 		'image_center' => array(),
 
 		'hasOne'       => array(
-			'_id',
-			'user_id',
-			'fake_id'
+            'autodetect' => array(
+                '_id',
+                'user_id',
+                'fake_id'
+            ),
 		),
 
 		'hasMany'      => array(),
 
-		'default'      => array('text')
+		'default'      => array(
+            'autodetect' => array('text')
+        )
 	),
 );
