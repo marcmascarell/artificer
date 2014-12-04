@@ -85,7 +85,9 @@ class hasOne extends Relation {
         if (!is_object($value)) {
             $model = '\\' . $this->relation->getRelatedModel();
 
-            $data = $model::findOrFail($value);
+            $data = $model::find($value);
+
+            if (!$data) return '(none)';
 
             if (is_array($show)) {
                 foreach ($show as $item) {

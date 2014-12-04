@@ -18,7 +18,7 @@ class FieldOptions {
 	public function __construct($name, $type)
 	{
         $this->name = $name;
-        $this->default_options = AdminOption::get('types.' . $type);
+        $this->default_options = (AdminOption::get('types.' . $type)) ? AdminOption::get('types.' . $type) : array();
         $this->options = array_merge($this->all(), $this->default_options);
 
         $this->model = $this->model();
