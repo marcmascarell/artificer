@@ -46,7 +46,7 @@ Route::group(array(
 				Route::get('{slug}', array('as' => 'admin.model.all', 'uses' => 'Mascame\Artificer\ModelController@all'));
 				Route::get('{slug}/create', array('as' => 'admin.model.create', 'uses' => 'Mascame\Artificer\ModelController@create'));
 				Route::post('{slug}/store', array('as' => 'admin.model.store', 'uses' => 'Mascame\Artificer\ModelController@store'));
-				Route::post('{slug}/filter', array('as' => 'admin.model.filter', 'uses' => 'Mascame\Artificer\ModelController@filter'));
+				Route::get('{slug}/filter', array('as' => 'admin.model.filter', 'uses' => 'Mascame\Artificer\ModelController@filter'));
 				Route::get('{slug}/{id}', array('as' => 'admin.model.show', 'uses' => 'Mascame\Artificer\ModelController@show'));
 				Route::get('{slug}/{id}/edit', array('as' => 'admin.model.edit', 'uses' => 'Mascame\Artificer\ModelController@edit'));
 				Route::put('{slug}/{id}', array('as' => 'admin.model.update', 'uses' => 'Mascame\Artificer\ModelController@update'));

@@ -46,7 +46,7 @@ class ModelController extends BaseModelController {
             }
 
             return $query;
-        })->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->get();
+        })->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->paginate();
 
         return parent::all($modelName, $data, $sort);
     }
@@ -200,7 +200,6 @@ class ModelController extends BaseModelController {
             return Response::json(array());
         }
 
-        // Todo: change to all when coming from filter
 		return Redirect::back();
 
 //		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
