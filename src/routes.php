@@ -49,6 +49,7 @@ Route::group(array(
 				Route::get('{slug}/filter', array('as' => 'admin.model.filter', 'uses' => 'Mascame\Artificer\ModelController@filter'));
 				Route::get('{slug}/{id}', array('as' => 'admin.model.show', 'uses' => 'Mascame\Artificer\ModelController@show'));
 				Route::get('{slug}/{id}/edit', array('as' => 'admin.model.edit', 'uses' => 'Mascame\Artificer\ModelController@edit'));
+				Route::get('{slug}/{id}/edit/{field}', array('as' => 'admin.model.field.edit', 'uses' => 'Mascame\Artificer\ModelController@field'));
 				Route::put('{slug}/{id}', array('as' => 'admin.model.update', 'uses' => 'Mascame\Artificer\ModelController@update'));
 				Route::delete('{slug}/{id}', array('as' => 'admin.model.destroy', 'uses' => 'Mascame\Artificer\ModelController@destroy'));
 

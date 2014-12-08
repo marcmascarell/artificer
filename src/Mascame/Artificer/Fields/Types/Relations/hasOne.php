@@ -61,16 +61,29 @@ class hasOne extends Relation {
             <br>
             <div class="text-right">
                 <div class="btn-group">
-                    <a href="<?= $edit_url ?>" target="_blank" type="button" class="btn btn-default">
+                    <button class="btn btn-default" data-toggle="modal"
+                            data-url="<?=$edit_url?>"
+                            data-target="#form-modal-<?= $model['route'] ?>">
                         <i class="fa fa-edit"></i>
-                    </a>
+                    </button>
 
-                    <a href="<?= $new_url ?>" target="_blank" type="button" class="btn btn-default">
+                    <button class="btn btn-default" data-toggle="modal"
+                            data-url="<?=$new_url?>"
+                            data-target="#form-modal-<?= $model['route'] ?>">
                         <i class="fa fa-plus"></i>
-                    </a>
+                    </button>
+
+<!--                    <a href="--><?//= $edit_url ?><!--" target="_blank" type="button" class="btn btn-default">-->
+<!--                        <i class="fa fa-edit"></i>-->
+<!--                    </a>-->
+
+<!--                    <a href="--><?//= $new_url ?><!--" target="_blank" type="button" class="btn btn-default">-->
+<!--                        <i class="fa fa-plus"></i>-->
+<!--                    </a>-->
                 </div>
             </div>
         <?php
+            $this->relationModal($model['route']);
         }
 	}
 

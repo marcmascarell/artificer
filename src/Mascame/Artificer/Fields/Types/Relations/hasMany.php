@@ -46,6 +46,18 @@ class hasMany extends Relation {
 
 		if (!Request::ajax()) {
 			$this->relationModal($this->model['route']);
+
+            ?>
+            <div class="text-right">
+                <div class="btn-group">
+                    <button class="btn btn-default" data-toggle="modal"
+                            data-url="<?=$this->createURL?>"
+                            data-target="#form-modal-<?= $this->model['route'] ?>">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <?php
 		}
 	}
 

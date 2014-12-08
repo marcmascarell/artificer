@@ -146,6 +146,13 @@ class ModelController extends BaseModelController {
 		return View::make($this->getView('edit'))->with('items', $this->data)->with($form);
 	}
 
+    public function field($modelName, $id, $field)
+    {
+        $this->handleData($this->model->with($this->modelObject->getRelations())->findOrFail($id));
+
+        return $this->fields[$field]->output();
+    }
+
 	/**
 	 * Update the specified resource in storage.
 	 *

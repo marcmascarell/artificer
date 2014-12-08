@@ -31,29 +31,24 @@ class Relation extends Field {
 	public function relationModal($relatedModelRouteName)
 	{
 		?>
-		<div class="text-right">
-			<div class="btn-group">
-				<button class="btn btn-default" data-toggle="modal"
-						data-url="<?=$this->createURL?>"
-						data-target="#form-modal-<?= $relatedModelRouteName ?>">
-					<i class="fa fa-plus"></i>
-				</button>
-			</div>
-		</div>
+
 
 		<!-- Modal -->
 		<div class="modal fade standalone" id="form-modal-<?= $relatedModelRouteName ?>" tabindex="-1" role="dialog"
 			 aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
+
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
 								class="sr-only">Close</span></button>
 						<h4 class="modal-title">Loading Form</h4>
 					</div>
-					<div class="modal-body">
+
+					<div id="modal-body-<?= $relatedModelRouteName ?>" class="modal-body">
 						<div class="alert alert-info" role="alert"><i class="fa fa-circle-o-notch fa-spin"></i> Loading</div>
 					</div>
+
 					<div class="hidden default-modal-body">
 						<div class="alert alert-info" role="alert"><i class="fa fa-circle-o-notch fa-spin"></i> Loading</div>
 					</div>
@@ -62,40 +57,42 @@ class Relation extends Field {
 		</div>
 
 		<script>
-			var $modal = $('#form-modal-<?=$relatedModelRouteName?>');
-			var $modal_body = $(".modal-body");
+			var $modal_<?=$relatedModelRouteName?> = $('#form-modal-<?=$relatedModelRouteName?>');
+			var $modal_body_<?=$relatedModelRouteName?> = $("#modal-body-<?=$relatedModelRouteName?>");
 			var url = null;
 
-			$modal.on('show.bs.modal', function (e) {
+			$modal_<?=$relatedModelRouteName?>.on('show.bs.modal', function (e) {
 				url = $(e.relatedTarget).data('url');
-				url += " .right-side";
+//				url += " .right-side";
 			});
 
-			$modal.on('shown.bs.modal', function () {
-				$modal_body.load(url, function () {
-					var title = $(".modal-body h1").html();
+			$modal_<?=$relatedModelRouteName?>.on('shown.bs.modal', function () {
+				$modal_body_<?=$relatedModelRouteName?>.load(url, function () {
+					var title = $modal_body_<?=$relatedModelRouteName?>.find('h1').html();
 
 					$('.modal-title').html(title);
 
-					var $form = $('.modal-body form');
+					var $form = $modal_body_<?=$relatedModelRouteName?>.find('form');
+//                    $form.attr('action', url);
+//                    $form.attr('method', 'POST');
 
-					$form.prepend('<input type="hidden" name="_standalone" value="<?=$relatedModelRouteName?>">');
-
-                    <?php if (Route::currentRouteName() == 'admin.model.create') { ?>
-                    $form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=Model::getCurrent()?>">');
-                    $form.prepend('<input type="hidden" name="_set_relation_on_create_foreign" value="<?=$this->relation['foreign']?>">');
-                    <?php } ?>
-
-					$form.submit(function (e) {
+                    $form.submit(function (e) {
 						e.preventDefault();
+                        $form.prepend('<input type="hidden" name="_standalone" value="<?=$relatedModelRouteName?>">');
 
+                        <?php if (Route::currentRouteName() == 'admin.model.create') { ?>
+                        $form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=Model::getCurrent()?>">');
+                        $form.prepend('<input type="hidden" name="_set_relation_on_create_foreign" value="<?=$this->relation['foreign']?>">');
+                        <?php } ?>
+
+//                        console.log($form.serialize());
 						$.post($form.attr('action'), $form.serialize(), function (data) {
 							if (typeof data === 'string') {
 								// validation errors
-								$(".modal-body").html(data);
+                                $modal_body_<?=$relatedModelRouteName?>.html(data);
 							} else if (typeof data === 'object') {
 								refreshRelation();
-								$modal.modal('hide');
+								$modal_<?=$relatedModelRouteName?>.modal('hide');
 							} else {
 								alert('Something is wrong.');
 							}
@@ -104,18 +101,21 @@ class Relation extends Field {
 				});
 			});
 
-			$modal.on('hidden.bs.modal', function (e) {
-				$modal_body.empty();
-				$modal_body.html($('.default-modal-body').html())
+			$modal_<?=$relatedModelRouteName?>.on('hidden.bs.modal', function (e) {
+				$modal_body_<?=$relatedModelRouteName?>.empty();
+				$modal_body_<?=$relatedModelRouteName?>.html($('.default-modal-body').html())
 			});
 
-			function refreshRelation() {
-				var $relation = $('[data-refresh-field]');
-
-				$relation.load($relation.data('refresh-field'), function () {
-//					$(this).data('refresh-relation')
-				});
-			}
+//			function refreshRelation() {
+//				var $relation = $('[data-refresh-field]');
+//                var name = $relation.attr('name');
+//                var url = '<?php //URL::route('admin.model.field.edit', array('slug' => $relatedModelRouteName)) ?>//';
+//
+//                alert(url);
+////				$relation.load(, function () {
+//////					$(this).data('refresh-relation')
+////				});
+//			}
 
 		</script>
 	<?php
