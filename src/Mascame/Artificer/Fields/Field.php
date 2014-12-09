@@ -277,6 +277,8 @@ class Field implements FieldInterface {
 	 */
 	public function isGuarded()
 	{
+        if (!isset($this->options->model['guarded'])) return false;
+
 		return $this->isInArray($this->name, $this->options->model['guarded']);
 	}
 
@@ -286,6 +288,8 @@ class Field implements FieldInterface {
 	 */
 	public function isHidden()
 	{
+        if (!isset($this->options->model['hidden'])) return false;
+
 		return $this->isInArray($this->name, $this->options->model['hidden']);
 	}
 
