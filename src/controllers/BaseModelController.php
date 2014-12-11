@@ -135,8 +135,17 @@ class BaseModelController extends BaseController {
 	 */
 	protected function filterInputData()
 	{
-		if ($this->modelObject->isGuarded()) {
-			return $this->except($this->modelObject->options['guarded'], Input::only($this->modelObject->columns));
+		if ($this->modelObject->hasGuarded()) {
+            $input = Input::all();
+            $filtered_input = array();
+
+            foreach ($input as $key => $value) {
+                if (in_array($key, $this->modelObject->columns)) {
+                    $filtered_input[$key] = $value;
+                }
+            }
+
+			return $this->except($this->modelObject->options['guarded'], $filtered_input);
 		}
 
 		return Input::except('id');

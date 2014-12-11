@@ -165,7 +165,7 @@ class ModelController extends BaseModelController {
 		$item = $this->model->findOrFail($id);
 
 		$data = $this->filterInputData();
-
+        dd($data);
 		$validator = $this->validator($data);
 		if ($validator->fails()) return $this->redirect($validator, 'admin.model.edit');
 

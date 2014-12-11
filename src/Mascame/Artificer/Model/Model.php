@@ -115,7 +115,7 @@ class Model {
 	/**
 	 * @return bool
 	 */
-	public function isGuarded()
+	public function hasGuarded()
 	{
 		return (isset($this->options['guarded']) && !empty($this->options['guarded'])) ? true : false;
 	}
@@ -123,7 +123,7 @@ class Model {
 	/**
 	 * @return bool
 	 */
-	public function isFillable()
+	public function hasFillable()
 	{
 		return (isset($this->options['fillable']) && !empty($this->options['fillable'])) ? true : false;
 	}
