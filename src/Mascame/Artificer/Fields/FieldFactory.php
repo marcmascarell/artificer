@@ -67,6 +67,13 @@ class FieldFactory {
         return $this->fields;
 	}
 
+	/**
+	 * @param $type
+	 * @param $field
+	 * @param $value
+	 * @return mixed
+	 * @throws \Exception
+	 */
     public function make($type, $field, $value) {
         $fieldClass = $this->getFieldTypeClass($type);
         return new $fieldClass($field, $value, $this->modelObject->name, $this->isRelation($field));
