@@ -7,7 +7,12 @@ return array(
 	),
 
 	'hidden'           => array(
-		'BookAttribute'
+		'BookAttribute',
+		'Metatag',
+		'PaymentArticle',
+
+//        'Page',
+		'Sharer'
 	),
 
 	'route_permission' => array(
@@ -20,22 +25,42 @@ return array(
 		'admin.model.all'     => 'view',
 	),
 
-    'default_model' => array(
-        // 'title'     => 'Artículos',
+	'default_model' => array(
+		/**
+		 * The real value will never be shown (just that)
+		 */
+		'hidden'    => array('password'),
 
-        // Just hidden still modificable
-        'hidden'    => array('password'),
+		// Editable, fillable, updatable
+		//	'fillable'  => array(),
+		//
+		//	// Not updatable, not editable
+		//	'guarded'   => array('id'),
 
-        // Editable, fillable, updatable
-        'fillable'  => array(),
+		//	'list'      => array('*'),
+		//
+		//	'list-hide' => array('image_center'),
 
-        // Not updatable, not editable
-        'guarded'   => array('id'),
+		/**
+		 * Fields that are shown on creation
+		 */
+		'create' => array(),
 
-        'list'      => array('*'),
+		/**
+		 * Fields that are shown on edit
+		 */
+		'edit' => array(),
 
-        'list-hide' => array(''),
+		/**
+		 * Fields that will be shown when on list view mode
+		 */
+		'list' => array(
+			'show' => array('*'),
+			'hide' => array('password'),
+		),
 
-        'fields'    => array()
-    )
+		'fields'    => array(
+
+		)
+	)
 );

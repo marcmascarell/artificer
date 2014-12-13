@@ -58,6 +58,18 @@ Edit config files to meet your needs.
 
 Documentation
 --------------
+
+Developing:
+
+In workbench under mascame/ (or your fork) make the clone.
+Rename laravel-artificer to artificer.
+Run composer update inside of the package.
+php artisan artificer:publish
+
+Publish theme assets:
+
+php artisan asset:publish mascame/artificer-default-theme
+
 soon
 
 

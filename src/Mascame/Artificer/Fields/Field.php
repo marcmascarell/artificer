@@ -223,6 +223,8 @@ class Field implements FieldInterface {
 	 */
 	public function isListed($list = 'show')
 	{
+		if (!isset($this->options->model['list'][$list])) return false;
+
 		$list = $this->options->model['list'][$list];
 
 		if ($this->isAll($list)) return true;
