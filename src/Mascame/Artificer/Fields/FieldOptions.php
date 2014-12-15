@@ -62,6 +62,10 @@ class FieldOptions {
 	 */
 	public function all()
 	{
+		if (isset($this->options)) {
+			return (array) $this->options = array_merge($this->options, FieldOption::field($this->name));
+		}
+
 		return (array) $this->options = FieldOption::field($this->name);
 	}
 

@@ -1,6 +1,8 @@
 <?php namespace Mascame\Artificer;
 
+use Illuminate\Database\Eloquent\Collection;
 use Mascame\Artificer\Model\Model;
+use Mascame\Artificer\Options\AdminOption;
 use Redirect;
 use Input;
 use View;
@@ -8,6 +10,7 @@ use Response;
 use Event;
 use Request;
 use Session;
+use URL;
 
 class ModelController extends BaseModelController {
 
@@ -94,9 +97,7 @@ class ModelController extends BaseModelController {
             Session::forget($relation_on_create . '_' . $this->modelObject->name);
         }
 
-		if (Request::ajax()) {
-			return Response::json($item->toArray());
-		}
+		if (Request::ajax()) return $this->handleAjaxResponse($item);
 
 		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
 	}
@@ -150,8 +151,18 @@ class ModelController extends BaseModelController {
     {
         $this->handleData($this->model->with($this->modelObject->getRelations())->findOrFail($id));
 
-        return $this->fields[$field]->output();
+		$this->fields[$field]->showFullField = true;
+
+        return \HTML::field($this->fields[$field], AdminOption::get('icons'));
     }
+
+	protected function handleAjaxResponse($item) {
+		return Response::json(array(
+				'item' => $item->toArray(),
+				'refresh' => URL::route('admin.model.field.edit', array('slug' => Input::get('_standalone_origin'), 'id' => Input::get('_standalone_origin_id'), 'field' => ':fieldName:'))
+			)
+		);
+	}
 
 	/**
 	 * Update the specified resource in storage.
@@ -171,9 +182,7 @@ class ModelController extends BaseModelController {
 
 		$item->update(with($this->handleFiles($data)));
 
-		if (Request::ajax()) {
-			return Response::json($item->toArray());
-		}
+		if (Request::ajax()) return $this->handleAjaxResponse($item);
 
 		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
 	}
@@ -204,6 +213,7 @@ class ModelController extends BaseModelController {
 		}
 
         if (Request::ajax()) {
+			// todo
             return Response::json(array());
         }
 

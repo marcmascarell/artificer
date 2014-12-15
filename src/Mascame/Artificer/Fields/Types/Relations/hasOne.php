@@ -16,13 +16,12 @@ class hasOne extends Relation {
 
 	public function input()
 	{
-		$modelName = $this->relation->getRelatedModel();
-		$model = $this->modelObject->schema->models[$modelName];
-        $model['class'] = $this->modelObject->schema->getClass($modelName);
+		$this->model = $this->modelObject->schema->models[$this->relation->getRelatedModel()];
+        $this->model['class'] = $modelClass = $this->modelObject->schema->getClass($this->model['name']);
         $show = $this->relation->getShow();
 
         $show_query = (is_array($show)) ? array('*') : array('id', $show);
-		$data = $model['class']::all($show_query)->toArray();
+		$data = $modelClass::all($show_query)->toArray();
 
 		$select = array();
 		foreach ($data as $d) {
@@ -53,23 +52,22 @@ class hasOne extends Relation {
 
 		print Form::select($this->name, array('0' => '(none)') + $select, $id, $this->attributes->all());
 
-        if (!Request::ajax()) {
-            $new_url = \URL::route('admin.model.create', array('slug' => $model['route']));
-            $edit_url = \URL::route('admin.model.edit', array('slug' => $model['route'], 'id' => $id));
+        if (!Request::ajax() || $this->showFullField) {
+            $new_url = \URL::route('admin.model.create', array('slug' => $this->model['route']));
+            $edit_url = \URL::route('admin.model.edit', array('slug' => $this->model['route'], 'id' => ':id:'));
             ?>
-
             <br>
             <div class="text-right">
                 <div class="btn-group">
                     <button class="btn btn-default" data-toggle="modal"
                             data-url="<?=$edit_url?>"
-                            data-target="#form-modal-<?= $model['route'] ?>">
+                            data-target="#form-modal-<?= $this->model['route'] ?>">
                         <i class="fa fa-edit"></i>
                     </button>
 
                     <button class="btn btn-default" data-toggle="modal"
                             data-url="<?=$new_url?>"
-                            data-target="#form-modal-<?= $model['route'] ?>">
+                            data-target="#form-modal-<?= $this->model['route'] ?>">
                         <i class="fa fa-plus"></i>
                     </button>
 
@@ -82,8 +80,9 @@ class hasOne extends Relation {
 <!--                    </a>-->
                 </div>
             </div>
-        <?php
-            $this->relationModal($model['route']);
+            <?php
+
+            $this->relationModal($this->model['route'], $id);
         }
 	}
 

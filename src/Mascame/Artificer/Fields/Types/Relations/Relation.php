@@ -17,6 +17,8 @@ class Relation extends Field {
 
     public function boot()
     {
+		parent::boot();
+
         $this->modelObject = \App::make('artificer-model');
     }
 
@@ -28,11 +30,9 @@ class Relation extends Field {
 		return URL::route('admin.model.create', array('slug' => $model_route));
 	}
 
-	public function relationModal($relatedModelRouteName)
+	public function relationModal($relatedModelRouteName, $id = 0)
 	{
 		?>
-
-
 		<!-- Modal -->
 		<div class="modal fade standalone" id="form-modal-<?= $relatedModelRouteName ?>" tabindex="-1" role="dialog"
 			 aria-labelledby="myModalLabel" aria-hidden="true">
@@ -57,66 +57,85 @@ class Relation extends Field {
 		</div>
 
 		<script>
-			var $modal_<?=$relatedModelRouteName?> = $('#form-modal-<?=$relatedModelRouteName?>');
-			var $modal_body_<?=$relatedModelRouteName?> = $("#modal-body-<?=$relatedModelRouteName?>");
-			var url = null;
+			$(function () {
 
-			$modal_<?=$relatedModelRouteName?>.on('show.bs.modal', function (e) {
-				url = $(e.relatedTarget).data('url');
-//				url += " .right-side";
-			});
+				var $modal_<?=$relatedModelRouteName?> = $('#form-modal-<?=$relatedModelRouteName?>');
+				var $modal_body_<?=$relatedModelRouteName?> = $("#modal-body-<?=$relatedModelRouteName?>");
+				var url = null;
+				var id = '<?=$id?>';
+				var $field = $('[name="<?=$this->name?>"]');
 
-			$modal_<?=$relatedModelRouteName?>.on('shown.bs.modal', function () {
-				$modal_body_<?=$relatedModelRouteName?>.load(url, function () {
-					var title = $modal_body_<?=$relatedModelRouteName?>.find('h1').html();
+				if ($field.is("select")) {
+					$field.on('change', function() {
+//						alert( this.value ); // or $(this).val()
 
-					$('.modal-title').html(title);
+						id = this.value;
+					});
+				}
 
-					var $form = $modal_body_<?=$relatedModelRouteName?>.find('form');
-//                    $form.attr('action', url);
-//                    $form.attr('method', 'POST');
+				$modal_<?=$relatedModelRouteName?>.on('show.bs.modal', function (e) {
+					url = $(e.relatedTarget).data('url');
+					url = url.replace(':id:', id);
+	//				url += " .right-side";
+				});
 
-                    $form.submit(function (e) {
-						e.preventDefault();
-                        $form.prepend('<input type="hidden" name="_standalone" value="<?=$relatedModelRouteName?>">');
+				$modal_<?=$relatedModelRouteName?>.on('shown.bs.modal', function () {
+					$modal_body_<?=$relatedModelRouteName?>.load(url, function () {
+						var title = $modal_body_<?=$relatedModelRouteName?>.find('h1').html();
 
-                        <?php if (Route::currentRouteName() == 'admin.model.create') { ?>
-                        $form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=Model::getCurrent()?>">');
-                        $form.prepend('<input type="hidden" name="_set_relation_on_create_foreign" value="<?=$this->relation['foreign']?>">');
-                        <?php } ?>
+						$('.modal-title').html(title);
 
-//                        console.log($form.serialize());
-						$.post($form.attr('action'), $form.serialize(), function (data) {
-							if (typeof data === 'string') {
-								// validation errors
-                                $modal_body_<?=$relatedModelRouteName?>.html(data);
-							} else if (typeof data === 'object') {
-								refreshRelation();
-								$modal_<?=$relatedModelRouteName?>.modal('hide');
-							} else {
-								alert('Something is wrong.');
-							}
+						var $form = $modal_body_<?=$relatedModelRouteName?>.find('form');
+	//                    $form.attr('action', url);
+	//                    $form.attr('method', 'POST');
+						$form.prepend('<input type="hidden" name="_standalone" value="<?=$relatedModelRouteName?>">');
+						$form.prepend('<input type="hidden" name="_standalone_origin" value="<?=$this->modelObject->getRouteName(Model::$current)?>">');
+						$form.prepend('<input type="hidden" name="_standalone_origin_id" value="<?=$id?>">');
+
+						<?php if (Route::currentRouteName() == 'admin.model.create') { ?>
+						$form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=Model::getCurrent()?>">');
+						$form.prepend('<input type="hidden" name="_set_relation_on_create_foreign" value="<?=$this->relation['foreign']?>">');
+						<?php } ?>
+
+						$form.submit(function (e) {
+							e.preventDefault();
+
+							$.post($form.attr('action'), $form.serialize(), function (data) {
+								if (typeof data === 'string') {
+									// validation errors
+									$modal_body_<?=$relatedModelRouteName?>.html(data);
+								} else if (typeof data === 'object') {
+									refreshRelation(data, '<?=$this->name?>');
+									$modal_<?=$relatedModelRouteName?>.modal('hide');
+								} else {
+									alert('Something is wrong.');
+								}
+							});
 						});
 					});
 				});
+
+				$modal_<?=$relatedModelRouteName?>.on('hidden.bs.modal', function (e) {
+					$modal_body_<?=$relatedModelRouteName?>.empty();
+					$modal_body_<?=$relatedModelRouteName?>.html($('.default-modal-body').html())
+				});
+
+				function refreshRelation(data, name) {
+					var $relation = $('[name="'+name+'"]');
+					var url = data.refresh;
+
+					url = url.replace(':fieldName:', name);
+
+					// After this call this whole modal will disappear
+					$relation.parent('.form-group').load(url, function () {
+
+						$("body").trigger("relationRefresh", {
+							name: name,
+							id: id
+						});
+					});
+				}
 			});
-
-			$modal_<?=$relatedModelRouteName?>.on('hidden.bs.modal', function (e) {
-				$modal_body_<?=$relatedModelRouteName?>.empty();
-				$modal_body_<?=$relatedModelRouteName?>.html($('.default-modal-body').html())
-			});
-
-//			function refreshRelation() {
-//				var $relation = $('[data-refresh-field]');
-//                var name = $relation.attr('name');
-//                var url = '<?php //URL::route('admin.model.field.edit', array('slug' => $relatedModelRouteName)) ?>//';
-//
-//                alert(url);
-////				$relation.load(, function () {
-//////					$(this).data('refresh-relation')
-////				});
-//			}
-
 		</script>
 	<?php
 	}

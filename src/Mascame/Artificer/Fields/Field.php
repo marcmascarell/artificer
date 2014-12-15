@@ -40,6 +40,13 @@ class Field implements FieldInterface {
      */
     public $attributes;
 
+	/**
+	 * Sometimes ajax limits output, setting this to true will return all
+	 *
+	 * @var bool
+	 */
+	public $showFullField = false;
+
 
     /**
      * @param $name
@@ -55,18 +62,13 @@ class Field implements FieldInterface {
         $this->type = $this->getType(get_called_class());
 
         $this->options = new FieldOptions($this->name, $this->type);
+
 		$this->relation = new FieldRelation($relation, $this->options->getExistent('relationship'));
         $this->attributes = new FieldAttributes($this->options->getExistent('attributes'), $this->options);
 
         if (!$this->attributes->has('class')) {
             $this->attributes->add(array('class' => 'form-control'));
         }
-
-//                if ($this->name == 'created_at') {
-//            dd($this->options);
-//            dd($this->options->getExistent('attributes'));
-////            dd($this->options->getExistent('attributes'));
-//        }
 
 		$this->title = $this->getTitle($this->name);
 		$this->wiki = $this->getWiki();
