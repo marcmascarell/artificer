@@ -97,14 +97,17 @@ class Relation extends Field {
 						$form.prepend('<input type="hidden" name="_set_relation_on_create_foreign" value="<?=$this->relation['foreign']?>">');
 						<?php } ?>
 
+						var action = $form.attr('action');
+
 						$form.submit(function (e) {
 							e.preventDefault();
+							$.post(action, $form.serialize(), function (data) {
 
-							$.post($form.attr('action'), $form.serialize(), function (data) {
 								if (typeof data === 'string') {
 									// validation errors
 									$modal_body_<?=$relatedModelRouteName?>.html(data);
 								} else if (typeof data === 'object') {
+									console.log('here');
 									refreshRelation(data, '<?=$this->name?>');
 									$modal_<?=$relatedModelRouteName?>.modal('hide');
 								} else {
@@ -121,19 +124,24 @@ class Relation extends Field {
 				});
 
 				function refreshRelation(data, name) {
+					console.log(name);
 					var $relation = $('[name="'+name+'"]');
 					var url = data.refresh;
-
+					console.log($relation);
 					url = url.replace(':fieldName:', name);
-
+					console.log(url);
 					// After this call this whole modal will disappear
-					$relation.parent('.form-group').load(url, function () {
-
-						$("body").trigger("relationRefresh", {
-							name: name,
-							id: id
-						});
+					$relation.parent('.form-group').load(url, function (responseText, textStatus, req) {
+						if (textStatus == "error") {
+							return "oh noes!!!!";
+						} else {
+							$("body").trigger("relationRefresh", {
+								name: name,
+								id: id
+							});
+						}
 					});
+					console.log('after');
 				}
 			});
 		</script>

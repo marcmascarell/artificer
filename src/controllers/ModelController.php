@@ -159,7 +159,10 @@ class ModelController extends BaseModelController {
 	protected function handleAjaxResponse($item) {
 		return Response::json(array(
 				'item' => $item->toArray(),
-				'refresh' => URL::route('admin.model.field.edit', array('slug' => Input::get('_standalone_origin'), 'id' => Input::get('_standalone_origin_id'), 'field' => ':fieldName:'))
+				'refresh' => URL::route('admin.model.field.edit', array(
+					'slug' => Input::get('_standalone_origin'),
+					'id' => Input::get('_standalone_origin_id'),
+					'field' => ':fieldName:'))
 			)
 		);
 	}
@@ -173,12 +176,13 @@ class ModelController extends BaseModelController {
 
 	public function update($modelName, $id)
 	{
+
 		$item = $this->model->findOrFail($id);
 
 		$data = $this->filterInputData();
 
 		$validator = $this->validator($data);
-		if ($validator->fails()) return $this->redirect($validator, 'admin.model.edit');
+		if ($validator->fails()) return $this->redirect($validator, 'admin.model.edit', $id);
 
 		$item->update(with($this->handleFiles($data)));
 

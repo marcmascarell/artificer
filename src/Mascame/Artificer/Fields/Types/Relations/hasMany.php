@@ -44,8 +44,8 @@ class hasMany extends Relation {
 
 		$this->createURL = $this->createURL($this->model['route']) . "?" . http_build_query(array($this->relation->getForeignKey() => $id, '_standalone' => 'true'));
 
-		if (!Request::ajax()) {
-			$this->relationModal($this->model['route']);
+		if (!Request::ajax() || $this->showFullField) {
+			$this->relationModal($this->model['route'], $id);
 
             ?>
             <div class="text-right">
@@ -63,26 +63,33 @@ class hasMany extends Relation {
 
 	public function showItems($data)
 	{
-		if (!Request::ajax()) { ?>
-			<div data-refresh-field="<?= \URL::route('admin.model.field',
-				array('slug'  => $this->model['route'],
-					  'id'    => ($this->fields['id']->value) ? $this->fields['id']->value : 0,
-					  'field' => $this->name)) ?>">
-		<?php }
+		if (!Request::ajax()) {
+
+//			<div data-refresh-field="
+//			<?= \URL::route('admin.model.field',
+//				array('slug'  => $this->model['route'],
+//					  'id'    => ($this->fields['id']->value) ? $this->fields['id']->value : 0,
+//					  'field' => $this->name))
+//					  ">
+
+		}
 
 			if (!empty($data)) { ?>
-				<ul class="list-group">
+				<ul class="list-group" name="<?=$this->name?>">
 					<?php foreach ($data as $item) {
 						$this->addItem($item);
 					} ?>
 				</ul>
 			<?php } else { ?>
-				<div class="well well-sm">No items yet</div><?php
+				<div class="well well-sm">No items yet</div>
+			<?php
 			}
 
-		if (!Request::ajax()) { ?>
-			</div>
-		<?php }
+		if (!Request::ajax()) {
+			?>
+<!--			</div>-->
+			<?php
+		}
 	}
 
 	public function addItem($item) {
@@ -113,10 +120,12 @@ class hasMany extends Relation {
 	public function show($values = null)
 	{
 		if (isset($values) && !$values->isEmpty()) {
+			$modelName = $this->relation->getRelatedModel();
+			$model = $this->modelObject->schema->models[$modelName];
 			$show = $this->relation->getShow();
 
 			foreach ($values as $value) {
-				print $value->$show . "<br>";
+				print '<a href="'.$this->editURL($model['route'], $value->id).'" target="_blank">' . $value->$show . "</a><br>";
 			}
 		} else {
 			print "<em>(none)</em>";

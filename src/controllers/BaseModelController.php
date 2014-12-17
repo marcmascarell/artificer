@@ -248,10 +248,14 @@ class BaseModelController extends BaseController {
 	 * @param string $route
 	 * @return $this
 	 */
-	protected function redirect($validator, $route)
+	protected function redirect($validator, $route, $id = null)
 	{
 		if (Input::has('_standalone')) {
-			return Redirect::route($route, array('slug' => Input::get('_standalone')))
+			$route_params = array('slug' => Input::get('_standalone'));
+
+			if ($id) $route_params['id'] = $id;
+
+			return Redirect::route($route, $route_params)
 				->withErrors($validator)
 				->withInput();
 		}
