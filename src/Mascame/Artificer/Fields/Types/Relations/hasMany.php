@@ -73,17 +73,18 @@ class hasMany extends Relation {
 //					  ">
 
 		}
-
-			if (!empty($data)) { ?>
-				<ul class="list-group" name="<?=$this->name?>">
-					<?php foreach ($data as $item) {
-						$this->addItem($item);
-					} ?>
-				</ul>
-			<?php } else { ?>
-				<div class="well well-sm">No items yet</div>
-			<?php
-			}
+			?><div name="<?=$this->name?>"><?php
+				if (!empty($data)) { ?>
+					<ul class="list-group">
+						<?php foreach ($data as $item) {
+							$this->addItem($item);
+						} ?>
+					</ul>
+				<?php } else { ?>
+					<div class="well well-sm">No items yet</div>
+				<?php
+				}
+			?></div><?php
 
 		if (!Request::ajax()) {
 			?>
@@ -105,6 +106,7 @@ class hasMany extends Relation {
 							data-target="#form-modal-<?= $this->model['route'] ?>">
 						<i class="fa fa-edit"></i>
 					</button>
+
 					<a data-method="delete" data-token="<?= csrf_token() ?>"
 					   href="<?= route('admin.model.destroy', array('slug' => $this->model['route'], 'id' => $item['id']), $absolute = true) ?>"
 					   type="button" class="btn btn-default">

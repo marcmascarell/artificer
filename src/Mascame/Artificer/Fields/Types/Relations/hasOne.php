@@ -50,7 +50,7 @@ class hasOne extends Relation {
 			$id = $this->value;
 		}
 
-		print Form::select($this->name, array('0' => '(none)') + $select, $id, $this->attributes->all());
+		print Form::select($this->name, array('0' => Request::ajax() ? '(current)' : '(none)') + $select, $id, $this->attributes->all());
 
         if (!Request::ajax() || $this->showFullField) {
             $new_url = \URL::route('admin.model.create', array('slug' => $this->model['route']));

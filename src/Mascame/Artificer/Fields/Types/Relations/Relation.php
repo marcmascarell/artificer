@@ -94,7 +94,7 @@ class Relation extends Field {
 
 						<?php if (Route::currentRouteName() == 'admin.model.create') { ?>
 						$form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=Model::getCurrent()?>">');
-						$form.prepend('<input type="hidden" name="_set_relation_on_create_foreign" value="<?=$this->relation['foreign']?>">');
+						$form.prepend('<input type="hidden" name="_set_relation_on_create_foreign" value="<?=$this->relation->getForeignKey()?>">');
 						<?php } ?>
 
 						var action = $form.attr('action');
@@ -124,12 +124,11 @@ class Relation extends Field {
 				});
 
 				function refreshRelation(data, name) {
-					console.log(name);
 					var $relation = $('[name="'+name+'"]');
 					var url = data.refresh;
-					console.log($relation);
+
 					url = url.replace(':fieldName:', name);
-					console.log(url);
+
 					// After this call this whole modal will disappear
 					$relation.parent('.form-group').load(url, function (responseText, textStatus, req) {
 						if (textStatus == "error") {
@@ -141,7 +140,6 @@ class Relation extends Field {
 							});
 						}
 					});
-					console.log('after');
 				}
 			});
 		</script>
