@@ -16,6 +16,10 @@ class hasOne extends Relation {
 
 	public function input()
 	{
+        if (!$this->relation->getRelatedModel()) {
+            throw new \Exception('missing relation in config for the current model.');
+        }
+
 		$this->model = $this->modelObject->schema->models[$this->relation->getRelatedModel()];
         $this->model['class'] = $modelClass = $this->modelObject->schema->getClass($this->model['name']);
         $show = $this->relation->getShow();

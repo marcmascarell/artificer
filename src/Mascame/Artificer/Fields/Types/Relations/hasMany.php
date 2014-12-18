@@ -18,6 +18,10 @@ class hasMany extends Relation {
 
 	public function input()
 	{
+		if (!$this->relation->getRelatedModel()) {
+			throw new \Exception('missing relation in config for the current model.');
+		}
+
         $this->fields = array_get(\View::getShared(), 'fields');
 		$id = $this->fields['id']->value;
 
