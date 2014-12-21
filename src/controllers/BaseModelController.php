@@ -195,19 +195,19 @@ class BaseModelController extends BaseController {
 	/**
 	 * This is used for simple upload (no plugins)
 	 *
-	 * @param $fieldname
+	 * @param $fieldName
 	 * @param null $path
 	 * @return string
 	 */
-	protected function uploadFile($fieldname, $path = null)
+	protected function uploadFile($fieldName, $path = null)
 	{
 		if (!$path) $path = public_path() . '/uploads/';
 
-		$file = Input::file($fieldname);
+		$file = Input::file($fieldName);
 
 		if (!file_exists($path)) File::makeDirectory($path);
 
-		$name = uniqid() . '-' . Str::slug($file->getClientOriginalName());
+		$name = uniqid() . '-' . Str::slug($file->getFilename()) . '.' . $file->guessExtension();
 
 		$file->move($path, $name);
 
