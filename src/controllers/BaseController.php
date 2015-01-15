@@ -3,6 +3,7 @@
 use Input;
 use Auth;
 use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Model\Model;
 use View;
 use Controller;
 use App;
@@ -24,6 +25,9 @@ class BaseController extends Controller {
     public $menu = array();
     protected $master_layout = null;
 
+    /**
+     * @var Model
+     */
     public $modelObject = null;
 
     /**

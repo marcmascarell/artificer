@@ -127,7 +127,7 @@ return array(
 		'hasMany'      => array(),
 
 		'default'      => array(
-            'autodetect' => array('text')
+            'type' => 'text'
         )
 	),
 );

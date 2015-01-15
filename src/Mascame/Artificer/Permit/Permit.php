@@ -28,9 +28,9 @@ abstract class Permit extends Auth {
      */
 	public static function getRole($role_column = 'role')
 	{
-		if (!static::$role) static::$role = Auth::user()->$role_column;
+		if (!static::$role && isset(Auth::user()->$role_column)) return static::$role = Auth::user()->$role_column;
 
-		return static::$role;
+		return null;
 	}
 
     /**

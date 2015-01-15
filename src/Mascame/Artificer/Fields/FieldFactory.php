@@ -217,7 +217,7 @@ class FieldFactory {
 
 		$this->setTypeReason($name, 'default');
 
-		return $this->types['default'];
+		return $this->types['default']['type'];
 	}
 
 	/**

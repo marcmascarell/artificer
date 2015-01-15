@@ -47,15 +47,35 @@ Publish assets and config
 ```sh
 php artisan artificer:publish
 ```
-Add this dependency: [mcamara/laravel-localization](https://github.com/mcamara/laravel-localization)
+
+Dependencies
+----
+Add this dependencies: 
+
+[mcamara/laravel-localization](https://github.com/mcamara/laravel-localization)
+
+Changing the theme
+----
+Set theme to `app/config/packages/mascame/artificer/admin`.`theme` to `theme-name-here` 
+
+Default: [mascame/artificer-default-theme](https://github.com/marcmascarell/artificer-default-theme/)
+
+Plugins
+----
 
 Add plugins you need (soon... you can find them in my repos). Please, be aware some plugins are under heavy development.
-
-Add a theme. Default: [mascame/artificer-default-theme](https://github.com/marcmascarell/artificer-default-theme/)
 
 Usage
 --------------
 Edit config files to meet your needs.
+
+Login
+-------------
+Make a table with: email, password (remember to hash passwords with Hash::make('pw')), role
+Add the methods to User:
+
+public function getAuthIdentifier();
+public function getAuthPassword();
 
 Documentation
 --------------
@@ -73,7 +93,7 @@ Publish theme assets:
 php artisan asset:publish mascame/artificer-default-theme
 ```
 
-soon
+soon more
 
 Support
 ----

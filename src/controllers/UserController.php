@@ -89,6 +89,9 @@ class UserController extends BaseController {
 
 		if ($validator->fails()) return $this->onFailValidation($validator);
 
+        /*
+         * Todo: add also to banning in case of fail auth attempt
+         */
         if ($this->isValidUser($this->getUser())) return Redirect::route('admin.home');
 
 		return Redirect::route('admin.login')

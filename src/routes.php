@@ -24,6 +24,15 @@ Route::pattern('username', '[a-z0-9_-]{3,16}');
 
 Route::group(array(
 	'prefix' => LaravelLocalization::setLocale(),
+	'before' => 'artificer-localization|LaravelLocalizationRedirectFilter'),
+	function () {
+		Route::group(array('prefix' => 'admin'), function () {
+			Route::get('install', array('as' => 'admin.install', 'uses' => 'Mascame\Artificer\PageController@install'));
+		});
+});
+
+Route::group(array(
+	'prefix' => LaravelLocalization::setLocale(),
 	'before' => 'artificer-auth|artificer-localization|LaravelLocalizationRedirectFilter'),
 	function () {
 		Route::group(array('prefix' => 'admin'), function () {
