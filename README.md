@@ -84,6 +84,7 @@ Edit config files to meet your needs.
 Login
 -------------
 Make a table with: email, password (remember to hash passwords with Hash::make('pw')), role
+
 Add the methods to User:
 
 public function getAuthIdentifier();
