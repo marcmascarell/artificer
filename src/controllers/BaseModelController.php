@@ -74,7 +74,7 @@ class BaseModelController extends BaseController {
 		if ($this->fields != null) return $this->fields;
 
 		$fieldfactory = new FieldFactory($this->modelObject);
-		$this->fields = $fieldfactory->parseFields($data);
+		$this->fields = $fieldfactory->makeFields($data);
 
 		View::share('fields', $this->fields);
 
