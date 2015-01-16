@@ -11,6 +11,11 @@ class FieldFactory {
 	public $fields;
 	public $related_fields = null;
 
+	/**
+	 * @var FieldParser
+	 */
+	public $parser;
+
     /**
      * @var Model
      */
