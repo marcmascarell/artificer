@@ -44,7 +44,7 @@ class hasOne extends Relation {
             $this->id = $this->value;
         }
 
-        print Form::select($this->name, array('0' => Request::ajax() ? '(current)' : '(none)') + $select, $id, $this->attributes->all());
+        print Form::select($this->name, array('0' => Request::ajax() ? '(current)' : '(none)') + $select, $this->id, $this->attributes->all());
     }
 
     protected function buttons() {
