@@ -7,6 +7,8 @@ use Request;
 
 class hasOne extends Relation {
 
+    protected $id;
+
 	public function boot()
 	{
         parent::boot();
@@ -14,21 +16,9 @@ class hasOne extends Relation {
 		$this->attributes->add(array('class' => 'chosen form-control'));
 	}
 
-	public function input()
-	{
-        if (!$this->relation->getRelatedModel()) {
-            throw new \Exception('missing relation in config for the current model.');
-        }
-
-		$this->model = $this->modelObject->schema->models[$this->relation->getRelatedModel()];
-        $this->model['class'] = $modelClass = $this->modelObject->schema->getClass($this->model['name']);
-        $show = $this->relation->getShow();
-
-        $show_query = (is_array($show)) ? array('*') : array('id', $show);
-		$data = $modelClass::all($show_query)->toArray();
-
-		$select = array();
-		foreach ($data as $d) {
+    protected function select($data, $show) {
+        $select = array();
+        foreach ($data as $d) {
 
             if (is_array($show)) {
                 $value = '';
@@ -43,19 +33,21 @@ class hasOne extends Relation {
                 $value = $d[$show];
             }
 
-			$select[$d['id']] = $value;
-		}
+            $select[$d['id']] = $value;
+        }
 
-		if (Input::has($this->name)) {
-			$id = Input::get($this->name);
-		} else if (isset($this->value->id)) {
-			$id = $this->value->id;
-		} else {
-			$id = $this->value;
-		}
+        if (Input::has($this->name)) {
+            $this->id = Input::get($this->name);
+        } else if (isset($this->value->id)) {
+            $this->id = $this->value->id;
+        } else {
+            $this->id = $this->value;
+        }
 
-		print Form::select($this->name, array('0' => Request::ajax() ? '(current)' : '(none)') + $select, $id, $this->attributes->all());
+        print Form::select($this->name, array('0' => Request::ajax() ? '(current)' : '(none)') + $select, $id, $this->attributes->all());
+    }
 
+    protected function buttons() {
         if (!Request::ajax() || $this->showFullField) {
             $new_url = \URL::route('admin.model.create', array('slug' => $this->model['route']));
             $edit_url = \URL::route('admin.model.edit', array('slug' => $this->model['route'], 'id' => ':id:'));
@@ -74,20 +66,29 @@ class hasOne extends Relation {
                             data-target="#form-modal-<?= $this->model['route'] ?>">
                         <i class="fa fa-plus"></i>
                     </button>
-
-<!--                    <a href="--><?//= $edit_url ?><!--" target="_blank" type="button" class="btn btn-default">-->
-<!--                        <i class="fa fa-edit"></i>-->
-<!--                    </a>-->
-
-<!--                    <a href="--><?//= $new_url ?><!--" target="_blank" type="button" class="btn btn-default">-->
-<!--                        <i class="fa fa-plus"></i>-->
-<!--                    </a>-->
                 </div>
             </div>
             <?php
 
-            $this->relationModal($this->model['route'], $id);
+            $this->relationModal($this->model['route'], $this->id);
         }
+    }
+
+	public function input()
+	{
+        if (!$this->relation->getRelatedModel()) {
+            throw new \Exception('missing relation in config for the current model.');
+        }
+
+		$this->model = $this->modelObject->schema->models[$this->relation->getRelatedModel()];
+        $this->model['class'] = $modelClass = $this->modelObject->schema->getClass($this->model['name']);
+        $show = $this->relation->getShow();
+
+        $show_query = (is_array($show)) ? array('*') : array('id', $show);
+		$data = $modelClass::all($show_query)->toArray();
+
+        $this->select($data, $show);
+        $this->buttons();
 	}
 
 	public function show($value = null)
