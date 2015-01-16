@@ -22,35 +22,42 @@ class PluginOption {
         $this->namespace = end($exploded_namespace) . '::';    
         $this->configFile = $configFile;
     }
-    
-	/**
-	 * @param string $plugin
-	 * @param string $key
-	 */
+
+    /**
+     * @param null $key
+     * @param null $configFile
+     * @return mixed
+     */
 	public function get($key = null, $configFile = null)
 	{
         return Config::get($this->namespace . $this->getFile($configFile) . '.' . $key);
 	}
 
-	/**
-	 * @param string $plugin
-	 */
+    /**
+     * @param string $key
+     * @param null $configFile
+     * @return bool
+     */
 	public function has($key = '', $configFile = null)
 	{
 		return Config::has($this->namespace . $this->getFile($configFile) . '.' . $key);
 	}
 
-	/**
-	 * @param string $plugin
-	 */
+    /**
+     * @param $key
+     * @param $value
+     * @param null $configFile
+     */
 	public function set($key, $value, $configFile = null)
 	{
         Config::set($this->namespace . $this->getFile($configFile) . '.' . $key, $value);
 	}
 
-	/**
-	 * @param string $key
-	 */
+    /**
+     * @param null $key
+     * @param null $configFile
+     * @return mixed
+     */
 	public function all($key = null, $configFile = null)
 	{
 		return Config::get($this->namespace . $this->getFile($configFile) . '.' . $key);

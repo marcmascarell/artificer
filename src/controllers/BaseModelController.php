@@ -174,13 +174,16 @@ class BaseModelController extends BaseController {
 	protected function handleFiles($data)
 	{
 		$new_data = array();
+		$fields = $this->getFields($data);
 
-		foreach ($this->getFields($data) as $field) {
-			if ($this->isFileInput($field->type)) {
-				if (Input::hasFile($field->name)) {
-					$new_data[$field->name] = $this->uploadFile($field->name);
-				} else {
-					unset($data[$field->name]);
+		if (!is_null($fields)) {
+			foreach ($fields as $field) {
+				if ($this->isFileInput($field->type)) {
+					if (Input::hasFile($field->name)) {
+						$new_data[$field->name] = $this->uploadFile($field->name);
+					} else {
+						unset($data[$field->name]);
+					}
 				}
 			}
 		}
