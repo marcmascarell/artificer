@@ -75,7 +75,7 @@ Default: [mascame/artificer-default-theme](https://github.com/marcmascarell/arti
 Plugins
 ----
 
-Add plugins you need (soon... you can find them in my repos). Please, be aware some plugins are under heavy development.
+Add plugins you need. Please, be aware some plugins are under heavy development.
 
 * [Localization](https://github.com/marcmascarell/artificer-localization-plugin)
 * [Pagination](https://github.com/marcmascarell/artificer-pagination-plugin)
