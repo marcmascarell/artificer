@@ -7,7 +7,7 @@ Package first stable version is aimed to work with Laravel 5 (when its released)
 
 Current state warning
 ----
-Please don't use this package on production as it is under development.
+It is under development. Use at your own risk.
 
 Features
 ----
@@ -68,7 +68,7 @@ Add this dependencies:
 
 Changing the theme
 ----
-Set theme to `app/config/packages/mascame/artificer/admin`.`theme` to `theme-name-here` 
+Set theme in `app/config/packages/mascame/artificer/admin`. `theme` to `theme-name-here` 
 
 Default: [mascame/artificer-default-theme](https://github.com/marcmascarell/artificer-default-theme/)
 
@@ -77,13 +77,16 @@ Plugins
 
 Add plugins you need (soon... you can find them in my repos). Please, be aware some plugins are under heavy development.
 
+* [Localization](https://github.com/marcmascarell/artificer-localization-plugin)
+* [Pagination](https://github.com/marcmascarell/artificer-pagination-plugin)
+
 Usage
 --------------
 Edit config files to meet your needs.
 
 Login
 -------------
-Make a table with: email, password (remember to hash passwords with Hash::make('pw')), role
+Make a table with: `email`, `password` (remember to hash passwords with Hash::make('pw')), `role`
 
 Add the methods to User:
 
