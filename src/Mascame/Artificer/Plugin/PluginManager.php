@@ -59,7 +59,9 @@ class PluginManager {
 
         $this->plugins_config_file = ($plugins_config_file) ? $plugins_config_file : app_path() . $this->plugins_config_file;
     }
-    
+
+
+
     /**
      * @return mixed
      */

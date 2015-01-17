@@ -46,10 +46,12 @@ class PluginController extends BaseController {
 
 		$plugins = AdminOption::get('plugins');
 
-		if (in_array($plugin, $plugins[$to])) {
-			Notification::danger('Can not ' . $operation . ' ' . $plugin . ', maybe it is already ' . $from);
+		if (isset($plugins[$to])) {
+			if (in_array($plugin, $plugins[$to])) {
+				Notification::danger('Can not ' . $operation . ' ' . $plugin . ', maybe it is already ' . $from);
 
-			return Redirect::route('admin.page.plugins');
+				return Redirect::route('admin.page.plugins');
+			}
 		}
 
 		$this->makeOperation($plugins, $plugin, $from, $to, $message);
@@ -65,7 +67,7 @@ class PluginController extends BaseController {
 	protected function makeOperation($plugins, $plugin, $from, $to, $message)
 	{
 		try {
-			$file = PluginManager::$plugins_config_file;
+			$file = App::make('artificer-plugin-manager')->plugins_config_file;
 
 			$this->modifyFile($file, $plugins, $plugin, $from, $to);
 

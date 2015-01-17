@@ -20,4 +20,26 @@ class Artificer  {
 	public static function getPlugin($plugin) {
 		return with(App::make('artificer-plugin-manager'))->make($plugin);
 	}
+
+	public static function store($filepath = null, $content, $overide = false)
+	{
+		if (!$filepath) {
+			$pathinfo = pathinfo($filepath);
+			$filepath = $pathinfo['dirname'];
+		}
+
+		$path = explode('/', $filepath);
+		array_pop($path);
+		$path = join('/', $path);
+
+		if (!file_exists($path)) {
+			\File::makeDirectory($path, 0777, true, true);
+		}
+
+		if (!file_exists($filepath) || $overide) {
+			return \File::put($filepath, $content);
+		}
+
+		return false;
+	}
 }
