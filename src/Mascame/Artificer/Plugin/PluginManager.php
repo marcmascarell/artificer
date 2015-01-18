@@ -172,6 +172,10 @@ class PluginManager {
 		return ($this->isInstalled($pluginNamespace)) ? $this->getPluginInstance($pluginNamespace) : null;
 	}
 
+    /**
+     * @param $pluginNamespace
+     * @return mixed
+     */
     protected function getPluginInstance($pluginNamespace) {
         return $this->instances[$pluginNamespace];
     }
@@ -235,6 +239,8 @@ class PluginManager {
     }
 
     /**
+     *
+     *
      * @param $pluginName
      * @param $closure
      */
