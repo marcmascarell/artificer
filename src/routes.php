@@ -94,7 +94,7 @@ Route::group(array(
 //                }
 //            }
 
-			Route::group(array('prefix' => 'plugin'), function () {
+			Route::group(array('prefix' => 'plugin'), function () {});
 				Route::get('logs', array('as' => 'artificer-logreader-plugin', 'uses' => 'Rap2hpoutre\LaravelLogViewer\LogViewerController@index'));
 
 
@@ -103,7 +103,7 @@ Route::group(array(
 				foreach ($plugin_routes as $pluginNamespace => $closure) {
 					$closure();
 				}
-			});
+
 
 		});
 });
