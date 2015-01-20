@@ -125,6 +125,8 @@ class hasMany extends Relation {
 
 	public function show($values = null)
 	{
+		$values = ($values) ?: $this->value;
+
 		if (isset($values) && !$values->isEmpty()) {
 			$modelName = $this->relation->getRelatedModel();
 			$model = $this->modelObject->schema->models[$modelName];

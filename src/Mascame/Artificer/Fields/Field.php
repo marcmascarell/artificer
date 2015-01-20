@@ -139,9 +139,9 @@ class Field implements FieldInterface {
      */
     public function display($value = null)
     {
-        $this->getValue($value);
+		$this->value = $this->getValue($value);
 
-        return $this->show($value);
+        return $this->show();
     }
 
 
@@ -151,9 +151,17 @@ class Field implements FieldInterface {
 	 */
 	public function getValue($value = null)
 	{
-        if (!$value) return $this->value = $this->options->getExistent('default', null);
+		$value = ($value) ? $value : $this->options->getExistent('default', null);
 
-		return $this->value = $value;
+		if ($this->options->has('show')) {
+			$show = $this->options->get('show');
+
+			if (is_callable($show)) {
+				return $show($value);
+			}
+		}
+
+		return $value;
 	}
 
 
@@ -328,5 +336,7 @@ class Field implements FieldInterface {
         return ($this->displayFilter()) ? true : false;
     }
 
-
+	public static function get($name) {
+		return array_get(\View::getShared(), 'fields')[$name];
+	}
 }

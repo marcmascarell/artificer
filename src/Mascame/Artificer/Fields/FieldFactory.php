@@ -1,8 +1,8 @@
 <?php namespace Mascame\Artificer\Fields;
 
+use Str;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Options\FieldOption;
-use Str;
 use Mascame\Artificer\Options\AdminOption;
 
 class FieldFactory {
@@ -10,6 +10,7 @@ class FieldFactory {
 	public $fieldClass;
 	public $fields;
 	public $related_fields = null;
+	public $custom_fields = null;
 
 	/**
 	 * @var FieldParser
@@ -63,9 +64,15 @@ class FieldFactory {
 		throw new \Exception("No supported Field type [{$type}]");
 	}
 
+	/**
+	 * @param $data
+	 * @return mixed
+	 */
 	public function makeFields($data)
 	{
 		$this->data = $data;
+
+		$this->withCustomFields();
 
 		foreach ($this->withRelated() as $field) {
 			$this->fields[$field] = $this->make($this->parser->fieldType($field), $field, $this->fieldValue($field));
@@ -124,6 +131,27 @@ class FieldFactory {
 	protected function withRelated()
 	{
 		return $this->addRelated();
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function addCostumFields()
+	{
+		foreach ($this->modelObject->options['fields'] as $name => $data) {
+			if (!in_array($name, $this->modelObject->columns))
+			$this->modelObject->columns[] = $name;
+		}
+
+		return $this->modelObject->columns;
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function withCustomFields()
+	{
+		return $this->addCostumFields();
 	}
 
 	/**
