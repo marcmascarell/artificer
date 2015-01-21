@@ -33,6 +33,10 @@ return array(
             ),
 		),
 
+        'custom'     => array(
+
+        ),
+
 		'password'     => array(
             'autodetect' => array(
                 'password'
