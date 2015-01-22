@@ -138,9 +138,11 @@ class FieldFactory {
 	 */
 	protected function addCostumFields()
 	{
-		foreach ($this->modelObject->options['fields'] as $name => $data) {
-			if (!in_array($name, $this->modelObject->columns))
-			$this->modelObject->columns[] = $name;
+		if (isset($this->modelObject->options['fields'])) {
+			foreach ($this->modelObject->options['fields'] as $name => $data) {
+				if (!in_array($name, $this->modelObject->columns))
+					$this->modelObject->columns[] = $name;
+			}
 		}
 
 		return $this->modelObject->columns;
