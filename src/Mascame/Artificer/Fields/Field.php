@@ -115,13 +115,13 @@ class Field implements FieldInterface {
      */
 	public function boot()
 	{
-        if ($this->options->has('widgets')) {
-            $widgets = $this->options->get('widgets');
+        if ( ! $this->options->has('widgets')) return null;
 
-            foreach ($widgets as $widget) {
-                $this->addWidget(App::make($widget));
-            }
-        }
+		$widgets = $this->options->get('widgets');
+
+		foreach ($widgets as $widget) {
+			$this->addWidget(App::make($widget));
+		}
 	}
 
 
