@@ -2,6 +2,10 @@
   <img src="https://cloud.githubusercontent.com/assets/642299/5885691/45c6fcf8-a374-11e4-96e3-51891f2ca238.jpg" alt="Laravel Artificer"/>
 </p>
 
+[![Quality Score](https://img.shields.io/scrutinizer/g/marcmascarell/laravel-artificer.svg?style=flat-square)](https://scrutinizer-ci.com/g/marcmascarell/laravel-artificer/)
+[![Latest Version](https://img.shields.io/github/release/marcmascarell/laravel-artificer.svg?style=flat-square)](https://github.com/marcmascarell/laravel-artificer/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+
 Artificer is an admin package (under development) built on top of your models. It automatically detects all your models, tables and columns building a beautiful interface to manage your data. Help is needed.
 
 Package first stable version is aimed to work with Laravel 5 (when its released)
@@ -87,7 +91,7 @@ Edit config files to meet your needs.
 
 Login
 -------------
-Make a table with: `email`, `password` (remember to hash passwords with Hash::make('pw')), `role`
+Make a table with: `email`, `password` (remember to hash passwords with Hash::make('{{yourPassword}}')), `role`
 
 Add the methods to User:
 
