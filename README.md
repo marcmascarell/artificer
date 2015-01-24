@@ -1,7 +1,8 @@
-Laravel Artificer (under development)
-=========
+<p align="center">
+  <img src="https://cloud.githubusercontent.com/assets/642299/5885691/45c6fcf8-a374-11e4-96e3-51891f2ca238.jpg" alt="Laravel Artificer"/>
+</p>
 
-Artificer is an admin package built on top of your models. It automatically detects all your models, tables and columns building a beautiful interface to manage your data. Help is needed.
+Artificer is an admin package (under development) built on top of your models. It automatically detects all your models, tables and columns building a beautiful interface to manage your data. Help is needed.
 
 Package first stable version is aimed to work with Laravel 5 (when its released)
 
