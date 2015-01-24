@@ -64,7 +64,18 @@ Edit config files to meet your needs.
 
 Login
 -------------
-Make a table with: `email`, `password` (remember to hash passwords with Hash::make('{{yourPassword}}')), `role`
+Make a users table like this:
+
+```php
+Schema::create('users', function(Blueprint $table)
+{
+	$table->increments('id');
+	$table->string('email')->unique();
+	$table->string('password');
+	$table->string('role'); // or $table->enum('role', array('admin', 'editor', 'user', 'whatever...'));
+	$table->rememberToken();
+});
+```
 
 Add the methods to User:
 
