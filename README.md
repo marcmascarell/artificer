@@ -2,9 +2,13 @@
   <img src="https://cloud.githubusercontent.com/assets/642299/5885691/45c6fcf8-a374-11e4-96e3-51891f2ca238.jpg" alt="Laravel Artificer"/>
 </p>
 
+[![Quality Score](https://img.shields.io/scrutinizer/g/marcmascarell/laravel-artificer.svg?style=flat-square)](https://scrutinizer-ci.com/g/marcmascarell/laravel-artificer/)
+[![Latest Version](https://img.shields.io/github/release/marcmascarell/laravel-artificer.svg?style=flat-square)](https://github.com/marcmascarell/laravel-artificer/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+
 Artificer is an admin package (under development) built on top of your models. It automatically detects all your models, tables and columns building a beautiful interface to manage your data. Help is needed.
 
-Package first stable version is aimed to work with Laravel 5 (when its released)
+**Package first stable version is aimed to work with Laravel 5 (the soonest we can after its released)**
 
 Current state warning
 ----
@@ -23,27 +27,6 @@ Features
   - Notifications
   - Simple Login system
 
-Todo
------------
-
-* Improve main theme
-* Make plugins more friendly to use
-* Relation fields
-* Localization
-* Tests
-* Better assets
-* Improve existing plugins
-
-Plugin ideas (to be approved and done)
------------
-
-* Export to CSV
-* Datatables
-* Image gallery
-* Route viewer (editor?)
-* Config editor (mainly for models)
-* SEO/Pages manager
-
 Installation
 --------------
 Require this package in your composer.json and run composer update:
@@ -60,12 +43,6 @@ Publish assets and config
 ```sh
 php artisan artificer:publish
 ```
-
-Dependencies
-----
-Add this dependencies: 
-
-[mcamara/laravel-localization](https://github.com/mcamara/laravel-localization)
 
 Changing the theme
 ----
@@ -87,7 +64,18 @@ Edit config files to meet your needs.
 
 Login
 -------------
-Make a table with: `email`, `password` (remember to hash passwords with Hash::make('pw')), `role`
+Make a users table like this:
+
+```php
+Schema::create('users', function(Blueprint $table)
+{
+	$table->increments('id');
+	$table->string('email')->unique();
+	$table->string('password');
+	$table->string('role'); // or $table->enum('role', array('admin', 'editor', 'user', 'whatever...'));
+	$table->rememberToken();
+});
+```
 
 Add the methods to User:
 
@@ -116,9 +104,9 @@ public function getAuthPassword()
 Documentation
 --------------
 
-Developing (L4):
+Developing (Laravel 4):
 
-* In workbench under mascame/ (or your fork) make the clone.
+* In workbench under mascame/ (or your fork namespace) make the clone. º
 * Rename laravel-artificer to artificer.
 * Run composer update inside of the package.
 * php artisan artificer:publish
@@ -130,6 +118,27 @@ php artisan asset:publish mascame/artificer-default-theme
 ```
 
 soon more
+
+Todo
+-----------
+
+* Improve main theme
+* Make plugins more friendly to use
+* Relation fields
+* Localization
+* Tests
+* Better assets
+* Improve existing plugins
+
+Plugin ideas (to be approved and done)
+-----------
+
+* Export to CSV
+* Datatables
+* Image gallery
+* Route viewer (editor?)
+* Config editor (mainly for models)
+* SEO/Pages manager
 
 Support
 ----
