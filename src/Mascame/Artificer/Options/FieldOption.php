@@ -63,9 +63,12 @@ class FieldOption extends ModelOption {
 	}
 
 	/**
+	 * @param null $model
 	 * @return string
 	 */
-	public static function getPrefix() {
-		return self::$key . Model::getCurrent() . '.' . self::$subkey;
+	protected static function getPrefix($model = null) {
+		$model = ($model) ?: Model::getCurrent();
+
+		return self::$key . $model . '.' . self::$subkey;
 	}
 }

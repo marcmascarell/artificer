@@ -1,9 +1,6 @@
 <?php namespace Mascame\Artificer\Model;
 
-use Mascame\Artificer\Permit\ModelPermit;
 use Schema;
-use Mascame\Artificer\Options\ModelOption;
-use Mascame\Artificer\Options\AdminOption;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
 class ModelSchema {
@@ -33,11 +30,6 @@ class ModelSchema {
 	 * @var array
 	 */
 	public $columns;
-
-	/**
-	 * @var array|mixed
-	 */
-	public $options = array();
 
 	/**
 	 * @var

@@ -70,7 +70,7 @@ class ModelController extends BaseModelController {
 
 		$model = $this->modelObject->class;
 
-		$this->model->guard($this->modelObject->options['guarded']);
+		$this->model->guard($this->modelObject->getOption('guarded', array()));
 
 		$item = $model::create(with($this->handleFiles($data)));
 

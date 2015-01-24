@@ -68,7 +68,7 @@ class ModelOption extends Option {
 	 * @param null $model
 	 * @return string
 	 */
-	public static function getPrefix($model = null) {
+	protected static function getPrefix($model = null) {
 		return self::$key . self::getModel($model);
 	}
 }

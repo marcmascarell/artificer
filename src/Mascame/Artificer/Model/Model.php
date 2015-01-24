@@ -235,6 +235,16 @@ class Model {
 	}
 
 	/**
+	 * @param $key
+	 * @param null $model
+	 * @return mixed
+	 */
+	public function getOption($key, $default = null, $model = null)
+	{
+		return (ModelOption::has($key, $model)) ? ModelOption::get($key, $model) : $default;
+	}
+
+	/**
 	 * @return array|mixed
 	 */
 	public function getRelations()
