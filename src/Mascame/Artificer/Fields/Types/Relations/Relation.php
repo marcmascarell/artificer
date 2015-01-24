@@ -107,7 +107,6 @@ class Relation extends Field {
 									// validation errors
 									$modal_body_<?=$relatedModelRouteName?>.html(data);
 								} else if (typeof data === 'object') {
-									console.log('here');
 									refreshRelation(data, '<?=$this->name?>');
 									$modal_<?=$relatedModelRouteName?>.modal('hide');
 								} else {
