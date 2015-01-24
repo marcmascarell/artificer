@@ -27,27 +27,6 @@ Features
   - Notifications
   - Simple Login system
 
-Todo
------------
-
-* Improve main theme
-* Make plugins more friendly to use
-* Relation fields
-* Localization
-* Tests
-* Better assets
-* Improve existing plugins
-
-Plugin ideas (to be approved and done)
------------
-
-* Export to CSV
-* Datatables
-* Image gallery
-* Route viewer (editor?)
-* Config editor (mainly for models)
-* SEO/Pages manager
-
 Installation
 --------------
 Require this package in your composer.json and run composer update:
@@ -134,6 +113,27 @@ php artisan asset:publish mascame/artificer-default-theme
 ```
 
 soon more
+
+Todo
+-----------
+
+* Improve main theme
+* Make plugins more friendly to use
+* Relation fields
+* Localization
+* Tests
+* Better assets
+* Improve existing plugins
+
+Plugin ideas (to be approved and done)
+-----------
+
+* Export to CSV
+* Datatables
+* Image gallery
+* Route viewer (editor?)
+* Config editor (mainly for models)
+* SEO/Pages manager
 
 Support
 ----
