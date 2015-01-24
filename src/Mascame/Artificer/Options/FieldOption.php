@@ -4,31 +4,68 @@ use Mascame\Artificer\Model\Model;
 
 class FieldOption extends ModelOption {
 
+	/**
+	 * @var string
+	 */
 	public static $subkey = 'fields';
+
+	/**
+	 * @var
+	 */
 	public static $field;
 
+	/**
+	 * @param string $key
+	 * @param null $field
+	 * @return mixed
+	 */
 	public static function get($key = '', $field = null)
 	{
-		return Option::get(self::$key . Model::getCurrent() . '.' . self::$subkey . '.' . $field . '.' . $key);
+			return Option::get(self::getPrefix() . '.' . $field . '.' . $key);
 	}
 
+	/**
+	 * @param null $field
+	 * @return mixed
+	 */
 	public static function all($field = null)
 	{
-		return Option::get(self::$key . Model::getCurrent() . '.' . self::$subkey);
+		return Option::get(self::getPrefix());
 	}
 
+	/**
+	 * @param null $field
+	 * @return mixed
+	 */
 	public static function field($field = null)
 	{
-		return Option::get(self::$key . Model::getCurrent() . '.' . self::$subkey . '.' . $field);
+		return Option::get(self::getPrefix() . '.' . $field);
 	}
 
+	/**
+	 * @param string $key
+	 * @param null $field
+	 * @return bool
+	 */
 	public static function has($key = '', $field = null)
 	{
-		return Option::has(self::$key . Model::getCurrent() . '.' . self::$subkey . '.' . $field . '.' . $key);
+		return Option::has(self::getPrefix() . '.' . $field . '.' . $key);
 	}
 
+	/**
+	 * @param $key
+	 * @param $value
+	 * @param null $field
+	 */
 	public static function set($key, $value, $field = null)
 	{
-		Option::set(self::$key . Model::getCurrent() . '.' . self::$subkey . '.' . $field . '.' . $key, $value);
+		Option::set(self::getPrefix() . '.' . $field . '.' . $key, $value);
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getPrefix() {
+		return self::$key . Model::getCurrent() . '.' . self::$subkey;
 	}
 }

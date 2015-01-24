@@ -2,21 +2,33 @@
 
 class AdminOption extends Option {
 
+	/**
+	 * @var string
+	 */
 	public static $key = 'admin';
 
 	/**
-	 * @param string $key
+	 * @param null $key
+	 * @return mixed
 	 */
 	public static function get($key = null)
 	{
 		return Option::get(self::$key . '.' . $key);
 	}
 
+	/**
+	 * @param string $key
+	 * @return bool
+	 */
 	public static function has($key = '')
 	{
 		return Option::has(self::$key . '.' . $key);
 	}
 
+	/**
+	 * @param null $key
+	 * @return mixed
+	 */
 	public static function all($key = null)
 	{
 		if (!$key) {
@@ -26,9 +38,10 @@ class AdminOption extends Option {
 		return Option::get($key);
 	}
 
-    /**
-     * @param string $key
-     */
+	/**
+	 * @param string $key
+	 * @param $value
+	 */
     public static function set($key, $value)
     {
         Option::set(self::$key . '.' . $key, $value);

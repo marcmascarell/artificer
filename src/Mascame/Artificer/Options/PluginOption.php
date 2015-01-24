@@ -29,7 +29,7 @@ class PluginOption {
 	 */
 	public function get($key = null, $configFile = null)
 	{
-        return Config::get($this->namespace . $this->getFile($configFile) . '.' . $key);
+        return Config::get($this->getPrefix($configFile) . $key);
 	}
 
 	/**
@@ -37,7 +37,7 @@ class PluginOption {
 	 */
 	public function has($key = '', $configFile = null)
 	{
-		return Config::has($this->namespace . $this->getFile($configFile) . '.' . $key);
+		return Config::has($this->getPrefix($configFile) . $key);
 	}
 
 	/**
@@ -45,7 +45,7 @@ class PluginOption {
 	 */
 	public function set($key, $value, $configFile = null)
 	{
-        Config::set($this->namespace . $this->getFile($configFile) . '.' . $key, $value);
+        Config::set($this->getPrefix($configFile) . $key, $value);
 	}
 
 	/**
@@ -53,7 +53,7 @@ class PluginOption {
 	 */
 	public function all($key = null, $configFile = null)
 	{
-		return Config::get($this->namespace . $this->getFile($configFile) . '.' . $key);
+		return Config::get($this->getPrefix($configFile) . $key);
 	}
 
     /**
@@ -69,5 +69,9 @@ class PluginOption {
      */
     public function setConfigFile($file) {
         $this->configFile = $file;
+    }
+
+    public function getPrefix($configFile = null) {
+        return $this->namespace . $this->getFile($configFile) . '.';
     }
 }
