@@ -99,9 +99,9 @@ public function getAuthPassword()
 Documentation
 --------------
 
-Developing (L4):
+Developing (Laravel 4):
 
-* In workbench under mascame/ (or your fork) make the clone.
+* In workbench under mascame/ (or your fork namespace) make the clone. º
 * Rename laravel-artificer to artificer.
 * Run composer update inside of the package.
 * php artisan artificer:publish
