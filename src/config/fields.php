@@ -1,8 +1,5 @@
 <?php
 
-use Mascame\ArtificerWidgets\DateTimepicker\DateTimepicker;
-use Mascame\ArtificerWidgets\Datepicker\Datepicker;
-
 return array(
 
 	'classmap' => array(
@@ -76,20 +73,19 @@ return array(
             ),
         ),
 
-
-
         'datetime'         => array(
             'autodetect' => array(
                 '_at'
             ),
 
             "attributes" => array(
-                'class' => 'form-control datetimepicker', 'data-date-format' => 'YYYY-MM-DD HH:mm:ss',
+                'class' => 'form-control datetimepicker',
+                'data-date-format' => 'YYYY-MM-DD HH:mm:ss',
 
             ),
 
             'widgets' => array(
-                new DateTimepicker(),
+                'artificer-datetimepicker-widget',
             )
 
         ),
@@ -105,7 +101,7 @@ return array(
             ),
 
             'widgets' => array(
-                new Datepicker(),
+                'artificer-datepicker-widget',
             )
 
 		),

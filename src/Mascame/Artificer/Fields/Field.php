@@ -119,7 +119,7 @@ class Field implements FieldInterface {
             $widgets = $this->options->get('widgets');
 
             foreach ($widgets as $widget) {
-                $this->addWidget($widget);
+                $this->addWidget(App::make($widget));
             }
         }
 	}
