@@ -46,6 +46,7 @@ class FieldFactory {
 	 */
     public function make($type, $field, $value) {
         $fieldClass = $this->getFieldTypeClass($type);
+
         return new $fieldClass($field, $value, $this->modelObject->name, $this->isRelation($field));
     }
 
@@ -75,7 +76,7 @@ class FieldFactory {
 		$this->withCustomFields();
 
 		foreach ($this->withRelated() as $field) {
-			$this->fields[$field] = $this->make($this->parser->fieldType($field), $field, $this->fieldValue($field));
+			$this->fields[$field] = $this->make($this->parser->parse($field), $field, $this->fieldValue($field));
 		}
 
 		return $this->fields;

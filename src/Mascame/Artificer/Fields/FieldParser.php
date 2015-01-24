@@ -18,11 +18,9 @@ class FieldParser {
 	 * @param $field
 	 * @return bool|int|mixed|string
 	 */
-    public function fieldType($field) {
+    public function parse($field) {
         return $this->autodetectType($field);
     }
-
-
 
 	/**
 	 * @param $name
@@ -31,7 +29,9 @@ class FieldParser {
 	 */
 	public function isTypeEqual($name, $types)
 	{
-		if (in_array($name, array_keys($types))) {
+		if (in_array(snake_case($name), array_keys($types))
+			|| in_array(strtolower($name), array_keys($types))
+		) {
 			$this->setTypeReason($name, 'equal');
 			return true;
 		}
