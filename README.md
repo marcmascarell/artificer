@@ -44,12 +44,6 @@ Publish assets and config
 php artisan artificer:publish
 ```
 
-Dependencies
-----
-Add this dependencies: 
-
-[mcamara/laravel-localization](https://github.com/mcamara/laravel-localization)
-
 Changing the theme
 ----
 Set theme in `app/config/packages/mascame/artificer/admin`. `theme` to `theme-name-here` 
