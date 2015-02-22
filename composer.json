@@ -26,12 +26,8 @@
         "sami/sami": "2.0.0"
     },
     "autoload": {
-        "classmap": [
-            "src/commands",
-            "src/controllers"
-        ],
         "psr-4": {
-            "Mascame\\Artificer\\": "src/"
+            "Mascame\\Artificer\\": "src"
         }
     },
     "minimum-stability": "dev"
