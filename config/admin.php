@@ -36,21 +36,21 @@ return array(
         'sort-down' => 'fa fa-long-arrow-down',
     ),
 
-//	'routes' => Config::get('artificer::routes'),
+//	'routes' => config('artificer.routes'),
 
-	'menu'         => Config::get('artificer::menu'),
+	'menu'         => config('artificer.menu'),
 
-	'plugins'      => Config::get('artificer::plugins'),
+	'plugins'      => config('artificer.plugins'),
 
-	'thumbnails'   => Config::get('artificer::thumbnails'),
+	'thumbnails'   => config('artificer.thumbnails'),
 
-	'types'        => Config::get('artificer::fields.types'),
+	'types'        => config('artificer.fields.types'),
 
-	'classmap'     => Config::get('artificer::fields.classmap'),
+	'classmap'     => config('artificer.fields.classmap'),
 
-	'models'       => Config::get('artificer::models'),
+	'models'       => config('artificer.models'),
 
-	'auth'         => Config::get('artificer::auth'),
+	'auth'         => config('artificer.auth'),
 
-	'localization' => Config::get('artificer::localization'),
+	'localization' => config('artificer.localization'),
 );

@@ -18,9 +18,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "5.*"
-
+        "php": ">=5.4.0"
     },
     "require-dev": {
         "sami/sami": "2.0.0"
@@ -30,5 +28,7 @@
             "Mascame\\Artificer\\": "src"
         }
     },
-    "minimum-stability": "dev"
+    "config": {
+        "preferred-install": "dist"
+    }
 }

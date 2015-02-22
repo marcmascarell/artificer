@@ -11,6 +11,7 @@ use Mascame\Artificer\Plugin\PluginManager;
 
 class ArtificerServiceProvider extends ServiceProvider {
 
+	protected $name = 'artificer';
 	/**
 	 * Indicates if loading of the provider is deferred.
 	 *
@@ -25,8 +26,11 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-        $this->package('mascame/artificer');
-        Config::addNamespace('artificer', app_path('config/packages/mascame/artificer'));
+		$this->loadTranslationsFrom(__DIR__.'/../resources/lang', $this->name);
+
+		$this->publishes([
+			__DIR__.'/../config/' => config_path($this->name) .'/',
+		]);
 
         $this->requireFiles();
 
@@ -34,13 +38,14 @@ class ArtificerServiceProvider extends ServiceProvider {
 		$this->addLocalization();
 		$this->addPluginManager();
 
-		$this->addPublishCommand();
+//		$this->addPublishCommand();
+//		dd(config($this->name));
 	}
 
 	private function requireFiles()
 	{
-		require_once __DIR__ . '/../../filters.php';
-		require_once __DIR__ . '/../../routes.php';
+		require_once __DIR__ . '/Http/filters.php';
+		require_once __DIR__ . '/Http/routes.php';
 	}
 
 	private function addPublishCommand()
@@ -82,7 +87,8 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-
+		$configPath = __DIR__ . '/../config/';
+//		$this->mergeConfigFrom($configPath, $this->name);
 	}
 
 	/**
