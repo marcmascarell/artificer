@@ -24,11 +24,10 @@ class PageController extends BaseController {
 			$user = \User::firstOrFail();
 
 			// We check if there are users
-			if ($user) {
-				App::abort(404);
-			}
+			if ($user) App::abort(404);
+
 		} catch (\Exception $e) {
-			$this->share();
+			$this->shareMainViewData();
 
 			$user = new \User();
 			$user->role = 'admin';

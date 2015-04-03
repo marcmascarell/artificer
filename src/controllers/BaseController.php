@@ -48,11 +48,11 @@ class BaseController extends Controller {
                 $this->standalone = true;
             }
 
-            $this->share();
+            $this->shareMainViewData();
         }
     }
 
-    protected function share() {
+    protected function shareMainViewData() {
         View::share('main_title', AdminOption::get('title'));
         View::share('menu', $this->getMenu());
         View::share('theme', $this->theme);
