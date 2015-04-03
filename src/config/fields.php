@@ -2,72 +2,79 @@
 
 return array(
 
-	'classmap' => array(
-		'bool' => '\Mascame\Artificer\Fields\Types\Checkbox',
-		'boolean' => '\Mascame\Artificer\Fields\Types\Checkbox',
+    'classmap' => array(
+        'bool' => '\Mascame\Artificer\Fields\Types\Checkbox',
+        'boolean' => '\Mascame\Artificer\Fields\Types\Checkbox',
 //		'image'   => '\Mascame\Artificer\Plugins\Plupload\PluploadField',
-		'hasOne'  => '\Mascame\Artificer\Fields\Types\Relations\hasOne',
-		'hasMany' => '\Mascame\Artificer\Fields\Types\Relations\hasMany',
-		'belongsTo' => '\Mascame\Artificer\Fields\Types\Relations\belongsTo',
-	),
+        'hasOne'  => '\Mascame\Artificer\Fields\Types\Relations\hasOne',
+        'hasMany' => '\Mascame\Artificer\Fields\Types\Relations\hasMany',
+        'belongsTo' => '\Mascame\Artificer\Fields\Types\Relations\belongsTo',
+    ),
 
-	'types'    => array(
-		// field_type => array('fieldname_1', 'fieldname_1')
-		'key'      => array(
+    'types'    => array(
+        // field_type => array('fieldname_1', 'fieldname_1')
+        'key'      => array(
             'autodetect' => array(
                 'id'
             )
-		),
+        ),
 
-		'published' => array(),
+        'enum' => array(
+            'autodetect' => array(
+                'role'
+            )
+        ),
 
-		'checkbox'     => array(
+        'published' => array(),
+
+        'checkbox'     => array(
             'autodetect' => array(
                 'accept',
                 'active',
                 'boolean',
                 'activated',
+                'binary'
             ),
-		),
+        ),
 
         'custom'     => array(
 
         ),
 
-		'password'     => array(
+        'password'     => array(
             'autodetect' => array(
                 'password'
             ),
-		),
+        ),
 
-		'text'         => array(
+        'text'         => array(
             'autodetect' => array(
                 'title',
                 'username',
                 'name'
             ),
-		),
+        ),
 
-		'textarea'     => array(
+        'textarea'     => array(
 
-		),
+        ),
 
-		'wysiwyg'      => array(
+        'wysiwyg'      => array(
             'autodetect' => array(
                 'body',
                 'text'
             ),
-		),
+        ),
 
-		'option'       => array(
+        'option'       => array(
             'autodetect' => array(
                 'selection',
             ),
-		),
+        ),
 
-		'email'        => array(),
+        'email'        => array(),
 
-		'link'         => array(
+        'link'         => array(
             'autodetect' => array(
                 'url'
             ),
@@ -90,44 +97,44 @@ return array(
 
         ),
 
-		'date'         => array(
+        'date'         => array(
             'autodetect' => array(
                 '_at'
             ),
 
             "attributes" => array(
-                'class' => 'form-control datepicker',
-
+                'class' => 'form-control datetimepicker',
+                'data-date-format' => 'YYYY-MM-DD',
             ),
 
             'widgets' => array(
-                'artificer-datepicker-widget',
+                'artificer-datetimepicker-widget',
             )
 
-		),
+        ),
 
-		'file'         => array(),
+        'file'         => array(),
 
-		'image'        => array(
+        'image'        => array(
             'autodetect' => array(
                 'image'
             ),
-		),
+        ),
 
-		'image_center' => array(),
+        'image_center' => array(),
 
-		'hasOne'       => array(
+        'hasOne'       => array(
             'autodetect' => array(
                 '_id',
                 'user_id',
                 'fake_id'
             ),
-		),
+        ),
 
-		'hasMany'      => array(),
+        'hasMany'      => array(),
 
-		'default'      => array(
+        'default'      => array(
             'type' => 'text'
         )
-	),
+    ),
 );
