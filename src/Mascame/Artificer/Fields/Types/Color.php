@@ -2,7 +2,6 @@
 
 use Mascame\Artificer\Fields\Field;
 use Form;
-use Mascame\ArtificerWidgets\Datepicker\Datepicker;
 
 class Color extends Field {
 
