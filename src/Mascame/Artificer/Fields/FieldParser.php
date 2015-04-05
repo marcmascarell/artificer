@@ -104,7 +104,7 @@ class FieldParser {
 	 */
 	public function isUserType($name, $types)
 	{
-        if (!isset($types['autodetect'])) return false;
+//        if (!isset($types['autodetect']) || empty($types['autodetect'])) return false;
 
 		foreach ($types as $type => $data) {
             if (!isset($data['autodetect'])) continue;
@@ -133,6 +133,15 @@ class FieldParser {
 		return false;
 	}
 
+	public function matchesRegex($name, $types) {
+		foreach ($types as $type => $data) {
+			if (!isset($data['regex'])) continue;
+			if (preg_match($data['regex'], $name, $matches)) return $type;
+		}
+
+		return false;
+	}
+
 	/**
 	 * @param $name
 	 * @param $types
@@ -141,6 +150,7 @@ class FieldParser {
 	public function autodetectType($name)
 	{
 		if ($type = $this->isTypeInModelConfig($name)) return $type;
+		if ($type = $this->matchesRegex($name, $this->types)) return $type;
 		if ($this->isTypeEqual($name, $this->types)) return $name;
 		if ($type = $this->isUserType($name, $this->types)) return $type;
 		if ($type = $this->isTypeSimilar($name, $this->types)) return $type;

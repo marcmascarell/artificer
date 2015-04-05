@@ -37,6 +37,8 @@ return array(
             ),
         ),
 
+        'color'     => array(),
+
         'custom'     => array(
 
         ),
@@ -81,9 +83,7 @@ return array(
         ),
 
         'datetime'         => array(
-            'autodetect' => array(
-                '_at'
-            ),
+            'regex' => '/_at$/',
 
             "attributes" => array(
                 'class' => 'form-control datetimepicker',
@@ -98,10 +98,6 @@ return array(
         ),
 
         'date'         => array(
-            'autodetect' => array(
-                '_at'
-            ),
-
             "attributes" => array(
                 'class' => 'form-control datetimepicker',
                 'data-date-format' => 'YYYY-MM-DD',
@@ -124,11 +120,7 @@ return array(
         'image_center' => array(),
 
         'hasOne'       => array(
-            'autodetect' => array(
-                '_id',
-                'user_id',
-                'fake_id'
-            ),
+            'regex' => '/_id$/',
         ),
 
         'hasMany'      => array(),
