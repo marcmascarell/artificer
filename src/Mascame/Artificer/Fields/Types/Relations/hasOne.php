@@ -77,7 +77,7 @@ class hasOne extends Relation {
 	public function input()
 	{
         if (!$this->relation->getRelatedModel()) {
-            throw new \Exception('missing relation in config for the current model.');
+            throw new \Exception("Missing relation in config for '{$this->name}'.");
         }
 
 		$this->model = $this->modelObject->schema->models[$this->relation->getRelatedModel()];
