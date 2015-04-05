@@ -133,10 +133,19 @@ class FieldParser {
 		return false;
 	}
 
+	/**
+	 * @param $name
+	 * @param $types
+	 * @return bool|int|string
+	 */
 	public function matchesRegex($name, $types) {
 		foreach ($types as $type => $data) {
 			if (!isset($data['regex'])) continue;
-			if (preg_match($data['regex'], $name, $matches)) return $type;
+
+			if (preg_match($data['regex'], $name, $matches)) {
+				$this->setTypeReason($name, "matched regex '{$data['regex']}'");
+				return $type;
+			}
 		}
 
 		return false;

@@ -127,6 +127,25 @@ return array(
 
         'default'      => array(
             'type' => 'text'
+        ),
+
+        /*
+         'example_type'      => array(
+            'regex' => '/myCoolRegex$/',
+
+            // Fields with similar name will be matched (Starting, containing or ending)
+            'autodetect' => array(
+                'example'
+            ),
+
+            "attributes" => array(
+                'class' => 'class1 class2',
+            ),
+
+            'widgets' => array(
+                'artificer-example-widget',
+            )
         )
+         */
     ),
 );
