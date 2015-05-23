@@ -4,14 +4,18 @@ use Mascame\Artificer\Options\ModelOption;
 
 class ModelRelation {
 
+	/**
+	 * @var
+	 */
 	public $relations;
+
 
 	/**
 	 * @return array|mixed
 	 */
 	public function get()
 	{
-		if (!empty($this->relations)) return $this->relations;
+		if (! empty($this->relations)) return $this->relations;
 
 		$fields = ModelOption::get('fields');
 
@@ -26,7 +30,7 @@ class ModelRelation {
 	 */
 	private function hasRelation($field)
 	{
-		return isset($field['relationship']) && isset($field['relationship']['method']);
+		return (isset($field['relationship']) && isset($field['relationship']['method']));
 	}
 
 	/**

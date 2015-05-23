@@ -20,11 +20,6 @@ class ModelSchema {
 	 */
 	public $class;
 
-	/**
-	 * @var string
-	 */
-	public $name;
-
 
 	/**
 	 * @var array
@@ -32,12 +27,7 @@ class ModelSchema {
 	public $columns;
 
 	/**
-	 * @var
-	 */
-	public static $current = null;
-
-	/**
-	 *
+	 * @param ModelObtainer $modelObtainer
 	 */
 	public function __construct(ModelObtainer $modelObtainer)
 	{
@@ -45,6 +35,10 @@ class ModelSchema {
 		$this->tables = $this->getTables($this->models);
 	}
 
+	/**
+	 * @param $column
+	 * @return bool
+	 */
 	public function hasColumn($column)
 	{
 		return (is_array($column) && in_array($column, $this->columns)) ? true : false;
@@ -62,11 +56,9 @@ class ModelSchema {
 	/**
 	 * @return mixed
 	 */
-	public function getTable($modelName = null)
+	public function getTable($modelName)
 	{
-		if (!$modelName) {
-			$modelName = $this->name;
-		}
+		if ( ! $modelName) $modelName = Model::getCurrent();
 
 		if (isset($this->models[$modelName]['table'])) {
 			return $this->models[$modelName]['table'];
@@ -109,7 +101,17 @@ class ModelSchema {
 	{
 		$modelClass = $this->getClass($modelName);
 
-		return $this->models[$modelName]['instance'] = new $modelClass;
+		if ($this->isFake($modelName)) {
+			$instance = (new FakeModel())->setup($this->models[$modelName]['fake']);
+		} else {
+			$instance = new $modelClass;
+		}
+
+		return $this->models[$modelName]['instance'] = $instance;
+	}
+
+	public function isFake($modelName) {
+		return (isset($this->models[$modelName]['fake']) && $this->models[$modelName]['fake'] !== false);
 	}
 
 	/**
@@ -118,7 +120,7 @@ class ModelSchema {
 	 */
 	public function hasInstance($modelName)
 	{
-		return (isset($this->models[$modelName]['instance'])) ? true : false;
+		return isset($this->models[$modelName]['instance']);
 	}
 
 	/**
@@ -127,7 +129,7 @@ class ModelSchema {
 	 */
 	public function getInstance($modelName = null)
 	{
-		($modelName) ?: $modelName = $this->name;
+		($modelName) ?: $modelName = Model::getCurrent();
 
 		if ($this->hasInstance($modelName)) {
 			return $this->models[$modelName]['instance'];

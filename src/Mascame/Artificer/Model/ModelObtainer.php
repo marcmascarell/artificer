@@ -34,11 +34,22 @@ class ModelObtainer {
 
 			if (!ModelPermit::access($modelName)) continue;
 
-			$models[$modelName] = array('name'  => $modelName,
-										'route' => strtolower($modelName));
+			$models[$modelName] = array(
+				'name'  => $modelName,
+				'route' => $this->makeModelRoute($modelName),
+				'fake'  => false
+			);
 		}
 
 		return $models;
+	}
+
+	/**
+	 * @param $modelName
+	 * @return string
+	 */
+	protected function makeModelRoute($modelName) {
+		return strtolower($modelName);
 	}
 
 	/**
@@ -72,7 +83,26 @@ class ModelObtainer {
 			$models[] = $this->scanModelsDirectory($directory);
 		}
 
-		$models = $this->mergeModelDirectories($models);
+		$models = array_merge($this->mergeModelDirectories($models), $this->getFakeModels());
+
+		return $models;
+	}
+
+	public function getFakeModels() {
+		$fakeModels = AdminOption::get('models.fake');
+		$models = array();
+
+		if (empty($fakeModels)) return $models;
+
+		foreach ($fakeModels as $modelName => $modelData) {
+			$models[$modelName] = array(
+				'name'  => $modelName,
+				'route' => $this->makeModelRoute($modelName),
+				'fake'  => array_merge($modelData, array(
+					'model' => $modelName
+				))
+			);
+		}
 
 		return $models;
 	}

@@ -80,13 +80,11 @@ class Model {
 		$this->schema = $schema;
 		$this->relations = new ModelRelation();
 
-		$this->getCurrentModel();
+		$this->prepareCurrentModel();
 		$this->share();
 	}
 
-	/**
-	 *
-	 */
+
 	public function share()
 	{
 		View::share('tables', $this->schema->tables);
@@ -94,6 +92,9 @@ class Model {
 		View::share('model', $this->getCurrentModelData());
 	}
 
+	/**
+	 * @return array
+	 */
 	private function getCurrentModelsData() {
 		foreach ($this->schema->models as $modelName => $model) {
 			$this->schema->models[$modelName]['options'] = $this->getOptions($modelName);
@@ -129,7 +130,7 @@ class Model {
 	}
 
 	/**
-	 *
+	 * @return int|null|string
 	 */
 	private function getCurrentModelName()
 	{
@@ -145,21 +146,23 @@ class Model {
 		return null;
 	}
 
-	public function getCurrentModel() {
-		if (Str::startsWith(Route::currentRouteName(), 'admin.model.')
-		) {
-			$this->name = $this->getCurrentModelName();
-			$this->class = $this->schema->getClass($this->name);
-			$this->model = $this->schema->getInstance($this->name, true);
-			$this->table = $this->model->getTable();
-			$this->columns = $this->schema->getColumns($this->table);
-			$this->fillable = $this->model->getFillable();
-			$this->options = $this->getOptions();
-		}
+	public function prepareCurrentModel() {
+		if ( ! Str::startsWith(Route::currentRouteName(), 'admin.model.')) return null;
+
+		$this->name = $this->getCurrentModelName();
+//		dd('pon');
+		$this->class = $this->schema->getClass($this->name);
+		$this->model = $this->schema->getInstance($this->name);
+		$this->table = $this->model->getTable();
+		$this->columns = $this->schema->getColumns($this->table);
+		$this->fillable = $this->model->getFillable();
+		$this->options = $this->getOptions();
+
+
 	}
 
 	/**
-	 *
+	 * @return array
 	 */
 	private function getCurrentModelData()
 	{
@@ -227,11 +230,7 @@ class Model {
 	 */
 	public function getOptions($model = null)
 	{
-		if (!$model) {
-			$model = $this->name;
-		}
-
-		return ModelOption::model($model);
+		return ModelOption::model(($model) ?: $this->name);
 	}
 
 	/**

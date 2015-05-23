@@ -30,8 +30,7 @@ class BaseController extends Controller {
      */
     public $modelObject = null;
 
-    /**
-     */
+
     public function __construct()
     {
         $this->theme = AdminOption::get('theme') . '::';
@@ -62,10 +61,16 @@ class BaseController extends Controller {
         View::share('icon', AdminOption::get('icons'));
     }
 
+    /**
+     * @return bool
+     */
     public function isStandAlone() {
         return (\Request::ajax() || Input::has('_standalone'));
     }
 
+    /**
+     * @return array
+     */
     public function getMenu()
     {
         if (!empty($this->menu)) return $this->menu;
@@ -88,6 +93,9 @@ class BaseController extends Controller {
         return $this->theme . $view;
     }
 
+    /**
+     * @return string
+     */
     public static function assets()
     {
         $widgets = '';

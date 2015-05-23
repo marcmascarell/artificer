@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer;
 
 use Illuminate\Database\Eloquent\Collection;
+use Mascame\Artificer\Model\FakeModel;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Options\AdminOption;
 use Redirect;
@@ -21,7 +22,7 @@ class ModelController extends BaseModelController {
 	 */
 	public function create()
 	{
-		$this->handleData(new $this->modelObject->class);
+		$this->handleData($this->modelObject->schema->getInstance());
 
 		$form = array(
 			'form_action_route' => 'admin.model.store',
@@ -55,6 +56,8 @@ class ModelController extends BaseModelController {
     }
 
 	/**
+	 * Todo: rethink the way relations are made
+	 *
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
@@ -68,13 +71,11 @@ class ModelController extends BaseModelController {
 
 		$this->handleData($data);
 
-		$model = $this->modelObject->class;
-
 		$this->model->guard($this->modelObject->getOption('guarded', array()));
 
-		$item = $model::create(with($this->handleFiles($data)));
+		$item = $this->model->create(with($this->handleFiles($data)));
 
-        $relation_on_create = '_set_relation_on_create';
+		$relation_on_create = '_set_relation_on_create';
         if (Input::has($relation_on_create)) {
             $relateds = array(
                 'id' => $item->id,
@@ -176,7 +177,6 @@ class ModelController extends BaseModelController {
 
 	public function update($modelName, $id)
 	{
-
 		$item = $this->model->findOrFail($id);
 
 		$data = $this->filterInputData();

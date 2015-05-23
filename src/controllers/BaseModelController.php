@@ -31,7 +31,7 @@ class BaseModelController extends BaseController {
 	{
 		parent::__construct();
 
-		if (!Auth::check() || !ModelPermit::access()) App::abort('403');
+		if ( ! Auth::check() || ! ModelPermit::access()) App::abort('403');
 
 		$this->model = $this->modelObject->model;
 
@@ -92,11 +92,13 @@ class BaseModelController extends BaseController {
 			$sort['column'] = Input::get('sort_by');
 			$sort['direction'] = Input::get('direction');
 		} else {
+
 			if ($this->modelObject->schema->hasColumn('sort_id')) {
 				$sort['column'] = 'sort_id';
 			} else {
 				$sort['column'] = 'id';
 			}
+
 			$sort['direction'] = 'asc';
 		}
 
@@ -123,11 +125,7 @@ class BaseModelController extends BaseController {
 	 */
 	public static function getCurrentModelId($items)
 	{
-		if (isset($items->id)) {
-			return $items->id;
-		}
-
-		return null;
+		return (isset($items->id)) ? $items->id : null;
 	}
 
 	/**
@@ -191,6 +189,10 @@ class BaseModelController extends BaseController {
 		return array_merge($data, $new_data);
 	}
 
+	/**
+	 * @param $type
+	 * @return bool
+	 */
     protected function isFileInput($type) {
         return ($type == 'file' || $type == 'image');
     }
