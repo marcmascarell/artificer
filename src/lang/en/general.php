@@ -2,6 +2,11 @@
 
 return array(
 
-    'no results' => 'sin resultados'
+    'no results' => 'no results',
+    'logout' => 'logout',
+    'filter' => 'filter',
+    'new' => 'new',
+    'models' => 'models',
+    'dashboard' => 'dashboard',
 
 );
