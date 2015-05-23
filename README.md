@@ -46,7 +46,7 @@ php artisan artificer:publish
 
 Changing the theme
 ----
-Set theme in `app/config/packages/mascame/artificer/admin`. `theme` to `theme-name-here` 
+Set `theme` in `app/config/packages/mascame/artificer/admin` to `your-theme-name` 
 
 Default: [mascame/artificer-default-theme](https://github.com/marcmascarell/artificer-default-theme/)
 
@@ -106,7 +106,7 @@ Documentation
 
 Developing (Laravel 4):
 
-* In workbench under mascame/ (or your fork namespace) make the clone. º
+* In workbench under mascame/ (or your fork namespace) make the clone.
 * Rename laravel-artificer to artificer.
 * Run composer update inside of the package.
 * php artisan artificer:publish
