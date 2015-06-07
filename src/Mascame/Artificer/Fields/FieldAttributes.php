@@ -1,9 +1,5 @@
 <?php namespace Mascame\Artificer\Fields;
 
-use Mascame\Artificer\Localization;
-use Mascame\Artificer\Options\ModelOption;
-use Mascame\Artificer\Options\FieldOption;
-
 class FieldAttributes {
 
     protected $options;
@@ -54,7 +50,6 @@ class FieldAttributes {
         } else {
             $this->fieldOptions->add('attributes', $attributes);
         }
-
 
         return $this->fieldOptions->all();
     }

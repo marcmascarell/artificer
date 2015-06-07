@@ -9,13 +9,6 @@ class hasOne extends Relation {
 
     protected $id;
 
-	public function boot()
-	{
-        parent::boot();
-		//$this->addWidget(new Chosen());
-		$this->attributes->add(array('class' => 'chosen form-control'));
-	}
-
     protected function select($data, $show) {
         $select = array();
         foreach ($data as $d) {
@@ -76,7 +69,7 @@ class hasOne extends Relation {
 
 	public function input()
 	{
-        if (!$this->relation->getRelatedModel()) {
+        if ( ! $this->relation->getRelatedModel()) {
             throw new \Exception("Missing relation in config for '{$this->name}'.");
         }
 

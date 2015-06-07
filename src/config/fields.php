@@ -1,5 +1,27 @@
 <?php
 
+/*
+     'example_type'      => array(
+        'regex' => '/myCoolRegex$/',
+
+        // Fields with similar name will be matched (Starting, containing or ending)
+        'autodetect' => array(
+            'example'
+        ),
+
+        'attributes' => array(
+            'class' => 'class1 class2',
+        ),
+
+        'widgets' => array(
+            'artificer-example-widget',
+        ),
+
+        'onParse' => function($field, $type) {
+            // Do something after field is parsed
+        }
+    )
+ */
 return array(
 
     'classmap' => array(
@@ -121,6 +143,25 @@ return array(
 
         'hasOne'       => array(
             'regex' => '/_id$/',
+
+            "attributes" => array(
+                'class' => 'chosen form-control',
+            ),
+
+            'onParse' => function($field, $type) {
+                $relationship = \Mascame\Artificer\Options\FieldOption::get('relationship', $field);
+
+                if ( ! isset($relationship['model'])) {
+                    $model = preg_replace('/_id$/', '', $field);
+                    $model = studly_case($model);
+
+                    \Mascame\Artificer\Options\FieldOption::set('relationship.model', $model, $field);
+                }
+
+                if ( ! isset($relationship['show'])) {
+                    \Mascame\Artificer\Options\FieldOption::set('relationship.show', 'id', $field);
+                }
+            }
         ),
 
         'hasMany'      => array(),
@@ -129,23 +170,5 @@ return array(
             'type' => 'text'
         ),
 
-        /*
-         'example_type'      => array(
-            'regex' => '/myCoolRegex$/',
-
-            // Fields with similar name will be matched (Starting, containing or ending)
-            'autodetect' => array(
-                'example'
-            ),
-
-            "attributes" => array(
-                'class' => 'class1 class2',
-            ),
-
-            'widgets' => array(
-                'artificer-example-widget',
-            )
-        )
-         */
     ),
 );

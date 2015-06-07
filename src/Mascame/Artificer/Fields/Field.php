@@ -66,7 +66,7 @@ class Field implements FieldInterface {
 		$this->relation = new FieldRelation($relation, $this->options->getExistent('relationship'));
         $this->attributes = new FieldAttributes($this->options->getExistent('attributes'), $this->options);
 
-        if (!$this->attributes->has('class')) {
+        if ( ! $this->attributes->has('class')) {
             $this->attributes->add(array('class' => 'form-control'));
         }
 
@@ -89,7 +89,7 @@ class Field implements FieldInterface {
 	{
         $pieces = explode('\\', $type_class);
 
-		return strtolower(end($pieces));
+		return camel_case(end($pieces));
 	}
 
 

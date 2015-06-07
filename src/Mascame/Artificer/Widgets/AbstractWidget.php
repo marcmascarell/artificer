@@ -8,8 +8,6 @@ abstract class AbstractWidget {
 	public function __construct()
 	{
 		$this->name = get_called_class();
-
-		return $this;
 	}
 
 	public function output()

@@ -1,6 +1,5 @@
 <?php namespace Mascame\Artificer\Fields;
 
-use Mascame\Artificer\Localization;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\FieldOption;
@@ -80,7 +79,7 @@ class FieldOptions {
         $model = ModelOption::all();
         $default_model = ModelOption::getDefault();
 
-		return $this->model = (!empty($model)) ? array_merge_recursive($model, $default_model) : ModelOption::getDefault();
+		return $this->model = ( ! empty($model)) ? array_merge_recursive($model, $default_model) : ModelOption::getDefault();
 	}
 
 	/**

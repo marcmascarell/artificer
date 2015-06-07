@@ -19,7 +19,13 @@ class FieldParser {
 	 * @return bool|int|mixed|string
 	 */
     public function parse($field) {
-        return $this->autodetectType($field);
+        $type = $this->autodetectType($field);
+
+	    if (isset($this->types[$type]['onParse'])) {
+		    $this->types[$type]['onParse']($field, $type);
+	    }
+
+	    return $type;
     }
 
 	/**
