@@ -76,9 +76,9 @@ class BaseController extends Controller {
         if (!empty($this->menu)) return $this->menu;
         $menu = AdminOption::get('menu');
 
-        foreach ($menu as $menu_key => $menu_item) {
-            if (Permit\MenuPermit::access($menu_key)) {
-                $this->menu[] = $menu_item;
+        foreach ($menu as $key => $menuItem) {
+            if (Permit\MenuPermit::access($key)) {
+                $this->menu[] = $menuItem;
             }
         }
 

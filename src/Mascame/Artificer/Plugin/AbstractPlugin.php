@@ -73,12 +73,20 @@ abstract class AbstractPlugin implements PluginInterface {
         $this->installed = $this->isInstalled();
 //        $this->config = $this->getOptions();
 
+		$this->defaultMeta();
         $this->meta();
 	}
 
 	abstract public function boot();
 
 	abstract public function meta();
+
+	public function defaultMeta() {
+		$this->version = '1.0';
+		$this->name = 'Unknown plugin';
+		$this->description = 'No description provided';
+		$this->author = 'Anonymous';
+	}
 
     /**
      * @param $file

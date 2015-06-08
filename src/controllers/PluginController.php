@@ -1,7 +1,6 @@
 <?php namespace Mascame\Artificer;
 
-use Mascame\Arrayer\Arrayer;
-use Mascame\Artificer\Plugin\PluginManager;
+use Mascame\Arrayer\Builder;
 use Redirect;
 use View;
 use App;
@@ -67,7 +66,7 @@ class PluginController extends BaseController {
 	protected function makeOperation($plugins, $plugin, $from, $to, $message)
 	{
 		try {
-			$file = App::make('artificer-plugin-manager')->plugins_config_file;
+			$file = App::make('artificer-plugin-manager')->pluginsConfigFile;
 
 			$this->modifyFile($file, $plugins, $plugin, $from, $to);
 
@@ -94,7 +93,7 @@ class PluginController extends BaseController {
 
 			if (!file_exists($file)) throw new \Exception('No plugins file.');
 
-			File::put($file, with(new Arrayer($plugins))->getContent());
+			File::put($file, with(new Builder($plugins))->getContent());
 		}
 	}
 

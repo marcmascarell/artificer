@@ -28,7 +28,9 @@ abstract class Permit extends Auth {
      */
 	public static function getRole($role_column = 'role')
 	{
-		if (!static::$role && isset(Auth::user()->$role_column)) return static::$role = Auth::user()->$role_column;
+		if (static::$role) return static::$role;
+
+		if (isset(Auth::user()->$role_column)) return static::$role = Auth::user()->$role_column;
 
 		return null;
 	}
@@ -39,7 +41,7 @@ abstract class Permit extends Auth {
      */
     public static function hasPermission($permissions = null)
     {
-        if (!$permissions) return true;
+        if ( ! $permissions) return true;
 
         if (is_array($permissions) && self::hasNeededRole($permissions)) return true;
 
