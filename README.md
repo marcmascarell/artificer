@@ -6,7 +6,7 @@
 [![Latest Version](https://img.shields.io/github/release/marcmascarell/laravel-artificer.svg?style=flat-square)](https://github.com/marcmascarell/laravel-artificer/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
-Artificer is an admin package (under development) built on top of your models. It automatically detects all your models, tables and columns building a beautiful interface to manage your data. Help is needed.
+Artificer is an admin package (under development) built on top of your Eloquent models. It automatically detects all your models, tables and columns building a beautiful interface to manage your data. Help is needed.
 
 **Package first stable version is aimed to work with Laravel 5.1 (due to the multiple config files update. The soonest we can after its released)**
 
