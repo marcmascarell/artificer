@@ -1,18 +1,19 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Fields\Field;
 use Form;
+use Mascame\Artificer\Fields\Field;
 
-class Password extends Field {
+class Password extends Field
+{
 
-	public function input()
-	{
-		return Form::password($this->name, $this->attributes->all());
-	}
+    public function input()
+    {
+        return Form::password($this->name, $this->attributes->all());
+    }
 
-	public function show()
-	{
-		return $this->hidden();
-	}
+    public function show()
+    {
+        return $this->hidden();
+    }
 
 }

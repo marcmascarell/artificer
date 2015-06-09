@@ -3,10 +3,11 @@
 use HTML;
 
 
-class Link extends Text {
+class Link extends Text
+{
 
-	public function show()
-	{
-		return HTML::link($this->value);
-	}
+    public function show()
+    {
+        return HTML::link($this->value);
+    }
 }

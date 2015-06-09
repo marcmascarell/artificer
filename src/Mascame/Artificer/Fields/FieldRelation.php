@@ -1,16 +1,17 @@
 <?php namespace Mascame\Artificer\Fields;
 
-class FieldRelation {
+class FieldRelation
+{
 
-	public $relation = false;
+    public $relation = false;
     protected $options = array();
 
 
-	public function __construct($relation, $options)
-	{
-		$this->relation = ($relation || $this->getType()) ? true : false;
+    public function __construct($relation, $options)
+    {
+        $this->relation = ($relation || $this->getType()) ? true : false;
         $this->options = $options;
-	}
+    }
 
     /**
      * @return bool

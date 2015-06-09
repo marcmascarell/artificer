@@ -1,254 +1,261 @@
 <?php namespace Mascame\Artificer\Model;
 
-use Mascame\Artificer\Permit\ModelPermit;
-use View;
-use Str;
-use Schema;
-use File;
-use Route;
-use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\AdminOption;
+use Mascame\Artificer\Options\ModelOption;
+use Route;
+use Str;
+use View;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
-class Model {
+class Model
+{
 
-	/**
-	 * @var ModelSchema
-	 */
-	public $schema;
+    /**
+     * @var ModelSchema
+     */
+    public $schema;
 
-	/**
-	 * @var array
-	 */
-	public $models;
+    /**
+     * @var array
+     */
+    public $models;
 
     /**
      * @var array
      */
     public $columns;
 
-	/**
-	 * @var mixed
-	 */
-	public $model;
+    /**
+     * @var mixed
+     */
+    public $model;
 
-	/**
-	 * @var string
-	 */
-	public $class;
+    /**
+     * @var string
+     */
+    public $class;
 
-	/**
-	 * @var
-	 */
-	public $name;
+    /**
+     * @var
+     */
+    public $name;
 
-	/**
-	 * @var string
-	 */
-	public $keyname;
+    /**
+     * @var string
+     */
+    public $keyname;
 
-	/**
-	 * @var
-	 */
-	public $table;
+    /**
+     * @var
+     */
+    public $table;
 
-	/**
-	 * @var
-	 */
-	public $fillable;
+    /**
+     * @var
+     */
+    public $fillable;
 
-	/**
-	 * @var array|mixed
-	 */
-	public $options = array();
+    /**
+     * @var array|mixed
+     */
+    public $options = array();
 
-	/**
-	 * @var array|mixed
-	 */
-	public $relations = array();
+    /**
+     * @var array|mixed
+     */
+    public $relations = array();
 
-	/**
-	 * @var
-	 */
-	public static $current = null;
+    /**
+     * @var
+     */
+    public static $current = null;
 
-	/**
-	 * @param ModelSchema $schema
-	 */
-	public function __construct(ModelSchema $schema)
-	{
-		$this->schema = $schema;
-		$this->relations = new ModelRelation();
+    /**
+     * @param ModelSchema $schema
+     */
+    public function __construct(ModelSchema $schema)
+    {
+        $this->schema = $schema;
+        $this->relations = new ModelRelation();
 
-		$this->prepareCurrentModel();
-		$this->share();
-	}
+        $this->prepareCurrentModel();
+        $this->share();
+    }
 
 
-	public function share()
-	{
-		View::share('tables', $this->schema->tables);
-		View::share('models', $this->getCurrentModelsData());
-		View::share('model', $this->getCurrentModelData());
-	}
+    public function share()
+    {
+        View::share('tables', $this->schema->tables);
+        View::share('models', $this->getCurrentModelsData());
+        View::share('model', $this->getCurrentModelData());
+    }
 
-	/**
-	 * @return array
-	 */
-	private function getCurrentModelsData() {
-		foreach ($this->schema->models as $modelName => $model) {
-			$this->schema->models[$modelName]['options'] = $this->getOptions($modelName);
-			$this->schema->models[$modelName]['hidden'] = $this->isHidden($modelName);
-		}
+    /**
+     * @return array
+     */
+    private function getCurrentModelsData()
+    {
+        foreach ($this->schema->models as $modelName => $model) {
+            $this->schema->models[$modelName]['options'] = $this->getOptions($modelName);
+            $this->schema->models[$modelName]['hidden'] = $this->isHidden($modelName);
+        }
 
-		return $this->schema->models;
-	}
+        return $this->schema->models;
+    }
 
-	/**
-	 * @param $modelName
-	 * @return bool
-	 */
-	public function isHidden($modelName)
-	{
-		return (in_array($modelName, AdminOption::get('models.hidden'))) ? true : false;
-	}
+    /**
+     * @param $modelName
+     * @return bool
+     */
+    public function isHidden($modelName)
+    {
+        return (in_array($modelName, AdminOption::get('models.hidden'))) ? true : false;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function hasGuarded()
-	{
-		return (isset($this->options['guarded']) && !empty($this->options['guarded'])) ? true : false;
-	}
+    /**
+     * @return bool
+     */
+    public function hasGuarded()
+    {
+        return (isset($this->options['guarded']) && !empty($this->options['guarded'])) ? true : false;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function hasFillable()
-	{
-		return (isset($this->options['fillable']) && !empty($this->options['fillable'])) ? true : false;
-	}
+    /**
+     * @return bool
+     */
+    public function hasFillable()
+    {
+        return (isset($this->options['fillable']) && !empty($this->options['fillable'])) ? true : false;
+    }
 
-	/**
-	 * @return int|null|string
-	 */
-	private function getCurrentModelName()
-	{
-		if ($this->name) return $this->name;
+    /**
+     * @return int|null|string
+     */
+    private function getCurrentModelName()
+    {
+        if ($this->name) {
+            return $this->name;
+        }
 
-		foreach ($this->schema->models as $modelName => $model) {
-			if ($this->isCurrent($modelName)) {
-				$this->setCurrent($modelName);
-				return $this->name = $modelName;
-			}
-		}
+        foreach ($this->schema->models as $modelName => $model) {
+            if ($this->isCurrent($modelName)) {
+                $this->setCurrent($modelName);
 
-		return null;
-	}
+                return $this->name = $modelName;
+            }
+        }
 
-	public function prepareCurrentModel() {
-		if ( ! Str::startsWith(Route::currentRouteName(), 'admin.model.')) return null;
+        return null;
+    }
 
-		$this->name = $this->getCurrentModelName();
+    public function prepareCurrentModel()
+    {
+        if (!Str::startsWith(Route::currentRouteName(), 'admin.model.')) {
+            return null;
+        }
+
+        $this->name = $this->getCurrentModelName();
 //		dd('pon');
-		$this->class = $this->schema->getClass($this->name);
-		$this->model = $this->schema->getInstance($this->name);
-		$this->table = $this->model->getTable();
-		$this->columns = $this->schema->getColumns($this->table);
-		$this->fillable = $this->model->getFillable();
-		$this->options = $this->getOptions();
+        $this->class = $this->schema->getClass($this->name);
+        $this->model = $this->schema->getInstance($this->name);
+        $this->table = $this->model->getTable();
+        $this->columns = $this->schema->getColumns($this->table);
+        $this->fillable = $this->model->getFillable();
+        $this->options = $this->getOptions();
 
 
-	}
+    }
 
-	/**
-	 * @return array
-	 */
-	private function getCurrentModelData()
-	{
-		return array(
-			'class'    => $this->class,
-			'name'     => $this->getCurrentModelName(),
-			'route'    => $this->getRouteName(),
-			'table'    => $this->table,
-			'columns'  => $this->schema->columns,
-			'fillable' => $this->fillable,
-			'hidden'   => $this->isHidden($this->name),
-		);
-	}
+    /**
+     * @return array
+     */
+    private function getCurrentModelData()
+    {
+        return array(
+            'class' => $this->class,
+            'name' => $this->getCurrentModelName(),
+            'route' => $this->getRouteName(),
+            'table' => $this->table,
+            'columns' => $this->schema->columns,
+            'fillable' => $this->fillable,
+            'hidden' => $this->isHidden($this->name),
+        );
+    }
 
-	/**
-	 * @param $model
-	 * @return bool
-	 */
-	protected function isCurrent($modelName)
-	{
-		$slug = Route::current()->parameter('slug');
+    /**
+     * @param $model
+     * @return bool
+     */
+    protected function isCurrent($modelName)
+    {
+        $slug = Route::current()->parameter('slug');
 
-		return (isset($this->schema->models[$modelName]['route']) && $this->schema->models[$modelName]['route'] == $slug);
-	}
+        return (isset($this->schema->models[$modelName]['route']) && $this->schema->models[$modelName]['route'] == $slug);
+    }
 
-	/**
-	 * @return null
-	 */
-	public static function getCurrent()
-	{
-		return (isset(self::$current)) ? self::$current : null;
-	}
+    /**
+     * @return null
+     */
+    public static function getCurrent()
+    {
+        return (isset(self::$current)) ? self::$current : null;
+    }
 
-	/**
-	 * @return string
-	 */
-	public static function getCurrentClass()
-	{
-		return '\\' . self::$current;
-	}
+    /**
+     * @return string
+     */
+    public static function getCurrentClass()
+    {
+        return '\\' . self::$current;
+    }
 
-	/**
-	 * @param null $model
-	 * @return null
-	 */
-	public function getRouteName($model = null)
-	{
-		if ($model) return $this->schema->models[$model]['route'];
+    /**
+     * @param null $model
+     * @return null
+     */
+    public function getRouteName($model = null)
+    {
+        if ($model) {
+            return $this->schema->models[$model]['route'];
+        }
 
-		return (isset($this->schema->models[self::$current]['route'])) ? $this->schema->models[self::$current]['route'] : null;
-	}
+        return (isset($this->schema->models[self::$current]['route'])) ? $this->schema->models[self::$current]['route'] : null;
+    }
 
-	/**
-	 * @param $modelName
-	 */
-	protected function setCurrent($modelName)
-	{
-		self::$current = $modelName;
-		ModelOption::set('current', $modelName);
-	}
+    /**
+     * @param $modelName
+     */
+    protected function setCurrent($modelName)
+    {
+        self::$current = $modelName;
+        ModelOption::set('current', $modelName);
+    }
 
-	/**
-	 * @param null $model
-	 * @return mixed
-	 */
-	public function getOptions($model = null)
-	{
-		return ModelOption::model(($model) ?: $this->name);
-	}
+    /**
+     * @param null $model
+     * @return mixed
+     */
+    public function getOptions($model = null)
+    {
+        return ModelOption::model(($model) ?: $this->name);
+    }
 
-	/**
-	 * @param $key
-	 * @param null $model
-	 * @return mixed
-	 */
-	public function getOption($key, $default = null, $model = null)
-	{
-		return (ModelOption::has($key, $model)) ? ModelOption::get($key, $model) : $default;
-	}
+    /**
+     * @param $key
+     * @param null $model
+     * @return mixed
+     */
+    public function getOption($key, $default = null, $model = null)
+    {
+        return (ModelOption::has($key, $model)) ? ModelOption::get($key, $model) : $default;
+    }
 
-	/**
-	 * @return array|mixed
-	 */
-	public function getRelations()
-	{
-		return $this->relations->get();
-	}
+    /**
+     * @return array|mixed
+     */
+    public function getRelations()
+    {
+        return $this->relations->get();
+    }
 
 }

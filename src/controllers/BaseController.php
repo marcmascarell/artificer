@@ -1,18 +1,19 @@
 <?php namespace Mascame\Artificer;
 
-use Input;
+use App;
 use Auth;
+use Controller;
+use Input;
 use Mascame\Artificer\Fields\Field;
 use Mascame\Artificer\Model\Model;
-use View;
-use Controller;
-use App;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Permit;
+use View;
 
 // Todo: Make some models forbidden for some users
 
-class BaseController extends Controller {
+class BaseController extends Controller
+{
 
     public $fields;
     public $data;
@@ -51,7 +52,8 @@ class BaseController extends Controller {
         }
     }
 
-    protected function shareMainViewData() {
+    protected function shareMainViewData()
+    {
         View::share('main_title', AdminOption::get('title'));
         View::share('menu', $this->getMenu());
         View::share('theme', $this->theme);
@@ -64,7 +66,8 @@ class BaseController extends Controller {
     /**
      * @return bool
      */
-    public function isStandAlone() {
+    public function isStandAlone()
+    {
         return (\Request::ajax() || Input::has('_standalone'));
     }
 
@@ -73,7 +76,9 @@ class BaseController extends Controller {
      */
     public function getMenu()
     {
-        if (!empty($this->menu)) return $this->menu;
+        if (!empty($this->menu)) {
+            return $this->menu;
+        }
         $menu = AdminOption::get('menu');
 
         foreach ($menu as $key => $menuItem) {

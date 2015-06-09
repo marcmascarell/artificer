@@ -1,32 +1,33 @@
 <?php namespace Mascame\Artificer\Fields;
 
-class FieldAttributes {
+class FieldAttributes
+{
 
     protected $options;
     protected $fieldOptions;
-    
-	public function __construct($options, FieldOptions $fieldOptions)
-	{
-		$this->options = $options;
+
+    public function __construct($options, FieldOptions $fieldOptions)
+    {
+        $this->options = $options;
         $this->fieldOptions = $fieldOptions;
-	}
+    }
 
-	/**
-	 * @return array
-	 */
-	public function all()
-	{
-		return $this->fieldOptions->getExistent('attributes', array());
-	}
+    /**
+     * @return array
+     */
+    public function all()
+    {
+        return $this->fieldOptions->getExistent('attributes', array());
+    }
 
-	/**
-	 * @param $key
-	 * @return array
-	 */
-	public function get($key)
-	{
-		return (isset($this->options[$key])) ? $this->options[$key] : array();
-	}
+    /**
+     * @param $key
+     * @return array
+     */
+    public function get($key)
+    {
+        return (isset($this->options[$key])) ? $this->options[$key] : array();
+    }
 
     /**
      * @param $key
@@ -53,5 +54,5 @@ class FieldAttributes {
 
         return $this->fieldOptions->all();
     }
-    
+
 }

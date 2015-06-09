@@ -2,38 +2,43 @@
 
 use Auth;
 
-abstract class Permit extends Auth {
+abstract class Permit extends Auth
+{
 
-	protected static $role = null;
+    protected static $role = null;
 
     /**
      * @param $to
      */
-	public static function access($to)
+    public static function access($to)
     {
         return false;
-	}
+    }
 
     /**
      * @param $action
      */
-	public static function to($action)
-	{
+    public static function to($action)
+    {
         return false;
-	}
+    }
 
     /**
      * @param string $role_column
      * @return null
      */
-	public static function getRole($role_column = 'role')
-	{
-		if (static::$role) return static::$role;
+    public static function getRole($role_column = 'role')
+    {
+        if (static::$role) {
+            return static::$role;
+        }
 
-		if (isset(Auth::user()->$role_column)) return static::$role = Auth::user()->$role_column;
+        if (isset(Auth::user()->$role_column)) {
+            return static::$role = Auth::user()->$role_column;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * @param null $permissions
@@ -41,9 +46,13 @@ abstract class Permit extends Auth {
      */
     public static function hasPermission($permissions = null)
     {
-        if ( ! $permissions) return true;
+        if (!$permissions) {
+            return true;
+        }
 
-        if (is_array($permissions) && self::hasNeededRole($permissions)) return true;
+        if (is_array($permissions) && self::hasNeededRole($permissions)) {
+            return true;
+        }
 
         return false;
     }
