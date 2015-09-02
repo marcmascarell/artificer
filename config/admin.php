@@ -2,25 +2,21 @@
 
 return array(
 
-	'title'        => 'Artificer',
-
+    'title' => 'Artificer',
 //	'default_route' => route('admin.model.all', array('slug' => 'user'), $absolute = true),
 
-	'theme'        => 'artificer-default-theme',
-
-	'list'         => array(
-		'hidden'     => array(
-			'image_center'
-		),
-		'showable'   => array(),
-		'pagination' => 5,
-	),
-
-	'edit'         => array(
-		'hidden'   => array(),
-		'showable' => array(),
-	),
-
+    'theme' => 'artificer-default-theme',
+    'list' => array(
+        'hidden' => array(
+            'image_center'
+        ),
+        'showable' => array(),
+        'pagination' => 5,
+    ),
+    'edit' => array(
+        'hidden' => array(),
+        'showable' => array(),
+    ),
     'icons' => array(
         'edit' => 'fa fa-pencil',
         'filter' => 'fa fa-filter',

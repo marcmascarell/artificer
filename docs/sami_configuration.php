@@ -5,13 +5,13 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use \Sami\Sami;
-
 use Symfony\Component\Finder\Finder;
+
 $iterator = Finder::create()
     ->files()
     ->name('*.php')
-    ->in('src')
-;
+    ->in('src');
+
 return new Sami($iterator, array(
     'title'                => 'Artificer API',
     'theme'                => 'enhanced',

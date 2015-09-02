@@ -2,7 +2,8 @@
 
 use Mascame\Notify\Notify;
 
-class Notification extends Notify {
+class Notification extends Notify
+{
 
-	public static $key = 'admin.notifications';
+    public static $key = 'admin.notifications';
 }

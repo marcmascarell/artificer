@@ -11,7 +11,7 @@ use Mascame\Artificer\Plugin\PluginManager;
 
 class ArtificerServiceProvider extends ServiceProvider {
 
-	protected $name = 'artificer';
+	protected $name = 'admin';
 	/**
 	 * Indicates if loading of the provider is deferred.
 	 *
@@ -87,8 +87,8 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$configPath = __DIR__ . '/../config/';
-//		$this->mergeConfigFrom($configPath, $this->name);
+		$configPath = __DIR__ . '/../config/admin.php';
+		$this->mergeConfigFrom($configPath, $this->name);
 	}
 
 	/**

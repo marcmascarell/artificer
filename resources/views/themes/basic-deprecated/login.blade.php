@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <link rel="shortcut icon" href="/assets/img/favicon.ico" />
+    <link rel="shortcut icon" href="/assets/img/favicon.ico"/>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Varela+Round">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
@@ -13,16 +13,12 @@
     <style>
         @charset "utf-8";
         /* CSS Document */
-
         /* ---------- FONTAWESOME ---------- */
         /* ---------- http://fortawesome.github.com/Font-Awesome/ ---------- */
         /* ---------- http://weloveiconfonts.com/ ---------- */
-
         @import url(http://weloveiconfonts.com/api/?family=fontawesome);
-
         /* ---------- ERIC MEYER'S RESET CSS ---------- */
         /* ---------- http://meyerweb.com/eric/tools/css/reset/ ---------- */
-
         @import url(http://meyerweb.com/eric/tools/css/reset/reset.css);
 
         /* ---------- FONTAWESOME ---------- */
@@ -122,46 +118,46 @@
 <body>
 
 
-
 <div id="login">
 
     <h2><span class="fontawesome-lock"></span>Login</h2>
 
     {{ Form::open(array('url' => URL::route("admin.login"))) }}
 
-        <fieldset>
+    <fieldset>
 
-<!--            <img class="img-responsive" src="/assets/img/" alt="Logo" />-->
-            <hr>
+        <!--            <img class="img-responsive" src="/assets/img/" alt="Logo" />-->
+        <hr>
 
-            <ul class="errors">
-                <li>
-                    {{ $errors->first('email') }}
-                </li>
-                <li>
-                    {{ $errors->first('password') }}
-                </li>
-            </ul>
+        <ul class="errors">
+            <li>
+                {{ $errors->first('email') }}
+            </li>
+            <li>
+                {{ $errors->first('password') }}
+            </li>
+        </ul>
 
-            <p>
-                {{ Form::label('email', 'Email') }}
-                {{ Form::email('email', Input::old('email')) }}
-            </p>
+        <p>
+            {{ Form::label('email', 'Email') }}
+            {{ Form::email('email', Input::old('email')) }}
+        </p>
 
-            <p>
-                {{ Form::label('password', 'Password') }}
-                {{ Form::password('password') }}
-            </p>
-
-
-            <p>{{ Form::submit('Enviar!') }}</p>
+        <p>
+            {{ Form::label('password', 'Password') }}
+            {{ Form::password('password') }}
+        </p>
 
 
-        </fieldset>
+        <p>{{ Form::submit('Enviar!') }}</p>
+
+
+    </fieldset>
 
     {{ Form::close() }}
 
-</div> <!-- end login -->
+</div>
+<!-- end login -->
 <!-- if there are login errors, show them here -->
 
 </body>
