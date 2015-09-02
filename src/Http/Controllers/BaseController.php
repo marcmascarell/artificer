@@ -5,7 +5,7 @@ use Auth;
 use Mascame\Artificer\Fields\Field;
 use Mascame\Artificer\Model\Model;
 use View;
-use Controller;
+use Illuminate\Routing\Controller as Controller;
 use App;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Permit;

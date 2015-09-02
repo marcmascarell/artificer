@@ -12,7 +12,7 @@ class Option {
 	/**
 	 * @var string
 	 */
-	public static $config_path = 'artificer.';
+	public static $config_path = '';
 
 	/**
 	 * @var null
