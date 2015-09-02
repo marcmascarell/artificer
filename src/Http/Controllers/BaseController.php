@@ -1,18 +1,19 @@
 <?php namespace Mascame\Artificer;
 
-use Input;
+use App;
 use Auth;
+use Input;
 use Mascame\Artificer\Fields\Field;
 use Mascame\Artificer\Model\Model;
 use View;
 use Illuminate\Routing\Controller as Controller;
-use App;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Permit;
 
 // Todo: Make some models forbidden for some users
 
-class BaseController extends Controller {
+class BaseController extends Controller
+{
 
     public $fields;
     public $data;
@@ -30,8 +31,7 @@ class BaseController extends Controller {
      */
     public $modelObject = null;
 
-    /**
-     */
+
     public function __construct()
     {
         $this->theme = AdminOption::get('theme') . '::';
@@ -48,11 +48,12 @@ class BaseController extends Controller {
                 $this->standalone = true;
             }
 
-            $this->share();
+            $this->shareMainViewData();
         }
     }
 
-    protected function share() {
+    protected function shareMainViewData()
+    {
         View::share('main_title', AdminOption::get('title'));
         View::share('menu', $this->getMenu());
         View::share('theme', $this->theme);
@@ -62,18 +63,27 @@ class BaseController extends Controller {
         View::share('icon', AdminOption::get('icons'));
     }
 
-    public function isStandAlone() {
+    /**
+     * @return bool
+     */
+    public function isStandAlone()
+    {
         return (\Request::ajax() || Input::has('_standalone'));
     }
 
+    /**
+     * @return array
+     */
     public function getMenu()
     {
-        if (!empty($this->menu)) return $this->menu;
+        if (!empty($this->menu)) {
+            return $this->menu;
+        }
         $menu = AdminOption::get('menu');
 
-        foreach ($menu as $menu_key => $menu_item) {
-            if (Permit\MenuPermit::access($menu_key)) {
-                $this->menu[] = $menu_item;
+        foreach ($menu as $key => $menuItem) {
+            if (Permit\MenuPermit::access($key)) {
+                $this->menu[] = $menuItem;
             }
         }
 
@@ -88,6 +98,9 @@ class BaseController extends Controller {
         return $this->theme . $view;
     }
 
+    /**
+     * @return string
+     */
     public static function assets()
     {
         $widgets = '';

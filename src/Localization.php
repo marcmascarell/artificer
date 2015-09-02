@@ -1,90 +1,101 @@
 <?php namespace Mascame\Artificer;
 
-use LaravelLocalization;
-use Str;
 use Mascame\Artificer\Options\AdminOption;
+use Str;
 
-class Localization  {
+class Localization
+{
 
-	/**
-	 * @var \Closure
-	 */
-	protected $lang_closure;
+    /**
+     * @var \Closure
+     */
+    protected $lang_closure;
 
-	/**
-	 * @var array
-	 */
-	protected $locales = array();
+    /**
+     * @var array
+     */
+    protected $locales = array();
 
 
-	public function __construct() {
-		$closure = AdminOption::get('localization.lang_detection');
-		$this->locales = $this->getConfigLocales();
+    public function __construct()
+    {
+        $closure = AdminOption::get('localization.lang_detection');
+        $this->locales = $this->getConfigLocales();
 
-		if ($closure && Artificer::isClosure($closure)) {
-			$this->lang_closure = $closure;
-		}
-	}
+        if ($closure && Artificer::isClosure($closure)) {
+            $this->lang_closure = $closure;
+        }
+    }
 
-    public function getConfigLocales() {
+    public function getConfigLocales()
+    {
         return (!empty($this->locales)) ? $this->locales : $this->locales = AdminOption::get('localization.locales');
     }
 
-	/**
-	 * @return array
-	 */
-	public function getLocales() {
+    /**
+     * @return array
+     */
+    public function getLocales()
+    {
         $this->locales = $this->getConfigLocales();
 
-		if (is_array($this->locales)) return array_keys($this->locales);
-
-		return array();
-	}
-
-    public function getLocaleNative($locale) {
-        $this->locales = $this->getConfigLocales();
-
-        if (is_array($this->locales[$locale])) return $this->locales[$locale]['native'];
+        if (is_array($this->locales)) {
+            return array_keys($this->locales);
+        }
 
         return array();
     }
 
-	/**
-	 * @param $column
-	 * @return bool|int|string
-	 */
-	public function parseColumnLang($column) {
-		if ($this->lang_closure) {
-			return $this->lang_closure($column);
-		}
+    public function getLocaleNative($locale)
+    {
+        $this->locales = $this->getConfigLocales();
 
-		return $this->detectColumnLang($column);
-	}
+        if (is_array($this->locales[$locale])) {
+            return $this->locales[$locale]['native'];
+        }
 
-	/**
-	 * @param $column
-	 * @return bool|int|string
-	 */
-	protected function detectColumnLang($column) {
-		foreach ($this->getLanguageEndings() as $locale => $ending) {
-			if (Str::endsWith($column, $ending)) {
-				return $locale;
-			}
-		}
+        return array();
+    }
 
-		return false;
-	}
+    /**
+     * @param $column
+     * @return bool|int|string
+     */
+    public function parseColumnLang($column)
+    {
+        if ($this->lang_closure) {
+            return $this->lang_closure($column);
+        }
 
-	/**
-	 * @return array
-	 */
-	protected function getLanguageEndings() {
-		$endings = array();
+        return $this->detectColumnLang($column);
+    }
 
-		foreach ($this->getLocales() as $locale) {
-			$endings[$locale] = '_' . $locale;
-		}
+    /**
+     * @param $column
+     * @return bool|int|string
+     */
+    protected function detectColumnLang($column)
+    {
+        foreach ($this->getLanguageEndings() as $locale => $ending) {
+            if (Str::endsWith($column, $ending)) {
+                return $locale;
+            }
+        }
 
-		return $endings;
-	}
+        return false;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getLanguageEndings()
+    {
+        $endings = array();
+
+        foreach ($this->getLocales() as $locale) {
+            $endings[$locale] = '_' . $locale;
+        }
+
+        return $endings;
+    }
 }

@@ -6,9 +6,11 @@
 [![Latest Version](https://img.shields.io/github/release/marcmascarell/laravel-artificer.svg?style=flat-square)](https://github.com/marcmascarell/laravel-artificer/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
-Artificer is an admin package (under development) built on top of your models. It automatically detects all your models, tables and columns building a beautiful interface to manage your data. Help is needed.
+Artificer is an admin package (under development) built on top of your Eloquent models. It automatically detects all your models, tables and columns building a beautiful interface to manage your data. **Contributors needed**.
 
-**Package first stable version is aimed to work with Laravel 5.1 (due to the multiple config files update. The soonest we can after its released)**
+**Package first stable version is aimed to work with Laravel 5 (the soonest we can after its released)**
+
+**This package is alive. The expected the fix for multiple config files but was not included on 5.1, we are looking for workarounds**
 
 Current state warning
 ----
@@ -46,7 +48,7 @@ php artisan artificer:publish
 
 Changing the theme
 ----
-Set theme in `app/config/packages/mascame/artificer/admin`. `theme` to `theme-name-here` 
+Set `theme` in `app/config/packages/mascame/artificer/admin` to `your-theme-name` 
 
 Default: [mascame/artificer-default-theme](https://github.com/marcmascarell/artificer-default-theme/)
 
@@ -106,7 +108,7 @@ Documentation
 
 Developing (Laravel 4):
 
-* In workbench under mascame/ (or your fork namespace) make the clone. º
+* In workbench under mascame/ (or your fork namespace) make the clone.
 * Rename laravel-artificer to artificer.
 * Run composer update inside of the package.
 * php artisan artificer:publish

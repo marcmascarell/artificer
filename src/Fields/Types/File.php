@@ -1,13 +1,14 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Fields\Field;
 use Form;
+use Mascame\Artificer\Fields\Field;
 
-class File extends Field {
+class File extends Field
+{
 
-	public function input()
-	{
-		return Form::file($this->name);
-	}
+    public function input()
+    {
+        return Form::file($this->name);
+    }
 
 }

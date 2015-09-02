@@ -2,49 +2,58 @@
 
 use Mascame\Artificer\Options\ModelOption;
 
-class ModelRelation {
+class ModelRelation
+{
 
-	public $relations;
+    /**
+     * @var
+     */
+    public $relations;
 
-	/**
-	 * @return array|mixed
-	 */
-	public function get()
-	{
-		if (!empty($this->relations)) return $this->relations;
 
-		$fields = ModelOption::get('fields');
+    /**
+     * @return array|mixed
+     */
+    public function get()
+    {
+        if (!empty($this->relations)) {
+            return $this->relations;
+        }
 
-		if (empty($fields)) return array();
+        $fields = ModelOption::get('fields');
 
-		return $this->relations = $this->getFieldsWithRelations($fields);
-	}
+        if (empty($fields)) {
+            return array();
+        }
 
-	/**
-	 * @param $field
-	 * @return bool
-	 */
-	private function hasRelation($field)
-	{
-		return isset($field['relationship']) && isset($field['relationship']['method']);
-	}
+        return $this->relations = $this->getFieldsWithRelations($fields);
+    }
 
-	/**
-	 * @param $fields
-	 * @return array
-	 */
-	private function getFieldsWithRelations($fields)
-	{
-		$relations = array();
+    /**
+     * @param $field
+     * @return bool
+     */
+    private function hasRelation($field)
+    {
+        return (isset($field['relationship']) && isset($field['relationship']['method']));
+    }
 
-		foreach ($fields as $field) {
-			if ($this->hasRelation($field)) {
-				$relations = $field['relationship']['method'];
-			}
-		}
+    /**
+     * @param $fields
+     * @return array
+     */
+    private function getFieldsWithRelations($fields)
+    {
+        $relations = array();
 
-		return $relations;
-	}
+        foreach ($fields as $field) {
+            if ($this->hasRelation($field)) {
+                $relations = $field['relationship']['method'];
+            }
+        }
+
+        return $relations;
+    }
 
 
 }

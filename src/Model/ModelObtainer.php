@@ -1,91 +1,129 @@
 <?php namespace Mascame\Artificer\Model;
 
-use Mascame\Artificer\Permit\ModelPermit;
 use File;
-use Mascame\Artificer\Options\ModelOption;
 use Mascame\Artificer\Options\AdminOption;
+use Mascame\Artificer\Permit\ModelPermit;
 
-class ModelObtainer {
+class ModelObtainer
+{
 
 
-	/**
-	 * @var array
-	 */
-	public $models;
+    /**
+     * @var array
+     */
+    public $models;
 
-	/**
-	 *
-	 */
-	public function __construct()
-	{
-		$this->models = $this->getModels();
-	}
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->models = $this->getModels();
+    }
 
-	/**
-	 * @param $directory
-	 * @return array
-	 */
-	protected function scanModelsDirectory($directory)
-	{
-		$models = array();
+    /**
+     * @param $directory
+     * @return array
+     */
+    protected function scanModelsDirectory($directory)
+    {
+        $models = array();
 
-		foreach (File::allFiles($directory) as $modelPath) {
-			$modelName = $this->getFromFileName($modelPath);
+        foreach (File::allFiles($directory) as $modelPath) {
+            $modelName = $this->getFromFileName($modelPath);
 
-			if (!ModelPermit::access($modelName)) continue;
+            if (!ModelPermit::access($modelName)) {
+                continue;
+            }
 
-			$models[$modelName] = array('name'  => $modelName,
-										'route' => strtolower($modelName));
-		}
+            $models[$modelName] = array(
+                'name' => $modelName,
+                'route' => $this->makeModelRoute($modelName),
+                'fake' => false
+            );
+        }
 
-		return $models;
-	}
+        return $models;
+    }
 
-	/**
-	 * @param $models
-	 * @return array
-	 */
-	private function mergeModelDirectories($models)
-	{
-		$merged_models = array();
+    /**
+     * @param $modelName
+     * @return string
+     */
+    protected function makeModelRoute($modelName)
+    {
+        return strtolower($modelName);
+    }
 
-		foreach ($models as $key => $model) {
-			foreach ($model as $name => $values) {
-				$merged_models[$name] = $values;
-			}
-		}
+    /**
+     * @param $models
+     * @return array
+     */
+    private function mergeModelDirectories($models)
+    {
+        $merged_models = array();
 
-		return $merged_models;
-	}
+        foreach ($models as $key => $model) {
+            foreach ($model as $name => $values) {
+                $merged_models[$name] = $values;
+            }
+        }
 
-	/**
-	 * @return array
-	 */
-	public function getModels()
-	{
-		if (!empty($this->models)) return $this->models;
+        return $merged_models;
+    }
 
-		$models = array();
-		$model_directories = AdminOption::get('models.directories');
+    /**
+     * @return array
+     */
+    public function getModels()
+    {
+        if (!empty($this->models)) {
+            return $this->models;
+        }
 
-		foreach ($model_directories as $directory) {
-			$models[] = $this->scanModelsDirectory($directory);
-		}
+        $models = array();
+        $model_directories = AdminOption::get('models.directories');
 
-		$models = $this->mergeModelDirectories($models);
+        foreach ($model_directories as $directory) {
+            $models[] = $this->scanModelsDirectory($directory);
+        }
 
-		return $models;
-	}
+        $models = array_merge($this->mergeModelDirectories($models), $this->getFakeModels());
 
-	/**
-	 * @param $model
-	 * @return mixed
-	 */
-	public function getFromFileName($model)
-	{
-		$piece = explode('/', $model);
+        return $models;
+    }
 
-		return str_replace('.php', '', end($piece));
-	}
+    public function getFakeModels()
+    {
+        $fakeModels = AdminOption::get('models.fake');
+        $models = array();
+
+        if (empty($fakeModels)) {
+            return $models;
+        }
+
+        foreach ($fakeModels as $modelName => $modelData) {
+            $models[$modelName] = array(
+                'name' => $modelName,
+                'route' => $this->makeModelRoute($modelName),
+                'fake' => array_merge($modelData, array(
+                    'model' => $modelName
+                ))
+            );
+        }
+
+        return $models;
+    }
+
+    /**
+     * @param $model
+     * @return mixed
+     */
+    public function getFromFileName($model)
+    {
+        $piece = explode('/', $model);
+
+        return str_replace('.php', '', end($piece));
+    }
 
 }

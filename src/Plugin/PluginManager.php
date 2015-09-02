@@ -1,25 +1,26 @@
 <?php namespace Mascame\Artificer\Plugin;
 
 use Mascame\Arrayer\Arrayer;
+use Mascame\Arrayer\Builder;
 use Mascame\Artificer\Options\AdminOption;
-use Mascame\Artificer\Options\Option;
 
-class PluginManager {
+class PluginManager
+{
 
     /**
      * @var null
      */
-	public $pluginNamespace;
+    public $pluginNamespace;
 
     /**
      * @var array
      */
-	protected $instances = array();
+    protected $instances = array();
 
     /**
      * @var array
      */
-    protected static $added_plugins = array();
+    protected static $addedPlugins = array();
 
     /**
      * @var array
@@ -39,65 +40,75 @@ class PluginManager {
     /**
      * @var array
      */
-    public static $installed_plugins_routes = array();
+    public static $installedPluginsRoutes = array();
 
     /**
      * @var string
      */
-	public $plugins_config_file = '/config/packages/mascame/artificer/plugins.php';
+    public $pluginsConfigFile = '/config/packages/mascame/artificer/plugins.php';
 
     /**
      * @param null $pluginNamespace
-     * @param null $plugins_config_file
+     * @param null $pluginsConfigFile
      */
-    public function __construct($pluginNamespace = null, $plugins_config_file = null) {
+    public function __construct($pluginNamespace = null, $pluginsConfigFile = null)
+    {
         if ($pluginNamespace) {
             $this->pluginNamespace = $pluginNamespace;
 
             $this->addPlugin($pluginNamespace);
         }
 
-        $this->plugins_config_file = ($plugins_config_file) ? $plugins_config_file : app_path() . $this->plugins_config_file;
+        $this->pluginsConfigFile = ($pluginsConfigFile) ? $pluginsConfigFile : app_path() . $this->pluginsConfigFile;
     }
-
 
 
     /**
      * @return mixed
      */
-	public function getAll()
-	{
-		if (self::$plugins) return self::$plugins;
+    public function getAll()
+    {
+        if (self::$plugins) {
+            return self::$plugins;
+        }
 
-		$plugins = AdminOption::get('plugins');
+        $plugins = AdminOption::get('plugins');
 
-        if (!isset($plugins['installed'])) $plugins['installed'] = array();
-        if (!isset($plugins['uninstalled'])) $plugins['uninstalled'] = array();
+        if (!isset($plugins['installed'])) {
+            $plugins['installed'] = array();
+        }
+        if (!isset($plugins['uninstalled'])) {
+            $plugins['uninstalled'] = array();
+        }
 
-        if ($this->hasModifiedPlugins($plugins)) $this->generatePluginsFile($plugins);
+        if ($this->hasModifiedPlugins($plugins)) {
+            $this->generatePluginsFile($plugins);
+        }
 
-		return self::$plugins = $plugins;
-	}
+        return self::$plugins = $plugins;
+    }
 
     /**
      * @param $plugins
      * @return bool
      */
-    protected function hasModifiedPlugins($plugins) {
+    protected function hasModifiedPlugins($plugins)
+    {
         $config_plugins = array_merge($plugins['installed'], $plugins['uninstalled']);
-        $new_added = array_diff(self::$added_plugins, $config_plugins);
+        $new_added = array_diff(self::$addedPlugins, $config_plugins);
 
-        return (!empty($new_added) || count($config_plugins) != count(self::$added_plugins));
+        return (!empty($new_added) || count($config_plugins) != count(self::$addedPlugins));
     }
 
     /**
      * @param $plugins
      */
-    protected function generatePluginsFile($plugins) {
+    protected function generatePluginsFile($plugins)
+    {
         $old_plugins = $plugins;
         $plugins = array();
 
-        foreach (self::$added_plugins as $pluginNamespace) {
+        foreach (self::$addedPlugins as $pluginNamespace) {
             if (in_array($pluginNamespace, $old_plugins['installed'])) {
                 $plugins['installed'][] = $pluginNamespace;
             } else {
@@ -105,27 +116,32 @@ class PluginManager {
             }
         }
 
-        $arrayer = new Arrayer($plugins);
-        \File::put($this->plugins_config_file, $arrayer->getContent());
+        $builder = new Builder($plugins);
+        \File::put($this->pluginsConfigFile, $builder->getContent());
     }
 
     /**
      * @return mixed
      */
-	public function boot()
-	{
+    public function boot()
+    {
         $plugins = $this->getAll();
 
-        if (isset($plugins['installed'])) $this->bootInstalled($plugins['installed']);
-        if (isset($plugins['uninstalled'])) $this->bootUninstalled($plugins['uninstalled']);
+        if (isset($plugins['installed'])) {
+            $this->bootInstalled($plugins['installed']);
+        }
+        if (isset($plugins['uninstalled'])) {
+            $this->bootUninstalled($plugins['uninstalled']);
+        }
 
-		return self::$plugins;
-	}
+        return self::$plugins;
+    }
 
     /**
      * @param $plugins
      */
-    protected function bootInstalled($plugins) {
+    protected function bootInstalled($plugins)
+    {
         foreach ($plugins as $key => $pluginNamespace) {
             $this->instances[$pluginNamespace] = \App::make($pluginNamespace);
             $this->instances[$pluginNamespace]->boot();
@@ -134,7 +150,7 @@ class PluginManager {
 
             $this->addFields($pluginNamespace);
 
-            self::$installed_plugins_routes[] = (isset(self::$routes[$pluginNamespace])) ? self::$routes[$pluginNamespace] : null;
+            self::$installedPluginsRoutes[] = (isset(self::$routes[$pluginNamespace])) ? self::$routes[$pluginNamespace] : null;
         }
     }
 
@@ -152,7 +168,8 @@ class PluginManager {
     /**
      * @param $pluginNamespace
      */
-    protected function addFields($pluginNamespace) {
+    protected function addFields($pluginNamespace)
+    {
         if (isset(self::$fields[$pluginNamespace]) && !empty(self::$fields[$pluginNamespace])) {
             $fields = AdminOption::get('classmap');
 
@@ -168,15 +185,17 @@ class PluginManager {
      * @param $plugin
      * @return null
      */
-	public function make($pluginNamespace) {
-		return ($this->isInstalled($pluginNamespace)) ? $this->getPluginInstance($pluginNamespace) : null;
-	}
+    public function make($pluginNamespace)
+    {
+        return ($this->isInstalled($pluginNamespace)) ? $this->getPluginInstance($pluginNamespace) : null;
+    }
 
     /**
      * @param $pluginNamespace
      * @return mixed
      */
-    protected function getPluginInstance($pluginNamespace) {
+    protected function getPluginInstance($pluginNamespace)
+    {
         return $this->instances[$pluginNamespace];
     }
 
@@ -184,48 +203,54 @@ class PluginManager {
      * @param $pluginNamespace
      * @return mixed
      */
-	public function getName($pluginNamespace)
-	{
-		$pluginName = explode('/', $pluginNamespace);
+    public function getName($pluginNamespace)
+    {
+        $pluginName = explode('/', $pluginNamespace);
 
-		return end($pluginName);
-	}
+        return end($pluginName);
+    }
 
     /**
      * @param $key
      * @return mixed
      */
-	public function get($key)
-	{
-		if ($this->isInstalled($key)) return self::$plugins['installed'][$key];
+    public function get($key)
+    {
+        if ($this->isInstalled($key)) {
+            return self::$plugins['installed'][$key];
+        }
 
-		return self::$plugins['uninstalled'][$key];
-	}
+        return self::$plugins['uninstalled'][$key];
+    }
 
     /**
      * @return array
      */
-	public function getInstalledPlugins() {
-		return (isset(self::$plugins['installed']) && !empty(self::$plugins['installed'])) ? self::$plugins['installed'] : array();
-	}
+    public function getInstalledPlugins()
+    {
+        return (isset(self::$plugins['installed']) && !empty(self::$plugins['installed'])) ? self::$plugins['installed'] : array();
+    }
 
     /**
      * @param $key
      * @return bool
      */
-	public function isInstalled($pluginNamespace)
-	{
-		return in_array($pluginNamespace, $this->getInstalledPlugins());
-	}
+    public function isInstalled($pluginNamespace)
+    {
+        return in_array($pluginNamespace, $this->getInstalledPlugins());
+    }
 
     /**
      * @param $pluginName
      * @return bool
      */
-    public function addPlugin($pluginName) {
-        if (in_array($pluginName, self::$added_plugins)) return false;
+    public function addPlugin($pluginName)
+    {
+        if (in_array($pluginName, self::$addedPlugins)) {
+            return false;
+        }
 
-        self::$added_plugins[] = $pluginName;
+        self::$addedPlugins[] = $pluginName;
 
         return true;
     }
@@ -234,8 +259,9 @@ class PluginManager {
      * @param $pluginName
      * @param $field
      */
-    public function addField($fieldName, $fieldClass) {
-        self::$fields[$this->pluginNamespace][$fieldName] = $fieldClass;   
+    public function addField($fieldName, $fieldClass)
+    {
+        self::$fields[$this->pluginNamespace][$fieldName] = $fieldClass;
     }
 
     /**
@@ -244,14 +270,16 @@ class PluginManager {
      * @param $pluginName
      * @param $closure
      */
-    public function addRoutes($closure) {
+    public function addRoutes($closure)
+    {
         self::$routes[$this->pluginNamespace] = $closure;
     }
 
     /**
      * @return array
      */
-    public static function getRoutes() {
+    public static function getRoutes()
+    {
         return self::$routes;
     }
 }

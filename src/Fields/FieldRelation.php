@@ -1,20 +1,17 @@
 <?php namespace Mascame\Artificer\Fields;
 
-use Mascame\Artificer\Localization;
-use Mascame\Artificer\Options\ModelOption;
-use Mascame\Artificer\Options\FieldOption;
+class FieldRelation
+{
 
-class FieldRelation {
-
-	public $relation = false;
+    public $relation = false;
     protected $options = array();
 
 
-	public function __construct($relation, $options)
-	{
-		$this->relation = ($relation || $this->getType()) ? true : false;
+    public function __construct($relation, $options)
+    {
+        $this->relation = ($relation || $this->getType()) ? true : false;
         $this->options = $options;
-	}
+    }
 
     /**
      * @return bool
