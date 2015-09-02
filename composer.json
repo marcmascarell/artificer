@@ -18,17 +18,21 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.4.0",
+        "mascame/notify": "1.0.0",
+        "mcamara/laravel-localization": "0.15.*"
     },
     "require-dev": {
         "sami/sami": "2.0.0"
     },
     "autoload": {
-        "psr-4": {
-            "Mascame\\Artificer\\": "src"
+        "classmap": [
+            "src/commands",
+            "src/controllers"
+        ],
+        "psr-0": {
+            "Mascame\\Artificer\\": "src/"
         }
     },
-    "config": {
-        "preferred-install": "dist"
-    }
+    "minimum-stability": "stable"
 }
