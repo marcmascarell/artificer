@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer;
 
 use App;
+use Mascame\Artificer\Options\AdminOption;
 
 class Artificer
 {

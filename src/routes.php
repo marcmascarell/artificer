@@ -27,7 +27,7 @@ Route::group(array(
     'before' => 'artificer-localization|LaravelLocalizationRedirectFilter'
 ),
     function () {
-        Route::group(array('prefix' => 'admin'), function () {
+        Route::group(array('prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')), function () {
             Route::get('install', array('as' => 'admin.install', 'uses' => 'Mascame\Artificer\PageController@install'));
         });
     });
@@ -37,7 +37,7 @@ Route::group(array(
     'before' => 'artificer-auth|artificer-localization|LaravelLocalizationRedirectFilter'
 ),
     function () {
-        Route::group(array('prefix' => 'admin'), function () {
+        Route::group(array('prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')), function () {
 
             Route::get('/', array('as' => 'admin.home', 'uses' => 'Mascame\Artificer\PageController@home'));
 
@@ -122,6 +122,7 @@ Route::group(array(
 //            }
 
             Route::group(array('prefix' => 'plugin'), function () {
+
             });
             Route::get('logs', array(
                 'as' => 'artificer-logreader-plugin',
@@ -129,9 +130,9 @@ Route::group(array(
             ));
 
 
-            $plugin_routes = \Mascame\Artificer\Plugin\PluginManager::getRoutes();
+            $pluginRoutes = \Mascame\Artificer\Plugin\PluginManager::getRoutes();
 
-            foreach ($plugin_routes as $pluginNamespace => $closure) {
+            foreach ($pluginRoutes as $pluginNamespace => $closure) {
                 $closure();
             }
 
