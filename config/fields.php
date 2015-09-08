@@ -1,144 +1,133 @@
 <?php
 
-/*
-     'example_type'      => array(
-        'regex' => '/myCoolRegex$/',
+return [
 
-        // Fields with similar name will be matched (Starting, containing or ending)
-        'autodetect' => array(
-            'example'
-        ),
-
-        'attributes' => array(
-            'class' => 'class1 class2',
-        ),
-
-        'widgets' => array(
-            'artificer-example-widget',
-        ),
-
-        'onParse' => function($field, $type) {
-            // Do something after field is parsed
-        }
-    )
- */
-return array(
-
-    'classmap' => array(
+	'classmap' => [
         'bool' => '\Mascame\Artificer\Fields\Types\Checkbox',
         'boolean' => '\Mascame\Artificer\Fields\Types\Checkbox',
 //		'image'   => '\Mascame\Artificer\Plugins\Plupload\PluploadField',
-        'hasOne' => '\Mascame\Artificer\Fields\Types\Relations\hasOne',
+        'hasOne'  => '\Mascame\Artificer\Fields\Types\Relations\hasOne',
         'hasMany' => '\Mascame\Artificer\Fields\Types\Relations\hasMany',
         'belongsTo' => '\Mascame\Artificer\Fields\Types\Relations\belongsTo',
-    ),
-    'types' => array(
-        // field_type => array('fieldname_1', 'fieldname_1')
-        'key' => array(
-            'autodetect' => array(
+    ],
+
+	'types'    => [
+		// field_type => ['fieldname_1', 'fieldname_1')
+		'key'      => [
+            'autodetect' => [
                 'id'
-            )
-        ),
-        'enum' => array(
-            'autodetect' => array(
-                'role'
-            )
-        ),
-        'published' => array(),
-        'checkbox' => array(
-            'autodetect' => array(
+            ]
+		],
+
+		'published' => [],
+
+		'checkbox'     => [
+            'autodetect' => [
                 'accept',
                 'active',
                 'boolean',
                 'activated',
-                'binary'
-            ),
-        ),
-        'color' => array(),
-        'custom' => array(),
-        'password' => array(
-            'autodetect' => array(
+            ],
+		],
+
+        'custom'     => [
+
+        ],
+
+		'password'     => [
+            'autodetect' => [
                 'password'
-            ),
-        ),
-        'text' => array(
-            'autodetect' => array(
+            ],
+		],
+
+		'text'         => [
+            'autodetect' => [
                 'title',
                 'username',
                 'name'
-            ),
-        ),
-        'textarea' => array(),
-        'wysiwyg' => array(
-            'autodetect' => array(
+            ],
+		],
+
+		'textarea'     => [
+
+		],
+
+		'wysiwyg'      => [
+            'autodetect' => [
                 'body',
                 'text'
-            ),
-        ),
-        'option' => array(
-            'autodetect' => array(
+            ],
+		],
+
+		'option'       => [
+            'autodetect' => [
                 'selection',
-            ),
-        ),
-        'email' => array(),
-        'link' => array(
-            'autodetect' => array(
+            ],
+		],
+
+		'email'        => [],
+
+		'link'         => [
+            'autodetect' => [
                 'url'
-            ),
-        ),
-        'datetime' => array(
-            'regex' => '/_at$/',
-            "attributes" => array(
+            ],
+        ],
+
+        'datetime'         => [
+            'autodetect' => [
+                '_at'
+            ],
+
+            "attributes" => [
                 'class' => 'form-control datetimepicker',
                 'data-date-format' => 'YYYY-MM-DD HH:mm:ss',
 
-            ),
-            'widgets' => array(
-                'artificer-datetimepicker-widget',
-            )
+            ],
 
-        ),
-        'date' => array(
-            "attributes" => array(
-                'class' => 'form-control datetimepicker',
-                'data-date-format' => 'YYYY-MM-DD',
-            ),
-            'widgets' => array(
+            'widgets' => [
                 'artificer-datetimepicker-widget',
-            )
+            ]
 
-        ),
-        'file' => array(),
-        'image' => array(
-            'autodetect' => array(
+        ],
+
+		'date'         => [
+            'autodetect' => [
+                '_at'
+            ],
+
+            "attributes" => [
+                'class' => 'form-control datepicker',
+
+            ],
+
+            'widgets' => [
+                'artificer-datepicker-widget',
+            ]
+
+		],
+
+		'file'         => [],
+
+		'image'        => [
+            'autodetect' => [
                 'image'
-            ),
-        ),
-        'image_center' => array(),
-        'hasOne' => array(
-            'regex' => '/_id$/',
-            "attributes" => array(
-                'class' => 'chosen form-control',
-            ),
-            'onParse' => function ($field, $type) {
-                $relationship = \Mascame\Artificer\Options\FieldOption::get('relationship', $field);
+            ],
+		],
 
-                if (!isset($relationship['model'])) {
-                    $model = preg_replace('/_id$/', '', $field);
-                    $model = studly_case($model);
+		'image_center' => [],
 
-                    \Mascame\Artificer\Options\FieldOption::set('relationship.model', $model, $field);
-                }
+		'hasOne'       => [
+            'autodetect' => [
+                '_id',
+                'user_id',
+                'fake_id'
+            ],
+		],
 
-                if (!isset($relationship['show'])) {
-                    \Mascame\Artificer\Options\FieldOption::set('relationship.show', 'id', $field);
-                }
-            }
-        ),
-        'hasMany' => array(),
-        'default' => array(
+		'hasMany'      => [],
+
+		'default'      => [
             'type' => 'text'
-        ),
-
-    ),
-);
+        ]
+	],
+];

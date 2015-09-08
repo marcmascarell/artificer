@@ -1,71 +1,80 @@
 <?php
 
-return array(
+return [
     /**
      * Model title
      */
-    'title' => "Model title",
+    'title'        => "Model title",
+
     /**
      * The real value will never be shown (just that)
      */
-    'hidden' => array('password'),
-    // Editable, fillable, updatable
-//	'fillable'  => array(),
+	'hidden'    => ['password'],
+
+	// Editable, fillable, updatable
+//	'fillable'  => [],
 //
 //	// Not updatable, not editable
-//	'guarded'   => array('id'),
+//	'guarded'   => ['id'],
 
-//	'list'      => array('*'),
+//	'list'      => ['*'],
 //
-//	'list-hide' => array('image_center'),
+//	'list-hide' => ['image_center'],
 
     /**
      * Fields that are shown on creation
      */
-    'create' => array(),
+    'create' => [],
+
     /**
      * Fields that are shown on edit
      */
-    'edit' => array(),
+    'edit' => [],
+
     /**
      * Fields that will be shown when on list view mode
      */
-    'list' => array(
-        'show' => array('*'),
-        'hide' => array('password'),
-    ),
+    'list' => [
+        'show' => ['*'],
+        'hide' => ['password'],
+    ],
+
     /**
      * The fields
      */
-    'fields' => array(
-        'user_id' => array(
+	'fields'    => [
+		'user_id' => [
             /**
              * Title of field
              */
-            'title' => "Model title",
+			'title'        => "Model title",
+
             /**
              * Widgets of field
              */
-            'widgets' => array(),
+            'widgets' => [],
+
             /**
              * Attributes for the input field (class, data-*, ...)
              */
-            'attributes' => array(),
+            'attributes' => [],
+
             /**
              * Relationship (if it is)
              */
-            'relationship' => array(
+			'relationship' => [
                 'method' => 'user', //this is the name of the Eloquent relationship method!
-                'type' => 'hasOne',
-                'model' => 'User',
-                'show' => "email",
-            ),
+				'type'  => 'hasOne',
+				'model' => 'User',
+				'show'  => "email",
+			],
+
             /**
              * Overrides an input by complete
              */
             'input' => '<input name="(:name)" value="(:value)">'
-        ),
+		],
 
-    )
+	]
 
-);
+];
