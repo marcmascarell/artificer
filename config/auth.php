@@ -3,6 +3,19 @@
 return array(
 
     /**
+     * Closure to validate credentials
+     */
+	'attempt' => function($credentials) {
+        return Auth::attempt($credentials);
+    },
+    /**
+     * Closure to determine if user is logged
+     */
+    'check' => function() {
+        return Auth::check();
+    },
+
+    /**
      * Available roles
      */
 	'roles'       => [

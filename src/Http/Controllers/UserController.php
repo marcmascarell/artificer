@@ -1,7 +1,8 @@
-<?php namespace Mascame\Artificer;
+<?php namespace Mascame\Artificer\Http\Controllers;
 
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Auth\EloquentUserProvider;
 use Input;
 use Mascame\Artificer\Options\AdminOption;
 use Redirect;
@@ -14,6 +15,13 @@ class UserController extends BaseController
 
     public $tries_key = 'artificer.user.login.tries';
     public $ban_key = 'artificer.user.login.banned';
+    public $authProvider;
+
+    public function __construct() {
+        parent::__construct();
+
+        $this->authProvider = new EloquentUserProvider(app('hash'), 'ArtificerUser');
+    }
 
     /**
      * Unban user
@@ -56,7 +64,7 @@ class UserController extends BaseController
     {
         $tries = Session::get($this->tries_key);
 
-        if (!$tries) {
+        if (! $tries) {
             $tries = 1;
         } else {
             $tries++;
@@ -106,11 +114,39 @@ class UserController extends BaseController
          * Todo: add also to banning in case of fail auth attempt
          */
         if ($this->isValidUser($this->getUser())) {
-            return Redirect::route('admin.home');
+            return $this->successLoginRedirect();
         }
 
+        return $this->failedLoginRedirect();
+    }
+
+    protected function successLoginRedirect() {
+        return Redirect::route('admin.home');
+    }
+
+    protected function failedLoginRedirect() {
         return Redirect::route('admin.login')
             ->withInput(Input::except('password'))->withErrors(array('The user credentials are not correct or does not have access'));
+    }
+
+    protected static function attempt($attemptClosure, $credentials) {
+        return is_callable($attemptClosure) ? $attemptClosure($credentials) : false;
+    }
+
+    protected static function getClosureAttempt() {
+        return AdminOption::get('auth.attempt');
+    }
+
+    protected static function getClosureCheckAuth() {
+        return AdminOption::get('auth.check');
+    }
+
+    protected static function checkAuth($checkClosure) {
+        return is_callable($checkClosure) ? $checkClosure() : false;
+    }
+
+    public static function check() {
+        return self::checkAuth(self::getClosureCheckAuth());
     }
 
     protected function onFailValidation($validator)
@@ -127,7 +163,8 @@ class UserController extends BaseController
      */
     protected function getUser()
     {
-        return \User::where('email', '=', Input::get('username'))->first();
+        return \Mascame\Artificer\Auth\ArtificerUser::where('email', '=', Input::get('username'))
+            ->OrWhere('username', '=', Input::get('username'))->first();
     }
 
     /**
@@ -139,12 +176,12 @@ class UserController extends BaseController
         $role_colum = AdminOption::get('auth.role_column');
         if (in_array($user->$role_colum, AdminOption::get('auth.roles'))) {
 
-            $userdata = array(
+            $credentials = array(
                 'email' => Input::get('username'),
                 'password' => Input::get('password')
             );
 
-            if (Auth::attempt($userdata)) {
+            if (self::attempt(self::getClosureAttempt(), $credentials)) {
                 return true;
             }
         }
@@ -177,4 +214,28 @@ class UserController extends BaseController
         return Redirect::route('admin.showlogin');
     }
 
+
+    public function authFilter() {
+        $roles = AdminOption::get('auth.roles');
+        $role_column = AdminOption::get('auth.role_column');
+
+        if (Auth::guest()
+            && \Route::currentRouteName() != 'admin.showlogin'
+            && \Route::currentRouteName() != 'admin.login'
+        ) {
+            if (\Request::ajax()) {
+                return \Response::make('Unauthorized', 401);
+            } else {
+                return Redirect::route('admin.showlogin');
+            }
+        } else {
+            if (Auth::check()
+                && \Route::currentRouteName() != 'admin.logout'
+            ) {
+                if (!in_array(Auth::user()->$role_column, $roles)) {
+                    return Redirect::route('admin.logout');
+                }
+            }
+        }
+    }
 }

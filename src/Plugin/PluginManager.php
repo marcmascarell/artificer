@@ -1,7 +1,6 @@
 <?php namespace Mascame\Artificer\Plugin;
 
-use Mascame\Arrayer\Arrayer;
-use Mascame\Arrayer\Builder;
+use Mascame\Arrayer\Builder\ArrayBuilder;
 use Mascame\Artificer\Options\AdminOption;
 
 class PluginManager
@@ -116,7 +115,7 @@ class PluginManager
             }
         }
 
-        $builder = new Builder($plugins);
+        $builder = new ArrayBuilder($plugins);
         \File::put($this->pluginsConfigFile, $builder->getContent());
     }
 

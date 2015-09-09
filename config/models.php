@@ -3,16 +3,16 @@
 return [
 
 	'directories'      => [
-		app_path() . '/models'
+		app_path() . '/models',
 	],
 
 	'hidden'           => [
-		'BookAttribute',
-		'Metatag',
-		'PaymentArticle',
-
-//        'Page',
-		'Sharer'
+//		'BookAttribute',
+//		'Metatag',
+//		'PaymentArticle',
+//
+////        'Page',
+//		'Sharer'
 	],
 
 	'route_permission' => [

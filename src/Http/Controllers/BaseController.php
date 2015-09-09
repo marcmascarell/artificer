@@ -1,4 +1,4 @@
-<?php namespace Mascame\Artificer;
+<?php namespace Mascame\Artificer\Http\Controllers;
 
 use App;
 use Auth;
@@ -37,7 +37,7 @@ class BaseController extends Controller
         $this->theme = AdminOption::get('theme') . '::';
         $this->master_layout = 'base';
 
-        if (Auth::check()) {
+        if (UserController::check()) {
             $this->options = AdminOption::all();
 
             App::make('artificer-plugin-manager')->boot();

@@ -1,5 +1,10 @@
 <?php
 
+use Mascame\Artificer\Http\Controllers\ModelController as ModelController;
+use Mascame\Artificer\Http\Controllers\UserController as UserController;
+use Mascame\Artificer\Http\Controllers\PageController as PageController;
+use Mascame\Artificer\Http\Controllers\PluginController as PluginController;
+
 /*
  * Events to inject plugins wont work because routes are loaded before plugins
  */
@@ -18,7 +23,7 @@ Route::pattern('username', '[a-z0-9_-]{3,16}');
 
 // this works
 //Event::listen('artificer.routes.model', function() {
-//    Route::get('moco', array('uses' => 'Mascame\Artificer\ModelController@getRelatedFieldOutput'));
+//    Route::get('moco', array('uses' => ModelController::class . '@getRelatedFieldOutput'));
 //
 //});
 
@@ -28,7 +33,7 @@ Route::group(array(
 ),
     function () {
         Route::group(array('prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')), function () {
-            Route::get('install', array('as' => 'admin.install', 'uses' => 'Mascame\Artificer\PageController@install'));
+            Route::get('install', array('as' => 'admin.install', 'uses' => PageController::class . '@install'));
         });
     });
 
@@ -39,59 +44,59 @@ Route::group(array(
     function () {
         Route::group(array('prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')), function () {
 
-            Route::get('/', array('as' => 'admin.home', 'uses' => 'Mascame\Artificer\PageController@home'));
+            Route::get('/', array('as' => 'admin.home', 'uses' => PageController::class . '@home'));
 
             Route::group(array('prefix' => 'user'), function () {
                 Route::get('login',
-                    array('as' => 'admin.showlogin', 'uses' => 'Mascame\Artificer\UserController@showLogin'));
+                    array('as' => 'admin.showlogin', 'uses' => UserController::class . '@showLogin'));
                 Route::post('login',
-                    array('as' => 'admin.login', 'uses' => 'Mascame\Artificer\UserController@login'))->before('csrf');
+                    array('as' => 'admin.login', 'uses' => UserController::class . '@login'))->before('csrf');
                 Route::get('logout',
-                    array('as' => 'admin.logout', 'uses' => 'Mascame\Artificer\UserController@logout'));
+                    array('as' => 'admin.logout', 'uses' => UserController::class . '@logout'));
             });
 
             Route::group(array('prefix' => 'page'), function () {
                 Route::get('plugins',
-                    array('as' => 'admin.page.plugins', 'uses' => 'Mascame\Artificer\PluginController@plugins'));
+                    array('as' => 'admin.page.plugins', 'uses' => PluginController::class . '@plugins'));
                 Route::get('plugin/{slug}/install', array(
                     'as' => 'admin.page.plugin.install',
-                    'uses' => 'Mascame\Artificer\PluginController@installPlugin'
+                    'uses' => PluginController::class . '@installPlugin'
                 ));
                 Route::get('plugin/{slug}/uninstall', array(
                     'as' => 'admin.page.plugin.uninstall',
-                    'uses' => 'Mascame\Artificer\PluginController@uninstallPlugin'
+                    'uses' => PluginController::class . '@uninstallPlugin'
                 ));
             });
 
             Route::group(array('prefix' => 'model'), function () {
                 Route::get('{slug}',
-                    array('as' => 'admin.model.all', 'uses' => 'Mascame\Artificer\ModelController@all'));
+                    array('as' => 'admin.model.all', 'uses' => ModelController::class . '@all'));
                 Route::get('{slug}/create',
-                    array('as' => 'admin.model.create', 'uses' => 'Mascame\Artificer\ModelController@create'));
+                    array('as' => 'admin.model.create', 'uses' => ModelController::class . '@create'));
                 Route::post('{slug}/store',
-                    array('as' => 'admin.model.store', 'uses' => 'Mascame\Artificer\ModelController@store'));
+                    array('as' => 'admin.model.store', 'uses' => ModelController::class . '@store'));
                 Route::get('{slug}/filter',
-                    array('as' => 'admin.model.filter', 'uses' => 'Mascame\Artificer\ModelController@filter'));
+                    array('as' => 'admin.model.filter', 'uses' => ModelController::class . '@filter'));
                 Route::get('{slug}/{id}',
-                    array('as' => 'admin.model.show', 'uses' => 'Mascame\Artificer\ModelController@show'));
+                    array('as' => 'admin.model.show', 'uses' => ModelController::class . '@show'));
                 Route::get('{slug}/{id}/edit',
-                    array('as' => 'admin.model.edit', 'uses' => 'Mascame\Artificer\ModelController@edit'));
+                    array('as' => 'admin.model.edit', 'uses' => ModelController::class . '@edit'));
                 Route::get('{slug}/{id}/edit/{field}',
-                    array('as' => 'admin.model.field.edit', 'uses' => 'Mascame\Artificer\ModelController@field'));
+                    array('as' => 'admin.model.field.edit', 'uses' => ModelController::class . '@field'));
                 Route::put('{slug}/{id}',
-                    array('as' => 'admin.model.update', 'uses' => 'Mascame\Artificer\ModelController@update'));
+                    array('as' => 'admin.model.update', 'uses' => ModelController::class . '@update'));
                 Route::delete('{slug}/{id}',
-                    array('as' => 'admin.model.destroy', 'uses' => 'Mascame\Artificer\ModelController@destroy'));
+                    array('as' => 'admin.model.destroy', 'uses' => ModelController::class . '@destroy'));
 
                 Route::get('{slug}/{id}/field/{name}', array(
                     'as' => 'admin.model.field',
-                    'uses' => 'Mascame\Artificer\ModelController@getRelatedFieldOutput'
+                    'uses' => ModelController::class . '@getRelatedFieldOutput'
                 ));
 
                 Event::fire('artificer.routes.model');
                 Route::post('{slug}/{id}/upload', array(
                     'as' => 'admin.model.upload',
-                    'uses' => 'Mascame\Artificer\Plugins\Plupload\PluploadController@plupload'
+                    'uses' => '\Mascame\Artificer\Plugins\Plupload\PluploadController@plupload'
                 ));
             });
 

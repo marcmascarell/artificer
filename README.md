@@ -40,10 +40,20 @@ Add the Service Provider to `app/config` at the bottom of Providers:
 ```php
 Mascame\Artificer\ArtificerServiceProvider
 ```
-Publish assets and config
+Publish migrations and config
 
 ```sh
-php artisan artificer:publish
+php artisan vendor:publish --provider="Mascame\Artificer\ArtificerServiceProvider"
+```
+
+For only **config** add:
+```sh
+--tag="config"
+```
+
+For only **migrations** add:
+```sh
+--tag="migrations"
 ```
 
 Changing the theme
