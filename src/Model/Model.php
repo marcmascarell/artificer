@@ -3,7 +3,7 @@
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\ModelOption;
 use Route;
-use Str;
+use \Illuminate\Support\Str as Str;
 use View;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel

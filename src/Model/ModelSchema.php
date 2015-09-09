@@ -148,12 +148,11 @@ class ModelSchema
      */
     public function getClass($modelName)
     {
-        if (false !== $key = array_search($modelName, array_keys($this->models))) {
-            $modelName = array_keys($this->models);
-            $modelName = $modelName[$key];
-        }
+        if (! in_array($modelName, array_keys($this->models))) return null;
 
-        return '\\' . $modelName;
+        $model = $this->models[$modelName];
+
+        return $model['namespace'] . '\\' . $model['name'];
     }
 
 }

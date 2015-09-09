@@ -27,7 +27,7 @@
         "sami/sami": "2.0.0"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "Mascame\\Artificer\\": "src/"
         }
     },

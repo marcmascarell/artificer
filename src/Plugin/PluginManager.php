@@ -44,7 +44,7 @@ class PluginManager
     /**
      * @var string
      */
-    public $pluginsConfigFile = '/config/packages/mascame/artificer/plugins.php';
+    public $pluginsConfigFile = '/admin/plugins.php';
 
     /**
      * @param null $pluginNamespace
@@ -58,7 +58,7 @@ class PluginManager
             $this->addPlugin($pluginNamespace);
         }
 
-        $this->pluginsConfigFile = ($pluginsConfigFile) ? $pluginsConfigFile : app_path() . $this->pluginsConfigFile;
+        $this->pluginsConfigFile = ($pluginsConfigFile) ? $pluginsConfigFile : config_path() . $this->pluginsConfigFile;
     }
 
 

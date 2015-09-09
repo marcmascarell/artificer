@@ -2,7 +2,7 @@
 
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\FieldOption;
-use Str;
+use \Illuminate\Support\Str as Str;
 
 class FieldParser
 {
@@ -12,7 +12,7 @@ class FieldParser
 
     public function __construct()
     {
-        $this->types = AdminOption::get('types');
+        $this->types = AdminOption::get('fields.types');
     }
 
     /**

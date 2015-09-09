@@ -1,6 +1,8 @@
 <?php namespace Mascame\Artificer;
 
 use App;
+use Mascame\Artificer\Http\Controllers\BaseController;
+use Mascame\Artificer\Http\Controllers\BaseModelController;
 use Mascame\Artificer\Options\AdminOption;
 
 class Artificer

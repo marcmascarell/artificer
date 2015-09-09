@@ -10,7 +10,7 @@ class PageController extends BaseController
     public function home()
     {
         $hidden_models = AdminOption::get('models.hidden');
-        dd($this->modelObject);
+
         $non_hidden_models = array_diff(array_keys($this->modelObject->schema->models), $hidden_models);
 
         $first_model = head($non_hidden_models);
@@ -21,7 +21,6 @@ class PageController extends BaseController
 
     public function install()
     {
-
         $this->modelObject = App::make('artificer-model');
 
         try {

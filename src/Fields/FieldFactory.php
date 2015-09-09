@@ -3,7 +3,7 @@
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\FieldOption;
-use Str;
+use \Illuminate\Support\Str as Str;
 
 class FieldFactory
 {

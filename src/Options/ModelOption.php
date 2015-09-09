@@ -15,7 +15,7 @@ class ModelOption extends Option
      */
     public static function get($key = '', $model = null)
     {
-        return Option::get(self::getPrefix($model) . '.' . $key);
+        return AdminOption::get(self::getPrefix($model) . '.' . $key);
     }
 
     /**
@@ -24,7 +24,7 @@ class ModelOption extends Option
      */
     public static function all($model = null)
     {
-        return Option::get(self::getPrefix($model));
+        return AdminOption::get(self::getPrefix($model));
     }
 
     /**
@@ -34,7 +34,7 @@ class ModelOption extends Option
      */
     public static function has($key = '', $model = null)
     {
-        return Option::has(self::getPrefix($model) . '.' . $key);
+        return AdminOption::has(self::getPrefix($model) . '.' . $key);
     }
 
     /**
@@ -43,7 +43,7 @@ class ModelOption extends Option
      */
     public static function model($model = null)
     {
-        return Option::get(self::getPrefix($model));
+        return AdminOption::get(self::getPrefix($model));
     }
 
     /**
@@ -63,7 +63,7 @@ class ModelOption extends Option
     {
         $key = (isset($key) && !empty($key)) ? '.' . $key : null;
 
-        return Option::get(self::$default_model . $key);
+        return AdminOption::get(self::$default_model . $key);
     }
 
     /**

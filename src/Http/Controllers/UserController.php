@@ -39,7 +39,7 @@ class UserController extends BaseController
         if (Session::has($this->ban_key)) {
             $ban = Carbon::parse(Session::get($this->ban_key));
 
-            if (!$ban->isPast()) {
+            if (! $ban->isPast()) {
                 return true;
             }
         }
@@ -83,9 +83,7 @@ class UserController extends BaseController
      */
     public function showLogin()
     {
-        if (Auth::check()) {
-            return Redirect::route('admin.home');
-        }
+        if (Auth::check()) return Redirect::route('admin.home');
 
         return View::make($this->getView('pages.login'));
     }
@@ -184,6 +182,7 @@ class UserController extends BaseController
             if (self::attempt(self::getClosureAttempt(), $credentials)) {
                 return true;
             }
+
         }
 
         return false;

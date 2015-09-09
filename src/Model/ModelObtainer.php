@@ -25,7 +25,7 @@ class ModelObtainer
      * @param $directory
      * @return array
      */
-    protected function scanModelsDirectory($directory)
+    protected function scanModelsDirectory($directory, $namespace = null)
     {
         $models = array();
 
@@ -38,6 +38,7 @@ class ModelObtainer
 
             $models[$modelName] = array(
                 'name' => $modelName,
+                'namespace' => $namespace,
                 'route' => $this->makeModelRoute($modelName),
                 'fake' => false
             );
@@ -84,8 +85,12 @@ class ModelObtainer
         $models = array();
         $model_directories = AdminOption::get('models.directories');
 
-        foreach ($model_directories as $directory) {
-            $models[] = $this->scanModelsDirectory($directory);
+        foreach ($model_directories as $namespace => $directory) {
+            if (! file_exists($directory)) {
+                throw new \Exception("Artificer can't find your models directory: '{$directory}'. Ensure that path exists and is properly set in your models config");
+            }
+
+            $models[] = $this->scanModelsDirectory($directory, $namespace);
         }
 
         $models = array_merge($this->mergeModelDirectories($models), $this->getFakeModels());
