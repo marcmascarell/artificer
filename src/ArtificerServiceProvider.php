@@ -40,6 +40,10 @@ class ArtificerServiceProvider extends ServiceProvider {
 			__DIR__.'/../database/seeds/' => database_path('seeds')
 		], 'seeds');
 
+        $this->publishes([
+            __DIR__.'/../resources/assets/' => public_path('packages/mascame/' . $this->name),
+        ], 'public');
+
         $this->requireFiles();
 
 		$this->addModel();

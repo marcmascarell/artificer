@@ -35,7 +35,7 @@ class FieldFactory
     {
         $this->classMap = AdminOption::get('classmap');
         $this->modelObject = $model;
-        $this->parser = new FieldParser();
+        $this->parser = new FieldParser(AdminOption::get('fields.types'));
     }
 
     /**

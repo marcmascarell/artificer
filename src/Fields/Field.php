@@ -61,8 +61,8 @@ class Field implements FieldInterface
 
         $this->options = new FieldOptions($this->name, $this->type);
 
-        $this->relation = new FieldRelation($relation, $this->options->getExistent('relationship'));
-        $this->attributes = new FieldAttributes($this->options->getExistent('attributes'), $this->options);
+        $this->relation = new FieldRelation($relation, $this->options->getExistant('relationship'));
+        $this->attributes = new FieldAttributes($this->options->getExistant('attributes'), $this->options);
 
         if (!$this->attributes->has('class')) {
             $this->attributes->add(array('class' => 'form-control'));
@@ -76,7 +76,7 @@ class Field implements FieldInterface
 
     public function getWiki()
     {
-        return $this->options->getExistent('wiki');
+        return $this->options->getExistant('wiki');
     }
 
     /**
@@ -87,7 +87,7 @@ class Field implements FieldInterface
     {
         $pieces = explode('\\', $type_class);
 
-        return camel_case(end($pieces));
+        return strtolower(end($pieces));
     }
 
 
@@ -113,7 +113,7 @@ class Field implements FieldInterface
      */
     public function boot()
     {
-        if (!$this->options->has('widgets')) {
+        if (! $this->options->has('widgets')) {
             return null;
         }
 
@@ -151,7 +151,7 @@ class Field implements FieldInterface
      */
     public function getValue($value = null)
     {
-        $value = ($value) ? $value : $this->options->getExistent('default', null);
+        $value = ($value) ? $value : $this->options->getExistant('default', null);
 
         if ($this->options->has('show')) {
             $show = $this->options->get('show');

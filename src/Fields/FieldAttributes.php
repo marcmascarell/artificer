@@ -17,7 +17,7 @@ class FieldAttributes
      */
     public function all()
     {
-        return $this->fieldOptions->getExistent('attributes', array());
+        return $this->fieldOptions->getExistant('attributes', array());
     }
 
     /**

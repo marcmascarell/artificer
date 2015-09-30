@@ -6,13 +6,27 @@ use \Illuminate\Support\Str as Str;
 
 class FieldParser
 {
+    /**
+     * @var array
+     */
+    protected $types = [];
 
-    public $types;
-    public $type_reason;
+    /**
+     * @var array
+     */
+    public $typeReason = [];
 
-    public function __construct()
+    public function __construct(array $types)
     {
-        $this->types = AdminOption::get('fields.types');
+        $this->types = $types;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTypes()
+    {
+        return $this->types;
     }
 
     /**
@@ -206,7 +220,7 @@ class FieldParser
      */
     protected function setTypeReason($name, $value)
     {
-        $this->type_reason[$name] = $value;
+        $this->typeReason[$name] = $value;
     }
 
 }
