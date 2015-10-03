@@ -6,6 +6,7 @@ return array(
 
 //	'default_route' => route('admin.model.all', array('slug' => 'user'), $absolute = true),
 
+	'route_prefix'        => 'admin',
 	'theme'        => 'artificer-default-theme',
 
 	'list'         => [

@@ -3,6 +3,7 @@
 use Illuminate\Support\ServiceProvider;
 use App;
 use Config;
+use Illuminate\Support\Str;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
@@ -26,33 +27,27 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->loadTranslationsFrom(__DIR__.'/../resources/lang', $this->name);
+        // Avoid bloating the App with files that will not be needed
+		if (! $this->isBootable(request()->path(), config('admin.route_prefix'))) return;
 
-		$this->publishes([
-			__DIR__.'/../config/' => config_path($this->name) .'/',
-		]);
-
-		$this->publishes([
-			__DIR__.'/../database/migrations/' => database_path('migrations')
-		], 'migrations');
-
-		$this->publishes([
-			__DIR__.'/../database/seeds/' => database_path('seeds')
-		], 'seeds');
-
-        $this->publishes([
-            __DIR__.'/../resources/assets/' => public_path('packages/mascame/' . $this->name),
-        ], 'public');
-
+		$this->addPublishing();
         $this->requireFiles();
-
 		$this->addModel();
 		$this->addLocalization();
 		$this->addPluginManager();
-
-//		$this->addPublishCommand();
-//		dd(config($this->name));
 	}
+
+    /**
+     * Determines if is on admin
+     *
+     * @return bool
+     */
+    public function isBootable($path, $routePrefix = null) {
+        return (
+            App::runningInConsole() && ! App::runningUnitTests()
+            || ($path == $routePrefix || Str::startsWith($path, $routePrefix . '/'))
+        );
+    }
 
 	private function requireFiles()
 	{
@@ -60,16 +55,26 @@ class ArtificerServiceProvider extends ServiceProvider {
 		require_once __DIR__ . '/Http/routes.php';
 	}
 
-	private function addPublishCommand()
-	{
-		$command_key = 'artificer-command-publish';
+    private function addPublishing()
+    {
+        $this->publishes([
+            __DIR__.'/../config/' => config_path($this->name) .'/',
+        ]);
 
-		App::bind($command_key, function () {
-			return new PublishCommand();
-		});
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', $this->name);
 
-		$this->commands($command_key);
-	}
+        $this->publishes([
+            __DIR__.'/../database/migrations/' => database_path('migrations')
+        ], 'migrations');
+
+        $this->publishes([
+            __DIR__.'/../database/seeds/' => database_path('seeds')
+        ], 'seeds');
+
+        $this->publishes([
+            __DIR__.'/../resources/assets/' => public_path('packages/mascame/' . $this->name),
+        ], 'public');
+    }
 
 	private function addModel()
 	{
