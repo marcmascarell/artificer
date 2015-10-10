@@ -60,11 +60,11 @@ Route::group(array(
                     array('as' => 'admin.page.plugins', 'uses' => PluginController::class . '@plugins'));
                 Route::get('plugin/{slug}/install', array(
                     'as' => 'admin.page.plugin.install',
-                    'uses' => PluginController::class . '@installPlugin'
+                    'uses' => PluginController::class . '@install'
                 ));
                 Route::get('plugin/{slug}/uninstall', array(
                     'as' => 'admin.page.plugin.uninstall',
-                    'uses' => PluginController::class . '@uninstallPlugin'
+                    'uses' => PluginController::class . '@uninstall'
                 ));
             });
 

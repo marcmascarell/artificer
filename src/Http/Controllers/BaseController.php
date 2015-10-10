@@ -40,7 +40,7 @@ class BaseController extends Controller
         if (UserController::check()) {
             $this->options = AdminOption::all();
 
-            App::make('artificer-plugin-manager')->boot();
+            App::make('ArtificerPluginManager')->boot();
             $this->modelObject = App::make('artificer-model');
 
             if ($this->isStandAlone()) {

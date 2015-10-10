@@ -40,7 +40,7 @@ class PageController extends BaseController
             \Auth::login($user);
 
             return \View::make($this->getView('install'))
-                ->with('plugins', App::make('artificer-plugin-manager')->getAll());
+                ->with('plugins', App::make('ArtificerPluginManager')->getAll());
 //			dd('install process... here we will scan models, maybe help with config and first user setup');
         }
 

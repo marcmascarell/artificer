@@ -6,6 +6,4 @@ interface PluginInterface
 
     public function boot();
 
-    public function meta();
-
 } 

@@ -4,10 +4,10 @@ use Illuminate\Support\ServiceProvider;
 use App;
 use Config;
 use Illuminate\Support\Str;
+use Mascame\Artificer\Extension\PluginManager;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
-use Mascame\Artificer\Plugin\PluginManager;
 
 
 class ArtificerServiceProvider extends ServiceProvider {
@@ -27,14 +27,10 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-        // Avoid bloating the App with files that will not be needed
-		if (! $this->isBootable(request()->path(), config('admin.route_prefix'))) return;
+        if (! Artificer::isBooted()) return;
 
 		$this->addPublishing();
         $this->requireFiles();
-		$this->addModel();
-		$this->addLocalization();
-		$this->addPluginManager();
 	}
 
     /**
@@ -43,9 +39,10 @@ class ArtificerServiceProvider extends ServiceProvider {
      * @return bool
      */
     public function isBootable($path, $routePrefix = null) {
+        if (App::runningInConsole() || App::runningUnitTests()) return true;
+
         return (
-            App::runningInConsole() && ! App::runningUnitTests()
-            || ($path == $routePrefix || Str::startsWith($path, $routePrefix . '/'))
+            $path == $routePrefix || Str::startsWith($path, $routePrefix . '/')
         );
     }
 
@@ -90,13 +87,6 @@ class ArtificerServiceProvider extends ServiceProvider {
 		});
 	}
 
-	private function addPluginManager()
-	{
-		App::singleton('artificer-plugin-manager', function () {
-			return new PluginManager();
-		});
-	}
-
 	/**
 	 * Register the service provider.
 	 *
@@ -104,8 +94,20 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$configPath = __DIR__ . '/../config/admin.php';
-		$this->mergeConfigFrom($configPath, $this->name);
+        $configPath = __DIR__ . '/../config/admin.php';
+        $this->mergeConfigFrom($configPath, $this->name);
+
+        // Avoid bloating the App with files that will not be needed
+        if (! $this->isBootable(request()->path(), config('admin.route_prefix'))) return;
+
+        $this->addModel();
+        $this->addLocalization();
+
+		App::singleton('ArtificerPluginManager', function () {
+			return new PluginManager(config_path() . '/'. $this->name .'/plugins.php');
+		});
+
+        Artificer::$booted = true;
 	}
 
 	/**
