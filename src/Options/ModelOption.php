@@ -5,7 +5,7 @@ use Mascame\Artificer\Model\Model;
 class ModelOption extends Option
 {
 
-    public static $key = 'models/';
+    public static $key = 'models.';
     public static $default_model = 'models.default_model';
 
     /**

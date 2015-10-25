@@ -21,7 +21,7 @@ class PluginController extends BaseController
 
         App::make('ArtificerPluginManager')->installer()->install($plugin);
 
-        \Redirect::route('admin.page.plugins');
+        return \Redirect::route('admin.page.plugins');
     }
 
     public function uninstall($plugin)
@@ -30,7 +30,7 @@ class PluginController extends BaseController
 
         App::make('ArtificerPluginManager')->installer()->uninstall($plugin);
 
-        \Redirect::route('admin.page.plugins');
+        return \Redirect::route('admin.page.plugins');
     }
 
     protected function getPluginSlug($plugin) {

@@ -7,6 +7,8 @@ abstract class AbstractPlugin implements PluginInterface
 {
 
     /**
+     * Namespace will automatically be set if empty
+     *
      * @var string
      */
     public $namespace;
@@ -55,19 +57,6 @@ abstract class AbstractPlugin implements PluginInterface
      * @var PluginOption
      */
     protected $option;
-
-    /**
-     * Todo on manager
-     * get ->namespace
-     * mount slug using namespace
-     * options
-     *
-     * @param $namespace
-     */
-//    public function __construct($namespace)
-//    {
-//        $this->option = new PluginOption($namespace, $this->configFile);
-//    }
 
     abstract public function boot();
 

@@ -1,13 +1,18 @@
 <?php namespace Mascame\Artificer;
 
+
 use Illuminate\Support\ServiceProvider;
 use App;
 use Config;
 use Illuminate\Support\Str;
+use Mascame\Artificer\Extension\Booter;
 use Mascame\Artificer\Extension\PluginManager;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
+use Mascame\Extender\Event\LaravelEventDispatcher;
+use Mascame\Extender\Installer\FileInstaller;
+use Mascame\Extender\Installer\FileWriter;
 
 
 class ArtificerServiceProvider extends ServiceProvider {
@@ -104,8 +109,24 @@ class ArtificerServiceProvider extends ServiceProvider {
         $this->addLocalization();
 
 		App::singleton('ArtificerPluginManager', function () {
-			return new PluginManager(config_path() . '/'. $this->name .'/plugins.php');
+            $pluginsPath = config_path() . '/'. $this->name .'/plugins.php';
+
+			return new PluginManager(
+				new FileInstaller(new FileWriter(), $pluginsPath),
+                new Booter(),
+				new LaravelEventDispatcher()
+			);
 		});
+
+//		$am = new AssetManager();
+//		$am->set('jquery', new HttpAsset('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'));
+//		$am->set('artificer', new AssetCollection(array(
+//			new AssetReference($am, 'jquery'),
+//			new FileAsset(__DIR__.'/../resources/assets/core/restfulizer.js'),
+//		)));
+//
+//        $ac = new AssetCollection($am);
+//        var_dump($ac->dump()); die();
 
         Artificer::$booted = true;
 	}

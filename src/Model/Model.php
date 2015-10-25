@@ -1,10 +1,10 @@
 <?php namespace Mascame\Artificer\Model;
 
-use Mascame\Artificer\Options\AdminOption;
-use Mascame\Artificer\Options\ModelOption;
+use View;
 use Route;
 use \Illuminate\Support\Str as Str;
-use View;
+use Mascame\Artificer\Options\AdminOption;
+use Mascame\Artificer\Options\ModelOption;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
 class Model
@@ -155,15 +155,13 @@ class Model
         }
 
         $this->name = $this->getCurrentModelName();
-//		dd('pon');
+
         $this->class = $this->schema->getClass($this->name);
         $this->model = $this->schema->getInstance($this->name);
         $this->table = $this->model->getTable();
         $this->columns = $this->schema->getColumns($this->table);
         $this->fillable = $this->model->getFillable();
         $this->options = $this->getOptions();
-
-
     }
 
     /**
@@ -215,9 +213,7 @@ class Model
      */
     public function getRouteName($model = null)
     {
-        if ($model) {
-            return $this->schema->models[$model]['route'];
-        }
+        if ($model) return $this->schema->models[$model]['route'];
 
         return (isset($this->schema->models[self::$current]['route'])) ? $this->schema->models[self::$current]['route'] : null;
     }

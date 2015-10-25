@@ -3,8 +3,7 @@
 use App;
 use Mascame\Artificer\Http\Controllers\BaseController;
 use Mascame\Artificer\Http\Controllers\BaseModelController;
-use Mascame\Artificer\Options\AdminOption;
-use Mascame\Artificer\Plugin\PluginManager;
+use Mascame\Artificer\Extension\PluginManager;
 
 class Artificer
 {

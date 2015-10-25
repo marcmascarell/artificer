@@ -1,34 +1,35 @@
 {
-    "name": "mascame/artificer",
-    "description": "Artificer is an admin package built on top of your Eloquent models.",
-    "homepage": "https://github.com/marcmascarell/laravel-artificer",
-    "keywords": [
-        "laravel",
-        "admin",
-        "artificer",
-        "admin interface",
-        "eloquent admin",
-        "administration"
-    ],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Marc Mascarell",
-            "email": "marcmascarell@gmail.com"
-        }
-    ],
-    "require": {
-      "php": ">=5.4.0",
-      "mascame/notify": "1.0.0",
-      "mascame/arrayer": "^3.1"
-    },
-    "require-dev": {
-        "sami/sami": "2.0.0",
-        "codeception/codeception": "2.*"
-    },
-    "autoload": {
-        "psr-4": {
-            "Mascame\\Artificer\\": "src/"
-        }
+  "name": "mascame/artificer",
+  "description": "Artificer is an admin package built on top of your Eloquent models.",
+  "homepage": "https://github.com/marcmascarell/laravel-artificer",
+  "keywords": [
+    "laravel",
+    "admin",
+    "artificer",
+    "admin interface",
+    "eloquent admin",
+    "administration"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marc Mascarell",
+      "email": "marcmascarell@gmail.com"
     }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "mascame/notify": "1.0.0",
+    "mascame/extender": "dev-master",
+    "laravelcollective/html": "5.1.*"
+  },
+  "require-dev": {
+    "sami/sami": "2.0.0",
+    "codeception/codeception": "2.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mascame\\Artificer\\": "src/"
+    }
+  }
 }

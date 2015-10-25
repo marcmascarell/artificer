@@ -120,7 +120,11 @@ class Field implements FieldInterface
         $widgets = $this->options->get('widgets');
 
         foreach ($widgets as $widget) {
-            $this->addWidget(App::make($widget));
+            try {
+                $this->addWidget(App::make($widget));
+            } catch (\Exception $e) {
+                throw new \Exception("Widget '{$widget}' was not found");
+            }
         }
     }
 

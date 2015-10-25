@@ -1,5 +1,3 @@
-// restfulizer.js
-
 /**
  * Restfulize any hiperlink that contains a data-method attribute by
  * creating a mini form with the specified method and adding a trigger

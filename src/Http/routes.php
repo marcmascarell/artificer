@@ -28,7 +28,7 @@ Route::pattern('username', '[a-z0-9_-]{3,16}');
 //});
 
 Route::group(array(
-    'prefix' => LaravelLocalization::setLocale(),
+    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
     'before' => 'artificer-localization|LaravelLocalizationRedirectFilter'
 ),
     function () {
@@ -38,7 +38,7 @@ Route::group(array(
     });
 
 Route::group(array(
-    'prefix' => LaravelLocalization::setLocale(),
+    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
     'before' => 'artificer-auth|artificer-localization|LaravelLocalizationRedirectFilter'
 ),
     function () {
@@ -134,12 +134,12 @@ Route::group(array(
                 'uses' => 'Rap2hpoutre\LaravelLogViewer\LogViewerController@index'
             ));
 
-
-            $pluginRoutes = \Mascame\Artificer\Plugin\PluginManager::getRoutes();
-
-            foreach ($pluginRoutes as $pluginNamespace => $closure) {
-                $closure();
-            }
+        // Todo
+//            $pluginRoutes = \Mascame\Artificer\Plugin\PluginManager::getRoutes();
+//
+//            foreach ($pluginRoutes as $pluginNamespace => $closure) {
+//                $closure();
+//            }
 
 
         });
