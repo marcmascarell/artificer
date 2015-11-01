@@ -1,7 +1,5 @@
 <?php namespace Mascame\Artificer\Fields;
 
-use Mascame\Artificer\Options\AdminOption;
-use Mascame\Artificer\Options\FieldOption;
 use \Illuminate\Support\Str as Str;
 
 class FieldParser
@@ -35,7 +33,7 @@ class FieldParser
      */
     public function parse($field)
     {
-        $type = $this->autodetectType($field);
+        $type = $this->detectType($field);
 
         if (isset($this->types[$type]['onParse'])) {
             $this->types[$type]['onParse']($field, $type);
@@ -150,22 +148,6 @@ class FieldParser
 
     /**
      * @param $name
-     * @return bool|mixed
-     */
-    public function isTypeInModelConfig($name)
-    {
-        if (FieldOption::has('type', $name) || FieldOption::has('relationship.type', $name)) {
-            $this->setTypeReason($name, 'set by user in {model}.fields');
-
-            return (FieldOption::has('type', $name)) ? FieldOption::get('type',
-                $name) : FieldOption::get('relationship.type', $name);
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $name
      * @param $types
      * @return bool|int|string
      */
@@ -191,20 +173,20 @@ class FieldParser
      * @param $types
      * @return bool|int|mixed|string
      */
-    public function autodetectType($name)
+    public function detectType($name)
     {
-        if ($type = $this->isTypeInModelConfig($name)) {
-            return $type;
-        }
         if ($type = $this->matchesRegex($name, $this->types)) {
             return $type;
         }
+
         if ($this->isTypeEqual($name, $this->types)) {
             return $name;
         }
+
         if ($type = $this->isUserType($name, $this->types)) {
             return $type;
         }
+
         if ($type = $this->isTypeSimilar($name, $this->types)) {
             return $type;
         }

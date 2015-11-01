@@ -7,10 +7,11 @@ use Config;
 use Illuminate\Support\Str;
 use Mascame\Artificer\Extension\Booter;
 use Mascame\Artificer\Extension\PluginManager;
+use Mascame\Artificer\Extension\WidgetManager;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
-use Mascame\Extender\Event\LaravelEventDispatcher;
+use Mascame\Extender\Event\Event;
 use Mascame\Extender\Installer\FileInstaller;
 use Mascame\Extender\Installer\FileWriter;
 
@@ -92,6 +93,29 @@ class ArtificerServiceProvider extends ServiceProvider {
 		});
 	}
 
+	private function addManagers()
+	{
+		App::singleton('ArtificerPluginManager', function () {
+			$pluginsPath = config_path() . '/'. $this->name .'/plugins.php';
+
+			return new PluginManager(
+				new FileInstaller(new FileWriter(), $pluginsPath),
+				new Booter(),
+				new Event(app('events'))
+			);
+		});
+
+		App::singleton('ArtificerWidgetManager', function () {
+			$widgetsPath = config_path() . '/'. $this->name .'/widgets.php';
+
+			return new WidgetManager(
+				new FileInstaller(new FileWriter(), $widgetsPath),
+				new Booter(),
+				new Event(app('events'))
+			);
+		});
+	}
+
 	/**
 	 * Register the service provider.
 	 *
@@ -107,16 +131,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 
         $this->addModel();
         $this->addLocalization();
-
-		App::singleton('ArtificerPluginManager', function () {
-            $pluginsPath = config_path() . '/'. $this->name .'/plugins.php';
-
-			return new PluginManager(
-				new FileInstaller(new FileWriter(), $pluginsPath),
-                new Booter(),
-				new LaravelEventDispatcher()
-			);
-		});
+        $this->addManagers();
 
 //		$am = new AssetManager();
 //		$am->set('jquery', new HttpAsset('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'));

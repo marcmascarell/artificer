@@ -78,8 +78,7 @@ class BaseModelController extends BaseController
             return $this->fields;
         }
 
-        $fieldfactory = new FieldFactory($this->modelObject);
-        $this->fields = $fieldfactory->makeFields($data);
+        $this->fields = (new FieldFactory($this->modelObject))->makeFields($data);
 
         View::share('fields', $this->fields);
 

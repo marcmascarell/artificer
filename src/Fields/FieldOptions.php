@@ -38,9 +38,13 @@ class FieldOptions
      * @param string $key
      * @return mixed
      */
-    public function get($key)
+    public function get($key, $default = null)
     {
-        return $this->options[$key];
+        if ($this->has($key)) {
+            return $this->options[$key];
+        }
+
+        return $default;
     }
 
 
@@ -97,19 +101,5 @@ class FieldOptions
 
         // Refresh options
         return $this->all();
-    }
-
-    /**
-     * @param $key
-     * @param array $default
-     * @return array|mixed
-     */
-    public function getExistant($key, $default = array())
-    {
-        if ($this->has($key)) {
-            return $this->get($key);
-        }
-
-        return $default;
     }
 }

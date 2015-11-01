@@ -55,15 +55,18 @@ Route::group(array(
                     array('as' => 'admin.logout', 'uses' => UserController::class . '@logout'));
             });
 
-            Route::group(array('prefix' => 'page'), function () {
-                Route::get('plugins',
-                    array('as' => 'admin.page.plugins', 'uses' => PluginController::class . '@plugins'));
-                Route::get('plugin/{slug}/install', array(
-                    'as' => 'admin.page.plugin.install',
+            Route::group(array('prefix' => 'plugins'), function () {
+                Route::get('', array(
+                    'as' => 'admin.plugins',
+                    'uses' => PluginController::class . '@plugins')
+                );
+
+                Route::get('{slug}/install', array(
+                    'as' => 'admin.plugin.install',
                     'uses' => PluginController::class . '@install'
                 ));
-                Route::get('plugin/{slug}/uninstall', array(
-                    'as' => 'admin.page.plugin.uninstall',
+                Route::get('{slug}/uninstall', array(
+                    'as' => 'admin.plugin.uninstall',
                     'uses' => PluginController::class . '@uninstall'
                 ));
             });

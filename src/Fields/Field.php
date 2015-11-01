@@ -2,37 +2,48 @@
 
 use App;
 use Event;
-use Illuminate\Database\Query\Builder;
-use Mascame\Artificer\Localization;
 use Mascame\Artificer\Widgets\AbstractWidget;
 
 class Field implements FieldInterface
 {
+    use Filterable;
 
-    public $type;
-    public $title;
+    /**
+     * @var
+     */
     public $name;
-    public $modelName;
-    public $configKey;
-    public $configFieldKey;
+
+    /**
+     * @var string
+     */
+    public $type;
+
+    /**
+     * @var mixed
+     */
+    public $title;
+
+    /**
+     * @var null
+     */
     public $value;
-    public $output;
+
     public static $widgets = array();
     /**
      * @var FieldOptions
      */
     public $options;
-    public $lists = array();
+
     /**
      * @var FieldRelation
      */
     public $relation;
+
     /**
-     * @var Localization
+     * @var mixed
      */
-    public $localization;
-    public $locale;
     public $wiki;
+
     /**
      * @var FieldAttributes
      */
@@ -52,31 +63,25 @@ class Field implements FieldInterface
      * @param $modelName
      * @param $relation
      */
-    public function __construct($name, $value = null, $modelName, $relation)
+    public function __construct($name, $value = null, $relation)
     {
         $this->name = $name;
         $this->value = $value;
-        $this->modelName = $modelName;
         $this->type = $this->getType(get_called_class());
 
         $this->options = new FieldOptions($this->name, $this->type);
 
-        $this->relation = new FieldRelation($relation, $this->options->getExistant('relationship'));
-        $this->attributes = new FieldAttributes($this->options->getExistant('attributes'), $this->options);
+        $this->relation = new FieldRelation($relation, $this->options->get('relationship'));
+        $this->attributes = new FieldAttributes($this->options->get('attributes'), $this->options);
 
         if (!$this->attributes->has('class')) {
             $this->attributes->add(array('class' => 'form-control'));
         }
 
-        $this->title = $this->getTitle($this->name);
-        $this->wiki = $this->getWiki();
+        $this->title = $this->options->get('title', $this->name);
+        $this->wiki = $this->options->get('wiki');
 
         $this->boot();
-    }
-
-    public function getWiki()
-    {
-        return $this->options->getExistant('wiki');
     }
 
     /**
@@ -141,12 +146,12 @@ class Field implements FieldInterface
      * @param null $value
      * @return null
      */
-    public function display($value = null)
-    {
-        $this->value = $this->getValue($value);
-
-        return $this->show();
-    }
+//    public function display($value = null)
+//    {
+//        $this->value = $this->getValue($value);
+//
+//        return $this->show();
+//    }
 
 
     /**
@@ -155,7 +160,7 @@ class Field implements FieldInterface
      */
     public function getValue($value = null)
     {
-        $value = ($value) ? $value : $this->options->getExistant('default', null);
+        $value = ($value) ? $value : $this->options->get('default');
 
         if ($this->options->has('show')) {
             $show = $this->options->get('show');
@@ -282,21 +287,6 @@ class Field implements FieldInterface
         return '(guarded) ' . $this->show();
     }
 
-
-    /**
-     * @param $name
-     * @return mixed
-     */
-    public function getTitle($name)
-    {
-        if ($this->options->has('title')) {
-            return $this->options->get('title');
-        }
-
-        return $name;
-    }
-
-
     /**
      * @return bool
      */
@@ -328,32 +318,6 @@ class Field implements FieldInterface
     public function isRelation()
     {
         return $this->relation->isRelation();
-    }
-
-    /**
-     * @param $query Builder
-     * @param $value
-     * @return mixed
-     */
-    public function filter($query, $value)
-    {
-        return $query->where($query, $value);
-    }
-
-    /**
-     * @return bool
-     */
-    public function displayFilter()
-    {
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasFilter()
-    {
-        return ($this->displayFilter()) ? true : false;
     }
 
     public static function get($name)

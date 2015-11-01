@@ -49,7 +49,7 @@ class FieldFactory
     {
         $fieldClass = $this->getFieldTypeClass($type);
 
-        return new $fieldClass($field, $value, $this->modelObject->name, $this->isRelation($field));
+        return new $fieldClass($field, $value, $this->isRelation($field));
     }
 
     /**
@@ -60,10 +60,10 @@ class FieldFactory
     {
         if (isset($this->classMap[$type])) {
             return $this->classMap[$type];
-        } else {
-            if (class_exists($this->namespace . Str::studly($type))) {
-                return $this->namespace . Str::studly($type);
-            }
+        }
+
+        if (class_exists($this->namespace . Str::studly($type))) {
+            return $this->namespace . Str::studly($type);
         }
 
         throw new \Exception("No supported Field type [{$type}]");
@@ -80,10 +80,32 @@ class FieldFactory
         $this->withCustomFields();
 
         foreach ($this->withRelated() as $field) {
-            $this->fields[$field] = $this->make($this->parser->parse($field), $field, $this->fieldValue($field));
+
+            $fieldType = $this->getTypeFromConfig($field);
+
+            if (!$fieldType) $fieldType = $this->parser->parse($field);
+
+            $this->fields[$field] = $this->make(
+                $fieldType,
+                $field,
+                $this->fieldValue($field)
+            );
         }
 
         return $this->fields;
+    }
+
+    /**
+     * @param $name
+     * @return bool|mixed
+     */
+    protected function getTypeFromConfig($name) {
+        if (FieldOption::has('type', $name) || FieldOption::has('relationship.type', $name)) {
+            return (FieldOption::has('type', $name)) ? FieldOption::get('type',
+                $name) : FieldOption::get('relationship.type', $name);
+        }
+
+        return false;
     }
 
     /**
@@ -143,7 +165,7 @@ class FieldFactory
     /**
      * @return array
      */
-    protected function addCostumFields()
+    protected function addCustomFields()
     {
         if (isset($this->modelObject->options['fields'])) {
             foreach ($this->modelObject->options['fields'] as $name => $data) {
@@ -161,7 +183,7 @@ class FieldFactory
      */
     protected function withCustomFields()
     {
-        return $this->addCostumFields();
+        return $this->addCustomFields();
     }
 
     /**

@@ -17,7 +17,7 @@ class FieldAttributes
      */
     public function all()
     {
-        return $this->fieldOptions->getExistant('attributes', array());
+        return $this->fieldOptions->get('attributes', []);
     }
 
     /**
@@ -26,7 +26,7 @@ class FieldAttributes
      */
     public function get($key)
     {
-        return (isset($this->options[$key])) ? $this->options[$key] : array();
+        return (isset($this->options[$key])) ? $this->options[$key] : [];
     }
 
     /**
@@ -42,7 +42,7 @@ class FieldAttributes
      * @param array $attributes
      * @return array|mixed
      */
-    public function add($attributes = array())
+    public function add($attributes = [])
     {
         $current_attributes = $this->all();
 

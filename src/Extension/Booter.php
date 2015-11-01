@@ -10,11 +10,18 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
      */
     protected $manager;
 
+    public function boot($instance, $name)
+    {
+        $this->beforeBooting($instance, $name);
+
+        return parent::boot($instance, $name);
+    }
+
     /**
      * @param $instance
      * @param $name
      */
-    public function setProperties($instance, $name) {
+    public function beforeBooting($instance, $name) {
         if (! $instance->namespace) $instance->namespace = $name;
         if (! $instance->slug) $instance->slug = Str::slug($name);
 

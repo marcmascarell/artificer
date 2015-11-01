@@ -7,7 +7,7 @@ class Enum extends Select
 
     public function input()
     {
-        $values = $this->options->getExistant('values', array());
+        $values = $this->options->get('values', []);
 
         return Form::select($this->name, $values, $this->value, $this->attributes->all());
     }
