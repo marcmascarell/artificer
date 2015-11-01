@@ -34,18 +34,12 @@ class Artificer
     }
 
     /**
-     * @param $plugin
-     * @return mixed
+     * @return PluginManager
      */
-    public static function addPlugin($plugin)
+    public static function pluginManager()
     {
-        /**
-         * @var $pluginManager PluginManager
-         */
-        $pluginManager = App::make('ArtificerPluginManager');
-//        return $pluginManager->($plugin);
+        return App::make('ArtificerPluginManager');
     }
-
     /**
      * @param $plugin
      * @return mixed

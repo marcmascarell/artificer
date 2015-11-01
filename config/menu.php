@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
 	'dashboard' => [
 		'link'  => 'admin.home',
@@ -20,5 +20,4 @@ return array(
 			'user'
 		]
 	],
-
-);
+];

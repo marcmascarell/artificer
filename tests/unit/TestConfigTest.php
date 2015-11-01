@@ -1,7 +1,6 @@
 <?php
 
-
-class TestConfigTest extends \Codeception\TestCase\Test
+class TestConfigTest extends \TestCase
 {
     /**
      * @var \UnitTester

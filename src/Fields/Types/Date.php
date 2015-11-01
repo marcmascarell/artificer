@@ -15,7 +15,7 @@ class Date extends Field
             </div>
             <?php print Form::text($this->name, $this->value, $this->attributes->all()); ?>
         </div>
-    <?php
+        <?php
     }
 
 }
