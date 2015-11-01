@@ -12,6 +12,9 @@ Artificer is an admin package (under development) built on top of your Eloquent 
 
 **This package is alive. The expected the fix for multiple config files but was not included on 5.1, we are looking for workarounds**
 
+[Documentation](https://artificer.readme.io/)
+--------------
+
 Current state warning
 ----
 It is under development. Use at your own risk.
@@ -112,45 +115,6 @@ public function getAuthPassword()
     return $this->password;
 }
 ```
-
-Documentation
---------------
-
-Developing (Laravel 4):
-
-* In workbench under mascame/ (or your fork namespace) make the clone.
-* Rename laravel-artificer to artificer.
-* Run composer update inside of the package.
-* php artisan artificer:publish
-
-Publish theme assets:
-
-```sh
-php artisan asset:publish mascame/artificer-default-theme
-```
-
-soon more
-
-Todo
------------
-
-* Improve main theme
-* Make plugins more friendly to use
-* Relation fields
-* Localization
-* Tests
-* Better assets
-* Improve existing plugins
-
-Plugin ideas (to be approved and done)
------------
-
-* Export to CSV
-* Datatables
-* Image gallery
-* Route viewer (editor?)
-* Config editor (mainly for models)
-* SEO/Pages manager
 
 Support
 ----
