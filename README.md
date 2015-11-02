@@ -6,11 +6,9 @@
 [![Latest Version](https://img.shields.io/github/release/marcmascarell/laravel-artificer.svg?style=flat-square)](https://github.com/marcmascarell/laravel-artificer/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
-Artificer is an admin package (under development) built on top of your Eloquent models. It automatically detects all your models, tables and columns building a beautiful interface to manage your data. **Contributors needed**.
+Artificer is the admin panel Laravel deserves.
 
-**Package first stable version is aimed to work with Laravel 5 (the soonest we can after its released)**
-
-**This package is alive. The expected the fix for multiple config files but was not included on 5.1, we are looking for workarounds**
+It's built around your Laravel's Eloquent models. It's very flexible, extensible, detects all your models and builds a beautiful interface to manage your data.
 
 [Documentation](https://artificer.readme.io/)
 --------------
@@ -57,63 +55,6 @@ For only **config** add:
 For only **migrations** add:
 ```sh
 --tag="migrations"
-```
-
-Changing the theme
-----
-Set `theme` in `app/config/packages/mascame/artificer/admin` to `your-theme-name` 
-
-Default: [mascame/artificer-default-theme](https://github.com/marcmascarell/artificer-default-theme/)
-
-Plugins
-----
-
-Add plugins you need. Please, be aware some plugins are under heavy development.
-
-* [Localization](https://github.com/marcmascarell/artificer-localization-plugin)
-* [Pagination](https://github.com/marcmascarell/artificer-pagination-plugin)
-
-Usage
---------------
-Edit config files to meet your needs.
-
-Login
--------------
-Make a users table like this:
-
-```php
-Schema::create('users', function(Blueprint $table)
-{
-	$table->increments('id');
-	$table->string('email')->unique();
-	$table->string('password');
-	$table->string('role'); // or $table->enum('role', array('admin', 'editor', 'user', 'whatever...'));
-	$table->rememberToken();
-});
-```
-
-Add the methods to User:
-
-```php
-/**
- * Get the unique identifier for the user.
- *
- * @return mixed
- */
-public function getAuthIdentifier()
-{
-    return $this->getKey();
-}
-
-/**
- * Get the password for the user.
- *
- * @return string
- */
-public function getAuthPassword()
-{
-    return $this->password;
-}
 ```
 
 Support
