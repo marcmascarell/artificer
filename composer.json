@@ -21,7 +21,7 @@
     "php": ">=5.4",
     "mascame/notify": "1.0.0",
     "mascame/extender": "dev-master",
-    "laravelcollective/html": "5.1.*"
+    "laravelcollective/html": "5.*"
   },
   "require-dev": {
     "sami/sami": "2.0.0",
