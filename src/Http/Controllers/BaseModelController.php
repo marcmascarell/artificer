@@ -32,8 +32,8 @@ class BaseModelController extends BaseController
     {
         parent::__construct();
 
-        if (!Auth::check() || !ModelPermit::access()) {
-            App::abort('403');
+        if (! Auth::check() || ! ModelPermit::access()) {
+            App::abort('403', 'Forbidden access');
         }
 
         $this->model = $this->modelObject->model;

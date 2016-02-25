@@ -9,14 +9,14 @@ class PageController extends BaseController
 
     public function home()
     {
-        $hidden_models = AdminOption::get('models.hidden');
+        $hiddenModels = AdminOption::get('models.hidden');
 
-        $non_hidden_models = array_diff(array_keys($this->modelObject->schema->models), $hidden_models);
+        $nonHiddenModels = array_diff(array_keys($this->modelObject->schema->models), $hiddenModels);
 
-        $first_model = head($non_hidden_models);
+        $firstModel = head($nonHiddenModels);
 
         return Redirect::route('admin.model.all',
-            array('slug' => $this->modelObject->schema->models[$first_model]['route']));
+            array('slug' => $this->modelObject->schema->models[$firstModel]['route']));
     }
 
     public function install()

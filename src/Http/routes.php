@@ -23,87 +23,87 @@ Route::pattern('username', '[a-z0-9_-]{3,16}');
 
 // this works
 //Event::listen('artificer.routes.model', function() {
-//    Route::get('moco', array('uses' => ModelController::class . '@getRelatedFieldOutput'));
+//    Route::get('moco', ['uses' => ModelController::class . '@getRelatedFieldOutput'));
 //
 //});
 
-Route::group(array(
-    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
-    'before' => 'artificer-localization|LaravelLocalizationRedirectFilter'
-),
+Route::group([
+//    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
+//    'before' => 'artificer-localization|LaravelLocalizationRedirectFilter'
+],
     function () {
-        Route::group(array('prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')), function () {
-            Route::get('install', array('as' => 'admin.install', 'uses' => PageController::class . '@install'));
+        Route::group(['prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')], function () {
+            Route::get('install', ['as' => 'admin.install', 'uses' => PageController::class . '@install']);
         });
     });
 
-Route::group(array(
-    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
-    'before' => 'artificer-auth|artificer-localization|LaravelLocalizationRedirectFilter'
-),
+Route::group([
+//    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
+//    'before' => 'artificer-auth|artificer-localization|LaravelLocalizationRedirectFilter'
+],
     function () {
-        Route::group(array('prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')), function () {
+        Route::group(['prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')], function () {
 
-            Route::get('/', array('as' => 'admin.home', 'uses' => PageController::class . '@home'));
+            Route::get('/', ['as' => 'admin.home', 'uses' => PageController::class . '@home']);
 
-            Route::group(array('prefix' => 'user'), function () {
+            Route::group(['prefix' => 'user'], function () {
                 Route::get('login',
-                    array('as' => 'admin.showlogin', 'uses' => UserController::class . '@showLogin'));
+                    ['as' => 'admin.showlogin', 'uses' => UserController::class . '@showLogin']);
                 Route::post('login',
-                    array('as' => 'admin.login', 'uses' => UserController::class . '@login'))->before('csrf');
+                    ['as' => 'admin.login', 'uses' => UserController::class . '@login']); // ->before('csrf')
                 Route::get('logout',
-                    array('as' => 'admin.logout', 'uses' => UserController::class . '@logout'));
+                    ['as' => 'admin.logout', 'uses' => UserController::class . '@logout']);
             });
 
-            Route::group(array('prefix' => 'plugins'), function () {
-                Route::get('', array(
+            Route::group(['prefix' => 'plugins'], function () {
+                Route::get('', [
                     'as' => 'admin.plugins',
-                    'uses' => PluginController::class . '@plugins')
-                );
+                    'uses' => PluginController::class . '@plugins'
+                ]);
 
-                Route::get('{slug}/install', array(
+                Route::get('{slug}/install', [
                     'as' => 'admin.plugin.install',
                     'uses' => PluginController::class . '@install'
-                ));
-                Route::get('{slug}/uninstall', array(
+                ]);
+                Route::get('{slug}/uninstall', [
                     'as' => 'admin.plugin.uninstall',
                     'uses' => PluginController::class . '@uninstall'
-                ));
+                ]);
             });
 
-            Route::group(array('prefix' => 'model'), function () {
+            Route::group(['prefix' => 'model'], function () {
                 Route::get('{slug}',
-                    array('as' => 'admin.model.all', 'uses' => ModelController::class . '@all'));
+                    ['as' => 'admin.model.all', 'uses' => ModelController::class . '@all']);
                 Route::get('{slug}/create',
-                    array('as' => 'admin.model.create', 'uses' => ModelController::class . '@create'));
+                    ['as' => 'admin.model.create', 'uses' => ModelController::class . '@create']);
                 Route::post('{slug}/store',
-                    array('as' => 'admin.model.store', 'uses' => ModelController::class . '@store'));
+                    ['as' => 'admin.model.store', 'uses' => ModelController::class . '@store']);
                 Route::get('{slug}/filter',
-                    array('as' => 'admin.model.filter', 'uses' => ModelController::class . '@filter'));
+                    ['as' => 'admin.model.filter', 'uses' => ModelController::class . '@filter']);
                 Route::get('{slug}/{id}',
-                    array('as' => 'admin.model.show', 'uses' => ModelController::class . '@show'));
+                    ['as' => 'admin.model.show', 'uses' => ModelController::class . '@show']);
                 Route::get('{slug}/{id}/edit',
-                    array('as' => 'admin.model.edit', 'uses' => ModelController::class . '@edit'));
+                    ['as' => 'admin.model.edit', 'uses' => ModelController::class . '@edit']);
                 Route::get('{slug}/{id}/edit/{field}',
-                    array('as' => 'admin.model.field.edit', 'uses' => ModelController::class . '@field'));
+                    ['as' => 'admin.model.field.edit', 'uses' => ModelController::class . '@field']);
                 Route::put('{slug}/{id}',
-                    array('as' => 'admin.model.update', 'uses' => ModelController::class . '@update'));
+                    ['as' => 'admin.model.update', 'uses' => ModelController::class . '@update']);
                 Route::delete('{slug}/{id}',
-                    array('as' => 'admin.model.destroy', 'uses' => ModelController::class . '@destroy'));
+                    ['as' => 'admin.model.destroy', 'uses' => ModelController::class . '@destroy']);
 
-                Route::get('{slug}/{id}/field/{name}', array(
+                Route::get('{slug}/{id}/field/{name}', [
                     'as' => 'admin.model.field',
                     'uses' => ModelController::class . '@getRelatedFieldOutput'
-                ));
+                ]);
 
                 Event::fire('artificer.routes.model');
-                Route::post('{slug}/{id}/upload', array(
+                Route::post('{slug}/{id}/upload', [
                     'as' => 'admin.model.upload',
                     'uses' => '\Mascame\Artificer\Plugins\Plupload\PluploadController@plupload'
-                ));
+                ]);
             });
 
-            //	Route::post('upload', array('as' => 'admin.model.upload', function()
+            //	Route::post('upload', ['as' => 'admin.model.upload', function()
             //	{
             //		return Plupload::receive('file', function ($file)
             //		{
@@ -115,7 +115,7 @@ Route::group(array(
 
 //			$plugins = Config::get('artificer::admin.plugins.installed');
 //
-//            if (is_array($plugins)) {
+//            if (is_[$plugins)) {
 //                foreach ($plugins as $pluginNamespace) {
 //                    $pluginName = explode('/', $pluginNamespace);
 //                    $pluginName = end($pluginName);
@@ -129,13 +129,14 @@ Route::group(array(
 //                }
 //            }
 
-            Route::group(array('prefix' => 'plugin'), function () {
+            Route::group(['prefix' => 'plugin'], function () {
 
             });
-            Route::get('logs', array(
+
+            Route::get('logs', [
                 'as' => 'artificer-logreader-plugin',
                 'uses' => 'Rap2hpoutre\LaravelLogViewer\LogViewerController@index'
-            ));
+            ]);
 
         // Todo
 //            $pluginRoutes = \Mascame\Artificer\Plugin\PluginManager::getRoutes();

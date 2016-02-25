@@ -7,7 +7,6 @@ use Mascame\Artificer\Permit\ModelPermit;
 class ModelObtainer
 {
 
-
     /**
      * @var array
      */
@@ -32,7 +31,7 @@ class ModelObtainer
         foreach (File::allFiles($directory) as $modelPath) {
             $modelName = $this->getFromFileName($modelPath);
 
-            if (!ModelPermit::access($modelName)) {
+            if (! ModelPermit::access($modelName)) {
                 continue;
             }
 
@@ -62,15 +61,15 @@ class ModelObtainer
      */
     private function mergeModelDirectories($models)
     {
-        $merged_models = array();
+        $mergedModels = array();
 
         foreach ($models as $key => $model) {
             foreach ($model as $name => $values) {
-                $merged_models[$name] = $values;
+                $mergedModels[$name] = $values;
             }
         }
 
-        return $merged_models;
+        return $mergedModels;
     }
 
     /**
@@ -83,9 +82,9 @@ class ModelObtainer
         }
 
         $models = array();
-        $model_directories = AdminOption::get('models.directories');
+        $modelDirectories = AdminOption::get('models.directories');
 
-        foreach ($model_directories as $namespace => $directory) {
+        foreach ($modelDirectories as $namespace => $directory) {
             if (! file_exists($directory)) {
                 throw new \Exception("Artificer can't find your models directory: '{$directory}'. Ensure that path exists and is properly set in your models config");
             }
