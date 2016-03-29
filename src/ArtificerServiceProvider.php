@@ -11,9 +11,11 @@ use Mascame\Artificer\Extension\WidgetManager;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
+use Mascame\ArtificerDefaultTheme\ArtificerDefaultThemeServiceProvider;
 use Mascame\Extender\Event\Event;
 use Mascame\Extender\Installer\FileInstaller;
 use Mascame\Extender\Installer\FileWriter;
+use Illuminate\Foundation\AliasLoader as Loader;
 
 
 class ArtificerServiceProvider extends ServiceProvider {
@@ -37,6 +39,14 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 		$this->addPublishing();
         $this->requireFiles();
+
+		$this->app->register(\Collective\Html\HtmlServiceProvider::class);
+
+		$loader = Loader::getInstance();
+		$loader->alias('HTML', \Collective\Html\HtmlFacade::class);
+		$loader->alias('Form', \Collective\Html\FormFacade::class);
+
+		$this->app->register(ArtificerDefaultThemeServiceProvider::class);
 	}
 
     /**
@@ -132,6 +142,8 @@ class ArtificerServiceProvider extends ServiceProvider {
         $this->addModel();
         $this->addLocalization();
         $this->addManagers();
+
+
 
 //		$am = new AssetManager();
 //		$am->set('jquery', new HttpAsset('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'));

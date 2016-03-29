@@ -40,19 +40,16 @@ class FieldAttributes
 
     /**
      * @param array $attributes
-     * @return array|mixed
      */
     public function add($attributes = [])
     {
-        $current_attributes = $this->all();
+        $currentAttributes = $this->all();
 
-        if (is_array($current_attributes)) {
-            $this->fieldOptions->add('attributes', array_merge($current_attributes, $attributes));
-        } else {
-            $this->fieldOptions->add('attributes', $attributes);
+        if (is_array($currentAttributes)) {
+            $attributes = array_merge($currentAttributes, $attributes);
         }
 
-        return $this->fieldOptions->all();
+        $this->fieldOptions->set('attributes', $attributes);
     }
 
 }

@@ -1,5 +1,6 @@
 <?php namespace Mascame\Artificer\Fields;
 
+use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\FieldOption;
 use Mascame\Artificer\Options\ModelOption;
@@ -9,7 +10,7 @@ class FieldOptions
 
     protected $name;
     protected $options;
-    protected $default_options;
+    protected $defaultOptions;
     public $model;
 
     /**
@@ -18,10 +19,10 @@ class FieldOptions
     public function __construct($name, $type)
     {
         $this->name = $name;
-        $this->default_options = (AdminOption::get('fields.types.' . $type)) ? AdminOption::get('fields.types.' . $type) : array();
-        $this->options = array_merge($this->all(), $this->default_options);
-
+        $this->defaultOptions = (AdminOption::has('fields.types.' . $type)) ? AdminOption::get('fields.types.' . $type) : [];
         $this->model = $this->model();
+
+        $this->options = array_merge($this->modelField(), $this->defaultOptions, $this->all() );
     }
 
     /**
@@ -66,9 +67,10 @@ class FieldOptions
      */
     public function all()
     {
-        if (isset($this->options)) {
-            return (array)$this->options = array_merge($this->options, FieldOption::field($this->name));
-        }
+        if (isset($this->options)) return $this->options;
+//        if (isset($this->options)) {
+//            return (array)$this->options = array_merge($this->options, FieldOption::field($this->name));
+//        }
 
         return (array)$this->options = FieldOption::field($this->name);
     }
@@ -79,27 +81,29 @@ class FieldOptions
      */
     public function model()
     {
-        if (isset($this->model)) {
-            return $this->model;
-        }
+        if (isset($this->model)) return $this->model;
 
-        $model = ModelOption::all();
-        $default_model = ModelOption::getDefault();
+        $model = config('admin.models.' . Model::getCurrent());
 
-        return $this->model = (!empty($model)) ? array_merge_recursive($model,
-            $default_model) : ModelOption::getDefault();
+        $defaultModel = ModelOption::getDefault();
+
+        return $this->model = ( ! empty($model)) ? array_merge_recursive($model, $defaultModel) : ModelOption::getDefault();
     }
 
+    public function modelField()
+    {
+        return (isset($this->model['fields'][$this->name])) ? $this->model['fields'][$this->name] : [];
+    }
     /**
      * @param string $key
      * @param $value
      * @return array|mixed
      */
-    public function add($key, $value)
-    {
-        $this->set($key, $value);
-
-        // Refresh options
-        return $this->all();
-    }
+//    public function add($key, $value)
+//    {
+//        $this->set($key, $value);
+//
+//        // Refresh options
+//        return $this->all();
+//    }
 }

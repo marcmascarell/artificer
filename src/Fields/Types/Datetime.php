@@ -2,9 +2,9 @@
 
 use Carbon\Carbon;
 use Form;
-use Mascame\Artificer\Fields\Field;
+use Mascame\Formality\Type\Type;
 
-class DateTime extends Field
+class DateTime extends Type
 {
 
     public function input()

@@ -2,12 +2,12 @@
 
 use Form;
 use Input;
-use Mascame\Artificer\Fields\Field;
+use Mascame\Formality\Type\Type;
 
 //use Mascame\Artificer\Widgets\FocalPoint;
 
 
-class Text extends Field
+class Text extends Type
 {
 
     public function input()

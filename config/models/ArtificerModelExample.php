@@ -70,7 +70,7 @@ return [
 			],
 
             /**
-             * Overrides an input by complete
+             * Overrides an input completely
              */
             'input' => '<input name="(:name)" value="(:value)">'
 		],

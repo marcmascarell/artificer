@@ -3,21 +3,10 @@
 use Form;
 use HTML;
 use Input;
-use Mascame\Artificer\Fields\Field;
+use Mascame\Formality\Type\Type;
 
-class Email extends Field
+class Email extends \Mascame\Formality\Types\Email
 {
-
-    public function input()
-    {
-        return Form::email($this->name, $this->value, $this->attributes->all());
-    }
-
-    public function show()
-    {
-        return HTML::mailto($this->value, $this->value);
-    }
-
     public function displayFilter()
     {
         return Form::text($this->name, Input::old($this->name), $this->attributes->all());

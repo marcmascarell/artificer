@@ -78,7 +78,10 @@ class Model
         $this->schema = $schema;
         $this->relations = new ModelRelation();
 
-        $this->prepareCurrentModel();
+        if (Str::startsWith(Route::currentRouteName(), 'admin.model.')) {
+            $this->prepareCurrentModel();
+        }
+
         $this->share();
     }
 
@@ -109,7 +112,7 @@ class Model
      */
     public function isHidden($modelName)
     {
-        return (in_array($modelName, AdminOption::get('models.hidden'))) ? true : false;
+        return (in_array($modelName, AdminOption::get('model.hidden'))) ? true : false;
     }
 
     /**
@@ -133,9 +136,7 @@ class Model
      */
     private function getCurrentModelName()
     {
-        if ($this->name) {
-            return $this->name;
-        }
+        if ($this->name) return $this->name;
 
         foreach ($this->schema->models as $modelName => $model) {
             if ($this->isCurrent($modelName)) {
@@ -150,10 +151,6 @@ class Model
 
     public function prepareCurrentModel()
     {
-        if (!Str::startsWith(Route::currentRouteName(), 'admin.model.')) {
-            return null;
-        }
-
         $this->name = $this->getCurrentModelName();
 
         $this->class = $this->schema->getClass($this->name);

@@ -59,8 +59,9 @@ return [
             ],
 		],
 
-		'option'       => [
+		'radio'       => [
             'autodetect' => [
+                'option',
                 'selection',
             ],
 		],
@@ -113,8 +114,6 @@ return [
                 'image'
             ],
 		],
-
-		'image_center' => [],
 
 		'hasOne'       => [
             'autodetect' => [

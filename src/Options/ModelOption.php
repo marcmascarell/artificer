@@ -5,8 +5,8 @@ use Mascame\Artificer\Model\Model;
 class ModelOption extends Option
 {
 
-    public static $key = 'models.';
-    public static $default_model = 'models.default_model';
+    public static $key = 'model.';
+    public static $defaultModel = 'model.default_model';
 
     /**
      * @param string $key
@@ -63,7 +63,7 @@ class ModelOption extends Option
     {
         $key = (isset($key) && !empty($key)) ? '.' . $key : null;
 
-        return AdminOption::get(self::$default_model . $key);
+        return AdminOption::get(self::$defaultModel . $key);
     }
 
     /**

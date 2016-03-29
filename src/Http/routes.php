@@ -38,6 +38,7 @@ Route::group([
     });
 
 Route::group([
+    'middleware' => 'web'
 //    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
 //    'before' => 'artificer-auth|artificer-localization|LaravelLocalizationRedirectFilter'
 ],

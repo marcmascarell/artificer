@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
 use Form;
+use Mascame\Formality\Types\File;
 use Str;
 
 class Image extends File

@@ -1,11 +1,11 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
-use Mascame\Artificer\Fields\Field;
+use Mascame\Formality\Type\Type;
 use Mascame\Artificer\Model\Model;
 use Route;
 use URL;
 
-class Relation extends Field
+class Relation extends Type
 {
 
     /**

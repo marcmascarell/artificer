@@ -37,7 +37,8 @@ class BaseController extends Controller
         $this->theme = AdminOption::get('theme') . '::';
         $this->master_layout = 'base';
 
-        if (UserController::check()) {
+        // Todo: Do Sth with this
+        if (UserController::check() || true) {
             $this->options = AdminOption::all();
 
             App::make('ArtificerPluginManager')->boot();

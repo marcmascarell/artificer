@@ -3,15 +3,18 @@
 use App;
 use Auth;
 use File;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Redirector;
 use Illuminate\Routing\Router;
 use Input;
-use Mascame\Artificer\Fields\FieldFactory;
+use Mascame\Artificer\Fields\Field;
+use Mascame\Formality\Factory\Factory;
+use Mascame\Formality\Parser\Parser;
 use Mascame\Artificer\Permit\ModelPermit;
+use Mascame\Formality\Manager\Manager;
 use Redirect;
 use Route;
 use Session;
-use Str;
 use Validator;
 use View;
 
@@ -32,8 +35,11 @@ class BaseModelController extends BaseController
     {
         parent::__construct();
 
-        if (! Auth::check() || ! ModelPermit::access()) {
-            App::abort('403', 'Forbidden access');
+        // Todo: Do Sth with this
+        if (false) {
+            if (! Auth::check() || ! ModelPermit::access()) {
+                App::abort('403', 'Forbidden access');
+            }
         }
 
         $this->model = $this->modelObject->model;
@@ -47,9 +53,9 @@ class BaseModelController extends BaseController
     protected function checkPermissions()
     {
         $permit = array(
-            'view' => ModelPermit::to('view'),
-            'update' => ModelPermit::to('update'),
+            'read' => ModelPermit::to('read'),
             'create' => ModelPermit::to('create'),
+            'update' => ModelPermit::to('update'),
             'delete' => ModelPermit::to('delete'),
         );
 
@@ -74,16 +80,46 @@ class BaseModelController extends BaseController
      */
     protected function getFields($data)
     {
-        if ($this->fields != null) {
-            return $this->fields;
-        }
+        if ($this->fields) return $this->fields;
 
-        $this->fields = (new FieldFactory($this->modelObject))->makeFields($data);
+        /**
+         * @var $data Collection
+         */
+//        $fieldManager = new Manager(new Parser(config('admin.fields.types')), Field::class);
+
+//        $data = $data->makeVisible($this->modelObject->columns)->toArray();
+
+        // Todo: try to avoid parsing all columns each time...
+
+
+        $fieldFactory = new Factory(new Parser(config('admin.fields.types')), $this->modelObject->columns, config('admin.fields.classmap'));
+        $this->fields = $fieldFactory->makeFields();
+
+//        dd($data);
+        // Fulfill data
+//        foreach ($data as $items) {
+//            $itemData = $items->makeVisible($this->modelObject->columns)->toArray();
+//
+////            foreach
+//        }
 
         View::share('fields', $this->fields);
 
         return $this->fields;
     }
+
+    // Prepares fields for factory
+//    protected function prepareFields($data) {
+//        $fields = [];
+//
+//        foreach ($data as $key => $item) {
+//            foreach ($this->modelObject->columns as $column) {
+//                $fields[$key][$column] = $item->$column;
+//            }
+//        }
+//
+//        return $fields;
+//    }
 
     /**
      * @return array
@@ -267,13 +303,13 @@ class BaseModelController extends BaseController
     protected function redirect($validator, $route, $id = null)
     {
         if (Input::has('_standalone')) {
-            $route_params = array('slug' => Input::get('_standalone'));
+            $routeParams = array('slug' => Input::get('_standalone'));
 
             if ($id) {
-                $route_params['id'] = $id;
+                $routeParams['id'] = $id;
             }
 
-            return Redirect::route($route, $route_params)
+            return Redirect::route($route, $routeParams)
                 ->withErrors($validator)
                 ->withInput();
         }

@@ -77,12 +77,10 @@ class ModelObtainer
      */
     public function getModels()
     {
-        if (!empty($this->models)) {
-            return $this->models;
-        }
+        if ( ! empty($this->models)) return $this->models;
 
-        $models = array();
-        $modelDirectories = AdminOption::get('models.directories');
+        $models = [];
+        $modelDirectories = AdminOption::get('model.directories');
 
         foreach ($modelDirectories as $namespace => $directory) {
             if (! file_exists($directory)) {
@@ -99,8 +97,8 @@ class ModelObtainer
 
     public function getFakeModels()
     {
-        $fakeModels = AdminOption::get('models.fake');
-        $models = array();
+        $fakeModels = AdminOption::get('model.fake');
+        $models = [];
 
         if (empty($fakeModels)) {
             return $models;

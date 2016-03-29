@@ -19,9 +19,10 @@
   ],
   "require": {
     "php": ">=5.4",
-    "mascame/notify": "1.0.0",
+    "laravelcollective/html": "5.*",
+    "mascame/artificer-default-theme": "dev-l5-migration",
     "mascame/extender": "dev-master",
-    "laravelcollective/html": "5.*"
+    "mascame/notify": "1.*"
   },
   "require-dev": {
     "sami/sami": "2.0.0",
@@ -31,5 +32,6 @@
     "psr-4": {
       "Mascame\\Artificer\\": "src/"
     }
-  }
+  },
+  "minimum-stability": "dev"
 }

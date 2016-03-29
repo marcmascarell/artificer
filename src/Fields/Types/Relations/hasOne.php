@@ -75,7 +75,7 @@ class hasOne extends Relation
 
     public function input()
     {
-        if (!$this->relation->getRelatedModel()) {
+        if ( ! $this->relation->getRelatedModel()) {
             throw new \Exception("Missing relation in config for '{$this->name}'.");
         }
 
@@ -94,13 +94,13 @@ class hasOne extends Relation
     {
         $value = ($value) ?: $this->value;
 
-        if (!$value) {
+        if ( ! $value) {
             return "<em>(none)</em>";
         }
 
         $show = $this->relation->getShow();
 
-        if (!is_object($value)) {
+        if ( ! is_object($value)) {
             $model = '\\' . $this->relation->getRelatedModel();
 
             $data = $model::find($value);
@@ -120,7 +120,7 @@ class hasOne extends Relation
             }
         }
 
-        if (!$value) {
+        if ( ! $value) {
             throw new \Exception('The (hasOne) value is null');
         }
 

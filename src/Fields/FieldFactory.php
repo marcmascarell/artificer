@@ -1,7 +1,6 @@
 <?php namespace Mascame\Artificer\Fields;
 
 use Mascame\Artificer\Model\Model;
-use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Options\FieldOption;
 use \Illuminate\Support\Str as Str;
 
@@ -10,7 +9,7 @@ class FieldFactory
 
     public $fieldClass;
     public $fields;
-    public $related_fields = null;
+    public $relatedFields = null;
     public $custom_fields = null;
 
     /**
@@ -29,16 +28,6 @@ class FieldFactory
     public $classMap = array();
 
     /**
-     * @param Model $model
-     */
-    public function __construct(Model $model)
-    {
-        $this->classMap = AdminOption::get('classmap');
-        $this->modelObject = $model;
-        $this->parser = new FieldParser(AdminOption::get('fields.types'));
-    }
-
-    /**
      * @param $type
      * @param $field
      * @param $value
@@ -47,26 +36,9 @@ class FieldFactory
      */
     public function make($type, $field, $value)
     {
-        $fieldClass = $this->getFieldTypeClass($type);
+        $fieldClass = $this->fieldClass = $this->getFieldTypeClass($type);
 
         return new $fieldClass($field, $value, $this->isRelation($field));
-    }
-
-    /**
-     * @param $type
-     * @throws \Exception
-     */
-    public function getFieldTypeClass($type)
-    {
-        if (isset($this->classMap[$type])) {
-            return $this->classMap[$type];
-        }
-
-        if (class_exists($this->namespace . Str::studly($type))) {
-            return $this->namespace . Str::studly($type);
-        }
-
-        throw new \Exception("No supported Field type [{$type}]");
     }
 
     /**
@@ -81,12 +53,12 @@ class FieldFactory
 
         foreach ($this->withRelated() as $field) {
 
-            $fieldType = $this->getTypeFromConfig($field);
+            $type = $this->getTypeFromConfig($field);
 
-            if (!$fieldType) $fieldType = $this->parser->parse($field);
+            if ( ! $type) $type = $this->parser->parse($field);
 
             $this->fields[$field] = $this->make(
-                $fieldType,
+                $type,
                 $field,
                 $this->fieldValue($field)
             );
@@ -101,8 +73,9 @@ class FieldFactory
      */
     protected function getTypeFromConfig($name) {
         if (FieldOption::has('type', $name) || FieldOption::has('relationship.type', $name)) {
-            return (FieldOption::has('type', $name)) ? FieldOption::get('type',
-                $name) : FieldOption::get('relationship.type', $name);
+            return (FieldOption::has('type', $name)) ?
+                FieldOption::get('type', $name) :
+                FieldOption::get('relationship.type', $name);
         }
 
         return false;
@@ -114,7 +87,7 @@ class FieldFactory
      */
     protected function isRelation($name)
     {
-        return in_array($name, $this->related_fields);
+        return Str::contains($this->fieldClass, '\\Relations\\') || in_array($name, $this->relatedFields);
     }
 
     /**
@@ -122,30 +95,28 @@ class FieldFactory
      */
     public function getRelated()
     {
-        if ($this->related_fields != null) {
-            return $this->related_fields;
-        }
+        if ($this->relatedFields) return $this->relatedFields;
 
         if (null == $fields = FieldOption::all()) {
-            return $this->related_fields = array();
+            return $this->relatedFields = [];
         }
 
         /*
          * We compare columns with config array to determine if there are new fields
          */
-        $this->related_fields = array_diff(array_keys($fields), $this->modelObject->columns);
+        $this->relatedFields = array_diff(array_keys($fields), $this->modelObject->columns);
 
-        return $this->related_fields;
+        return $this->relatedFields;
     }
 
     /**
      * @return array
      */
-    protected function addRelated()
+    protected function withRelated()
     {
         $related = $this->getRelated();
 
-        if (!empty($related)) {
+        if ( ! empty($related)) {
             foreach ($related as $field) {
                 $this->modelObject->columns[] = $field;
             }
@@ -157,33 +128,19 @@ class FieldFactory
     /**
      * @return array
      */
-    protected function withRelated()
-    {
-        return $this->addRelated();
-    }
-
-    /**
-     * @return array
-     */
-    protected function addCustomFields()
+    protected function withCustomFields()
     {
         if (isset($this->modelObject->options['fields'])) {
+
             foreach ($this->modelObject->options['fields'] as $name => $data) {
-                if (!in_array($name, $this->modelObject->columns)) {
+                if ( ! in_array($name, $this->modelObject->columns)) {
                     $this->modelObject->columns[] = $name;
                 }
             }
+
         }
 
         return $this->modelObject->columns;
-    }
-
-    /**
-     * @return array
-     */
-    protected function withCustomFields()
-    {
-        return $this->addCustomFields();
     }
 
     /**

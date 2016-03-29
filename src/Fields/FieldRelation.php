@@ -2,23 +2,11 @@
 
 class FieldRelation
 {
+    protected $options = [];
 
-    public $relation = false;
-    protected $options = array();
-
-
-    public function __construct($relation, $options)
+    public function __construct($options)
     {
-        $this->relation = ($relation || $this->getType()) ? true : false;
         $this->options = $options;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isRelation()
-    {
-        return $this->relation;
     }
 
     public function getMethod()

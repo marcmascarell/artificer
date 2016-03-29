@@ -9,7 +9,7 @@ class PageController extends BaseController
 
     public function home()
     {
-        $hiddenModels = AdminOption::get('models.hidden');
+        $hiddenModels = AdminOption::get('model.hidden');
 
         $nonHiddenModels = array_diff(array_keys($this->modelObject->schema->models), $hiddenModels);
 

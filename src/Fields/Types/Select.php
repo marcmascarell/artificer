@@ -1,9 +1,9 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
 use Form;
-use Mascame\Artificer\Fields\Field;
+use Mascame\Formality\Type\Type;
 
-class Select extends Field
+class Select extends Type
 {
 
     public function input()

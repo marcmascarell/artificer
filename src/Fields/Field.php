@@ -3,24 +3,9 @@
 use App;
 use Mascame\Artificer\Widgets\AbstractWidget;
 
-class Field implements FieldInterface
+class Field extends \Mascame\Formality\Field\Field
 {
     use Filterable;
-
-    /**
-     * @var
-     */
-    public $name;
-
-    /**
-     * @var string
-     */
-    public $type;
-
-    /**
-     * @var mixed
-     */
-    public $title;
 
     /**
      * @var null
@@ -36,17 +21,7 @@ class Field implements FieldInterface
     /**
      * @var FieldRelation
      */
-    public $relation;
-
-    /**
-     * @var mixed
-     */
-    public $wiki;
-
-    /**
-     * @var FieldAttributes
-     */
-    public $attributes;
+    public $relation = null;
 
     /**
      * Sometimes ajax limits output, setting this to true will return all
@@ -55,45 +30,22 @@ class Field implements FieldInterface
      */
     public $showFullField = false;
 
-
     /**
      * @param $name
      * @param null $value
      * @param $modelName
      * @param $relation
      */
-    public function __construct($name, $value = null, $relation)
+    public function __construct($typeClass, $name, $value = null, $relation)
     {
-        $this->name = $name;
-        $this->value = $value;
-        $this->type = $this->getType(get_called_class());
+        parent::__construct($typeClass, $name, $value, $options = []);
 
-        $this->options = new FieldOptions($this->name, $this->type);
-
-        $this->relation = new FieldRelation($relation, $this->options->get('relationship'));
-        $this->attributes = new FieldAttributes($this->options->get('attributes'), $this->options);
-
-        if (!$this->attributes->has('class')) {
-            $this->attributes->add(array('class' => 'form-control'));
+        if ($relation) {
+            $this->relation = new FieldRelation($this->getOption('relationship'));
         }
-
-        $this->title = $this->options->get('title', $this->name);
-        $this->wiki = $this->options->get('wiki');
 
         $this->boot();
     }
-
-    /**
-     * @param string $type_class
-     * @return string
-     */
-    public function getType($type_class)
-    {
-        $pieces = explode('\\', $type_class);
-
-        return strtolower(end($pieces));
-    }
-
 
     /**
      * @param $widget
@@ -101,7 +53,7 @@ class Field implements FieldInterface
      */
     public function addWidget(AbstractWidget $widget)
     {
-        if (!in_array($widget->name, self::$widgets)) {
+        if ( ! in_array($widget->name, self::$widgets)) {
             self::$widgets[$widget->name] = $widget;
 
             return true;
@@ -117,11 +69,11 @@ class Field implements FieldInterface
      */
     public function boot()
     {
-        if (! $this->options->has('widgets')) {
+        if ( ! $this->getOption('widgets')) {
             return null;
         }
 
-        $widgets = $this->options->get('widgets');
+        $widgets = $this->getOption('widgets');
 
         foreach ($widgets as $widget) {
             try {
@@ -153,6 +105,10 @@ class Field implements FieldInterface
 //    }
 
 
+    public function setValue($value) {
+        $this->value = $value;
+    }
+
     /**
      * @param null $value
      * @return null
@@ -172,30 +128,6 @@ class Field implements FieldInterface
         return $value;
     }
 
-
-    /**
-     * @return bool
-     */
-    public function input()
-    {
-        return false;
-    }
-
-
-    /**
-     * @param $input
-     * @return mixed
-     */
-    public function userInput($input)
-    {
-        $input = str_replace('(:value)', $this->value, $input);
-        $input = str_replace('(:name)', $this->name, $input);
-        $input = str_replace('(:label)', $this->title, $input);
-
-        return $input;
-    }
-
-
     /**
      * @return bool|mixed|null|string
      */
@@ -205,13 +137,7 @@ class Field implements FieldInterface
 
         if ($this->isGuarded()) return $this->guarded();
 
-        $this->value = $this->getValue($this->value);
-
-        if ($this->options->has('input')) {
-            return $this->userInput($this->options->get('input'));
-        }
-
-        return $this->input();
+        return parent::output();
     }
 
 
@@ -292,7 +218,6 @@ class Field implements FieldInterface
         return $this->isInArray($this->name, $this->options->model['guarded']);
     }
 
-
     /**
      * @return bool
      */
@@ -310,11 +235,19 @@ class Field implements FieldInterface
      */
     public function isRelation()
     {
-        return $this->relation->isRelation();
+        return $this->relation;
     }
 
     public static function get($name)
     {
         return array_get(\View::getShared(), 'fields')[$name];
+    }
+
+    public function __call($method, $args) {
+        if (! method_exists($this->type, $method)) {
+            return null;
+        }
+
+        return $this->type->$method($args);
     }
 }
