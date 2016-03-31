@@ -1,14 +1,13 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
 use Form;
-use Mascame\Formality\Type\Type;
 
-class Select extends Type
+class Select extends \Mascame\Formality\Types\Select
 {
 
     public function input()
     {
-        return Form::select($this->name, $this->value, false, $this->attributes->all());
+        return Form::select($this->name, $this->value, false);
     }
 
     public function outputRange($start, $end)

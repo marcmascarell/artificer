@@ -1,14 +1,13 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
 use Form;
-use Mascame\Formality\Type\Type;
 
-class Password extends Type
+class Password extends \Mascame\Formality\Types\Password
 {
 
     public function input()
     {
-        return Form::password($this->name, $this->attributes->all());
+        return Form::password($this->name, $this->attributes);
     }
 
     public function show()

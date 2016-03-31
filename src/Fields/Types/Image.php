@@ -2,7 +2,7 @@
 
 use Form;
 use Mascame\Formality\Types\File;
-use Str;
+use Illuminate\Support\Str;
 
 class Image extends File
 {

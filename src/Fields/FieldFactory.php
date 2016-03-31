@@ -3,19 +3,16 @@
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Options\FieldOption;
 use \Illuminate\Support\Str as Str;
+use Mascame\Artificer\Fields\Field as FieldWrapper;
+use Mascame\Formality\Field\Field;
 
-class FieldFactory
+class FieldFactory extends \Mascame\Formality\Factory\Factory
 {
 
     public $fieldClass;
     public $fields;
     public $relatedFields = null;
     public $custom_fields = null;
-
-    /**
-     * @var FieldParser
-     */
-    public $parser;
 
     /**
      * @var Model
@@ -25,46 +22,28 @@ class FieldFactory
 
     public $namespace = '\Mascame\Artificer\Fields\Types\\';
 
-    public $classMap = array();
-
-    /**
-     * @param $type
-     * @param $field
-     * @param $value
-     * @return mixed
-     * @throws \Exception
-     */
-    public function make($type, $field, $value)
-    {
-        $fieldClass = $this->fieldClass = $this->getFieldTypeClass($type);
-
-        return new $fieldClass($field, $value, $this->isRelation($field));
-    }
-
     /**
      * @param $data
      * @return mixed
      */
-    public function makeFields($data)
+    public function makeFields()
     {
-        $this->data = $data;
+        $fields = parent::makeFields();
 
-        $this->withCustomFields();
+        foreach($fields as $key => $field) {
+            /**
+             * @var $field Field
+             */
+            $field->setOptions([
+                'attributes' => [
+                    'class' => 'form-control'
+                ]
+            ]);
 
-        foreach ($this->withRelated() as $field) {
-
-            $type = $this->getTypeFromConfig($field);
-
-            if ( ! $type) $type = $this->parser->parse($field);
-
-            $this->fields[$field] = $this->make(
-                $type,
-                $field,
-                $this->fieldValue($field)
-            );
+            $fields[$key] = new FieldWrapper($field);
         }
 
-        return $this->fields;
+        return $fields;
     }
 
     /**

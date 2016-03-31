@@ -2,17 +2,16 @@
 
 use Form;
 use Input;
-use Mascame\Formality\Type\Type;
 
 //use Mascame\Artificer\Widgets\FocalPoint;
 
 
-class Text extends Type
+class Text extends \Mascame\Formality\Types\Text
 {
 
     public function input()
     {
-        return Form::text($this->name, $this->value, $this->attributes->all());
+        return Form::text($this->name, $this->value, $this->attributes);
     }
 
     public function guarded()
@@ -22,7 +21,7 @@ class Text extends Type
 
     public function displayFilter()
     {
-        return Form::text($this->name, Input::old($this->name), $this->attributes->all());
+        return Form::text($this->name, Input::old($this->name), $this->attributes);
     }
 
     public function filter($query, $value)

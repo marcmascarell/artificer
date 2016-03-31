@@ -2,8 +2,10 @@
 
 use App;
 use Mascame\Artificer\Widgets\AbstractWidget;
+use Mascame\Formality\Field\FieldInterface;
+use Mascame\Formality\Field\TypeInterface;
 
-class Field extends \Mascame\Formality\Field\Field
+class Field
 {
     use Filterable;
 
@@ -31,17 +33,21 @@ class Field extends \Mascame\Formality\Field\Field
     public $showFullField = false;
 
     /**
-     * @param $name
-     * @param null $value
-     * @param $modelName
-     * @param $relation
+     * @var FieldInterface|TypeInterface
      */
-    public function __construct($typeClass, $name, $value = null, $relation)
+    public $field;
+
+    /**
+     * Field constructor.
+     * @param FieldInterface|TypeInterface $field
+     * @param null $relation
+     */
+    public function __construct(FieldInterface $field, $relation = null)
     {
-        parent::__construct($typeClass, $name, $value, $options = []);
+        $this->field = $field;
 
         if ($relation) {
-            $this->relation = new FieldRelation($this->getOption('relationship'));
+            $this->relation = new FieldRelation($this->field->getOption('relationship'));
         }
 
         $this->boot();
@@ -69,11 +75,11 @@ class Field extends \Mascame\Formality\Field\Field
      */
     public function boot()
     {
-        if ( ! $this->getOption('widgets')) {
+        if ( ! $this->field->getOption('widgets')) {
             return null;
         }
 
-        $widgets = $this->getOption('widgets');
+        $widgets = $this->field->getOption('widgets');
 
         foreach ($widgets as $widget) {
             try {
@@ -82,15 +88,6 @@ class Field extends \Mascame\Formality\Field\Field
                 throw new \Exception("Widget '{$widget}' was not found");
             }
         }
-    }
-
-
-    /**
-     * @return null
-     */
-    public function show()
-    {
-        return $this->value;
     }
 
     /**
@@ -105,27 +102,27 @@ class Field extends \Mascame\Formality\Field\Field
 //    }
 
 
-    public function setValue($value) {
-        $this->value = $value;
-    }
+//    public function setValue($value) {
+//        $this->value = $value;
+//    }
 
     /**
      * @param null $value
      * @return null
      */
-    public function getValue($value = null)
+    public function show($value = null)
     {
-        $value = ($value) ? $value : $this->options->get('default');
+        $value = ($value) ? $value : $this->field->getOption('default');
 
-        if ($this->options->has('show')) {
-            $show = $this->options->get('show');
-
+        if ($show = $this->field->getOption('show')) {
             if (is_callable($show)) {
                 return $show($value);
             }
         }
 
-        return $value;
+        $this->field->setValue($value);
+
+        return $this->field->show();
     }
 
     /**
@@ -137,7 +134,7 @@ class Field extends \Mascame\Formality\Field\Field
 
         if ($this->isGuarded()) return $this->guarded();
 
-        return parent::output();
+        return $this->field->output();
     }
 
 
@@ -162,28 +159,25 @@ class Field extends \Mascame\Formality\Field\Field
      * @param string $list
      * @return bool
      */
-    public function isListed($list = 'show')
+    protected function isListedAs($list = 'visible')
     {
-        if (!isset($this->options->model['list'][$list])) {
+        if ( ! isset($this->options->model['list'][$list])) {
             return false;
         }
 
         $list = $this->options->model['list'][$list];
 
-        if ($this->isAll($list)) {
-            return true;
-        }
+        if ($this->isAll($list)) return true;
 
-        return $this->isInArray($this->name, $list);
+        return $this->isInArray($this->field->getName(), $list);
     }
-
 
     /**
      * @return bool
      */
-    public function isHiddenList()
+    public function isListable()
     {
-        return $this->isListed('hide');
+        return $this->isListedAs('visible') || ! $this->isListedAs('hidden');
     }
 
 
@@ -215,7 +209,7 @@ class Field extends \Mascame\Formality\Field\Field
             return false;
         }
 
-        return $this->isInArray($this->name, $this->options->model['guarded']);
+        return $this->isInArray($this->field->getName(), $this->options->model['guarded']);
     }
 
     /**
@@ -227,7 +221,7 @@ class Field extends \Mascame\Formality\Field\Field
             return false;
         }
 
-        return $this->isInArray($this->name, $this->options->model['hidden']);
+        return $this->isInArray($this->field->getName(), $this->options->model['hidden']);
     }
 
     /**
@@ -243,11 +237,21 @@ class Field extends \Mascame\Formality\Field\Field
         return array_get(\View::getShared(), 'fields')[$name];
     }
 
-    public function __call($method, $args) {
-        if (! method_exists($this->type, $method)) {
+    public function __get($name) {
+        $accessor = 'get' . studly_case($name);
+
+        if (! method_exists($this->field, $accessor)) {
             return null;
         }
 
-        return $this->type->$method($args);
+        return $this->field->$accessor();
+    }
+
+    public function __call($method, $args) {
+        if (! method_exists($this->field, $method)) {
+            return null;
+        }
+
+        return $this->field->$method($args);
     }
 }

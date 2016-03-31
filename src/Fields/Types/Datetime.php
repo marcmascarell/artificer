@@ -2,9 +2,8 @@
 
 use Carbon\Carbon;
 use Form;
-use Mascame\Formality\Type\Type;
 
-class DateTime extends Type
+class DateTime extends \Mascame\Formality\Types\DateTime
 {
 
     public function input()
@@ -14,7 +13,7 @@ class DateTime extends Type
             <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
             </div>
-            <?php print Form::text($this->name, $this->value, $this->attributes->all()); ?>
+            <?php print Form::text($this->name, $this->value, $this->attributes); ?>
         </div>
     <?php
     }
@@ -23,7 +22,9 @@ class DateTime extends Type
     {
         $date = Carbon::parse($this->value);
 
-        return $date->format('d-m-Y H:i:s');
+        $format = $this->getOption('format');
+
+        return $date->format(($format) ? $format : 'd-m-Y H:i:s');
     }
 
 }

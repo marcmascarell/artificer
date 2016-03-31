@@ -1,14 +1,13 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
 use Form;
-use Mascame\Formality\Type\Type;
 
-class Radio extends Type
+class Radio extends \Mascame\Formality\Types\Radio
 {
 
     public function input()
     {
-        return Form::radio($this->name, $this->value, false, $this->attributes->all());
+        return Form::radio($this->name, $this->value, false, $this->attributes);
     }
 
 }

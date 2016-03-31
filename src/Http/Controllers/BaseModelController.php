@@ -8,6 +8,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Routing\Router;
 use Input;
 use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Fields\FieldFactory;
 use Mascame\Formality\Factory\Factory;
 use Mascame\Formality\Parser\Parser;
 use Mascame\Artificer\Permit\ModelPermit;
@@ -92,9 +93,9 @@ class BaseModelController extends BaseController
         // Todo: try to avoid parsing all columns each time...
 
 
-        $fieldFactory = new Factory(new Parser(config('admin.fields.types')), $this->modelObject->columns, config('admin.fields.classmap'));
+        $fieldFactory = new FieldFactory(new Parser(config('admin.fields.types')), $this->modelObject->columns, config('admin.fields.classmap'));
         $this->fields = $fieldFactory->makeFields();
-
+//dd($this->fields);
 //        dd($data);
         // Fulfill data
 //        foreach ($data as $items) {
