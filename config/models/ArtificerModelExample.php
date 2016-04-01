@@ -13,13 +13,9 @@ return [
 
 	// Editable, fillable, updatable
 //	'fillable'  => [],
-//
-//	// Not updatable, not editable
-//	'guarded'   => ['id'],
 
-//	'list'      => ['*'],
-//
-//	'list-hide' => ['image_center'],
+	// Not updatable, not editable
+//	'guarded'   => ['id'],
 
     /**
      * Fields that are shown on creation
@@ -35,8 +31,8 @@ return [
      * Fields that will be shown when on list view mode
      */
     'list' => [
-        'show' => ['*'],
-        'hide' => ['password'],
+        'visible' => ['*'],
+        'hidden' => ['password'],
     ],
 
     /**

@@ -86,23 +86,10 @@ class BaseModelController extends BaseController
         /**
          * @var $data Collection
          */
-//        $fieldManager = new Manager(new Parser(config('admin.fields.types')), Field::class);
-
-//        $data = $data->makeVisible($this->modelObject->columns)->toArray();
-
         // Todo: try to avoid parsing all columns each time...
-
 
         $fieldFactory = new FieldFactory(new Parser(config('admin.fields.types')), $this->modelObject->columns, config('admin.fields.classmap'));
         $this->fields = $fieldFactory->makeFields();
-//dd($this->fields);
-//        dd($data);
-        // Fulfill data
-//        foreach ($data as $items) {
-//            $itemData = $items->makeVisible($this->modelObject->columns)->toArray();
-//
-////            foreach
-//        }
 
         View::share('fields', $this->fields);
 

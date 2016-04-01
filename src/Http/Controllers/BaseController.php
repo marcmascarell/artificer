@@ -3,6 +3,7 @@
 use App;
 use Auth;
 use Input;
+use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Fields\Field;
 use Mascame\Artificer\Model\Model;
 use View;
@@ -42,7 +43,7 @@ class BaseController extends Controller
             $this->options = AdminOption::all();
 
             App::make('ArtificerPluginManager')->boot();
-            $this->modelObject = App::make('artificer-model');
+            $this->modelObject = Artificer::getModel();
 
             if ($this->isStandAlone()) {
                 $this->master_layout = 'standalone';

@@ -19,7 +19,7 @@ class Relation extends \Mascame\Formality\Field\Field
     {
         parent::boot();
 
-        $this->modelObject = \App::make('artificer-model');
+        $this->modelObject = \App::make('ArtificerModel');
     }
 
     public function editURL($model_route, $id)

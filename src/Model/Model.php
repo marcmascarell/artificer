@@ -120,7 +120,7 @@ class Model
      */
     public function hasGuarded()
     {
-        return (isset($this->options['guarded']) && !empty($this->options['guarded'])) ? true : false;
+        return ! empty($this->getOption('guarded', []));
     }
 
     /**
@@ -128,7 +128,7 @@ class Model
      */
     public function hasFillable()
     {
-        return (isset($this->options['fillable']) && !empty($this->options['fillable'])) ? true : false;
+        return ! empty($this->getOption('fillable', []));
     }
 
     /**
@@ -230,7 +230,11 @@ class Model
      */
     public function getOptions($model = null)
     {
-        return ModelOption::model(($model) ?: $this->name);
+        $model = ($model) ? $model : $this->name;
+
+        if (isset($this->options[$model])) return $this->options[$model];
+
+        return $this->options[$model] = config('admin.models.' . $model);
     }
 
     /**
@@ -240,7 +244,10 @@ class Model
      */
     public function getOption($key, $default = null, $model = null)
     {
-        return (ModelOption::has($key, $model)) ? ModelOption::get($key, $model) : $default;
+        $model = ($model) ? $model : $this->name;
+        $options = $this->getOptions($model);
+
+        return (isset($options[$key])) ? $options[$key] : $default;
     }
 
     /**

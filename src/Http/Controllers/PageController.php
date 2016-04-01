@@ -21,7 +21,7 @@ class PageController extends BaseController
 
     public function install()
     {
-        $this->modelObject = App::make('artificer-model');
+        $this->modelObject = App::make('ArtificerModel');
 
         try {
             $user = \User::firstOrFail();

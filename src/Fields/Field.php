@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Fields;
 
 use App;
+use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Widgets\AbstractWidget;
 use Mascame\Formality\Field\FieldInterface;
 use Mascame\Formality\Field\TypeInterface;
@@ -42,7 +43,7 @@ class Field
      * @param FieldInterface|TypeInterface $field
      * @param null $relation
      */
-    public function __construct(FieldInterface $field, $relation = null)
+    public function __construct(FieldInterface $field, $modelOptions = [], $relation = null)
     {
         $this->field = $field;
 
@@ -161,11 +162,11 @@ class Field
      */
     protected function isListedAs($list = 'visible')
     {
-        if ( ! isset($this->options->model['list'][$list])) {
+        if ( ! isset(Artificer::getModel()->getOption('list')[$list])) {
             return false;
         }
 
-        $list = $this->options->model['list'][$list];
+        $list = Artificer::getModel()->getOption('list')[$list];
 
         if ($this->isAll($list)) return true;
 
@@ -205,11 +206,9 @@ class Field
      */
     public function isGuarded()
     {
-        if (!isset($this->options->model['guarded'])) {
-            return false;
-        }
+        if (Artificer::getModel()->getOption('guarded')) return false;
 
-        return $this->isInArray($this->field->getName(), $this->options->model['guarded']);
+        return $this->isInArray($this->field->getName(), Artificer::getModel()->getOption('guarded'));
     }
 
     /**
@@ -217,11 +216,9 @@ class Field
      */
     public function isHidden()
     {
-        if (!isset($this->options->model['hidden'])) {
-            return false;
-        }
+        if (Artificer::getModel()->getOption('hidden')) return false;
 
-        return $this->isInArray($this->field->getName(), $this->options->model['hidden']);
+        return $this->isInArray($this->field->getName(), Artificer::getModel()->getOption('hidden'));
     }
 
     /**

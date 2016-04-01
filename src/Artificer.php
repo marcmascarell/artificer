@@ -4,6 +4,7 @@ use App;
 use Mascame\Artificer\Http\Controllers\BaseController;
 use Mascame\Artificer\Http\Controllers\BaseModelController;
 use Mascame\Artificer\Extension\PluginManager;
+use Mascame\Artificer\Model\Model;
 
 class Artificer
 {
@@ -12,6 +13,14 @@ class Artificer
 
     public static function isBooted() {
         return self::$booted;
+    }
+
+    /**
+     * @return Model
+     */
+    public static function getModel()
+    {
+        return App::make('ArtificerModel');
     }
 
     public static function assets()

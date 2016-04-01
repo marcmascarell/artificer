@@ -91,14 +91,14 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 	private function addModel()
 	{
-		App::singleton('artificer-model', function () {
+		App::singleton('ArtificerModel', function () {
 			return new Model(new ModelSchema(new ModelObtainer()));
 		});
 	}
 
 	private function addLocalization()
 	{
-		App::singleton('artificer-localization', function () {
+		App::singleton('ArtificerLocalization', function () {
 			return new Localization();
 		});
 	}
