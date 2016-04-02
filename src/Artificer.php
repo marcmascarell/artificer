@@ -16,6 +16,27 @@ class Artificer
     }
 
     /**
+     * Returns the current user's action.
+     *
+     * @return null|string
+     */
+    public static function getCurrentAction()
+    {
+        switch (\Route::currentRouteName()) {
+            case 'admin.model.create':
+                return 'create';
+            case 'admin.model.edit':
+                return 'edit';
+            case 'admin.model.show':
+                return 'show';
+            case 'admin.model.all':
+                return 'list';
+            default:
+                return null;
+        }
+    }
+
+    /**
      * @return Model
      */
     public static function getModel()

@@ -7,12 +7,9 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Redirector;
 use Illuminate\Routing\Router;
 use Input;
-use Mascame\Artificer\Fields\Field;
 use Mascame\Artificer\Fields\FieldFactory;
-use Mascame\Formality\Factory\Factory;
 use Mascame\Formality\Parser\Parser;
 use Mascame\Artificer\Permit\ModelPermit;
-use Mascame\Formality\Manager\Manager;
 use Redirect;
 use Route;
 use Session;
@@ -173,7 +170,7 @@ class BaseModelController extends BaseController
                 }
             }
 
-            return $this->except($this->modelObject->options['guarded'], $filtered_input);
+            return $this->except($this->modelObject->getOption('guarded'), $filtered_input);
         }
 
         return Input::except('id');

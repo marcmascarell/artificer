@@ -10,16 +10,7 @@ class Field
 {
     use Filterable;
 
-    /**
-     * @var null
-     */
-    public $value;
-
     public static $widgets = array();
-    /**
-     * @var FieldOptions
-     */
-    public $options;
 
     /**
      * @var FieldRelation
@@ -36,7 +27,7 @@ class Field
     /**
      * @var FieldInterface|TypeInterface
      */
-    public $field;
+    protected $field;
 
     /**
      * Field constructor.
@@ -95,33 +86,15 @@ class Field
      * @param null $value
      * @return null
      */
-//    public function display($value = null)
-//    {
-//        $this->value = $this->getValue($value);
-//
-//        return $this->show();
-//    }
-
-
-//    public function setValue($value) {
-//        $this->value = $value;
-//    }
-
-    /**
-     * @param null $value
-     * @return null
-     */
     public function show($value = null)
     {
-        $value = ($value) ? $value : $this->field->getOption('default');
+        $value = ($value) ? $this->field->setValue($value) : $this->field->getOption('default');
 
         if ($show = $this->field->getOption('show')) {
             if (is_callable($show)) {
                 return $show($value);
             }
         }
-
-        $this->field->setValue($value);
 
         return $this->field->show();
     }
@@ -157,16 +130,16 @@ class Field
     }
 
     /**
-     * @param string $list
+     * @param string $visibility [visible|hidden]
      * @return bool
      */
-    protected function isListedAs($list = 'visible')
+    protected function isListedAs($visibility, $action)
     {
-        if ( ! isset(Artificer::getModel()->getOption('list')[$list])) {
-            return false;
-        }
+        $listOptions = Artificer::getModel()->getOption($action);
 
-        $list = Artificer::getModel()->getOption('list')[$list];
+        if (! $listOptions || ! isset($listOptions[$visibility])) return false;
+
+        $list = $listOptions[$visibility];
 
         if ($this->isAll($list)) return true;
 
@@ -174,13 +147,20 @@ class Field
     }
 
     /**
+     * list, edit, create
+     *
+     * Hidden fields have preference.
+     *
      * @return bool
      */
-    public function isListable()
+    public function isListable($action = null)
     {
-        return $this->isListedAs('visible') || ! $this->isListedAs('hidden');
-    }
+        if ( ! $action) $action = Artificer::getCurrentAction();
 
+        if ($this->isListedAs('hidden', $action)) return false;
+
+        return $this->isListedAs('visible', $action);
+    }
 
     /**
      * @param $value

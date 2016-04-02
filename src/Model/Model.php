@@ -1,5 +1,6 @@
 <?php namespace Mascame\Artificer\Model;
 
+use Illuminate\Contracts\Database\ModelIdentifier;
 use View;
 use Route;
 use \Illuminate\Support\Str as Str;
@@ -26,7 +27,7 @@ class Model
     public $columns;
 
     /**
-     * @var mixed
+     * @var \Illuminate\Database\Eloquent\Model
      */
     public $model;
 
@@ -58,12 +59,13 @@ class Model
     /**
      * @var array|mixed
      */
-    public $options = array();
+    protected $options = [];
+    protected $defaultOptions = null;
 
     /**
      * @var array|mixed
      */
-    public $relations = array();
+    public $relations = [];
 
     /**
      * @var
@@ -152,13 +154,11 @@ class Model
     public function prepareCurrentModel()
     {
         $this->name = $this->getCurrentModelName();
-
         $this->class = $this->schema->getClass($this->name);
         $this->model = $this->schema->getInstance($this->name);
         $this->table = $this->model->getTable();
         $this->columns = $this->schema->getColumns($this->table);
         $this->fillable = $this->model->getFillable();
-        $this->options = $this->getOptions();
     }
 
     /**
@@ -189,7 +189,7 @@ class Model
     }
 
     /**
-     * @return null
+     * @return Model
      */
     public static function getCurrent()
     {
@@ -221,7 +221,7 @@ class Model
     protected function setCurrent($modelName)
     {
         self::$current = $modelName;
-        ModelOption::set('current', $modelName);
+//        ModelOption::set('current', $modelName);
     }
 
     /**
@@ -235,6 +235,13 @@ class Model
         if (isset($this->options[$model])) return $this->options[$model];
 
         return $this->options[$model] = config('admin.models.' . $model);
+    }
+
+    public function getDefaultOptions()
+    {
+        if ($this->defaultOptions) return $this->defaultOptions;
+
+        return $this->defaultOptions = config('admin.model.default_model');
     }
 
     /**

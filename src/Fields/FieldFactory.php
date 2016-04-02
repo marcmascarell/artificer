@@ -1,7 +1,6 @@
 <?php namespace Mascame\Artificer\Fields;
 
 use Mascame\Artificer\Model\Model;
-use Mascame\Artificer\Options\FieldOption;
 use \Illuminate\Support\Str as Str;
 use Mascame\Artificer\Fields\Field as FieldWrapper;
 use Mascame\Formality\Field\Field;
@@ -50,15 +49,15 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
      * @param $name
      * @return bool|mixed
      */
-    protected function getTypeFromConfig($name) {
-        if (FieldOption::has('type', $name) || FieldOption::has('relationship.type', $name)) {
-            return (FieldOption::has('type', $name)) ?
-                FieldOption::get('type', $name) :
-                FieldOption::get('relationship.type', $name);
-        }
-
-        return false;
-    }
+//    protected function getTypeFromConfig($name) {
+//        if (FieldOption::has('type', $name) || FieldOption::has('relationship.type', $name)) {
+//            return (FieldOption::has('type', $name)) ?
+//                FieldOption::get('type', $name) :
+//                FieldOption::get('relationship.type', $name);
+//        }
+//
+//        return false;
+//    }
 
     /**
      * @param $name
@@ -107,20 +106,20 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
     /**
      * @return array
      */
-    protected function withCustomFields()
-    {
-        if (isset($this->modelObject->options['fields'])) {
-
-            foreach ($this->modelObject->options['fields'] as $name => $data) {
-                if ( ! in_array($name, $this->modelObject->columns)) {
-                    $this->modelObject->columns[] = $name;
-                }
-            }
-
-        }
-
-        return $this->modelObject->columns;
-    }
+//    protected function withCustomFields()
+//    {
+//        if (isset($this->modelObject->options['fields'])) {
+//
+//            foreach ($this->modelObject->options['fields'] as $name => $data) {
+//                if ( ! in_array($name, $this->modelObject->columns)) {
+//                    $this->modelObject->columns[] = $name;
+//                }
+//            }
+//
+//        }
+//
+//        return $this->modelObject->columns;
+//    }
 
     /**
      * @param $field

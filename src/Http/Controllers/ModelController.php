@@ -117,7 +117,7 @@ class ModelController extends BaseModelController
     {
         $this->handleData($this->model->findOrFail($id));
 
-        return View::make($this->getView('show'))->with('items', $this->data);
+        return View::make($this->getView('show'))->with('item', $this->data);
     }
 
     /**

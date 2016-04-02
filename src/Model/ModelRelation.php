@@ -1,5 +1,6 @@
 <?php namespace Mascame\Artificer\Model;
 
+use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Options\ModelOption;
 
 class ModelRelation
@@ -20,7 +21,7 @@ class ModelRelation
             return $this->relations;
         }
 
-        $fields = ModelOption::get('fields');
+        $fields = Artificer::getModel()->getOption('fields', []);
 
         if (empty($fields)) {
             return array();
