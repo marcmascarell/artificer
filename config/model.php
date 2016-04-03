@@ -27,35 +27,42 @@ return [
 		'hidden'    => ['password'],
 
 		// Editable, fillable, updatable
-		//	'fillable'  => [],
+		'fillable'  => ['*'],
 		//
 		//	// Not updatable, not editable
-		//	'guarded'   => ['id'],
-
-		//	'list'      => ['*'],
-		//
-		//	'list-hide' => ['image_center'],
+		'guarded'   => ['id'],
 
 		/**
 		 * Fields that are shown on creation
 		 */
-		'create' => [],
+		'create' => [
+			'visible' => ['*'],
+			'hidden' => ['id'],
+		],
 
 		/**
 		 * Fields that are shown on edit
 		 */
-		'edit' => [],
+		'edit' => [
+			'visible' => ['*'],
+			'hidden' => ['id'],
+		],
 
 		/**
 		 * Fields that will be shown when on list view mode
 		 */
 		'list' => [
-			'show' => ['*'],
-			'hide' => ['password'],
+			'visible' => ['*'],
+			'hidden' => ['password'],
 		],
 
 		'fields'    => [
 
+		],
+
+		// Attributes of fields, applied unless field has attributes
+		'attributes' => [
+			'class' => 'form-control'
 		]
 	]
 ];

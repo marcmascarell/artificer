@@ -70,6 +70,8 @@ class BaseModelController extends BaseController
         $this->data = $data;
 
         $this->getFields($data);
+
+        View::share('data', $this->data);
     }
 
     /**
@@ -83,9 +85,18 @@ class BaseModelController extends BaseController
         /**
          * @var $data Collection
          */
-        // Todo: try to avoid parsing all columns each time...
+        $modelFields = $this->modelObject->getOption('fields');
+        $fields = [];
 
-        $fieldFactory = new FieldFactory(new Parser(config('admin.fields.types')), $this->modelObject->columns, config('admin.fields.classmap'));
+        foreach ($this->modelObject->columns as $column) {
+            $options = [];
+
+            if (isset($modelFields[$column])) $options = $modelFields[$column];
+
+            $fields[$column] = $options;
+        }
+
+        $fieldFactory = new FieldFactory(new Parser(config('admin.fields.types')), $fields, config('admin.fields.classmap'));
         $this->fields = $fieldFactory->makeFields();
 
         View::share('fields', $this->fields);

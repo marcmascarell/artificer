@@ -1,8 +1,10 @@
 <?php namespace Mascame\Artificer\Fields;
 
+use Mascame\Artificer\Artificer;
+use Mascame\Artificer\Fields\Types\Relations\Relation;
 use Mascame\Artificer\Model\Model;
 use \Illuminate\Support\Str as Str;
-use Mascame\Artificer\Fields\Field as FieldWrapper;
+use Mascame\Artificer\Fields\FieldWrapper;
 use Mascame\Formality\Field\Field;
 
 class FieldFactory extends \Mascame\Formality\Factory\Factory
@@ -39,10 +41,37 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
                 ]
             ]);
 
+            if (is_a($field, \Mascame\Artificer\Fields\Types\Relations\Relation::class)) {
+                $field = $this->completeRelation($field);
+            }
+
             $fields[$key] = new FieldWrapper($field);
         }
 
         return $fields;
+    }
+
+    /**
+     * @param $field Relation
+     * @return mixed
+     */
+    public function completeRelation($field) {
+        $relationship = $field->getOption('relationship', []);
+
+        $completedRelation = [
+            "method" => $field->guessRelatedMethod(),
+            "type" => $field->getType(),
+            "model" => $field->guessModel(),
+            "show" => function($value) {
+                // Jump to next column avoiding 'id'
+                return array_values(array_slice($value->toArray(), 1, 1))[0];
+            }
+        ];
+
+        // user config takes preference
+        $field->setOptions(['relationship' => array_merge($completedRelation, $relationship)]);
+
+        return $field;
     }
 
     /**

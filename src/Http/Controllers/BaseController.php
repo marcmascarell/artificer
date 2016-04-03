@@ -4,7 +4,7 @@ use App;
 use Auth;
 use Input;
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Fields\FieldWrapper;
 use Mascame\Artificer\Model\Model;
 use View;
 use Illuminate\Routing\Controller as Controller;
@@ -107,7 +107,7 @@ class BaseController extends Controller
     {
         $widgets = '';
 
-        foreach (Field::$widgets as $widget) {
+        foreach (FieldWrapper::$widgets as $widget) {
             $widgets .= $widget->output();
         }
 

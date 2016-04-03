@@ -1,14 +1,29 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
 use Form;
+use Illuminate\Support\Str;
 use Input;
 use Request;
 use URL;
 
 class hasOne extends Relation
 {
-
     protected $id;
+
+    public function guessRelatedMethod() {
+        // case 'model_id'
+        $method = str_replace('_id', '', $this->name);
+
+        if ($this->modelHasMethod($method)) return $method;
+
+        // case 'my_current_model_id'
+        $method = explode('_', $this->name);
+        $method = isset(array_reverse($method)[1]) ? array_reverse($method)[1] : null;
+
+        if ($this->modelHasMethod($method)) return $method;
+
+        return null;
+    }
 
     protected function select($data, $show)
     {
@@ -18,7 +33,7 @@ class hasOne extends Relation
             if (is_array($show)) {
                 $value = '';
                 foreach ($show as $show_key) {
-                    $value .= \Str::title($show_key) . ': ' . $d[$show_key];
+                    $value .= Str::title($show_key) . ': ' . $d[$show_key];
 
                     if (end($show) != $show_key) {
                         $value .= ' | ';
@@ -42,51 +57,50 @@ class hasOne extends Relation
         }
 
         print Form::select($this->name, array('0' => Request::ajax() ? '(current)' : '(none)') + $select, $this->id,
-            $this->attributes->all());
+            $this->attributes);
     }
 
     protected function buttons()
     {
-        if (!Request::ajax() || $this->showFullField) {
-            $new_url = \URL::route('admin.model.create', array('slug' => $this->model['route']));
-            $edit_url = \URL::route('admin.model.edit', array('slug' => $this->model['route'], 'id' => ':id:'));
+        // Todo: $this->showFullField ?
+//        if (!Request::ajax() || $this->showFullField) {
+        if ( ! Request::ajax()) {
+            $new_url = \URL::route('admin.model.create', array('slug' => $this->relatedModel['route']));
+            $edit_url = \URL::route('admin.model.edit', array('slug' => $this->relatedModel['route'], 'id' => ':id:'));
             ?>
             <br>
             <div class="text-right">
                 <div class="btn-group">
                     <button class="btn btn-default" data-toggle="modal"
                             data-url="<?= $edit_url ?>"
-                            data-target="#form-modal-<?= $this->model['route'] ?>">
+                            data-target="#form-modal-<?= $this->relatedModel['route'] ?>">
                         <i class="fa fa-edit"></i>
                     </button>
 
                     <button class="btn btn-default" data-toggle="modal"
                             data-url="<?= $new_url ?>"
-                            data-target="#form-modal-<?= $this->model['route'] ?>">
+                            data-target="#form-modal-<?= $this->relatedModel['route'] ?>">
                         <i class="fa fa-plus"></i>
                     </button>
                 </div>
             </div>
             <?php
 
-            $this->relationModal($this->model['route'], $this->id);
+            $this->relationModal($this->relatedModel['route'], $this->id);
         }
+    }
+
+    protected function getData() {
+        return \View::getShared()['data'];
     }
 
     public function input()
     {
-        if ( ! $this->relation->getRelatedModel()) {
-            throw new \Exception("Missing relation in config for '{$this->name}'.");
-        }
+        $data = $this->getRelatedInstance()->all(
+            (is_string($this->getShow())) ? ['id', $this->getShow()] : ['*']
+        )->toArray();
 
-        $this->model = $this->modelObject->schema->models[$this->relation->getRelatedModel()];
-        $this->model['class'] = $modelClass = $this->modelObject->schema->getClass($this->model['name']);
-        $show = $this->relation->getShow();
-
-        $show_query = (is_array($show)) ? array('*') : array('id', $show);
-        $data = $modelClass::all($show_query)->toArray();
-
-        $this->select($data, $show);
+        $this->select($data, $this->getShow());
         $this->buttons();
     }
 
@@ -94,20 +108,14 @@ class hasOne extends Relation
     {
         $value = ($value) ?: $this->value;
 
-        if ( ! $value) {
-            return "<em>(none)</em>";
-        }
+        if ( ! $value) return "<em>(none)</em>";
 
-        $show = $this->relation->getShow();
+        $show = $this->getShow();
 
         if ( ! is_object($value)) {
-            $model = '\\' . $this->relation->getRelatedModel();
+            $data = $this->getRelatedInstance()->findOrFail($value);
 
-            $data = $model::find($value);
-
-            if (!$data) {
-                return '(none)';
-            }
+            if ( ! $data) return '(none)';
 
             if (is_array($show)) {
                 foreach ($show as $item) {
@@ -115,6 +123,8 @@ class hasOne extends Relation
                 }
 
                 return null;
+            } elseif (is_callable($show)) {
+                return $show($data);
             } else {
                 return $data->$show;
             }
@@ -124,9 +134,7 @@ class hasOne extends Relation
             throw new \Exception('The (hasOne) value is null');
         }
 
-        $show = $this->options['relationship']['show'];
-
-        print $value->$show;
+        print $value->{$this->getShow()};
 
         return null;
     }

@@ -26,7 +26,7 @@ class ModelObtainer
      */
     protected function scanModelsDirectory($directory, $namespace = null)
     {
-        $models = array();
+        $models = [];
 
         foreach (File::allFiles($directory) as $modelPath) {
             $modelName = $this->getFromFileName($modelPath);
@@ -35,15 +35,19 @@ class ModelObtainer
                 continue;
             }
 
-            $models[$modelName] = array(
-                'name' => $modelName,
-                'namespace' => $namespace,
-                'route' => $this->makeModelRoute($modelName),
-                'fake' => false
-            );
+            $models[$modelName] = $this->getModelBasics($modelName, $namespace);
         }
 
         return $models;
+    }
+
+    protected function getModelBasics($modelName, $namespace = null) {
+        return [
+            'name' => $modelName,
+            'namespace' => $namespace,
+            'route' => $this->makeModelRoute($modelName),
+            'fake' => false
+        ];
     }
 
     /**
@@ -61,7 +65,7 @@ class ModelObtainer
      */
     private function mergeModelDirectories($models)
     {
-        $mergedModels = array();
+        $mergedModels = [];
 
         foreach ($models as $key => $model) {
             foreach ($model as $name => $values) {
@@ -80,7 +84,18 @@ class ModelObtainer
         if ( ! empty($this->models)) return $this->models;
 
         $models = [];
-        $modelDirectories = AdminOption::get('model.directories');
+        $configModels = config('admin.model.models', []);
+
+        foreach ($configModels as $model) {
+            $pieces = explode('\\', $model);
+            $modelName = end($pieces);
+
+            $basicInfo = $this->getModelBasics($modelName, preg_replace('/\\\\' . $modelName . '$/', '', $model));
+
+            $models[] = [$modelName => $basicInfo];
+        }
+
+        $modelDirectories = config('admin.model.directories', []);
 
         foreach ($modelDirectories as $namespace => $directory) {
             if (! file_exists($directory)) {

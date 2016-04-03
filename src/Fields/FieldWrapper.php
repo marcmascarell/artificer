@@ -6,16 +6,11 @@ use Mascame\Artificer\Widgets\AbstractWidget;
 use Mascame\Formality\Field\FieldInterface;
 use Mascame\Formality\Field\TypeInterface;
 
-class Field
+class FieldWrapper
 {
     use Filterable;
 
     public static $widgets = array();
-
-    /**
-     * @var FieldRelation
-     */
-    public $relation = null;
 
     /**
      * Sometimes ajax limits output, setting this to true will return all
@@ -34,13 +29,9 @@ class Field
      * @param FieldInterface|TypeInterface $field
      * @param null $relation
      */
-    public function __construct(FieldInterface $field, $modelOptions = [], $relation = null)
+    public function __construct(FieldInterface $field)
     {
         $this->field = $field;
-
-        if ($relation) {
-            $this->relation = new FieldRelation($this->field->getOption('relationship'));
-        }
 
         $this->boot();
     }
@@ -109,15 +100,6 @@ class Field
         if ($this->isGuarded()) return $this->guarded();
 
         return $this->field->output();
-    }
-
-
-    /**
-     * @return string
-     */
-    public function hidden()
-    {
-        return '<div class="label label-warning">Hidden data</div>';
     }
 
     /**
@@ -199,14 +181,6 @@ class Field
         if (Artificer::getModel()->getOption('hidden')) return false;
 
         return $this->isInArray($this->field->getName(), Artificer::getModel()->getOption('hidden'));
-    }
-
-    /**
-     * @return bool
-     */
-    public function isRelation()
-    {
-        return $this->relation;
     }
 
     public static function get($name)

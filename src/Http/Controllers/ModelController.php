@@ -143,14 +143,18 @@ class ModelController extends BaseModelController
      */
     public function edit($modelName, $id)
     {
-        $this->handleData($this->model->with($this->modelObject->getRelations())->findOrFail($id));
+        $this->handleData(
+            $this->model->with($this->modelObject->getRelations())->findOrFail($id)
+        );
 
         $form = array(
             'form_action_route' => 'admin.model.update',
             'form_method' => 'put'
         );
 
-        return View::make($this->getView('edit'))->with('items', $this->data)->with($form);
+        return View::make($this->getView('edit'))
+            ->with('items', $this->data)
+            ->with($form);
     }
 
     public function field($modelName, $id, $field)

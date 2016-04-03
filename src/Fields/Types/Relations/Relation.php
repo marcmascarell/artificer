@@ -1,25 +1,43 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
+use Mascame\Artificer\Fields\GuessableRelation;
+use Mascame\Artificer\Fields\Relationable;
 use Mascame\Artificer\Model\Model;
+use Mascame\Formality\Field\Field;
 use Route;
 use URL;
 
-class Relation extends \Mascame\Formality\Field\Field
+class Relation extends Field
 {
+    use Relationable, GuessableRelation;
 
     /**
      * @var Model;
      */
     public $modelObject;
+
+    public $relation = true;
+
+    /**
+     * @var Model;
+     */
     public $model;
     public $fields;
     public $createURL;
+    public $relatedModel;
 
-    public function boot()
+    /**
+     * Relation constructor.
+     */
+    public function __construct($name, $value = null, $options = [])
     {
-        parent::boot();
+        parent::__construct($name, $value, $options);
 
         $this->modelObject = \App::make('ArtificerModel');
+    }
+
+    public function getRelatedInstance() {
+        return $this->getRelatedModel()['instance'];
     }
 
     public function editURL($model_route, $id)

@@ -91,7 +91,7 @@ class Model
     public function share()
     {
         View::share('tables', $this->schema->tables);
-        View::share('models', $this->getCurrentModelsData());
+        View::share('models', $this->models = $this->getCurrentModelsData());
         View::share('model', $this->getCurrentModelData());
     }
 
@@ -151,7 +151,7 @@ class Model
         return null;
     }
 
-    public function prepareCurrentModel()
+    protected function prepareCurrentModel()
     {
         $this->name = $this->getCurrentModelName();
         $this->class = $this->schema->getClass($this->name);
@@ -194,14 +194,6 @@ class Model
     public static function getCurrent()
     {
         return (isset(self::$current)) ? self::$current : null;
-    }
-
-    /**
-     * @return string
-     */
-    public static function getCurrentClass()
-    {
-        return '\\' . self::$current;
     }
 
     /**

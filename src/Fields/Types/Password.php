@@ -10,9 +10,4 @@ class Password extends \Mascame\Formality\Types\Password
         return Form::password($this->name, $this->attributes);
     }
 
-    public function show()
-    {
-        return $this->hidden();
-    }
-
 }
