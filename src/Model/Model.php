@@ -103,6 +103,16 @@ class Model
         foreach ($this->schema->models as $modelName => $model) {
             $this->schema->models[$modelName]['options'] = $this->getOptions($modelName);
             $this->schema->models[$modelName]['hidden'] = $this->isHidden($modelName);
+
+            $title = null;
+            if (isset($this->schema->models[$modelName]['title'])) {
+                $title = $this->schema->models[$modelName]['title'];
+            } else {
+                $title = Str::title(
+                  str_replace('_', ' ', $this->schema->models[$modelName]['table'])
+                );
+            }
+            $this->schema->models[$modelName]['title'] = $title;
         }
 
         return $this->schema->models;
