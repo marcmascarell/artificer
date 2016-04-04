@@ -112,6 +112,7 @@ class Model
                   str_replace('_', ' ', $this->schema->models[$modelName]['table'])
                 );
             }
+
             $this->schema->models[$modelName]['title'] = $title;
         }
 

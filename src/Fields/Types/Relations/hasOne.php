@@ -39,6 +39,8 @@ class hasOne extends Relation
                         $value .= ' | ';
                     }
                 }
+            } elseif (is_callable($show)) {
+                $value = $show($d);
             } else {
                 $value = $d[$show];
             }

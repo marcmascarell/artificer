@@ -63,8 +63,18 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
             "type" => $field->getType(),
             "model" => $field->guessModel(),
             "show" => function($value) {
+                if (! is_array($value) && method_exists($value, 'toArray')) {
+
+                    // Avoids cryptic errors
+                    try {
+                        $value = $value->toArray();
+                    } catch (\Exception $e) {
+                        var_dump($e->getMessage());
+                    }
+                }
+
                 // Jump to next column avoiding 'id'
-                return array_values(array_slice($value->toArray(), 1, 1))[0];
+                return array_values(array_slice($value, 1, 1))[0];
             }
         ];
 
