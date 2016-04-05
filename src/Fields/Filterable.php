@@ -22,7 +22,7 @@ trait Filterable
     {
         $this->value = \Input::old($this->name);
 
-        return $this->input();
+        return $this->output();
     }
 
     /**

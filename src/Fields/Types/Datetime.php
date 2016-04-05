@@ -8,7 +8,9 @@ class DateTime extends \Mascame\Formality\Types\DateTime
 
     public function input()
     {
-        return Form::text($this->name, Carbon::parse($this->value)->format('d-m-Y H:i:s'), $this->attributes);
+        if ($this->value) $this->value = Carbon::parse($this->value)->format('d-m-Y H:i:s');
+
+        return Form::text($this->name, $this->value, $this->attributes);
     }
 
     public function show()
