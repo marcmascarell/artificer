@@ -3,11 +3,7 @@
 use HTML;
 
 
-class Link extends Text
+class Link extends \Mascame\Formality\Types\Link
 {
 
-    public function show()
-    {
-        return HTML::link($this->value);
-    }
 }

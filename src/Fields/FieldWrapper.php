@@ -160,7 +160,7 @@ class FieldWrapper
      */
     public function guarded()
     {
-        return '(guarded) ' . $this->show();
+        return '[PROTECTED] ' . $this->show();
     }
 
     /**

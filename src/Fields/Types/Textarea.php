@@ -2,17 +2,7 @@
 
 use Form;
 
-class Textarea extends Text
+class Textarea extends \Mascame\Formality\Types\Textarea
 {
-
-    public function input()
-    {
-        return Form::textarea($this->name, $this->value, $this->attributes);
-    }
-
-    public function guarded()
-    {
-        return "<div>" . $this->value . "</div>";
-    }
 
 }

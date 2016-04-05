@@ -5,9 +5,4 @@ use Form;
 class Password extends \Mascame\Formality\Types\Password
 {
 
-    public function input()
-    {
-        return Form::password($this->name, $this->attributes);
-    }
-
 }
