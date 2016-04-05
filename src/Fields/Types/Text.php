@@ -3,9 +3,6 @@
 use Form;
 use Input;
 
-//use Mascame\Artificer\Widgets\FocalPoint;
-
-
 class Text extends \Mascame\Formality\Types\Text
 {
 
@@ -17,11 +14,6 @@ class Text extends \Mascame\Formality\Types\Text
     public function guarded()
     {
         return "<div>" . $this->value . "</div>";
-    }
-
-    public function displayFilter()
-    {
-        return Form::text($this->name, Input::old($this->name), $this->attributes);
     }
 
     public function filter($query, $value)

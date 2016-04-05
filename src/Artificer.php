@@ -30,6 +30,7 @@ class Artificer
             case 'admin.model.show':
                 return 'show';
             case 'admin.model.all':
+            case 'admin.model.filter':
                 return 'list';
             default:
                 return null;

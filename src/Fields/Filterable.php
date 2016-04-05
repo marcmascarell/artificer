@@ -12,7 +12,7 @@ trait Filterable
      */
     public function filter($query, $value)
     {
-        return $query->where($query, $value);
+        return $query->where($this->name, $value);
     }
 
     /**
@@ -20,7 +20,9 @@ trait Filterable
      */
     public function displayFilter()
     {
-        return false;
+        $this->value = \Input::old($this->name);
+
+        return $this->input();
     }
 
     /**
@@ -28,6 +30,8 @@ trait Filterable
      */
     public function hasFilter()
     {
-        return ($this->displayFilter()) ? true : false;
+        $hasFilterMethod = method_exists($this->field, 'hasFilter');
+
+        return ($hasFilterMethod) ? $this->field->hasFilter() : true;
     }
 }

@@ -5,7 +5,6 @@ use View;
 use Route;
 use \Illuminate\Support\Str as Str;
 use Mascame\Artificer\Options\AdminOption;
-use Mascame\Artificer\Options\ModelOption;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
 class Model

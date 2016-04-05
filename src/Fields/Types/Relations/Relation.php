@@ -166,4 +166,10 @@ class Relation extends Field
         </script>
     <?php
     }
+
+    public function hasFilter()
+    {
+        return false;
+    }
+
 }

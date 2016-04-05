@@ -8,14 +8,7 @@ class DateTime extends \Mascame\Formality\Types\DateTime
 
     public function input()
     {
-        ?>
-        <div class="input-group">
-            <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-            </div>
-            <?php print Form::text($this->name, $this->value, $this->attributes); ?>
-        </div>
-    <?php
+        return Form::text($this->name, Carbon::parse($this->value)->format('d-m-Y H:i:s'), $this->attributes);
     }
 
     public function show()

@@ -49,8 +49,11 @@ class ModelController extends BaseModelController
                 }
             }
 
-            return $query;
-        })->with($this->modelObject->getRelations())->orderBy($sort['column'], $sort['direction'])->paginate();
+            return null;
+        })
+            ->with($this->modelObject->getRelations())
+            ->orderBy($sort['column'], $sort['direction'])
+            ->get();
 
         return parent::all($modelName, $data, $sort);
     }
