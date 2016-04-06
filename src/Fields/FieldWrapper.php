@@ -168,9 +168,9 @@ class FieldWrapper
      */
     public function isGuarded()
     {
-        if (Artificer::getModel()->getOption('guarded')) return false;
+        $guarded = Artificer::getModel()->getOption('guarded', []);
 
-        return $this->isInArray($this->field->getName(), Artificer::getModel()->getOption('guarded'));
+        return $this->isInArray($this->field->getName(), $guarded);
     }
 
     /**
@@ -178,9 +178,9 @@ class FieldWrapper
      */
     public function isHidden()
     {
-        if (Artificer::getModel()->getOption('hidden')) return false;
+        $hidden = Artificer::getModel()->getOption('hidden', []);
 
-        return $this->isInArray($this->field->getName(), Artificer::getModel()->getOption('hidden'));
+        return $this->isInArray($this->field->getName(), $hidden);
     }
 
     public static function get($name)
