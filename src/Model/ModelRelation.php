@@ -17,15 +17,11 @@ class ModelRelation
      */
     public function get()
     {
-        if (!empty($this->relations)) {
-            return $this->relations;
-        }
+        if (! empty($this->relations)) return $this->relations;
 
         $fields = Artificer::getModel()->getOption('fields', []);
 
-        if (empty($fields)) {
-            return array();
-        }
+        if (empty($fields)) return [];
 
         return $this->relations = $this->getFieldsWithRelations($fields);
     }
@@ -49,7 +45,7 @@ class ModelRelation
 
         foreach ($fields as $field) {
             if ($this->hasRelation($field)) {
-                $relations = $field['relationship']['method'];
+                $relations[] = $field['relationship']['method'];
             }
         }
 

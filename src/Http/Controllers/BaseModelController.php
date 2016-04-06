@@ -87,6 +87,7 @@ class BaseModelController extends BaseController
          * @var $data Collection
          */
         $modelFields = $this->modelObject->getOption('fields');
+        $types = config('admin.fields.types');
         $fields = [];
 
         foreach ($this->modelObject->columns as $column) {
@@ -97,7 +98,7 @@ class BaseModelController extends BaseController
             $fields[$column] = $options;
         }
 
-        $fieldFactory = new FieldFactory(new Parser(config('admin.fields.types')), $fields, config('admin.fields.classmap'));
+        $fieldFactory = new FieldFactory(new Parser($types), $types, $fields, config('admin.fields.classmap'));
         $this->fields = $fieldFactory->makeFields();
 
         View::share('fields', $this->fields);

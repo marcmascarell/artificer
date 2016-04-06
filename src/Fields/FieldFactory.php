@@ -19,6 +19,7 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
      * @var Model
      */
     public $modelObject;
+    public $defaultOptions;
     public $data;
 
     public $namespace = '\Mascame\Artificer\Fields\Types\\';
@@ -32,14 +33,6 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
         $fields = parent::makeFields();
 
         foreach($fields as $key => $field) {
-            /**
-             * @var $field Field
-             */
-            $field->setOptions([
-                'attributes' => [
-                    'class' => 'form-control'
-                ]
-            ]);
 
             if (is_a($field, \Mascame\Artificer\Fields\Types\Relations\Relation::class)) {
                 $field = $this->completeRelation($field);

@@ -90,14 +90,14 @@ class Model
     public function share()
     {
         View::share('tables', $this->schema->tables);
-        View::share('models', $this->models = $this->getCurrentModelsData());
+        View::share('models', $this->models = $this->getModelsData());
         View::share('model', $this->getCurrentModelData());
     }
 
     /**
      * @return array
      */
-    private function getCurrentModelsData()
+    private function getModelsData()
     {
         foreach ($this->schema->models as $modelName => $model) {
             $this->schema->models[$modelName]['options'] = $this->getOptions($modelName);
