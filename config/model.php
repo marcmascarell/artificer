@@ -20,7 +20,7 @@ return [
 		'admin.model.all'     => 'view',
 	],
 
-	'default_model' => [
+	'default' => [
 		/**
 		 * The real value will never be shown (just that)
 		 */

@@ -243,7 +243,7 @@ class Model
     {
         if ($this->defaultOptions) return $this->defaultOptions;
 
-        return $this->defaultOptions = config('admin.model.default_model');
+        return $this->defaultOptions = config('admin.model.default');
     }
 
     /**

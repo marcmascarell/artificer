@@ -10,7 +10,7 @@ class FieldWrapper
 {
     use Filterable;
 
-    public static $widgets = array();
+    public static $widgets = [];
 
     /**
      * Sometimes ajax limits output, setting this to true will return all

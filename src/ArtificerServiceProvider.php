@@ -12,6 +12,7 @@ use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
 use Mascame\ArtificerDefaultTheme\ArtificerDefaultThemeServiceProvider;
+use Mascame\ArtificerWidgets\ArtificerWidgetsServiceProvider;
 use Mascame\Extender\Event\Event;
 use Mascame\Extender\Installer\FileInstaller;
 use Mascame\Extender\Installer\FileWriter;
@@ -41,6 +42,7 @@ class ArtificerServiceProvider extends ServiceProvider {
         $this->requireFiles();
 
 		$this->app->register(\Collective\Html\HtmlServiceProvider::class);
+		$this->app->register(ArtificerWidgetsServiceProvider::class);
 
 		$loader = Loader::getInstance();
 		$loader->alias('HTML', \Collective\Html\HtmlFacade::class);

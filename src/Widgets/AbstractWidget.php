@@ -10,7 +10,7 @@ abstract class AbstractWidget
     /**
      * @var string
      */
-    public static $package_assets = '/packages/mascame/artificer-widgets';
+    public static $assetsPath = '/packages/mascame/artificer-widgets';
 
     public function __construct()
     {
