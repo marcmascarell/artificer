@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer;
 
 use App;
+use Mascame\Artificer\Extension\WidgetManager;
 use Mascame\Artificer\Http\Controllers\BaseController;
 use Mascame\Artificer\Http\Controllers\BaseModelController;
 use Mascame\Artificer\Extension\PluginManager;
@@ -71,14 +72,22 @@ class Artificer
     {
         return App::make('ArtificerPluginManager');
     }
+
+    /**
+     * @return WidgetManager
+     */
+    public static function widgetManager()
+    {
+        return App::make('ArtificerWidgetManager');
+    }
     /**
      * @param $plugin
      * @return mixed
      */
-    public static function getPlugin($plugin)
-    {
-        return with(App::make('ArtificerPluginManager'))->make($plugin);
-    }
+//    public static function getPlugin($plugin)
+//    {
+//        return with(App::make('ArtificerPluginManager'))->make($plugin);
+//    }
 
     // Todo is it used anywhere?
 //    public static function store($filepath = null, $content, $overide = false)

@@ -193,6 +193,8 @@ class Model
      */
     protected function isCurrent($modelName)
     {
+        if ( ! Route::current()) return null;
+        
         $slug = Route::current()->parameter('slug');
 
         return (isset($this->schema->models[$modelName]['route']) && $this->schema->models[$modelName]['route'] == $slug);

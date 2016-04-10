@@ -42,7 +42,6 @@ class BaseController extends Controller
         if (UserController::check() || true) {
             $this->options = AdminOption::all();
 
-            App::make('ArtificerPluginManager')->boot();
             $this->modelObject = Artificer::getModel();
 
             if ($this->isStandAlone()) {
@@ -78,13 +77,13 @@ class BaseController extends Controller
      */
     public function getMenu()
     {
-        if (!empty($this->menu)) {
-            return $this->menu;
-        }
+        if ( ! empty($this->menu)) return $this->menu;
+
         $menu = AdminOption::get('menu');
 
         foreach ($menu as $key => $menuItem) {
-            if (Permit\MenuPermit::access($key)) {
+            // Todo: Permit is absolete or not?
+            if (Permit\MenuPermit::access($key) || true) {
                 $this->menu[] = $menuItem;
             }
         }

@@ -5,18 +5,19 @@ class PluginManager extends \Mascame\Extender\Manager
     use Slugged;
 
     /**
-     * @var array
+     * @return array
      */
-    protected $routes = [];
-
-    /**
-     * @param $plugin
-     * @param $array
-     */
-    public function addRoutes($plugin, $array)
+    public function outputRoutes()
     {
-        if (! $this->isInstalled($plugin)) return;
+        $installedPlugins = $this->installer()->getInstalled();
 
-        $this->routes[$plugin] = $array;
+        foreach ($installedPlugins as $plugin) {
+            $pluginInstance = $this->get($plugin);
+
+            \Route::group(['prefix' => $pluginInstance->getSlug()], function() use ($pluginInstance) {
+                $pluginInstance->getRoutes();
+            });
+        }
     }
+
 }

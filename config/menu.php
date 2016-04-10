@@ -3,7 +3,7 @@
 return [
 
 	'dashboard' => [
-		'link'  => 'admin.home',
+		'route'  => 'admin.home',
 		'title' => 'Dashboard',
 		'icon'  => '<i class="fa fa-dashboard"></i>',
 		'permissions' => [
@@ -12,7 +12,7 @@ return [
 	],
 
 	'plugins'   => [
-		'link'  => 'admin.page.plugins',
+		'route'  => 'admin.page.plugins',
 		'title' => 'Plugins',
 		'icon'  => '<i class="fa fa-plug"></i>',
 		'permissions' => [
@@ -20,4 +20,15 @@ return [
 			'user'
 		]
 	],
+
+	'widgets'   => [
+		'route'  => 'admin.widgets',
+		'title' => 'Widgets',
+		'icon'  => '<i class="fa fa-cubes"></i>',
+		'permissions' => [
+			'admin',
+			'user'
+		]
+	],
+
 ];

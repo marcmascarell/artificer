@@ -22,6 +22,7 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
      * @param $name
      */
     public function beforeBooting($instance, $name) {
+        if (! $instance->name) $instance->name = $name;
         if (! $instance->namespace) $instance->namespace = $name;
         if (! $instance->slug) $instance->slug = Str::slug($name);
 

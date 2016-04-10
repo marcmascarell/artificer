@@ -12,6 +12,7 @@ use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
 use Mascame\ArtificerDefaultTheme\ArtificerDefaultThemeServiceProvider;
+use Mascame\ArtificerLogreaderPlugin\ArtificerLogreaderPluginServiceProvider;
 use Mascame\ArtificerWidgets\ArtificerWidgetsServiceProvider;
 use Mascame\Extender\Event\Event;
 use Mascame\Extender\Installer\FileInstaller;
@@ -39,7 +40,14 @@ class ArtificerServiceProvider extends ServiceProvider {
         if (! Artificer::isBooted()) return;
 
 		$this->addPublishing();
-        $this->requireFiles();
+
+		$this->app->register(ArtificerLogreaderPluginServiceProvider::class);
+		$this->app->register(ArtificerWidgetsServiceProvider::class);
+		
+		App::make('ArtificerPluginManager')->boot();
+		App::make('ArtificerWidgetManager')->boot();
+
+		$this->requireFiles();
 
 		$this->app->register(\Collective\Html\HtmlServiceProvider::class);
 		$this->app->register(ArtificerWidgetsServiceProvider::class);
@@ -49,6 +57,8 @@ class ArtificerServiceProvider extends ServiceProvider {
 		$loader->alias('Form', \Collective\Html\FormFacade::class);
 
 		$this->app->register(ArtificerDefaultThemeServiceProvider::class);
+
+
 	}
 
     /**
@@ -107,24 +117,29 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 	private function addManagers()
 	{
-		App::singleton('ArtificerPluginManager', function () {
-			$pluginsPath = config_path() . '/'. $this->name .'/plugins.php';
+		$widgetsPath = config_path() . '/'. $this->name .'/widgets.php';
 
-			return new PluginManager(
-				new FileInstaller(new FileWriter(), $pluginsPath),
-				new Booter(),
-				new Event(app('events'))
-			);
+		$widgetManager = new WidgetManager(
+			new FileInstaller(new FileWriter(), $widgetsPath),
+			new Booter(),
+			new Event(app('events'))
+		);
+
+
+		App::singleton('ArtificerWidgetManager', function () use ($widgetManager) {
+			return $widgetManager;
 		});
 
-		App::singleton('ArtificerWidgetManager', function () {
-			$widgetsPath = config_path() . '/'. $this->name .'/widgets.php';
+		$pluginsPath = config_path() . '/'. $this->name .'/plugins.php';
 
-			return new WidgetManager(
-				new FileInstaller(new FileWriter(), $widgetsPath),
-				new Booter(),
-				new Event(app('events'))
-			);
+		$pluginManager = new PluginManager(
+			new FileInstaller(new FileWriter(), $pluginsPath),
+			new Booter(),
+			new Event(app('events'))
+		);
+
+		App::singleton('ArtificerPluginManager', function () use ($pluginManager) {
+			return $pluginManager;
 		});
 	}
 
@@ -144,18 +159,6 @@ class ArtificerServiceProvider extends ServiceProvider {
         $this->addModel();
         $this->addLocalization();
         $this->addManagers();
-
-
-
-//		$am = new AssetManager();
-//		$am->set('jquery', new HttpAsset('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'));
-//		$am->set('artificer', new AssetCollection(array(
-//			new AssetReference($am, 'jquery'),
-//			new FileAsset(__DIR__.'/../resources/assets/core/restfulizer.js'),
-//		)));
-//
-//        $ac = new AssetCollection($am);
-//        var_dump($ac->dump()); die();
 
         Artificer::$booted = true;
 	}

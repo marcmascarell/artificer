@@ -1,26 +1,40 @@
 <?php namespace Mascame\Artificer\Widgets;
 
-abstract class AbstractWidget
+use Mascame\Artificer\Extension\AbstractExtension;
+
+abstract class AbstractWidget extends AbstractExtension implements WidgetInterface
 {
-    /**
-     * @var string
-     */
-    public $name;
 
     /**
      * @var string
      */
     public static $assetsPath = '/packages/mascame/artificer-widgets';
 
-    public function __construct()
-    {
-        $this->name = get_called_class();
-    }
 
     /**
      * @return null
      */
+    public function assets()
+    {
+        return null;
+    }
+    
+    /**
+     * @return null
+     */
     public function output()
+    {
+        return null;
+    }
+
+    /**
+     * @return \Mascame\Artificer\Extension\WidgetManager
+     */
+    public function getManager() {
+        return \App::make('ArtificerWidgetManager');
+    }
+
+    public function boot()
     {
         return null;
     }
