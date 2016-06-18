@@ -1,6 +1,8 @@
 <?php namespace Mascame\Artificer;
 
 
+use Illuminate\Foundation\Console\VendorPublishCommand;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\ServiceProvider;
 use App;
 use Config;
@@ -31,34 +33,41 @@ class ArtificerServiceProvider extends ServiceProvider {
 	protected $defer = false;
 
 	/**
+	 * @var bool
+	 */
+	protected $isBootable = false;
+
+	/**
 	 * Bootstrap the application events.
 	 *
 	 * @return void
 	 */
 	public function boot()
 	{
-        if (! Artificer::isBooted()) return;
+		if (! $this->isBootable) return;
 
-		$this->addPublishing();
+		$this->addPublishableFiles();
 
-		$this->app->register(ArtificerLogreaderPluginServiceProvider::class);
-		$this->app->register(ArtificerWidgetsServiceProvider::class);
-		
-		App::make('ArtificerPluginManager')->boot();
-		App::make('ArtificerWidgetManager')->boot();
+		// Wait for config to be published
+		if (! $this->isConfigPublished()) return;
 
 		$this->requireFiles();
 
+//		$this->app->register(ArtificerLogreaderPluginServiceProvider::class);
+//		$this->app->register(ArtificerWidgetsServiceProvider::class);
+
+		App::make('ArtificerPluginManager')->boot();
+		App::make('ArtificerWidgetManager')->boot();
+
+
 		$this->app->register(\Collective\Html\HtmlServiceProvider::class);
-		$this->app->register(ArtificerWidgetsServiceProvider::class);
+//		$this->app->register(ArtificerWidgetsServiceProvider::class);
 
 		$loader = Loader::getInstance();
 		$loader->alias('HTML', \Collective\Html\HtmlFacade::class);
 		$loader->alias('Form', \Collective\Html\FormFacade::class);
 
-		$this->app->register(ArtificerDefaultThemeServiceProvider::class);
-
-
+//		$this->app->register(ArtificerDefaultThemeServiceProvider::class);
 	}
 
     /**
@@ -80,21 +89,21 @@ class ArtificerServiceProvider extends ServiceProvider {
 		require_once __DIR__ . '/Http/routes.php';
 	}
 
-    private function addPublishing()
+    private function addPublishableFiles()
     {
         $this->publishes([
             __DIR__.'/../config/' => config_path($this->name) .'/',
-        ]);
+        ], 'config');
 
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', $this->name);
 
-        $this->publishes([
-            __DIR__.'/../database/migrations/' => database_path('migrations')
-        ], 'migrations');
-
-        $this->publishes([
-            __DIR__.'/../database/seeds/' => database_path('seeds')
-        ], 'seeds');
+//        $this->publishes([
+//            __DIR__.'/../database/migrations/' => database_path('migrations')
+//        ], 'migrations');
+//
+//        $this->publishes([
+//            __DIR__.'/../database/seeds/' => database_path('seeds')
+//        ], 'seeds');
 
         $this->publishes([
             __DIR__.'/../resources/assets/' => public_path('packages/mascame/' . $this->name),
@@ -117,10 +126,10 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 	private function addManagers()
 	{
-		$widgetsPath = config_path() . '/'. $this->name .'/widgets.php';
+		$widgetsConfig = config_path() . '/'. $this->name .'/widgets.php';
 
 		$widgetManager = new WidgetManager(
-			new FileInstaller(new FileWriter(), $widgetsPath),
+			new FileInstaller(new FileWriter(), $widgetsConfig),
 			new Booter(),
 			new Event(app('events'))
 		);
@@ -130,10 +139,10 @@ class ArtificerServiceProvider extends ServiceProvider {
 			return $widgetManager;
 		});
 
-		$pluginsPath = config_path() . '/'. $this->name .'/plugins.php';
+		$pluginsConfig = config_path() . '/'. $this->name .'/plugins.php';
 
 		$pluginManager = new PluginManager(
-			new FileInstaller(new FileWriter(), $pluginsPath),
+			new FileInstaller(new FileWriter(), $pluginsConfig),
 			new Booter(),
 			new Event(app('events'))
 		);
@@ -150,17 +159,34 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-        $configPath = __DIR__ . '/../config/admin.php';
+		$configPath = __DIR__ . '/../config/admin.php';
         $this->mergeConfigFrom($configPath, $this->name);
 
         // Avoid bloating the App with files that will not be needed
-        if (! $this->isBootable(request()->path(), config('admin.route_prefix'))) return;
+		$this->isBootable = $this->isBootable(request()->path(), config('admin.route_prefix'));
 
-        $this->addModel();
-        $this->addLocalization();
-        $this->addManagers();
+		if (! $this->isBootable) return;
 
-        Artificer::$booted = true;
+		// We need the config loaded before we can use this package!
+		if (! $this->isConfigPublished()) {
+			$this->publishConfig();
+			return;
+		}
+
+		$this->addModel();
+		$this->addLocalization();
+		$this->addManagers();
+	}
+
+	protected function isConfigPublished() {
+		return \File::exists(config_path($this->name));
+	}
+	
+	protected function publishConfig() {
+		$this->app->booted(function () {
+			\Artisan::call('vendor:publish', ['--provider' => self::class]);
+			\Redirect::back();
+		});
 	}
 
 	/**

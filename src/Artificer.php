@@ -10,12 +10,6 @@ use Mascame\Artificer\Model\Model;
 class Artificer
 {
 
-    public static $booted = false;
-
-    public static function isBooted() {
-        return self::$booted;
-    }
-
     /**
      * Returns the current user's action.
      *

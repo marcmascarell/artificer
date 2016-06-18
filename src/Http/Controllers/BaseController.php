@@ -2,7 +2,7 @@
 
 use App;
 use Auth;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Fields\FieldWrapper;
 use Mascame\Artificer\Model\Model;
