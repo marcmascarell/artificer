@@ -47,7 +47,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		if (! $this->isBootable) return;
-
+		
 		$this->addPublishableFiles();
 
 		// Wait until app is ready for config to be published
@@ -63,7 +63,9 @@ class ArtificerServiceProvider extends ServiceProvider {
 
         $this->loadProviders();
         $this->loadAliases();
-    }
+
+		$this->commands(config('admin.providers')['commands']);
+	}
 
     protected function loadProviders() {
         $providers = config('admin.providers')['providers'];

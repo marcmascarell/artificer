@@ -14,5 +14,9 @@ return [
     'aliases' => [
         'HTML' => \Collective\Html\HtmlFacade::class,
         'Form' => \Collective\Html\FormFacade::class,
-    ]
+    ],
+	
+	'commands' => [
+		\Mascame\Artificer\Commands\ModalConfigGenerator::class
+	]
 ];
