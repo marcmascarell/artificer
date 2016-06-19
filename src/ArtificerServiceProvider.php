@@ -61,16 +61,26 @@ class ArtificerServiceProvider extends ServiceProvider {
 		App::make('ArtificerPluginManager')->boot();
 		App::make('ArtificerWidgetManager')->boot();
 
+        $this->loadProviders();
+        $this->loadAliases();
+    }
 
-		$this->app->register(\Collective\Html\HtmlServiceProvider::class);
-//		$this->app->register(ArtificerWidgetsServiceProvider::class);
+    protected function loadProviders() {
+        $providers = config('admin.providers')['providers'];
 
-		$loader = Loader::getInstance();
-		$loader->alias('HTML', \Collective\Html\HtmlFacade::class);
-		$loader->alias('Form', \Collective\Html\FormFacade::class);
+        foreach ($providers as $provider) {
+            $this->app->register($provider);
+        }
+    }
 
-		$this->app->register(DefaultThemeServiceProvider::class);
-	}
+    protected function loadAliases() {
+        $aliases = config('admin.providers')['aliases'];
+        $loader = Loader::getInstance();
+
+        foreach ($aliases as $alias => $class) {
+            $loader->alias($alias, $class);
+        }
+    }
 
     /**
      * Determines if is on admin
@@ -91,10 +101,14 @@ class ArtificerServiceProvider extends ServiceProvider {
 		require_once __DIR__ . '/Http/routes.php';
 	}
 
+	protected function getConfigPath() {
+		return config_path($this->name) . DIRECTORY_SEPARATOR;
+	}
+
     private function addPublishableFiles()
     {
         $this->publishes([
-            __DIR__.'/../config/' => config_path($this->name) .'/',
+            __DIR__.'/../config/' => $this->getConfigPath(),
         ], 'config');
 
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', $this->name);
@@ -128,7 +142,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 	private function addManagers()
 	{
-		$widgetsConfig = config_path() . '/'. $this->name .'/widgets.php';
+		$widgetsConfig = $this->getConfigPath() . 'extensions/widgets.php';
 
 		$widgetManager = new WidgetManager(
 			new FileInstaller(new FileWriter(), $widgetsConfig),
@@ -140,7 +154,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 			return $widgetManager;
 		});
 
-		$pluginsConfig = config_path() . '/'. $this->name .'/plugins.php';
+		$pluginsConfig = $this->getConfigPath() . 'extensions/plugins.php';
 
 		$pluginManager = new PluginManager(
 			new FileInstaller(new FileWriter(), $pluginsConfig),
@@ -160,8 +174,8 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$configPath = __DIR__ . '/../config/admin.php';
-        $this->mergeConfigFrom($configPath, $this->name);
+		$packageConfigPath = __DIR__ . '/../config/admin.php';
+        $this->mergeConfigFrom($packageConfigPath, $this->name);
 
         // Avoid bloating the App with files that will not be needed
 		$this->isBootable = $this->isBootable(request()->path(), config('admin.route_prefix'));

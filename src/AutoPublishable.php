@@ -1,4 +1,5 @@
 <?php namespace Mascame\Artificer;
+use Illuminate\Support\Facades\App;
 
 /**
  * How it works: Simply we wait until app is ready to publish whatever is in the vendor's publishable files
@@ -8,13 +9,22 @@
  */
 trait AutoPublishable
 {
+    /**
+     * @var App
+     */
+    protected $app;
 
+    /**
+     * @param null $fileToCheck
+     * @return mixed
+     */
     protected function isPublished($fileToCheck = null) {
         if (! $fileToCheck) $fileToCheck = config_path($this->name);
         
         return \File::exists($fileToCheck);
     }
 
+    
     protected function autoPublish() {
         $this->app->booted(function () {
             \Artisan::call('vendor:publish', ['--provider' => self::class]);

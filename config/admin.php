@@ -31,7 +31,7 @@ return [
 	'menu' => config('artificer.menu'),
 	'models' => config('artificer.models'),
 	'plugins' => config('artificer.plugins'),
-	'thumbnails' => config('artificer.thumbnails'),
+	'providers' => config('artificer.providers'),
 	'types' => config('artificer.fields.types')
 	
 ];
