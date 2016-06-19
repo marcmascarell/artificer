@@ -12,7 +12,7 @@ return [
 	],
 
 	'plugins'   => [
-		'route'  => 'admin.page.plugins',
+		'route'  => 'admin.plugins',
 		'title' => 'Plugins',
 		'icon'  => '<i class="fa fa-plug"></i>',
 		'permissions' => [

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Routing\Redirector;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Mascame\Artificer\Fields\FieldFactory;
 use Mascame\Formality\Parser\Parser;
 use Mascame\Artificer\Permit\ModelPermit;

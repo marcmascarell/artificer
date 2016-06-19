@@ -15,7 +15,7 @@ use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
 use Mascame\ArtificerDefaultTheme\ArtificerDefaultThemeServiceProvider;
 use Mascame\ArtificerLogreaderPlugin\ArtificerLogreaderPluginServiceProvider;
-use Mascame\ArtificerWidgets\ArtificerWidgetsServiceProvider;
+use Mascame\Artificer\Widgets\ArtificerWidgetsServiceProvider;
 use Mascame\Extender\Event\Event;
 use Mascame\Extender\Installer\FileInstaller;
 use Mascame\Extender\Installer\FileWriter;
@@ -24,6 +24,8 @@ use Illuminate\Foundation\AliasLoader as Loader;
 
 class ArtificerServiceProvider extends ServiceProvider {
 
+	use AutoPublishable;
+	
 	protected $name = 'admin';
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -48,8 +50,8 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 		$this->addPublishableFiles();
 
-		// Wait for config to be published
-		if (! $this->isConfigPublished()) return;
+		// Wait until app is ready for config to be published
+		if (! $this->isPublished()) return;
 
 		$this->requireFiles();
 
@@ -67,7 +69,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 		$loader->alias('HTML', \Collective\Html\HtmlFacade::class);
 		$loader->alias('Form', \Collective\Html\FormFacade::class);
 
-//		$this->app->register(ArtificerDefaultThemeServiceProvider::class);
+		$this->app->register(DefaultThemeServiceProvider::class);
 	}
 
     /**
@@ -133,8 +135,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 			new Booter(),
 			new Event(app('events'))
 		);
-
-
+		
 		App::singleton('ArtificerWidgetManager', function () use ($widgetManager) {
 			return $widgetManager;
 		});
@@ -168,8 +169,8 @@ class ArtificerServiceProvider extends ServiceProvider {
 		if (! $this->isBootable) return;
 
 		// We need the config loaded before we can use this package!
-		if (! $this->isConfigPublished()) {
-			$this->publishConfig();
+		if (! $this->isPublished()) {
+			$this->autoPublish();
 			return;
 		}
 
@@ -178,16 +179,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 		$this->addManagers();
 	}
 
-	protected function isConfigPublished() {
-		return \File::exists(config_path($this->name));
-	}
 	
-	protected function publishConfig() {
-		$this->app->booted(function () {
-			\Artisan::call('vendor:publish', ['--provider' => self::class]);
-			\Redirect::back();
-		});
-	}
 
 	/**
 	 * Get the services provided by the provider.

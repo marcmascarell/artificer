@@ -22,7 +22,7 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
     public $defaultOptions;
     public $data;
 
-    public $namespace = '\Mascame\Artificer\Fields\Types\\';
+    public $artificerFieldsNamespace = '\Mascame\Artificer\Fields\Types\\';
 
     /**
      * @param $data
@@ -43,6 +43,18 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
 
         return $fields;
     }
+
+    protected function getFieldTypeClass($type, $namespace)
+    {
+        $typeClass = parent::getFieldTypeClass($type, $namespace);
+        
+        if (! $typeClass) {
+            $typeClass = parent::getFieldTypeClass($type, $this->artificerFieldsNamespace);
+        }
+        
+        return $typeClass;
+    }
+
 
     /**
      * @param $field Relation

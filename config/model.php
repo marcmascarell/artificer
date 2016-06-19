@@ -3,7 +3,14 @@
 return [
 
 	'directories'      => [
-		'\\App\\Models' => app_path() . '/Models',
+		// '\\App\\Models' => app_path() . '/Models',
+	],
+
+	/**
+	 * You can also specify models individually
+	 */
+	'models'      => [
+		\App\User::class,
 	],
 
 	'hidden'           => [
