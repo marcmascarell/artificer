@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Fields;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Input;
 
 trait Filterable
 {
@@ -20,7 +21,7 @@ trait Filterable
      */
     public function displayFilter()
     {
-        $this->value = \Input::old($this->name);
+        $this->value = Input::old($this->name);
 
         return $this->output();
     }

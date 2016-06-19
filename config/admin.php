@@ -1,58 +1,37 @@
 <?php
 
-return array(
+return [
 
-	'title'        => 'Artificer',
+	'title' => 'Artificer',
 
 //	'default_route' => route('admin.model.all', array('slug' => 'user'), $absolute = true),
 
-	'route_prefix'        => 'admin',
-	'theme'        => 'artificer-default-theme',
+	'route_prefix' => 'admin',
 
-	'list'         => [
-		'hidden'     => [
-			'image_center'
-		],
-		'showable'   => [],
-		'pagination' => 5,
-	],
-
-	'edit'         => [
-		'hidden'   => [],
-		'showable' => [],
-	],
+	'theme' => 'artificer-default-theme',
 
     'icons' => [
 	    'edit' => 'fa fa-pencil',
-	    'filter' => 'fa fa-filter',
-	    'new' => 'fa fa-plus',
-	    'search' => 'fa fa-search',
-	    'dashboard' => 'fa fa-dashboard',
-	    'models' => 'fa fa-th',
-	    'info' => 'fa fa-info',
-	    'save' => 'fa fa-save',
-	    'show' => 'fa fa-eye',
-	    'delete' => 'fa fa-remove',
-	    'sort-up' => 'fa fa-long-arrow-up',
+		'dashboard' => 'fa fa-dashboard',
+		'delete' => 'fa fa-remove',
+		'filter' => 'fa fa-filter',
+		'info' => 'fa fa-info',
+		'models' => 'fa fa-th',
+		'new' => 'fa fa-plus',
+		'save' => 'fa fa-save',
+		'search' => 'fa fa-search',
+		'show' => 'fa fa-eye',
+		'sort-up' => 'fa fa-long-arrow-up',
 	    'sort-down' => 'fa fa-long-arrow-down',
     ],
 
-
-//	'routes' => config('artificer.routes'),
-
-	'menu'         => config('artificer.menu'),
-
-	'plugins'      => config('artificer.plugins'),
-
-	'thumbnails'   => config('artificer.thumbnails'),
-
-	'types'        => config('artificer.fields.types'),
-
-	'classmap'     => config('artificer.fields.classmap'),
-
-	'models'       => config('artificer.models'),
-
-	'auth'         => config('artificer.auth'),
-
+	'auth' => config('artificer.auth'),
+	'classmap' => config('artificer.fields.classmap'),
 	'localization' => config('artificer.localization'),
-);
+	'menu' => config('artificer.menu'),
+	'models' => config('artificer.models'),
+	'plugins' => config('artificer.plugins'),
+	'thumbnails' => config('artificer.thumbnails'),
+	'types' => config('artificer.fields.types')
+	
+];
