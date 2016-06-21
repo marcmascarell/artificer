@@ -50,7 +50,7 @@ php artisan vendor:publish --provider="Mascame\Artificer\ArtificerServiceProvide
 
 ## Adding extensions (plugins & widgets)
 
-Artificer will only load it's plugins & widget when is really needed. That's why it has it's own place for that Service Providers.
+Artificer has its own place for its extension's Service Providers, only loading them when it is really needed.
 
 You can find that file at `config/admin/providers.php`
 
