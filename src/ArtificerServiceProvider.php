@@ -57,11 +57,11 @@ class ArtificerServiceProvider extends ServiceProvider {
         $this->loadProviders();
         $this->loadAliases();
 
-		$this->commands(config('admin.providers')['commands']);
+		$this->commands(config('admin.commands'));
 	}
 
     protected function loadProviders() {
-        $providers = config('admin.providers')['providers'];
+        $providers = config('admin.providers');
 
         foreach ($providers as $provider) {
             $this->app->register($provider);
@@ -69,7 +69,7 @@ class ArtificerServiceProvider extends ServiceProvider {
     }
 
     protected function loadAliases() {
-        $aliases = config('admin.providers')['aliases'];
+        $aliases = config('admin.aliases');
         $loader = Loader::getInstance();
 
         foreach ($aliases as $alias => $class) {
