@@ -3,13 +3,25 @@
 return [
 
 	'title' => 'Artificer',
-
-//	'default_route' => route('admin.model.all', array('slug' => 'user'), $absolute = true),
-
+	
 	'route_prefix' => 'admin',
 
 	'theme' => 'artificer-default-theme',
 
+	'providers' => [
+		\Collective\Html\HtmlServiceProvider::class,
+		\Mascame\Artificer\DefaultThemeServiceProvider::class
+	],
+
+	'aliases' => [
+		'HTML' => \Collective\Html\HtmlFacade::class,
+		'Form' => \Collective\Html\FormFacade::class,
+	],
+
+	'commands' => [
+		\Mascame\Artificer\Commands\ModalConfigGenerator::class
+	],
+	
     'icons' => [
 	    'edit' => 'fa fa-pencil',
 		'dashboard' => 'fa fa-dashboard',
@@ -23,15 +35,5 @@ return [
 		'show' => 'fa fa-eye',
 		'sort-up' => 'fa fa-long-arrow-up',
 	    'sort-down' => 'fa fa-long-arrow-down',
-    ],
-
-	'auth' => config('artificer.auth'),
-	'classmap' => config('artificer.fields.classmap'),
-	'localization' => config('artificer.localization'),
-	'menu' => config('artificer.menu'),
-	'models' => config('artificer.models'),
-	'plugins' => config('artificer.plugins'),
-	'providers' => config('artificer.providers'),
-	'types' => config('artificer.fields.types')
-	
+    ]
 ];

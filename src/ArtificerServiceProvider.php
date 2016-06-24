@@ -1,11 +1,7 @@
 <?php namespace Mascame\Artificer;
 
-
-use Illuminate\Foundation\Console\VendorPublishCommand;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\ServiceProvider;
-use App;
-use Config;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Mascame\Artificer\Extension\Booter;
 use Mascame\Artificer\Extension\PluginManager;
@@ -13,9 +9,6 @@ use Mascame\Artificer\Extension\WidgetManager;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
-use Mascame\ArtificerDefaultTheme\ArtificerDefaultThemeServiceProvider;
-use Mascame\ArtificerLogreaderPlugin\ArtificerLogreaderPluginServiceProvider;
-use Mascame\Artificer\Widgets\ArtificerWidgetsServiceProvider;
 use Mascame\Extender\Event\Event;
 use Mascame\Extender\Installer\FileInstaller;
 use Mascame\Extender\Installer\FileWriter;
@@ -176,26 +169,37 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$packageConfigPath = __DIR__ . '/../config/admin.php';
-        $this->mergeConfigFrom($packageConfigPath, $this->name);
+		// We still haven't modified config, that's why 'admin.admin'
+		$routePrefix = config('admin.admin.route_prefix');
 
-        // Avoid bloating the App with files that will not be needed
-		$this->isBootable = $this->isBootable(request()->path(), config('admin.route_prefix'));
+		// Avoid bloating the App with files that will not be needed
+		$this->isBootable = $this->isBootable(request()->path(), $routePrefix);
 
 		if (! $this->isBootable) return;
 
-		// We need the config loaded before we can use this package!
+		// We need the config published before we can use this package!
 		if (! $this->isPublished()) {
 			$this->autoPublish();
 			return;
 		}
+
+		$this->loadConfig();
 
 		$this->addModel();
 		$this->addLocalization();
 		$this->addManagers();
 	}
 
-	
+	/**
+	 * Moves admin/admin.php keys to the root level for commodity
+	 */
+	protected function loadConfig() {
+		$config = config('admin');
+		$config = ['admin' => array_merge($config, $config['admin'])];
+		unset($config['admin']['admin']);
+
+		config()->set($config);
+	}
 
 	/**
 	 * Get the services provided by the provider.
