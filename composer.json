@@ -27,7 +27,7 @@
     "mascame/notify": "1.*"
   },
   "require-dev": {
-    "sami/sami": "2.0.0",
+    "sami/sami": "3.*",
     "codeception/codeception": "2.*"
   },
   "autoload": {
