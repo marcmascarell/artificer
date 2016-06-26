@@ -124,7 +124,7 @@ class Model
      */
     public function isHidden($modelName)
     {
-        return (in_array($modelName, AdminOption::get('model.hidden'))) ? true : false;
+        return in_array($modelName, config('admin.model.hidden'));
     }
 
     /**
@@ -169,6 +169,31 @@ class Model
         $this->table = $this->model->getTable();
         $this->columns = $this->schema->getColumns($this->table);
         $this->fillable = $this->model->getFillable();
+
+        $this->addFieldOptions($this->columns);
+    }
+
+    /**
+     * Fills all fields in config if they are not declared and applies default attributes
+     *
+     * @param $columns
+     * @param null $model
+     * @return mixed
+     */
+    protected function addFieldOptions($columns, $model = null) {
+        $model = ($model) ? $model : $this->name;
+
+        $this->getOptions($model);
+
+        foreach ($columns as $column) {
+            if (! isset($this->options[$model]['fields'][$column])) {
+                $this->options[$model]['fields'][$column] = [];
+            }
+
+            if (! isset($this->options[$model]['fields'][$column]['attributes'])) {
+                $this->options[$model]['fields'][$column]['attributes'] = $this->options[$model]['attributes'];
+            }
+        }
     }
 
     /**
@@ -238,7 +263,10 @@ class Model
 
         if (isset($this->options[$model])) return $this->options[$model];
 
-        return $this->options[$model] = config('admin.models.' . $model);
+        return $this->options[$model] = array_merge(
+            $this->getDefaultOptions(),
+            config('admin.models.' . $model, [])
+        );
     }
 
     public function getDefaultOptions()

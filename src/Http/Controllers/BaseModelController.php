@@ -175,15 +175,15 @@ class BaseModelController extends BaseController
     {
         if ($this->modelObject->hasGuarded()) {
             $input = Input::all();
-            $filtered_input = array();
+            $filteredInput = array();
 
             foreach ($input as $key => $value) {
                 if (in_array($key, $this->modelObject->columns)) {
-                    $filtered_input[$key] = $value;
+                    $filteredInput[$key] = $value;
                 }
             }
 
-            return $this->except($this->modelObject->getOption('guarded'), $filtered_input);
+            return $this->except($this->modelObject->getOption('guarded'), $filteredInput);
         }
 
         return Input::except('id');
@@ -211,14 +211,14 @@ class BaseModelController extends BaseController
      */
     protected function handleFiles($data)
     {
-        $new_data = array();
+        $newData = [];
         $fields = $this->getFields($data);
 
         if (!is_null($fields)) {
             foreach ($fields as $field) {
                 if ($this->isFileInput($field->type)) {
                     if (Input::hasFile($field->name)) {
-                        $new_data[$field->name] = $this->uploadFile($field->name);
+                        $newData[$field->name] = $this->uploadFile($field->name);
                     } else {
                         unset($data[$field->name]);
                     }
@@ -226,7 +226,7 @@ class BaseModelController extends BaseController
             }
         }
 
-        return array_merge($data, $new_data);
+        return array_merge($data, $newData);
     }
 
     /**

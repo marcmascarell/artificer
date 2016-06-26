@@ -8,9 +8,16 @@ return [
 
 	'theme' => 'artificer-default-theme',
 
+	/*
+    |--------------------------------------------------------------------------
+    | Providers, aliases & commands will be conveniently lazy loaded
+    |--------------------------------------------------------------------------
+    */
+	
 	'providers' => [
 		\Collective\Html\HtmlServiceProvider::class,
-		\Mascame\Artificer\DefaultThemeServiceProvider::class
+		\Mascame\Artificer\DefaultThemeServiceProvider::class,
+		\Mascame\Artificer\ArtificerWidgetsServiceProvider::class,
 	],
 
 	'aliases' => [
