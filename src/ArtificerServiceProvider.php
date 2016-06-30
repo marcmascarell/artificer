@@ -100,8 +100,12 @@ class ArtificerServiceProvider extends ServiceProvider {
 		return config_path($this->name) . DIRECTORY_SEPARATOR;
 	}
 
-    private function addPublishableFiles()
+	private function addPublishableFiles()
     {
+		$this->publishes([
+			__DIR__.'/../resources/assets' => public_path('packages/mascame/' . $this->name),
+		], 'public');
+
         $this->publishes([
             __DIR__.'/../config/' => $this->getConfigPath(),
         ], 'config');
@@ -115,10 +119,6 @@ class ArtificerServiceProvider extends ServiceProvider {
 //        $this->publishes([
 //            __DIR__.'/../database/seeds/' => database_path('seeds')
 //        ], 'seeds');
-
-        $this->publishes([
-            __DIR__.'/../resources/assets/' => public_path('packages/mascame/' . $this->name),
-        ], 'public');
     }
 
 	private function addModel()
@@ -178,16 +178,13 @@ class ArtificerServiceProvider extends ServiceProvider {
 		if (! $this->isBootable) return;
 
 		// We need the config published before we can use this package!
-		if (! $this->isPublished()) {
-			$this->autoPublish();
-			return;
+		if ($this->isPublished()) {
+			$this->loadConfig();
+
+			$this->addModel();
+			$this->addLocalization();
+			$this->addManagers();
 		}
-
-		$this->loadConfig();
-
-		$this->addModel();
-		$this->addLocalization();
-		$this->addManagers();
 	}
 
 	/**
