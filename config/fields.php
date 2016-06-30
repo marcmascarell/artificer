@@ -1,132 +1,130 @@
 <?php
 
+use \Mascame\Artificer\Fields\Types as ArtificerTypes;
+use \Mascame\Formality\Types as DefaultTypes;
+
 return [
 
 	'classmap' => [
-        'bool' => '\Mascame\Artificer\Fields\Types\Checkbox',
-        'boolean' => '\Mascame\Artificer\Fields\Types\Checkbox',
-//		'image'   => '\Mascame\Artificer\Plugins\Plupload\PluploadField',
-        'hasOne'  => '\Mascame\Artificer\Fields\Types\Relations\hasOne',
-        'hasMany' => '\Mascame\Artificer\Fields\Types\Relations\hasMany',
-        'belongsTo' => '\Mascame\Artificer\Fields\Types\Relations\belongsTo',
-    ],
+//        'bool' => Types\Checkbox::class,
+//        'boolean' => Types\Checkbox::class,
+//		'image'   => \Mascame\Artificer\Plugins\Plupload\PluploadField::class,
+		'hasOne'  => ArtificerTypes\Relations\hasOne::class,
+		'hasMany' => ArtificerTypes\Relations\hasMany::class,
+		'belongsTo' => ArtificerTypes\Relations\belongsTo::class,
+	],
 
-	'types'    => [
+	'types' => [
 		// field_type => ['fieldname_1', 'fieldname_1')
-		'key'      => [
-            'autodetect' => [
-                'id'
-            ]
+		'key' => [
+			'autodetect' => [
+				'id'
+			]
 		],
 
 		'published' => [],
 
-		'checkbox'     => [
-            'autodetect' => [
-                'accept',
-                'active',
-                'boolean',
-                'activated',
-            ],
+		'checkbox' => [
+			'autodetect' => [
+				'accept',
+				'active',
+				'boolean',
+				'activated',
+			],
 		],
 
-        'custom'     => [
+		'custom' => [],
 
-        ],
-
-		'password'     => [
-            'autodetect' => [
-                'password'
-            ],
+		'password' => [
+			'autodetect' => [
+				'password'
+			],
 		],
 
-		'text'         => [
-            'autodetect' => [
-                'title',
-                'username',
-                'name'
-            ],
+		'text' => [
+			'autodetect' => [
+				'title',
+				'username',
+				'name'
+			],
 		],
 
-		'textarea'     => [
+		'textarea' => [],
 
+		'wysiwyg' => [
+			'autodetect' => [
+				'body',
+				'text'
+			],
 		],
 
-		'wysiwyg'      => [
-            'autodetect' => [
-                'body',
-                'text'
-            ],
+		'radio' => [
+			'autodetect' => [
+				'option',
+				'selection',
+			],
 		],
 
-		'radio'       => [
-            'autodetect' => [
-                'option',
-                'selection',
-            ],
+		'email' => [],
+
+		'link' => [
+			'autodetect' => [
+				'url'
+			],
 		],
 
-		'email'        => [],
+		'datetime' => [
 
-		'link'         => [
-            'autodetect' => [
-                'url'
-            ],
-        ],
+			'regex' => [
+				'/_at$/'
+			],
 
-        'datetime'         => [
-            'autodetect' => [
-                '_at'
-            ],
+			"attributes" => [
+				'class' => 'form-control datetimepicker',
+				'data-date-format' => 'YYYY-MM-DD HH:mm:ss',
+			],
 
-            "attributes" => [
-                'class' => 'form-control datetimepicker',
-                'data-date-format' => 'YYYY-MM-DD HH:mm:ss',
-
-            ],
-
-            'widgets' => [
-                'artificer-datetimepicker-widget',
-            ]
-
-        ],
-
-		'date'         => [
-            'autodetect' => [
-                '_at'
-            ],
-
-            "attributes" => [
-                'class' => 'form-control datepicker',
-
-            ],
-
-            'widgets' => [
-                'artificer-datepicker-widget',
-            ]
+			'widgets' => [
+				\Mascame\Artificer\Widgets\DateTimepicker::class,
+			]
 
 		],
 
-		'file'         => [],
+		'date' => [
+			'autodetect' => [
+				'_at'
+			],
 
-		'image'        => [
-            'autodetect' => [
-                'image'
-            ],
+			"attributes" => [
+				'class' => 'form-control datepicker',
+				'data-date-format' => 'YYYY-MM-DD HH:mm:s',
+			],
+
+			'widgets' => [
+				\Mascame\Artificer\Widgets\DateTimepicker::class,
+			]
 		],
 
-		'hasOne'       => [
-            'autodetect' => [
-                '_id',
-                'user_id',
-                'fake_id'
-            ],
+		'file' => [],
+
+		'image' => [
+			'autodetect' => [
+				'image'
+			],
 		],
 
-		'hasMany'      => [],
+		'hasOne' => [
+			'autodetect' => [
+				'_id',
+				'user_id',
+				'fake_id'
+			],
+		],
 
-		'default'      => [
-            'type' => 'text'
-        ]
+		'hasMany' => [],
+
+		'default' => [
+			'type' => 'text'
+		]
 	],
 ];
