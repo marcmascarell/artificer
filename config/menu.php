@@ -2,6 +2,10 @@
 
 return [
 
+	/**
+	 * Keys are useless
+	 */
+	
 	'dashboard' => [
 		'route'  => 'admin.home',
 		'title' => 'Dashboard',

@@ -46,27 +46,35 @@ class ArtificerServiceProvider extends ServiceProvider {
 		// Wait until app is ready for config to be published
 		if (! $this->isPublished()) return;
 
-		$this->requireFiles();
-
-//		$this->app->register(ArtificerLogreaderPluginServiceProvider::class);
-//		$this->app->register(ArtificerWidgetsServiceProvider::class);
-
-		App::make('ArtificerPluginManager')->boot();
-		App::make('ArtificerWidgetManager')->boot();
-
-        $this->loadProviders();
-        $this->loadAliases();
+		$this->loadProviders();
+		$this->loadAliases();
 
 		$this->commands(config('admin.commands'));
+
+		App::make('ArtificerWidgetManager')->boot();
+		App::make('ArtificerPluginManager')->boot();
+
+		$this->requireFiles();
 	}
 
     protected function loadProviders() {
-        $providers = config('admin.providers');
+		$loadedProviders = [];
 
-        foreach ($providers as $provider) {
-            $this->app->register($provider);
+        while (($providers = $this->getNotLoadedProviders($loadedProviders)) != []) {
+			foreach ($providers as $provider) {
+				$this->app->register($provider);
+
+				$loadedProviders[] = $provider;
+			}
         }
     }
+
+	/**
+	 * Will reevaluate providers array looking for third party providers declared in the given Service Providers
+	 */
+	protected function getNotLoadedProviders($loadedProviders) {
+		return array_diff(config('admin.providers'), $loadedProviders);
+	}
 
     protected function loadAliases() {
         $aliases = config('admin.aliases');
@@ -144,7 +152,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 			new Booter(),
 			new Event(app('events'))
 		);
-		
+
 		App::singleton('ArtificerWidgetManager', function () use ($widgetManager) {
 			return $widgetManager;
 		});

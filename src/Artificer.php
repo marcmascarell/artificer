@@ -74,6 +74,35 @@ class Artificer
     {
         return App::make('ArtificerWidgetManager');
     }
+
+    public static function addMenu($options)
+    {
+        return config(['admin.menu' => array_merge(self::getMenu(), [$options])]);
+    }
+
+    public static function getMenu()
+    {
+        return config('admin.menu');
+    }
+
+    public static function getProviders()
+    {
+        return config('admin.providers');
+    }
+
+    /**
+     * Use it only for third party Service Providers 
+     * (Your main Service provider must be already declared for this to work)
+     * 
+     * @param $provider
+     * @return mixed
+     */
+    public static function addServiceProvider($provider)
+    {
+        return config(['admin.providers' => array_merge(self::getProviders(), [$provider])]);
+    }
+
+
     /**
      * @param $plugin
      * @return mixed
