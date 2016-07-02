@@ -1,4 +1,4 @@
-<?php namespace Mascame\Artificer\Widgets;
+<?php namespace Mascame\Artificer\Widget;
 
 
 interface WidgetInterface

@@ -2,7 +2,7 @@
 
 use App;
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Widgets\AbstractWidget;
+use Mascame\Artificer\Widget\AbstractWidget;
 use Mascame\Formality\Field\FieldInterface;
 use Mascame\Formality\Field\TypeInterface;
 

@@ -56,15 +56,6 @@ abstract class AbstractExtension
      */
     protected $option;
 
-    /**
-     * Return your plugin routes.
-     * 
-     * @return \Closure|null
-     */
-    public function getRoutes() {
-        return null;
-    }
-
     abstract public function boot();
 
     public function getSlug() {
@@ -79,7 +70,7 @@ abstract class AbstractExtension
     /**
      * @param array $routes
      */
-    public function isInstalled()
+    public final function isInstalled()
     {
         return $this->getManager()->isInstalled($this->namespace);
     }

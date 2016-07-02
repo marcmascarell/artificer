@@ -1,6 +1,8 @@
-<?php namespace Mascame\Artificer\Extension;
+<?php namespace Mascame\Artificer\Plugin;
 
-class PluginManager extends \Mascame\Extender\Manager
+use Mascame\Artificer\Extension\Slugged;
+
+class Manager extends \Mascame\Extender\Manager
 {
     use Slugged;
 
@@ -10,7 +12,7 @@ class PluginManager extends \Mascame\Extender\Manager
     public function outputRoutes()
     {
         $installedPlugins = $this->installer()->getInstalled();
-
+        
         foreach ($installedPlugins as $plugin) {
             $pluginInstance = $this->get($plugin);
 

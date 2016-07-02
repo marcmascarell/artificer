@@ -18,4 +18,9 @@ interface PluginInterface
      */
     public function getRoutes();
 
+    /**
+     * @return array
+     */
+    public function getMenu();
+
 } 

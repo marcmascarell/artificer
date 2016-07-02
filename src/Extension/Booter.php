@@ -6,7 +6,7 @@ use Mascame\Extender\Booter\BooterInterface;
 class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface {
 
     /**
-     * @var \Mascame\Artificer\Extension\PluginManager
+     * @var \Mascame\Artificer\Plugin\Manager|\Mascame\Artificer\Widget\Manager
      */
     protected $manager;
 

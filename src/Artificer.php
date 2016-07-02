@@ -1,10 +1,9 @@
 <?php namespace Mascame\Artificer;
 
 use App;
-use Mascame\Artificer\Extension\WidgetManager;
+use Mascame\Artificer\Fields\FieldWrapper;
 use Mascame\Artificer\Http\Controllers\BaseController;
 use Mascame\Artificer\Http\Controllers\BaseModelController;
-use Mascame\Artificer\Extension\PluginManager;
 use Mascame\Artificer\Model\Model;
 
 class Artificer
@@ -40,27 +39,8 @@ class Artificer
         return App::make('ArtificerModel');
     }
 
-    public static function assets()
-    {
-        return BaseController::assets();
-    }
-
-    public static function getCurrentModelId($items)
-    {
-        return BaseModelController::getCurrentModelId($items);
-    }
-
     /**
-     * @param $t
-     * @return bool
-     */
-    public static function isClosure($t)
-    {
-        return is_object($t) && ($t instanceof \Closure);
-    }
-
-    /**
-     * @return PluginManager
+     * @return \Mascame\Artificer\Plugin\Manager
      */
     public static function pluginManager()
     {
@@ -68,24 +48,41 @@ class Artificer
     }
 
     /**
-     * @return WidgetManager
+     * @return \Mascame\Artificer\Widget\Manager
      */
     public static function widgetManager()
     {
         return App::make('ArtificerWidgetManager');
     }
 
-    public static function addMenu($options)
+    public static function assets()
     {
-        return config(['admin.menu' => array_merge(self::getMenu(), [$options])]);
+        $widgets = '';
+
+        foreach (FieldWrapper::$widgets as $widget) {
+            $widgets .= $widget->output();
+        }
+
+        return $widgets;
     }
 
-    public static function getMenu()
+    public static function getCurrentModelId($items)
+    {
+        return BaseModelController::getCurrentModelId($items);
+    }
+
+    
+    public static function addMenu($options)
+    {
+        return config(['admin.menu' => array_merge(self::getMenu(), $options)]);
+    }
+
+    protected static function getMenu()
     {
         return config('admin.menu');
     }
 
-    public static function getProviders()
+    protected static function getProviders()
     {
         return config('admin.providers');
     }

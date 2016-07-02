@@ -22,7 +22,7 @@ class Localization
         $closure = AdminOption::get('localization.lang_detection');
         $this->locales = $this->getConfigLocales();
 
-        if ($closure && Artificer::isClosure($closure)) {
+        if (is_callable($closure)) {
             $this->lang_closure = $closure;
         }
     }

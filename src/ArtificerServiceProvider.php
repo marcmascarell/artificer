@@ -4,11 +4,11 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Mascame\Artificer\Extension\Booter;
-use Mascame\Artificer\Extension\PluginManager;
-use Mascame\Artificer\Extension\WidgetManager;
 use Mascame\Artificer\Model\Model;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
+use Mascame\Artificer\Widget\Manager as WidgetManager;
+use Mascame\Artificer\Plugin\Manager as PluginManager;
 use Mascame\Extender\Event\Event;
 use Mascame\Extender\Installer\FileInstaller;
 use Mascame\Extender\Installer\FileWriter;
@@ -161,7 +161,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 		$pluginManager = new PluginManager(
 			new FileInstaller(new FileWriter(), $pluginsConfig),
-			new Booter(),
+			new \Mascame\Artificer\Plugin\Booter(),
 			new Event(app('events'))
 		);
 

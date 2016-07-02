@@ -85,7 +85,7 @@ return [
 			],
 
 			'widgets' => [
-				\Mascame\Artificer\Widgets\DateTimepicker::class,
+				\Mascame\Artificer\Widget\DateTimepicker::class,
 			]
 
 		],
@@ -101,7 +101,7 @@ return [
 			],
 
 			'widgets' => [
-				\Mascame\Artificer\Widgets\DateTimepicker::class,
+				\Mascame\Artificer\Widget\DateTimepicker::class,
 			]
 		],
 
