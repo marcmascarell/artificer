@@ -12,12 +12,11 @@ use Mascame\Artificer\Plugin\Manager as PluginManager;
 use Mascame\Extender\Event\Event;
 use Mascame\Extender\Installer\FileInstaller;
 use Mascame\Extender\Installer\FileWriter;
-use Illuminate\Foundation\AliasLoader as Loader;
 
 
 class ArtificerServiceProvider extends ServiceProvider {
 
-	use AutoPublishable;
+	use AutoPublishable, ServiceProviderLoader;
 	
 	protected $name = 'admin';
 	/**
@@ -46,9 +45,8 @@ class ArtificerServiceProvider extends ServiceProvider {
 		// Wait until app is ready for config to be published
 		if (! $this->isPublished()) return;
 
-		$this->loadProviders();
-		$this->loadAliases();
-
+		$this->providers(config('admin.providers'));
+		$this->aliases(config('admin.aliases'));
 		$this->commands(config('admin.commands'));
 
 		App::make('ArtificerWidgetManager')->boot();
@@ -56,34 +54,6 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 		$this->requireFiles();
 	}
-
-    protected function loadProviders() {
-		$loadedProviders = [];
-
-        while (($providers = $this->getNotLoadedProviders($loadedProviders)) != []) {
-			foreach ($providers as $provider) {
-				$this->app->register($provider);
-
-				$loadedProviders[] = $provider;
-			}
-        }
-    }
-
-	/**
-	 * Will reevaluate providers array looking for third party providers declared in the given Service Providers
-	 */
-	protected function getNotLoadedProviders($loadedProviders) {
-		return array_diff(config('admin.providers'), $loadedProviders);
-	}
-
-    protected function loadAliases() {
-        $aliases = config('admin.aliases');
-        $loader = Loader::getInstance();
-
-        foreach ($aliases as $alias => $class) {
-            $loader->alias($alias, $class);
-        }
-    }
 
     /**
      * Determines if is on admin
@@ -213,7 +183,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array();
+		return [];
 	}
 
 }
