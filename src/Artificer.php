@@ -12,7 +12,7 @@ class Artificer
     /**
      * Returns the current user's action.
      *
-     * @return null|string
+     * @return null|string list, edit, create, show
      */
     public static function getCurrentAction()
     {

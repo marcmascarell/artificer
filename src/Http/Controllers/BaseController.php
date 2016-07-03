@@ -99,19 +99,4 @@ class BaseController extends Controller
         return $this->theme . $view;
     }
 
-    /**
-     * @return string
-     */
-    public static function assets()
-    {
-        $widgets = '';
-
-        foreach (FieldWrapper::$widgets as $widget) {
-            $widgets .= $widget->output();
-        }
-
-        return $widgets;
-    }
-
-
 }

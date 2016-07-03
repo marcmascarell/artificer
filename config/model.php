@@ -2,6 +2,11 @@
 
 return [
 
+	/**
+	 * Do you have models grouped in folders? Add them below.
+	 * 
+	 * '\\Your\\Namespace' => $path
+	 */
 	'directories'      => [
 		// '\\App\\Models' => app_path() . '/Models',
 	],
@@ -13,10 +18,14 @@ return [
 		\App\User::class,
 	],
 
+	/**
+	 * Models not shown and not accessible
+	 */
 	'hidden'           => [
 //		'BookAttribute',
 	],
 
+	// Todo: what to do with this? move to internal?
 	'route_permission' => [
 		'admin.model.store'   => 'create',
 		'admin.model.create'  => 'create',
@@ -27,18 +36,11 @@ return [
 		'admin.model.all'     => 'view',
 	],
 
+	/**
+	 * Default params will be merged with each model config
+	 */
 	'default' => [
-		/**
-		 * The real value will never be shown (just that)
-		 */
-		'hidden'    => ['password'],
-
-		// Editable, fillable, updatable
-		'fillable'  => ['*'],
-		//
-		//	// Not updatable, not editable
-		'guarded'   => ['id'],
-
+		
 		/**
 		 * Fields that are shown on creation
 		 */
@@ -61,6 +63,10 @@ return [
 		'list' => [
 			'visible' => ['*'],
 			'hidden' => ['password'],
+		],
+
+		'show' => [
+			'visible' => ['*']
 		],
 
 		'fields'    => [

@@ -97,8 +97,6 @@ class FieldWrapper
     {
         if ($this->isHidden()) return null;
 
-        if ($this->isGuarded()) return $this->guarded();
-
         return $this->field->output();
     }
 
@@ -108,15 +106,17 @@ class FieldWrapper
      */
     protected function isAll($array)
     {
-        return (is_array($array) && isset($array[0]) && $array[0] == '*');
+        return (is_array($array) && isset($array[0]) && $array[0] == '*' || $array == '*');
     }
 
     /**
      * @param string $visibility [visible|hidden]
      * @return bool
      */
-    protected function isListedAs($visibility, $action)
+    protected function isListedAs($visibility, $action = null)
     {
+        if (! $action) $action = Artificer::getCurrentAction();
+
         $listOptions = Artificer::getModel()->getOption($action);
 
         if (! $listOptions || ! isset($listOptions[$visibility])) return false;
@@ -129,19 +129,15 @@ class FieldWrapper
     }
 
     /**
-     * list, edit, create
-     *
      * Hidden fields have preference.
      *
      * @return bool
      */
-    public function isListable($action = null)
+    public function isVisible()
     {
-        if ( ! $action) $action = Artificer::getCurrentAction();
+        if ($this->isHidden()) return false;
 
-        if ($this->isListedAs('hidden', $action)) return false;
-
-        return $this->isListedAs('visible', $action);
+        return $this->isListedAs('visible');
     }
 
     /**
@@ -154,33 +150,12 @@ class FieldWrapper
         return (is_array($array) && in_array($value, $array)) ? true : false;
     }
 
-
-    /**
-     * @return string
-     */
-    public function guarded()
-    {
-        return '[PROTECTED] ' . $this->show();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isGuarded()
-    {
-        $guarded = Artificer::getModel()->getOption('guarded', []);
-
-        return $this->isInArray($this->field->getName(), $guarded);
-    }
-
     /**
      * @return bool
      */
     public function isHidden()
     {
-        $hidden = Artificer::getModel()->getOption('hidden', []);
-
-        return $this->isInArray($this->field->getName(), $hidden);
+        return $this->isListedAs('hidden');
     }
 
     public static function get($name)
