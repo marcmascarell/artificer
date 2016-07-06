@@ -28,7 +28,7 @@ abstract class AbstractWidget extends AbstractExtension implements WidgetInterfa
     }
 
     /**
-     * @return \Mascame\Artificer\Extension\WidgetManager
+     * @return Manager
      */
     public function getManager() {
         return \App::make('ArtificerWidgetManager');
