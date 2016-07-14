@@ -58,6 +58,8 @@ You can find that file at `config/admin/providers.php`
 
 Thank you for considering contributing! You can contribute at any time forking the project and making a pull request.
 
+You can find detailed instructions of how to setup the development environment [here](https://github.com/marcmascarell/artificer-demo).
+
 ##Support
 
 If you need help or any kind of support, please send an e-mail to Marc Mascarell at marcmascarell@gmail.com.
