@@ -2,7 +2,6 @@
 
 use App;
 use Mascame\Artificer\Options\PluginOption;
-use Mascame\Extender\Manager;
 
 abstract class AbstractExtension
 {
@@ -70,7 +69,7 @@ abstract class AbstractExtension
     abstract function getManager();
 
     /**
-     * @param array $routes
+     * @return bool
      */
     public final function isInstalled()
     {
