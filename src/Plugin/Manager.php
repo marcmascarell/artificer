@@ -2,7 +2,7 @@
 
 use Mascame\Artificer\Extension\Slugged;
 
-class Manager extends \Mascame\Extender\Manager
+class Manager extends \Mascame\Artificer\Extension\Manager
 {
     use Slugged;
 

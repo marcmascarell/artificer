@@ -4,9 +4,11 @@ return [
 
 	'title' => 'Artificer',
 	
-	'route_prefix' => 'admin',
+	'routePrefix' => 'admin',
 
 	'theme' => 'artificer-default-theme',
+
+	'vendorPath' => base_path('vendor'),
 
 	/*
     |--------------------------------------------------------------------------
@@ -15,9 +17,10 @@ return [
     */
 	
 	'providers' => [
-		\Collective\Html\HtmlServiceProvider::class,
-		\Mascame\Artificer\DefaultThemeServiceProvider::class,
-		\Mascame\Artificer\ArtificerWidgetsServiceProvider::class,
+		Collective\Html\HtmlServiceProvider::class,
+		Stolz\Assets\Laravel\ServiceProvider::class,
+		Mascame\Artificer\DefaultThemeServiceProvider::class,
+		Mascame\Artificer\ArtificerWidgetsServiceProvider::class,
 	],
 
 	'aliases' => [
@@ -26,7 +29,7 @@ return [
 	],
 
 	'commands' => [
-		\Mascame\Artificer\Commands\ModalConfigGenerator::class
+		Mascame\Artificer\Commands\ModalConfigGenerator::class
 	],
 	
     'icons' => [

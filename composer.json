@@ -23,7 +23,8 @@
     "mascame/artificer-widgets": "dev-l5-migration",
     "mascame/formality": "0.*",
     "mascame/extender": "dev-master",
-    "mascame/notify": "1.*"
+    "mascame/notify": "1.*",
+    "stolz/assets": "^0.1.9"
   },
   "require-dev": {
     "sami/sami": "3.*",

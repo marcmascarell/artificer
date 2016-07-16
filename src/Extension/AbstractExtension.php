@@ -15,9 +15,11 @@ abstract class AbstractExtension
     public $namespace;
 
     /**
+     * Semver http://semver.org/
+     *
      * @var string
      */
-    public $version = '1.0';
+    public $version = null;
 
     /**
      * Name that will be shown on extensions page

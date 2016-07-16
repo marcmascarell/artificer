@@ -56,7 +56,7 @@ class FieldWrapper
      * Used to load custom assets, widgets, ...
      *
      */
-    public function boot()
+    protected function boot()
     {
         if ( ! $this->field->getOption('widgets')) {
             return null;
@@ -98,6 +98,14 @@ class FieldWrapper
         if ($this->isHidden()) return null;
 
         return $this->field->output();
+    }
+
+    public function withWidgets($output) {
+        foreach (self::$widgets as $widget) {
+            $output = $widget->field($output);
+        }
+
+        return $output;
     }
 
     /**

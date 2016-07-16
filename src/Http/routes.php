@@ -28,7 +28,7 @@ Route::group([
 //    'before' => 'artificer-localization|LaravelLocalizationRedirectFilter'
 ],
     function () {
-        Route::group(['prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')], function () {
+        Route::group(['prefix' => \Mascame\Artificer\Options\AdminOption::get('routePrefix')], function () {
             Route::get('install', ['as' => 'admin.install', 'uses' => PageController::class . '@install']);
         });
     });
@@ -39,7 +39,7 @@ Route::group([
 //    'before' => 'artificer-auth|artificer-localization|LaravelLocalizationRedirectFilter'
 ],
     function () {
-        Route::group(['prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')], function () {
+        Route::group(['prefix' => \Mascame\Artificer\Options\AdminOption::get('routePrefix')], function () {
 
             Route::get('/', ['as' => 'admin.home', 'uses' => PageController::class . '@home']);
 

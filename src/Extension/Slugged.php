@@ -10,10 +10,10 @@ trait Slugged
 
     /**
      * @param $slug
-     * @param $name
+     * @param $namespace
      */
-    public function setSlug($slug, $name) {
-        $this->extensionSlugs[$slug] = $name;
+    public function setSlug($slug, $namespace) {
+        $this->extensionSlugs[$slug] = $namespace;
     }
 
     /**

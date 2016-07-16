@@ -6,19 +6,23 @@ abstract class AbstractWidget extends AbstractExtension implements WidgetInterfa
 {
 
     /**
-     * @var string
-     */
-    public static $assetsPath = '/packages/mascame/artificer-widgets';
-
-
-    /**
      * @return null
      */
     public function assets()
     {
         return null;
     }
-    
+
+    /**
+     * vendor/package
+     * 
+     * @return string
+     */
+    public function getAssetsPath()
+    {
+        return $this->namespace;
+    }
+
     /**
      * @return null
      */

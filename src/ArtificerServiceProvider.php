@@ -148,7 +148,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		// We still haven't modified config, that's why 'admin.admin'
-		$routePrefix = config('admin.admin.route_prefix');
+		$routePrefix = config('admin.admin.routePrefix');
 
 		// Avoid bloating the App with files that will not be needed
 		$this->isBootable = $this->isBootable(request()->path(), $routePrefix);

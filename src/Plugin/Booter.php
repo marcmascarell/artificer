@@ -10,14 +10,6 @@ class Booter extends \Mascame\Artificer\Extension\Booter implements BooterInterf
      */
     protected $manager;
 
-    public function boot($instance, $name)
-    {
-        $this->beforeBooting($instance, $name);
-
-        parent::boot($instance, $name);
-
-        $this->afterBooting($instance, $name);
-    }
 
     /**
      * @param $instance AbstractPlugin
