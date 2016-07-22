@@ -40,9 +40,9 @@ class Manager extends \Mascame\Extender\Manager {
 
     /**
      * @param $name
-     * @param \Closure $plugin
+     * @param $plugin
      */
-    public function add($name, \Closure $plugin)
+    public function add($name, $plugin)
     {
         if (! $this->isValidNamespace($name)) {
             throw new \Exception('Extension namespace is mandatory and must be compliant to "vendor/package". Provided: ' . $name);
