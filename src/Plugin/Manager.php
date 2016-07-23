@@ -6,6 +6,8 @@ class Manager extends \Mascame\Artificer\Extension\Manager
 {
     use Slugged;
 
+    protected $type = 'plugins';
+
     /**
      * @return array
      */

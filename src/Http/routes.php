@@ -52,12 +52,13 @@ Route::group([
                     ['as' => 'admin.logout', 'uses' => UserController::class . '@logout']);
             });
 
+            Route::get('extensions', [
+                'as' => 'admin.extensions',
+                'uses' => ExtensionController::class . '@extensions'
+            ]);
+
             foreach (['plugins', 'widgets'] as $extensionType) {
                 Route::group(['prefix' => $extensionType], function () use ($extensionType) {
-                    Route::get('', [
-                        'as' => 'admin.' . $extensionType,
-                        'uses' => ExtensionController::class . '@extensions'
-                    ]);
 
                     Route::get('{slug}/install', [
                         'as' => 'admin.'. $extensionType .'.install',
@@ -68,7 +69,7 @@ Route::group([
                         'as' => 'admin.'. $extensionType .'.uninstall',
                         'uses' => ExtensionController::class . '@uninstall'
                     ]);
-                });    
+                });
             }
 
             Route::group(['prefix' => 'model'], function () {

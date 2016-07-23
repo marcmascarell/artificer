@@ -7,21 +7,41 @@ abstract class AbstractExtension
 {
 
     /**
-     * Namespace will automatically be set if empty
+     * Automatically filled
+     *
+     * Namespace will automatically be set if empty (will usually be the class itself).
+     * Example: "Mascame\Artificer\Extension\Extension"
      *
      * @var string
      */
     public $namespace;
 
     /**
-     * Semver http://semver.org/
+     * Automatically filled
+     *
+     * Which package is this part of.
+     * Example: "mascame/artificer-widgets"
      *
      * @var string
      */
-    public $version = null;
+    public $package = null;
 
     /**
-     * Name that will be shown on extensions page
+     * Automatically filled
+     *
+     * @var array
+     */
+    public $authors = [];
+
+    /**
+     * Automatically filled
+     *
+     * @var string
+     */
+    public $slug;
+
+    /**
+     * Name that will be shown on extensions page. Example: "My great extension"
      *
      * @var string
      */
@@ -35,22 +55,12 @@ abstract class AbstractExtension
     /**
      * @var string
      */
-    public $author = 'Anonymous';
-
-    /**
-     * @var string
-     */
-    public $configFile = null;
-
-    /**
-     * @var string
-     */
     public $thumbnail = null;
 
     /**
      * @var string
      */
-    public $slug;
+    public $configFile = null;
 
     /**
      * @var PluginOption

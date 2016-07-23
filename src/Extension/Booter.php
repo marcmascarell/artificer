@@ -26,15 +26,14 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
      * @param $name
      */
     public function beforeBooting($instance, $name) {
-        $instance->namespace = $name;
-
-        if (! $instance->version) {
-            $instance->version = $this->manager->getVersion($instance->namespace);
-        }
-
+        if (! $instance->namespace) $instance->namespace = $name;
         if (! $instance->name) $instance->name = $name;
 
-        if (! $instance->slug) $instance->slug = Str::slug($name);
+        if (! $instance->slug) {
+            // For slug readibility
+            $name = str_replace('\\', '-', $name);
+            $instance->slug = Str::slug($name);
+        }
 
         $this->manager->setSlug($instance->slug, $instance->namespace);
     }
