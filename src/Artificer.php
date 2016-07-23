@@ -1,12 +1,8 @@
 <?php namespace Mascame\Artificer;
 
-use App;
-use Mascame\Artificer\Fields\FieldWrapper;
-use Mascame\Artificer\Http\Controllers\BaseController;
+use \App;
 use Mascame\Artificer\Http\Controllers\BaseModelController;
 use Mascame\Artificer\Model\Model;
-use Mascame\Artificer\Widget\AbstractWidget;
-use Mascame\Artificer\Widget\WidgetInterface;
 
 class Artificer
 {
@@ -57,42 +53,8 @@ class Artificer
         return App::make('ArtificerWidgetManager');
     }
 
-    /**
-     * Todo: only output assets of installed widgets
-     * 
-     * @return string
-     */
-    public static function assets()
-    {
-//        $assets = [
-//            'styles' => [],
-//            'scripts' => [],
-//        ];
-//
-//        /**
-//         * @var $widget AbstractWidget
-//         */
-//        foreach (FieldWrapper::$widgets as $widget) {
-//            if ($widget->isInstalled()) {
-//                $assets['styles'][] = $widget->getStyles();
-//                $assets['scripts'][] = $widget->getScripts();
-//            }
-//        }
-
-        \Assets::add('filename.css');
-
-//        return $assets;
-    }
-
     protected static function buildStyles($styles) {
 
-    }
-
-    protected static function buildScripts($scripts) {
-        
-        foreach ($scripts as $script) {
-            
-        }
     }
 
     public static function getCurrentModelId($items)
@@ -110,15 +72,6 @@ class Artificer
     {
         return config('admin.menu');
     }
-    
-    /**
-     * @param $plugin
-     * @return mixed
-     */
-//    public static function getPlugin($plugin)
-//    {
-//        return with(App::make('ArtificerPluginManager'))->make($plugin);
-//    }
 
     // Todo is it used anywhere?
 //    public static function store($filepath = null, $content, $overide = false)

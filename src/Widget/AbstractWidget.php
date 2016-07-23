@@ -6,11 +6,17 @@ abstract class AbstractWidget extends AbstractExtension implements WidgetInterfa
 {
 
     /**
-     * @return null
+     * Will output the assets when the extension is installed directly to the vendor
+     *
+     * /packages/namespace/package-name/ will be prepended automatically
+     *
+     * Example: ['css/my-style.css']
+     *
+     * @return array
      */
     public function assets()
     {
-        return null;
+        return [];
     }
 
     /**

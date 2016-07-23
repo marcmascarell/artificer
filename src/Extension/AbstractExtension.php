@@ -1,6 +1,5 @@
 <?php namespace Mascame\Artificer\Extension;
 
-use App;
 use Mascame\Artificer\Options\PluginOption;
 
 abstract class AbstractExtension

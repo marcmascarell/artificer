@@ -25,12 +25,12 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
      * @param $instance
      * @param $name
      */
-    public function beforeBooting($instance, $name) {
+    protected function beforeBooting($instance, $name) {
         if (! $instance->namespace) $instance->namespace = $name;
         if (! $instance->name) $instance->name = $name;
 
         if (! $instance->slug) {
-            // For slug readibility
+            // For slug readability
             $name = str_replace('\\', '-', $name);
             $instance->slug = Str::slug($name);
         }
@@ -42,20 +42,28 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
      * @param $instance \Mascame\Artificer\Extension\AbstractExtension
      * @param $name
      */
-    public function afterBooting($instance, $name) {
+    protected function afterBooting($instance, $name) {
         if (! $this->manager->isInstalled($instance->namespace)) return;
 
-        // Todo: add assets
-//die('here!');
-//        \Assets::config([
-//            'group1' => [
-//
-//            ],
-//        ]);
-        $package = $instance->namespace . '/' . $instance->slug;
+        $this->addAssets($instance);
+    }
+
+    /**
+     * @param $instance
+     */
+    protected function addAssets($instance) {
+        $package = 'packages/' . $instance->package . '/';
+
+        $assets = $instance->assets();
+
+        $assets = array_map(function($asset) use ($package) {
+            return $package . $asset;
+        }, $assets);
 
         \Assets::config([
-
-        ])->add(["$package:bar.css", "$package:foo.js"]);
+            // Reset those dirs to avoid wrong paths
+            'css_dir' => '',
+            'js_dir' => '',
+        ])->add($assets);
     }
 }
