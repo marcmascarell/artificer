@@ -67,9 +67,10 @@ Route::group([
             Route::get('extensions', ExtensionController::class . '@extensions')->name('admin.extensions');
 
             foreach (['plugins', 'widgets'] as $extensionType) {
+
                 Route::group(['prefix' => $extensionType], function () use ($extensionType) {
                     Route::get('{slug}/install', ExtensionController::class . '@install')->name('admin.'. $extensionType .'.install');
-                    Route::get('{slug}/install', ExtensionController::class . '@uninstall')->name('admin.'. $extensionType .'.uninstall');
+                    Route::get('{slug}/uninstall', ExtensionController::class . '@uninstall')->name('admin.'. $extensionType .'.uninstall');
                 });
             }
 
