@@ -1,7 +1,7 @@
 <?php namespace Mascame\Artificer;
 
+use App;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Mascame\Artificer\Extension\Booter;
 use Mascame\Artificer\Model\Model;
@@ -49,6 +49,11 @@ class ArtificerServiceProvider extends ServiceProvider {
 		$this->aliases(config('admin.aliases'));
 		$this->commands(config('admin.commands'));
 
+        App::make('router')->middlewareGroup('test', [ArtificerServiceProvider::class]);
+        App::make('router')->middlewareGroup('test', [function() {dd('dsdas');}]);
+
+//        dd(App::make('router'));
+
 		App::make('ArtificerWidgetManager')->boot();
 		App::make('ArtificerPluginManager')->boot();
 
@@ -70,8 +75,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 	private function requireFiles()
 	{
-		require_once __DIR__ . '/Http/filters.php';
-		require_once __DIR__ . '/Http/routes.php';
+		require_once __DIR__ . '/../routes/admin.php';
 	}
 
 	protected function getConfigPath() {

@@ -70,38 +70,21 @@ class ModelController extends BaseModelController
         $data = $this->filterInputData();
 
         $validator = $this->validator($data);
+
         if ($validator->fails()) {
             return $this->redirect($validator, 'admin.model.create');
         }
 
         $this->handleData($data);
 
-        $this->model->guard($this->modelObject->getOption('guarded', array()));
-
+        $this->model->guard($this->modelObject->getGuarded());
+        $this->model->fillable($this->modelObject->getOption('fillable', []));
+//dd($this->model->getFillable());
+//        dd($data);
+//        dd($this->modelObject->getOption('fillable'));
+//        unset($data['id']);
+//        dd($this->model->getGuarded());
         $item = $this->model->create(with($this->handleFiles($data)));
-
-        $relation_on_create = '_set_relation_on_create';
-        if (Input::has($relation_on_create)) {
-            $relateds = array(
-                'id' => $item->id,
-                'modelClass' => $this->modelObject->class,
-                'foreign' => Input::get('_set_relation_on_create_foreign')
-            );
-
-            Session::push($relation_on_create . '_' . Input::get($relation_on_create), $relateds);
-        }
-
-        if (Session::has($relation_on_create . '_' . $this->modelObject->name)) {
-            $relations = Session::get($relation_on_create . '_' . $this->modelObject->name);
-
-            foreach ($relations as $relation) {
-                $related_item = $relation['modelClass']::find($relation['id']);
-                $related_item->$relation['foreign'] = $item->id;
-                $related_item->save();
-            }
-
-            Session::forget($relation_on_create . '_' . $this->modelObject->name);
-        }
 
         if (Request::ajax()) {
             return $this->handleAjaxResponse($item);

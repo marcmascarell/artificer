@@ -132,7 +132,27 @@ class Model
      */
     public function hasGuarded()
     {
-        return ! empty($this->getOption('guarded', []));
+        return ! empty($this->getGuarded());
+    }
+
+    /**
+     * Look for admin model config, if there is nothing fallback to Model property
+     *
+     * @return array|mixed
+     */
+    public function getGuarded()
+    {
+        return $this->getOption('guarded', $this->model->getGuarded());
+    }
+
+    /**
+     * Look for admin model config, if there is nothing fallback to Model property
+     *
+     * @return array|mixed
+     */
+    public function getFillable()
+    {
+        return $this->getOption('fillable', $this->model->getFillable());
     }
 
     /**
@@ -140,7 +160,7 @@ class Model
      */
     public function hasFillable()
     {
-        return ! empty($this->getOption('fillable', []));
+        return ! empty($this->getFillable());
     }
 
     /**
@@ -277,6 +297,9 @@ class Model
     }
 
     /**
+     * Take care! This are the options reflected in config files.
+     * Processed guarded/fillable should used with their own getters.
+     *
      * @param $key
      * @param null $model
      * @return mixed

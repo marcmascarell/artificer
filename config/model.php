@@ -2,80 +2,78 @@
 
 return [
 
-	/**
-	 * Do you have models grouped in folders? Add them below.
-	 * 
-	 * '\\Your\\Namespace' => $path
-	 */
-	'directories'      => [
-		// '\\App\\Models' => app_path() . '/Models',
-	],
+    /**
+     * Specify where models live
+     */
+    'directories' => [
+        // '\\App\\Models' => app_path() . '/Models',
+    ],
 
-	/**
-	 * You can also specify models individually
-	 */
-	'models'      => [
-		\App\User::class,
-	],
+    /**
+     * You can also specify models individually
+     */
+    'models' => [
+        \App\User::class
+    ],
 
-	/**
-	 * Models not shown and not accessible
-	 */
-	'hidden'           => [
-//		'BookAttribute',
-	],
+    /**
+     * Models that will not be shown in menu (Example: BookAttribute)
+     *
+     * Useful when you are using directory model scan.
+     */
+    'hidden' => [],
 
-	// Todo: what to do with this? move to internal?
-	'route_permission' => [
-		'admin.model.store'   => 'create',
-		'admin.model.create'  => 'create',
-		'admin.model.update'  => 'update',
-		'admin.model.edit'    => 'update',
-		'admin.model.destroy' => 'delete',
-		'admin.model.show'    => 'view',
-		'admin.model.all'     => 'view',
-	],
+    'route_permission' => [
+        'admin.model.store'   => 'create',
+        'admin.model.create'  => 'create',
+        'admin.model.update'  => 'update',
+        'admin.model.edit'    => 'update',
+        'admin.model.destroy' => 'delete',
+        'admin.model.show'    => 'view',
+        'admin.model.all'     => 'view',
+    ],
 
-	/**
-	 * Default params will be merged with each model config
-	 */
-	'default' => [
-		
-		/**
-		 * Fields that are shown on creation
-		 */
-		'create' => [
-			'visible' => ['*'],
-			'hidden' => ['id'],
-		],
+    /**
+     * All model configs will use this defaults (Merging)
+     */
+    'default' => [
+        // The real value will never be shown (just that)
+        'hidden' => ['password'],
 
-		/**
-		 * Fields that are shown on edit
-		 */
-		'edit' => [
-			'visible' => ['*'],
-			'hidden' => ['id'],
-		],
+        // Model's 'fillable' property. Fallback to the Model if empty []
+        'fillable' => ['*'],
 
-		/**
-		 * Fields that will be shown when on list view mode
-		 */
-		'list' => [
-			'visible' => ['*'],
-			'hidden' => ['password'],
-		],
+        // Model's 'guarded' property. Fallback to the Model if empty []
+        'guarded' => ['id'],
 
-		'show' => [
-			'visible' => ['*']
-		],
+        // Fields that are shown on creation
+        'create' => [
+            'visible' => ['*'],
+            'hidden' => ['id'],
+        ],
 
-		'fields'    => [
+        // Fields that are shown on edit
+        'edit' => [
+            'visible' => ['*'],
+            'hidden' => ['id'],
+        ],
 
-		],
+        // Fields that will be shown when on list view mode
+        'list' => [
+            'visible' => ['*'],
+            'hidden' => ['password'],
+        ],
 
-		// Attributes of fields, applied unless field has attributes
-		'attributes' => [
-			'class' => 'form-control'
-		]
-	]
+        // Fields that will be shown when on detailed item view mode
+        'show' => [
+            'visible' => ['*']
+        ],
+
+        'fields' => [],
+
+        // Attributes of fields, applied unless field has attributes
+        'attributes' => [
+            'class' => 'form-control'
+        ]
+    ]
 ];

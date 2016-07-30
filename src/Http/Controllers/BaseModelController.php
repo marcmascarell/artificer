@@ -124,23 +124,10 @@ class BaseModelController extends BaseController
      */
     protected function getSort()
     {
-        $sort = array();
-
-        if (Input::has('sort_by')) {
-            $sort['column'] = Input::get('sort_by');
-            $sort['direction'] = Input::get('direction');
-        } else {
-
-            if ($this->modelObject->schema->hasColumn('sort_id')) {
-                $sort['column'] = 'sort_id';
-            } else {
-                $sort['column'] = 'id';
-            }
-
-            $sort['direction'] = 'asc';
-        }
-
-        return $sort;
+        return [
+            'column' =>  Input::get('sort_by', 'id'),
+            'direction' =>  Input::get('direction', 'asc'),
+        ];
     }
 
     /**
@@ -169,13 +156,16 @@ class BaseModelController extends BaseController
     }
 
     /**
+     *
+     *
      * @return array|mixed
      */
     protected function filterInputData()
     {
+        $input = Input::all();
+
         if ($this->modelObject->hasGuarded()) {
-            $input = Input::all();
-            $filteredInput = array();
+            $filteredInput = [];
 
             foreach ($input as $key => $value) {
                 if (in_array($key, $this->modelObject->columns)) {
@@ -183,10 +173,10 @@ class BaseModelController extends BaseController
                 }
             }
 
-            return $this->except($this->modelObject->getOption('guarded'), $filteredInput);
+            return $this->except($this->modelObject->getGuarded(), $filteredInput);
         }
 
-        return Input::except('id');
+        return $input;
     }
 
     /**
@@ -295,8 +285,9 @@ class BaseModelController extends BaseController
 
     /**
      * @param $validator
-     * @param string $route
-     * @return $this
+     * @param $route
+     * @param null $id
+     * @return Redirect
      */
     protected function redirect($validator, $route, $id = null)
     {
