@@ -21,7 +21,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	protected $name = 'admin';
 
     protected $corePlugins = [
-        App\Mascame\LoginPlugin::class
+        \Mascame\Artificer\LoginPlugin::class
     ];
 
 	/**

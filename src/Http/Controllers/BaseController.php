@@ -38,8 +38,7 @@ class BaseController extends Controller
         $this->theme = AdminOption::get('theme') . '::';
         $this->master_layout = 'base';
 
-        // Todo: Do Sth with this
-        if (UserController::check() || true) {
+        if (! Auth::guard('admin')->guest()) {
             $this->options = AdminOption::all();
 
             $this->modelObject = Artificer::getModel();
