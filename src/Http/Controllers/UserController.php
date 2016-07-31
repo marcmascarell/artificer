@@ -20,7 +20,7 @@ class UserController extends BaseController
     public function __construct() {
         parent::__construct();
 
-        $this->authProvider = new EloquentUserProvider(app('hash'), 'ArtificerUser');
+        $this->authProvider = new EloquentUserProvider(app('hash'), 'User');
     }
 
     /**

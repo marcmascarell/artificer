@@ -43,7 +43,7 @@ class ModelController extends BaseModelController
 
         $data = $this->model->where(function ($query) {
 
-            foreach (Input::all() as $name => $value) {
+            foreach (\Request::all() as $name => $value) {
                 if ($value != '' && isset($this->fields[$name])) {
                     $this->fields[$name]->filter($query, $value);
                 }
@@ -79,11 +79,7 @@ class ModelController extends BaseModelController
 
         $this->model->guard($this->modelObject->getGuarded());
         $this->model->fillable($this->modelObject->getOption('fillable', []));
-//dd($this->model->getFillable());
-//        dd($data);
-//        dd($this->modelObject->getOption('fillable'));
-//        unset($data['id']);
-//        dd($this->model->getGuarded());
+
         $item = $this->model->create(with($this->handleFiles($data)));
 
         if (Request::ajax()) {

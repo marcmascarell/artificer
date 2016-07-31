@@ -19,6 +19,11 @@ class ArtificerServiceProvider extends ServiceProvider {
 	use AutoPublishable, ServiceProviderLoader;
 	
 	protected $name = 'admin';
+
+    protected $corePlugins = [
+        App\Mascame\LoginPlugin::class
+    ];
+
 	/**
 	 * Indicates if loading of the provider is deferred.
 	 *
@@ -49,11 +54,32 @@ class ArtificerServiceProvider extends ServiceProvider {
 		$this->aliases(config('admin.aliases'));
 		$this->commands(config('admin.commands'));
 
-		App::make('ArtificerWidgetManager')->boot();
-		App::make('ArtificerPluginManager')->boot();
+        $this->manageCorePlugins();
+
+        Artificer::pluginManager()->boot();
+        Artificer::widgetManager()->boot();
 
 		$this->requireFiles();
 	}
+
+    /**
+     * Ensure core plugins are installed
+     *
+     * @throws \Exception
+     */
+	protected function manageCorePlugins() {
+        $pluginManager = Artificer::pluginManager();
+
+        foreach ($this->corePlugins as $corePlugin) {
+            if (! $pluginManager->isInstalled($corePlugin)) {
+                $installed = $pluginManager->installer()->install($corePlugin);
+
+                if (! $installed) {
+                    throw new \Exception("Unable to install Artificer core plugin {$corePlugin}");
+                }
+            }
+        }
+    }
 
     /**
      * Determines if is on admin

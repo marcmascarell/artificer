@@ -4,6 +4,7 @@ use Mascame\Artificer\Http\Controllers\ModelController as ModelController;
 use Mascame\Artificer\Http\Controllers\UserController as UserController;
 use Mascame\Artificer\Http\Controllers\PageController as PageController;
 use Mascame\Artificer\Http\Controllers\ExtensionController as ExtensionController;
+use Mascame\Artificer\Http\Controllers\Auth\AuthController as AuthController;
 
 //$ret = event('test');
 //dd($ret);
@@ -37,14 +38,22 @@ Route::group([
 );
 
 Route::group([
-    'middleware' => ['web']
+    'middleware' => ['web'],
+    'prefix' => \Mascame\Artificer\Options\AdminOption::get('routePrefix'),
+
 //    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
 //    'before' => 'artificer-auth|artificer-localization|LaravelLocalizationRedirectFilter'
 ],
     function () {
+
+        Route::group(['prefix' => 'user'], function () {
+            Route::get('login', AuthController::class . '@showLoginForm')->name('admin.showlogin');
+            Route::post('login', AuthController::class . '@login')->name('admin.login');
+            Route::get('logout', AuthController::class . '@logout')->name('admin.logout');
+        });
+
         Route::group([
-            'prefix' => \Mascame\Artificer\Options\AdminOption::get('routePrefix'),
-//            'middleware' => ['artificer-auth']
+            'middleware' => ['artificer-auth']
         ], function () {
             Route::get('test', function() {
                 die('yes');
@@ -52,17 +61,10 @@ Route::group([
         });
 
         Route::group([
-            'prefix' => \Mascame\Artificer\Options\AdminOption::get('routePrefix'),
-//            'middleware' => ['artificer-auth']
+            'middleware' => ['artificer-auth']
         ], function () {
 
             Route::get('/', ['as' => 'admin.home', 'uses' => PageController::class . '@home']);
-
-            Route::group(['prefix' => 'user'], function () {
-                Route::get('login', UserController::class . '@showLogin')->name('admin.showlogin');
-                Route::post('login', UserController::class . '@login')->name('admin.login');
-                Route::get('logout', UserController::class . '@logout')->name('admin.logout');
-            });
 
             Route::get('extensions', ExtensionController::class . '@extensions')->name('admin.extensions');
 
