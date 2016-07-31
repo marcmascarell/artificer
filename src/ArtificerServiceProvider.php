@@ -54,12 +54,12 @@ class ArtificerServiceProvider extends ServiceProvider {
 		$this->aliases(config('admin.aliases'));
 		$this->commands(config('admin.commands'));
 
-        $this->manageCorePlugins();
-
         Artificer::pluginManager()->boot();
         Artificer::widgetManager()->boot();
 
-		$this->requireFiles();
+        $this->manageCorePlugins();
+
+        $this->requireFiles();
 	}
 
     /**
@@ -68,7 +68,11 @@ class ArtificerServiceProvider extends ServiceProvider {
      * @throws \Exception
      */
 	protected function manageCorePlugins() {
+	    // Avoid installing plugins when using cli
+        if (App::runningInConsole() || App::runningUnitTests()) return true;
+
         $pluginManager = Artificer::pluginManager();
+        $needsRefresh = false;
 
         foreach ($this->corePlugins as $corePlugin) {
             if (! $pluginManager->isInstalled($corePlugin)) {
@@ -77,7 +81,22 @@ class ArtificerServiceProvider extends ServiceProvider {
                 if (! $installed) {
                     throw new \Exception("Unable to install Artificer core plugin {$corePlugin}");
                 }
+
+                $needsRefresh = true;
             }
+        }
+
+        // Refresh to allow changes made by core plugins to take effect
+        if ($needsRefresh) {
+            /**
+             * File driver is slow... wait some seconds (else we would have too many redirects)
+             *
+             * Fortunately we only do this in the first run. Ye, I don't like it either.
+             */
+            sleep(2);
+
+            header('Location: '. \URL::current());
+            die();
         }
     }
 
@@ -114,14 +133,6 @@ class ArtificerServiceProvider extends ServiceProvider {
         ], 'config');
 
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', $this->name);
-
-//        $this->publishes([
-//            __DIR__.'/../database/migrations/' => database_path('migrations')
-//        ], 'migrations');
-//
-//        $this->publishes([
-//            __DIR__.'/../database/seeds/' => database_path('seeds')
-//        ], 'seeds');
     }
 
 	private function addModel()
@@ -140,28 +151,24 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 	private function addManagers()
 	{
-		$widgetsConfig = $this->getConfigPath() . 'extensions/widgets.php';
+		App::singleton('ArtificerWidgetManager', function() {
+            $widgetsConfig = $this->getConfigPath() . 'extensions/widgets.php';
 
-		$widgetManager = new WidgetManager(
-			new FileInstaller(new FileWriter(), $widgetsConfig),
-			new Booter(),
-			new Event(app('events'))
-		);
+            return new WidgetManager(
+                new FileInstaller(new FileWriter(), $widgetsConfig),
+                new Booter(),
+                new Event(app('events'))
+            );
+        });
 
-		App::singleton('ArtificerWidgetManager', function () use ($widgetManager) {
-			return $widgetManager;
-		});
+		App::singleton('ArtificerPluginManager', function() {
+            $pluginsConfig = $this->getConfigPath() . 'extensions/plugins.php';
 
-		$pluginsConfig = $this->getConfigPath() . 'extensions/plugins.php';
-
-		$pluginManager = new PluginManager(
-			new FileInstaller(new FileWriter(), $pluginsConfig),
-			new \Mascame\Artificer\Plugin\Booter(),
-			new Event(app('events'))
-		);
-
-		App::singleton('ArtificerPluginManager', function () use ($pluginManager) {
-			return $pluginManager;
+            return new PluginManager(
+                new FileInstaller(new FileWriter(), $pluginsConfig),
+                new \Mascame\Artificer\Plugin\Booter(),
+                new Event(app('events'))
+            );
 		});
 	}
 
