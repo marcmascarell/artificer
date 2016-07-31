@@ -2,9 +2,7 @@
 
 use App;
 use Illuminate\Support\Str;
-use Mascame\Arrayer\Builder;
 use Mascame\Artificer\Artificer;
-use Redirect;
 use View;
 
 class ExtensionController extends BaseController
