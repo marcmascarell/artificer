@@ -19,6 +19,7 @@ return [
 	'providers' => [
 		Collective\Html\HtmlServiceProvider::class,
 		Stolz\Assets\Laravel\ServiceProvider::class,
+        Mascame\Artificer\LoginPluginServiceProvider::class,
 		Mascame\Artificer\DefaultThemeServiceProvider::class,
 		Mascame\Artificer\ArtificerWidgetsServiceProvider::class,
 	],

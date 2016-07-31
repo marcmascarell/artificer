@@ -21,6 +21,7 @@
     "php": ">=5.4",
     "mascame/artificer-default-theme": "dev-l5-migration",
     "mascame/artificer-widgets": "dev-l5-migration",
+    "mascame/artificer-login-plugin": "dev-master",
     "mascame/formality": "0.*",
     "mascame/extender": "dev-master",
     "mascame/notify": "1.*",
