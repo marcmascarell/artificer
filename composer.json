@@ -24,7 +24,6 @@
     "mascame/artificer-login-plugin": "dev-master",
     "mascame/formality": "0.*",
     "mascame/extender": "dev-master",
-    "mascame/notify": "1.*",
     "stolz/assets": "^0.1.9"
   },
   "require-dev": {

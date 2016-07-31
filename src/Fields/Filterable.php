@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Input;
 
 trait Filterable
 {
+    public $filterable = true;
 
     /**
      * @param $query Builder
@@ -13,6 +14,10 @@ trait Filterable
      */
     public function filter($query, $value)
     {
+        if (method_exists($this->field, 'filter')) {
+            return $this->field->filter($query, $value);
+        }
+
         return $query->where($this->name, $value);
     }
 
@@ -21,18 +26,26 @@ trait Filterable
      */
     public function displayFilter()
     {
-        $this->value = Input::old($this->name);
+        if (method_exists($this->field, 'displayFilter')) {
+            return $this->field->displayFilter();
+        }
+
+        $this->value = \Request::old($this->name);
 
         return $this->output();
     }
 
     /**
+     * By default it has filter, use hasFilter method if you want to specify something
+     *
      * @return bool
      */
     public function hasFilter()
     {
-        $hasFilterMethod = method_exists($this->field, 'hasFilter');
+        if (property_exists($this->field, 'filterable')) {
+            return $this->field->filterable;
+        }
 
-        return ($hasFilterMethod) ? $this->field->hasFilter() : true;
+        return $this->filterable;
     }
 }

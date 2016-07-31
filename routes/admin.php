@@ -77,12 +77,12 @@ Route::group([
 
             Route::group(['prefix' => 'model'], function () {
                 Route::get('{slug}', ModelController::class . '@all')->name('admin.model.all');
-                Route::get('{slug}/create', ModelController::class . '@create')->name('admin.model.create');
-                Route::post('{slug}/store', ModelController::class . '@store')->name('admin.model.store');
                 Route::get('{slug}/filter', ModelController::class . '@filter')->name('admin.model.filter');
+                Route::get('{slug}/create', ModelController::class . '@create')->name('admin.model.create');
                 Route::get('{slug}/{id}', ModelController::class . '@show')->name('admin.model.show');
                 Route::get('{slug}/{id}/edit', ModelController::class . '@edit')->name('admin.model.edit');
                 Route::get('{slug}/{id}/edit/{field}', ModelController::class . '@field')->name('admin.model.field.edit');
+                Route::post('{slug}/store', ModelController::class . '@store')->name('admin.model.store');
                 Route::put('{slug}/{id}', ModelController::class . '@update')->name('admin.model.update');
                 Route::delete('{slug}/{id}', ModelController::class . '@destroy')->name('admin.model.destroy');
 

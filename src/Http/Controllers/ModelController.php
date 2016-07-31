@@ -1,9 +1,9 @@
 <?php namespace Mascame\Artificer\Http\Controllers;
 
 use Event;
-use Illuminate\Database\Eloquent\Collection;
 use Input;
 use Mascame\Artificer\Options\AdminOption;
+use Mascame\Notify\Notify;
 use Redirect;
 use Request;
 use Response;
@@ -191,8 +191,9 @@ class ModelController extends BaseModelController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
-     * @return Response
+     * @param $modelName
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function destroy($modelName, $id)
     {
@@ -203,23 +204,20 @@ class ModelController extends BaseModelController
             )
         );
 
-        Event::fire('artificer.model.before.destroy', $event_info);
-
         if ($this->model->destroy($id)) {
-            Notification::success('<b>Success!</b> The record has been deleted!', true);
-            Event::fire('artificer.model.after.destroy', $event_info);
+            // Todo
+//            Notify::success('<b>Success!</b> The record has been deleted!', true);
         } else {
-            Notification::danger('<b>Failed!</b> The record could not be deleted!');
+            // Todo
+//            Notify::danger('<b>Failed!</b> The record could not be deleted!');
         }
 
         if (Request::ajax()) {
             // todo
-            return Response::json(array());
+            return \Response::json(array());
         }
 
         return Redirect::back();
-
-//		return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
     }
 
 }

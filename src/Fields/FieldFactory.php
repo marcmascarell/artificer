@@ -46,12 +46,12 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
 
     protected function getFieldTypeClass($type, $namespace)
     {
-        $typeClass = parent::getFieldTypeClass($type, $namespace);
-        
+        $typeClass = parent::getFieldTypeClass($type, $this->artificerFieldsNamespace);
+
         if (! $typeClass) {
-            $typeClass = parent::getFieldTypeClass($type, $this->artificerFieldsNamespace);
+            $typeClass = parent::getFieldTypeClass($type, $namespace);
         }
-        
+
         return $typeClass;
     }
 
