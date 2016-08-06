@@ -1,4 +1,4 @@
-<?php namespace Mascame\Artificer\Http\Controllers;
+<?php namespace Mascame\Artificer\Controllers;
 
 use App;
 use Mascame\Artificer\Options\AdminOption;

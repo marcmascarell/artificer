@@ -68,7 +68,7 @@ class ArtificerServiceProvider extends ServiceProvider {
      * @throws \Exception
      */
 	protected function manageCorePlugins() {
-	    // Avoid installing plugins when using cli
+	    // Avoid installing plugins when using CLI
         if (App::runningInConsole() || App::runningUnitTests()) return true;
 
         $pluginManager = Artificer::pluginManager();

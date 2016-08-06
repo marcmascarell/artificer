@@ -1,10 +1,8 @@
-<?php namespace Mascame\Artificer\Http\Controllers;
+<?php namespace Mascame\Artificer\Controllers;
 
-use App;
 use Auth;
 use Illuminate\Support\Facades\Input;
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Fields\FieldWrapper;
 use Mascame\Artificer\Model\Model;
 use View;
 use Illuminate\Routing\Controller as Controller;

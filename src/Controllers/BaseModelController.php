@@ -1,11 +1,9 @@
-<?php namespace Mascame\Artificer\Http\Controllers;
+<?php namespace Mascame\Artificer\Controllers;
 
 use App;
 use Auth;
 use File;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Routing\Redirector;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Input;
 use Mascame\Artificer\Fields\FieldFactory;

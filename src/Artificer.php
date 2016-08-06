@@ -1,11 +1,19 @@
 <?php namespace Mascame\Artificer;
 
 use \App;
-use Mascame\Artificer\Http\Controllers\BaseModelController;
+use Mascame\Artificer\Controllers\BaseModelController;
 use Mascame\Artificer\Model\Model;
 
 class Artificer
 {
+
+    protected static $coreExtensions = [
+        'mascame/login'
+    ];
+
+    public static function isCoreExtension($extension) {
+        return in_array($extension, self::$coreExtensions);
+    }
 
     /**
      * Returns the current user's action.

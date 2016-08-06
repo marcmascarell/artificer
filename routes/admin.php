@@ -1,8 +1,8 @@
 <?php
 
-use Mascame\Artificer\Http\Controllers\ModelController as ModelController;
-use Mascame\Artificer\Http\Controllers\PageController as PageController;
-use Mascame\Artificer\Http\Controllers\ExtensionController as ExtensionController;
+use Mascame\Artificer\Controllers\ModelController as ModelController;
+use Mascame\Artificer\Controllers\PageController as PageController;
+use Mascame\Artificer\Controllers\ExtensionController as ExtensionController;
 use Mascame\Artificer\Controllers\AuthController as AuthController;
 
 //$ret = event('test');

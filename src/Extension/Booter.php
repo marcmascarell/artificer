@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Str;
 use Mascame\Extender\Booter\BooterInterface;
-use Symfony\Component\CssSelector\XPath\Extension\AbstractExtension;
-use Symfony\Component\HttpFoundation\File\File;
 
 class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface {
 
