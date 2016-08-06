@@ -82,8 +82,8 @@ Route::group([
                 Route::get('{slug}/{id}', ModelController::class . '@show')->name('admin.model.show');
                 Route::get('{slug}/{id}/edit', ModelController::class . '@edit')->name('admin.model.edit');
                 Route::get('{slug}/{id}/edit/{field}', ModelController::class . '@field')->name('admin.model.field.edit');
-                Route::post('{slug}/store', ModelController::class . '@store')->name('admin.model.store');
-                Route::put('{slug}/{id}', ModelController::class . '@update')->name('admin.model.update');
+                Route::post('{slug}/store', ModelController::class . '@updateOrCreate')->name('admin.model.store');
+                Route::put('{slug}/{id}', ModelController::class . '@updateOrCreate')->name('admin.model.update');
                 Route::delete('{slug}/{id}', ModelController::class . '@destroy')->name('admin.model.destroy');
 
                 Route::get('{slug}/{id}/field/{name}', ModelController::class . '@getRelatedFieldOutput')->name('admin.model.field');

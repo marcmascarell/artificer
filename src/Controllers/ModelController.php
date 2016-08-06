@@ -1,13 +1,10 @@
 <?php namespace Mascame\Artificer\Controllers;
 
-use Event;
 use Input;
 use Mascame\Artificer\Options\AdminOption;
-use Mascame\Notify\Notify;
 use Redirect;
 use Request;
 use Response;
-use Session;
 use URL;
 use View;
 
@@ -56,37 +53,6 @@ class ModelController extends BaseModelController
             ->get();
 
         return parent::all($modelName, $data, $sort);
-    }
-
-    /**
-     * Todo: rethink the way relations are made
-     *
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        $data = $this->filterInputData();
-
-        $validator = $this->validator($data);
-
-        if ($validator->fails()) {
-            return $this->redirect($validator, 'admin.model.create');
-        }
-
-        $this->handleData($data);
-
-        $this->model->guard($this->modelObject->getGuarded());
-        $this->model->fillable($this->modelObject->getOption('fillable', []));
-
-        $item = $this->model->create(with($this->handleFiles($data)));
-
-        if (Request::ajax()) {
-            return $this->handleAjaxResponse($item);
-        }
-
-        return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
     }
 
     /**
@@ -162,24 +128,46 @@ class ModelController extends BaseModelController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update or create the specified resource in storage.
      *
      * @param  int $id
      * @return Response
      */
 
-    public function update($modelName, $id)
+    public function updateOrCreate($modelName, $id = null)
     {
-        $item = $this->model->findOrFail($id);
+        $isUpdating = $id;
+        $item = null;
+
+        if ($isUpdating) {
+            $item = $this->model->findOrFail($id);
+        }
 
         $data = $this->filterInputData();
 
         $validator = $this->validator($data);
+
         if ($validator->fails()) {
-            return $this->redirect($validator, 'admin.model.edit', $id);
+
+            if ($isUpdating) {
+                return $this->redirect($validator, 'admin.model.edit', $id);
+            } else {
+                return $this->redirect($validator, 'admin.model.create');
+            }
         }
 
-        $item->update(with($this->handleFiles($data)));
+        $this->model->guard($this->modelObject->getGuarded());
+        $this->model->fillable($this->modelObject->getOption('fillable', []));
+
+        //        $this->handleData($data);
+
+        $data = $this->handleFiles($data);
+
+        if ($isUpdating) {
+            $item->update($data);
+        } else {
+            $item = $this->model->create($data);
+        }
 
         if (Request::ajax()) {
             return $this->handleAjaxResponse($item);
@@ -197,27 +185,13 @@ class ModelController extends BaseModelController
      */
     public function destroy($modelName, $id)
     {
-        $event_info = array(
-            array(
-                "model" => $modelName,
-                "id" => $id
-            )
-        );
-
         if ($this->model->destroy($id)) {
-            // Todo
-//            Notify::success('<b>Success!</b> The record has been deleted!', true);
+            // Todo Notify::success('<b>Success!</b> The record has been deleted!', true);
         } else {
-            // Todo
-//            Notify::danger('<b>Failed!</b> The record could not be deleted!');
+            // Todo Notify::danger('<b>Failed!</b> The record could not be deleted!');
         }
 
-        if (Request::ajax()) {
-            // todo
-            return \Response::json(array());
-        }
-
-        return Redirect::back();
+        return Request::ajax() ? \Response::json([]) : Redirect::back();
     }
 
 }
