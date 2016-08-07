@@ -1,14 +1,8 @@
 <?php namespace Mascame\Artificer\Extension;
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Str;
-use Mascame\Artificer\Widgets\CKeditor;
-use Mascame\Artificer\Widgets\DateTimepicker;
 use Mascame\Extender\Booter\BooterInterface;
 use Mascame\Extender\Event\EventInterface;
 use Mascame\Extender\Installer\InstallerInterface;
-use Symfony\Component\CssSelector\XPath\Extension\AbstractExtension;
-use Symfony\Component\HttpFoundation\File\File;
 
 class Manager extends \Mascame\Extender\Manager {
 

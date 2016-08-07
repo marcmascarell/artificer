@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Extension;
 
 use Illuminate\Support\Str;
+use Mascame\Artificer\Artificer;
 use Mascame\Extender\Booter\BooterInterface;
 
 class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface {
@@ -26,6 +27,9 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
     protected function beforeBooting($instance, $name) {
         if (! $instance->namespace) $instance->namespace = $name;
         if (! $instance->name) $instance->name = $name;
+        if (property_exists($instance, 'assetsPath')) {
+            if (! $instance->assetsPath) $instance->assetsPath = 'packages/' . $instance->package . '/';
+        }
 
         if (! $instance->slug) {
             // For slug readability
@@ -50,18 +54,7 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
      * @param $instance
      */
     protected function addAssets($instance) {
-        $package = 'packages/' . $instance->package . '/';
-
-        $assets = $instance->assets();
-
-        $assets = array_map(function($asset) use ($package) {
-            return $package . $asset;
-        }, $assets);
-
-        \Assets::config([
-            // Reset those dirs to avoid wrong paths
-            'css_dir' => '',
-            'js_dir' => '',
-        ])->add($assets);
+        // Todo: only add assets by default if its a plugin (widgets will load only when necessary)
+//        $instance->assets(Artificer::assetManager());
     }
 }

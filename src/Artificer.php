@@ -81,6 +81,18 @@ class Artificer
         return config('admin.menu');
     }
 
+    /**
+     * @return \Stolz\Assets\Manager
+     */
+    public static function assetManager()
+    {
+        return \Assets::config([
+            // Reset those dirs to avoid wrong paths
+            'css_dir' => '',
+            'js_dir' => '',
+        ]);
+    }
+
     // Todo is it used anywhere?
 //    public static function store($filepath = null, $content, $overide = false)
 //    {

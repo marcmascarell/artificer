@@ -1,8 +1,6 @@
 <?php namespace Mascame\Artificer\Fields;
 
-use App;
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Widget\AbstractWidget;
 use Mascame\Formality\Field\FieldInterface;
 use Mascame\Formality\Field\TypeInterface;
 
@@ -10,7 +8,7 @@ class FieldWrapper
 {
     use Filterable;
 
-    public static $widgets = [];
+    protected $widgets = [];
 
     /**
      * Sometimes ajax limits output, setting this to true will return all
@@ -20,9 +18,14 @@ class FieldWrapper
     public $showFullField = false;
 
     /**
+     * @var bool
+     */
+    protected $withWidgets = false;
+
+    /**
      * @var FieldInterface|TypeInterface
      */
-    protected $field;
+    public $field;
 
     /**
      * Field constructor.
@@ -33,44 +36,27 @@ class FieldWrapper
     {
         $this->field = $field;
 
-        $this->boot();
+        $this->widgets = $this->getInstalledWidgets();
     }
 
     /**
-     * @param $widget
-     * @return bool
-     */
-    public function addWidget(AbstractWidget $widget)
-    {
-        if ( ! in_array($widget->name, self::$widgets)) {
-            self::$widgets[$widget->name] = $widget;
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Used to load custom assets, widgets, ...
+     * Only get widgets that are installed
      *
+     * @return array
      */
-    protected function boot()
+    protected function getInstalledWidgets()
     {
-        if ( ! $this->field->getOption('widgets')) {
-            return null;
-        }
-
-        $widgets = $this->field->getOption('widgets');
+        $installedWidgets = [];
+        $widgetManager = Artificer::widgetManager();
+        $widgets = $this->field->getOption('widgets', []);
 
         foreach ($widgets as $widget) {
-            try {
-                $this->addWidget(App::make($widget));
-            } catch (\Exception $e) {
-                throw new \Exception("Widget '{$widget}' was not found");
+            if ($widgetManager->isInstalled($widget)) {
+                $installedWidgets[] = $widget;
             }
         }
+
+        return $installedWidgets;
     }
 
     /**
@@ -97,15 +83,32 @@ class FieldWrapper
     {
         if ($this->isHidden()) return null;
 
-        return $this->field->output();
-    }
+        $field = $this;
 
-    public function withWidgets($output) {
-        foreach (self::$widgets as $widget) {
-            $output = $widget->field($output);
+        if ($this->withWidgets) {
+            $field = $this->applyWidgets();
         }
 
-        return $output;
+        return $field->field->output();
+    }
+
+    public function withWidgets() {
+        $this->withWidgets = true;
+
+        return $this;
+    }
+
+    protected function applyWidgets() {
+        $field = $this;
+
+        foreach ($this->widgets as $widget) {
+            $widget = Artificer::widgetManager()->get($widget);
+            $widget->assets(Artificer::assetManager());
+
+            $field = $widget->field($field);
+        }
+
+        return $field;
     }
 
     /**

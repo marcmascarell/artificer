@@ -1,12 +1,13 @@
 <?php namespace Mascame\Artificer\Widget;
 
+use Stolz\Assets\Manager;
 
 interface WidgetInterface
 {
     /**
      * @return mixed
      */
-    public function assets();
+    public function assets(Manager $manager);
 
     /**
      * @return mixed

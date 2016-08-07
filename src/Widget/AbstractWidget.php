@@ -1,20 +1,22 @@
 <?php namespace Mascame\Artificer\Widget;
 
 use Mascame\Artificer\Extension\AbstractExtension;
+use Stolz\Assets\Manager as AssetsManager;
 
 abstract class AbstractWidget extends AbstractExtension implements WidgetInterface
 {
 
+    public $assetsPath = null;
+
     /**
-     * Will output the assets when the extension is installed directly to the vendor
+     * Plugins: Will output the assets when the extension is installed directly to the vendor
+     * Widgets: Will output the assets when necessary
      *
-     * /packages/namespace/package-name/ will be prepended automatically
-     *
-     * Example: ['css/my-style.css']
+     * Example: [ $this->assetsPath . 'css/my-style.css' ]
      *
      * @return array
      */
-    public function assets()
+    public function assets(AssetsManager $manager)
     {
         return [];
     }
