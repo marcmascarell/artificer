@@ -92,8 +92,7 @@ return [
             ],
 
             "attributes" => [
-                'class' => 'form-control datetimepicker',
-                'data-date-format' => 'YYYY-MM-DD HH:mm:ss',
+                'class' => 'form-control',
             ],
 
             'widgets' => [
@@ -108,8 +107,7 @@ return [
             ],
 
             "attributes" => [
-                'class' => 'form-control datepicker',
-                'data-date-format' => 'YYYY-MM-DD HH:mm:s',
+                'class' => 'form-control',
             ],
 
             'widgets' => [
