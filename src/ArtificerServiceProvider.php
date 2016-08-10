@@ -170,6 +170,14 @@ class ArtificerServiceProvider extends ServiceProvider {
                 new Event(app('events'))
             );
 		});
+
+        App::singleton('ArtificerAssetManager', function() {
+            return \Assets::config([
+                // Reset those dirs to avoid wrong paths
+                'css_dir' => '',
+                'js_dir' => '',
+            ]);
+        });
 	}
 
 	/**

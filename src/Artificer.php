@@ -61,8 +61,12 @@ class Artificer
         return App::make('ArtificerWidgetManager');
     }
 
-    protected static function buildStyles($styles) {
-
+    /**
+     * @return \Stolz\Assets\Manager
+     */
+    public static function assetManager()
+    {
+        return App::make('ArtificerAssetManager');
     }
 
     public static function getCurrentModelId($items)
@@ -79,18 +83,6 @@ class Artificer
     protected static function getMenu()
     {
         return config('admin.menu');
-    }
-
-    /**
-     * @return \Stolz\Assets\Manager
-     */
-    public static function assetManager()
-    {
-        return \Assets::config([
-            // Reset those dirs to avoid wrong paths
-            'css_dir' => '',
-            'js_dir' => '',
-        ]);
     }
 
     // Todo is it used anywhere?
