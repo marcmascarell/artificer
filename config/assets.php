@@ -4,7 +4,9 @@ return [
 
 	'collections' => [
         // jQuery (CDN)
-        'jquery-cdn' => ['//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'],
+        'jquery-cdn' => [
+            '//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'
+        ],
 
         // Twitter Bootstrap (CDN)
         'bootstrap-cdn' => [

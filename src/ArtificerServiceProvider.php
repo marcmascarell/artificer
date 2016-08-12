@@ -59,6 +59,8 @@ class ArtificerServiceProvider extends ServiceProvider {
 
         $this->manageCorePlugins();
 
+        Artificer::assetManager()->add(config('admin.assets', []));
+
         $this->requireFiles();
 	}
 
@@ -135,13 +137,6 @@ class ArtificerServiceProvider extends ServiceProvider {
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', $this->name);
     }
 
-	private function addModel()
-	{
-		App::singleton('ArtificerModel', function () {
-			return new Model(new ModelSchema(new ModelObtainer()));
-		});
-	}
-
 	private function addLocalization()
 	{
 		App::singleton('ArtificerLocalization', function () {
@@ -151,6 +146,10 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 	private function addManagers()
 	{
+        App::singleton('ArtificerModel', function () {
+            return new Model(new ModelSchema(new ModelObtainer()));
+        });
+
 		App::singleton('ArtificerWidgetManager', function() {
             $widgetsConfig = $this->getConfigPath() . 'extensions/widgets.php';
 
@@ -172,11 +171,11 @@ class ArtificerServiceProvider extends ServiceProvider {
 		});
 
         App::singleton('ArtificerAssetManager', function() {
-            return \Assets::config([
+            return \Assets::config(array_merge([
                 // Reset those dirs to avoid wrong paths
                 'css_dir' => '',
                 'js_dir' => '',
-            ]);
+            ], config('admin.assets')));
         });
 	}
 
@@ -199,8 +198,8 @@ class ArtificerServiceProvider extends ServiceProvider {
 		if ($this->isPublished()) {
 			$this->loadConfig();
 
-			$this->addModel();
-			$this->addLocalization();
+            // Todo
+//			$this->addLocalization();
 			$this->addManagers();
 		}
 	}
