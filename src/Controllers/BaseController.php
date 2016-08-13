@@ -1,7 +1,7 @@
 <?php namespace Mascame\Artificer\Controllers;
 
+use Request;
 use Auth;
-use Illuminate\Support\Facades\Input;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Model\ModelManager;
 use View;
@@ -66,7 +66,7 @@ class BaseController extends Controller
      */
     public function isStandAlone()
     {
-        return (\Request::ajax() || Input::has('_standalone'));
+        return (Request::ajax() || Request::has('_standalone'));
     }
 
     /**

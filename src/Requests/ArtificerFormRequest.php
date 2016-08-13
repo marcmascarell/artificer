@@ -112,4 +112,65 @@ class ArtificerFormRequest extends FormRequest
         // Todo
 //        $data = $this->handleFiles($data);
     }
+
+    // Todo: Handle files
+
+    /**
+     * @param $data
+     * @return array
+     */
+//    protected function handleFiles($data)
+//    {
+//        $newData = [];
+//        $fields = $this->getFields($data);
+//
+//        if (!is_null($fields)) {
+//            foreach ($fields as $field) {
+//                if ($this->isFileInput($field->type)) {
+//                    if (Input::hasFile($field->name)) {
+//                        $newData[$field->name] = $this->uploadFile($field->name);
+//                    } else {
+//                        unset($data[$field->name]);
+//                    }
+//                }
+//            }
+//        }
+//
+//        return array_merge($data, $newData);
+//    }
+//
+//    /**
+//     * @param $type
+//     * @return bool
+//     */
+//    protected function isFileInput($type)
+//    {
+//        return ($type == 'file' || $type == 'image');
+//    }
+//
+//    /**
+//     * This is used for simple upload (no plugins)
+//     *
+//     * @param $fieldName
+//     * @param null $path
+//     * @return string
+//     */
+//    protected function uploadFile($fieldName, $path = null)
+//    {
+//        if (!$path) {
+//            $path = public_path() . '/uploads/';
+//        }
+//
+//        $file = Input::file($fieldName);
+//
+//        if (!file_exists($path)) {
+//            File::makeDirectory($path);
+//        }
+//
+//        $name = uniqid() . '-' . Str::slug($file->getFilename()) . '.' . $file->guessExtension();
+//
+//        $file->move($path, $name);
+//
+//        return $name;
+//    }
 }
