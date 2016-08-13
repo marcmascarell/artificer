@@ -2,7 +2,7 @@
 
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Fields\Types\Relations\Relation;
-use Mascame\Artificer\Model\Model;
+use Mascame\Artificer\Model\ModelManager;
 use \Illuminate\Support\Str as Str;
 use Mascame\Artificer\Fields\FieldWrapper;
 use Mascame\Formality\Field\Field;
@@ -16,7 +16,7 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
     public $custom_fields = null;
 
     /**
-     * @var Model
+     * @var ModelManager
      */
     public $modelObject;
     public $defaultOptions;

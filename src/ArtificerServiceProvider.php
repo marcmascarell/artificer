@@ -4,7 +4,7 @@ use App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Mascame\Artificer\Extension\Booter;
-use Mascame\Artificer\Model\Model;
+use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
 use Mascame\Artificer\Widget\Manager as WidgetManager;
@@ -146,8 +146,8 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 	private function addManagers()
 	{
-        App::singleton('ArtificerModel', function () {
-            return new Model(new ModelSchema(new ModelObtainer()));
+        App::singleton('ArtificerModelManager', function () {
+            return new ModelManager(new ModelSchema(new ModelObtainer()));
         });
 
 		App::singleton('ArtificerWidgetManager', function() {

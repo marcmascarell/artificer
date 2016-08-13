@@ -19,7 +19,7 @@ class ModelRelation
     {
         if (! empty($this->relations)) return $this->relations;
 
-        $fields = Artificer::getModel()->getOption('fields', []);
+        $fields = Artificer::getModelManager()->getOption('fields', []);
 
         if (empty($fields)) return [];
 

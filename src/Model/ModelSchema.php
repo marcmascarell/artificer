@@ -59,7 +59,7 @@ class ModelSchema
      */
     public function getTable($modelName)
     {
-        if ( ! $modelName) $modelName = Model::getCurrent()->name;
+        if ( ! $modelName) $modelName = ModelManager::getCurrent()->name;
 
         if (isset($this->models[$modelName]['table'])) {
             return $this->models[$modelName]['table'];
@@ -131,7 +131,7 @@ class ModelSchema
      */
     public function getInstance($modelName = null)
     {
-        ($modelName) ?: $modelName = Model::getCurrent();
+        ($modelName) ?: $modelName = ModelManager::getCurrent();
 
         if ($this->hasInstance($modelName)) {
             return $this->models[$modelName]['instance'];

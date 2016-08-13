@@ -2,7 +2,7 @@
 
 use App;
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Model\Model;
+use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Options\AdminOption;
 
 class ModelPermit extends Permit
@@ -14,9 +14,9 @@ class ModelPermit extends Permit
     {
         return true;
 
-        if (! $model) $model = Model::getCurrent()->name;
+        if (! $model) $model = ModelManager::getCurrent()->name;
 
-        $modelPermissions = Artificer::getModel()->getOption('permissions', [], $model);
+        $modelPermissions = Artificer::getModelManager()->getOption('permissions', [], $model);
 
         return self::hasPermission($modelPermissions);
     }
@@ -24,9 +24,9 @@ class ModelPermit extends Permit
     public static function to($action)
     {
         return true;
-        $model = Model::getCurrent()->name;
+        $model = ModelManager::getCurrent()->name;
 
-        $modelPermissions = Artificer::getModel()->getOption('action_permissions.' . $action, [], $model);
+        $modelPermissions = Artificer::getModelManager()->getOption('action_permissions.' . $action, [], $model);
 
         return self::hasPermission($modelPermissions);
     }

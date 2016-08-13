@@ -3,7 +3,7 @@
 use Auth;
 use Illuminate\Support\Facades\Input;
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Model\Model;
+use Mascame\Artificer\Model\ModelManager;
 use View;
 use Illuminate\Routing\Controller as Controller;
 use Mascame\Artificer\Options\AdminOption;
@@ -26,7 +26,7 @@ class BaseController extends Controller
     protected $master_layout = null;
 
     /**
-     * @var Model
+     * @var ModelManager
      */
     public $modelObject = null;
 
@@ -39,7 +39,7 @@ class BaseController extends Controller
         if (! Auth::guard('admin')->guest()) {
             $this->options = AdminOption::all();
 
-            $this->modelObject = Artificer::getModel();
+            $this->modelObject = Artificer::getModelManager();
 
             if ($this->isStandAlone()) {
                 $this->master_layout = 'standalone';

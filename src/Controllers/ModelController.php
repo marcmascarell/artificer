@@ -1,7 +1,9 @@
 <?php namespace Mascame\Artificer\Controllers;
 
 use Input;
+use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Options\AdminOption;
+use Mascame\Artificer\Requests\ArtificerFormRequest;
 use Redirect;
 use Request;
 use Response;
@@ -134,43 +136,14 @@ class ModelController extends BaseModelController
      * @return Response
      */
 
-    public function updateOrCreate($modelName, $id = null)
+    public function updateOrCreate(ArtificerFormRequest $request)
     {
-        $isUpdating = $id;
-        $item = null;
+        $request->persist();
 
-        if ($isUpdating) {
-            $item = $this->model->findOrFail($id);
-        }
-
-        $data = $this->filterInputData();
-
-        $validator = $this->validate($data);
-
-        if ($validator->fails()) {
-            if ($isUpdating) {
-                return $this->redirect($validator, 'admin.model.edit', $id);
-            } else {
-                return $this->redirect($validator, 'admin.model.create');
-            }
-        }
-
-        $this->model->guard($this->modelObject->getGuarded());
-        $this->model->fillable($this->modelObject->getOption('fillable', []));
-
-        //        $this->handleData($data);
-
-        $data = $this->handleFiles($data);
-
-        if ($isUpdating) {
-            $item->update($data);
-        } else {
-            $item = $this->model->create($data);
-        }
-
-        if (Request::ajax()) {
-            return $this->handleAjaxResponse($item);
-        }
+        // Todo
+        //if (Request::ajax()) {
+        //    return $this->handleAjaxResponse($model);
+        //}
 
         return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
     }

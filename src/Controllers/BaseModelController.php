@@ -6,6 +6,7 @@ use File;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Input;
+use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Fields\FieldFactory;
 use Mascame\Formality\Parser\Parser;
 use Mascame\Artificer\Permit\ModelPermit;
@@ -129,22 +130,6 @@ class BaseModelController extends BaseController
     }
 
     /**
-     * @return array
-     */
-    protected function getRules()
-    {
-        if (isset($this->options['rules'])) {
-            return $this->options['rules'];
-        } else {
-            if (isset($this->model->rules)) {
-                return $this->model->rules;
-            }
-        }
-
-        return array();
-    }
-
-    /**
      * @param $items
      * @return null
      */
@@ -153,29 +138,6 @@ class BaseModelController extends BaseController
         return (isset($items->id)) ? $items->id : null;
     }
 
-    /**
-     *
-     *
-     * @return array|mixed
-     */
-    protected function filterInputData()
-    {
-        $input = Input::all();
-
-        if ($this->modelObject->hasGuarded()) {
-            $filteredInput = [];
-
-            foreach ($input as $key => $value) {
-                if (in_array($key, $this->modelObject->columns)) {
-                    $filteredInput[$key] = $value;
-                }
-            }
-
-            return $this->except($this->modelObject->getGuarded(), $filteredInput);
-        }
-
-        return $input;
-    }
 
     /**
      * @param $keys
@@ -304,14 +266,6 @@ class BaseModelController extends BaseController
         return Redirect::back()->withErrors($validator)->withInput();
     }
 
-    /**
-     * @param $data
-     * @return \Illuminate\Validation\Validator
-     */
-    protected function validate($data)
-    {
-        return Validator::make($data, ['name' => 'required']);
-    }
 
     /**
      * @param $modelName

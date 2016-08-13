@@ -2,7 +2,7 @@
 
 use Mascame\Artificer\Fields\GuessableRelation;
 use Mascame\Artificer\Fields\Relationable;
-use Mascame\Artificer\Model\Model;
+use Mascame\Artificer\Model\ModelManager;
 use Mascame\Formality\Field\Field;
 use Route;
 use URL;
@@ -12,14 +12,14 @@ class Relation extends Field
     use Relationable, GuessableRelation;
 
     /**
-     * @var Model;
+     * @var ModelManager;
      */
     public $modelObject;
 
     public $relation = true;
 
     /**
-     * @var Model;
+     * @var ModelManager;
      */
     public $model;
     public $fields;
@@ -111,11 +111,11 @@ class Relation extends Field
                         //                    $form.attr('action', url);
                         //                    $form.attr('method', 'POST');
                         $form.prepend('<input type="hidden" name="_standalone" value="<?=$relatedModelRouteName?>">');
-                        $form.prepend('<input type="hidden" name="_standalone_origin" value="<?=$this->modelObject->getRouteName(Model::$current)?>">');
+                        $form.prepend('<input type="hidden" name="_standalone_origin" value="<?=$this->modelObject->getRouteName(ModelManager::$current)?>">');
                         $form.prepend('<input type="hidden" name="_standalone_origin_id" value="<?=$id?>">');
 
                         <?php if (Route::currentRouteName() == 'admin.model.create') { ?>
-                        $form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=Model::getCurrent()?>">');
+                        $form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=ModelManager::getCurrent()?>">');
                         $form.prepend('<input type="hidden" name="_set_relation_on_create_foreign" value="<?=$this->relation->getForeignKey()?>">');
                         <?php } ?>
 

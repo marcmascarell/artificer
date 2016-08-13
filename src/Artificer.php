@@ -2,7 +2,7 @@
 
 use \App;
 use Mascame\Artificer\Controllers\BaseModelController;
-use Mascame\Artificer\Model\Model;
+use Mascame\Artificer\Model\ModelManager;
 
 class Artificer
 {
@@ -38,11 +38,11 @@ class Artificer
     }
 
     /**
-     * @return Model
+     * @return ModelManager
      */
-    public static function getModel()
+    public static function getModelManager()
     {
-        return App::make('ArtificerModel');
+        return App::make('ArtificerModelManager');
     }
 
     /**

@@ -7,7 +7,7 @@ use \Illuminate\Support\Str as Str;
 use Mascame\Artificer\Options\AdminOption;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
-class Model
+class ModelManager
 {
 
     /**
@@ -152,7 +152,13 @@ class Model
      */
     public function getFillable()
     {
-        return $this->getOption('fillable', $this->model->getFillable());
+        $fillable = $this->getOption('fillable', $this->model->getFillable());
+
+        if ($fillable == ['*']) {
+            $fillable = array_diff($this->columns, $this->getGuarded());
+        }
+
+        return $fillable;
     }
 
     /**
@@ -246,7 +252,7 @@ class Model
     }
 
     /**
-     * @return Model
+     * @return ModelManager
      */
     public static function getCurrent()
     {

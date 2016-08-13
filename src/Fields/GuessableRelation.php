@@ -6,7 +6,7 @@ use Mascame\Artificer\Artificer;
 trait GuessableRelation
 {
     protected function modelHasMethod($method) {
-        return method_exists(Artificer::getModel()->model, $method);
+        return method_exists(Artificer::getModelManager()->model, $method);
     }
 
     public function guessRelatedMethod() {
@@ -17,7 +17,7 @@ trait GuessableRelation
         $method = $this->guessRelatedMethod();
         $modelName = Str::studly($method);
 
-        if ($method && isset(Artificer::getModel()->models[$modelName])) {
+        if ($method && isset(Artificer::getModelManager()->models[$modelName])) {
             return $modelName;
         }
 

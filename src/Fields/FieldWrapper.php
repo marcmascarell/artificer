@@ -92,6 +92,16 @@ class FieldWrapper
         return $field->field->output();
     }
 
+    public function protectGuarded() {
+        if (! $this->isFillable()) {
+            $this->field->setOptions([
+                'attributes' => array_merge($this->field->getAttributes(), ['disabled' => 'disabled'])
+            ]);
+        }
+
+        return $this;
+    }
+
     public function withWidgets() {
         $this->withWidgets = true;
 
@@ -128,7 +138,7 @@ class FieldWrapper
     {
         if (! $action) $action = Artificer::getCurrentAction();
 
-        $listOptions = Artificer::getModel()->getOption($action);
+        $listOptions = Artificer::getModelManager()->getOption($action);
 
         if (! $listOptions || ! isset($listOptions[$visibility])) return false;
 
@@ -190,5 +200,11 @@ class FieldWrapper
         }
 
         return $this->field->$method($args);
+    }
+
+    public function isFillable() {
+        $fillable = Artificer::getModelManager()->getFillable();
+
+        return $this->isAll($fillable) || in_array($this->field->getName(), $fillable);
     }
 }
