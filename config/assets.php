@@ -4,7 +4,7 @@ return [
 
     'collections' => [
         // jQuery (CDN)
-        'jquery-cdn' => ['//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'],
+        'jquery-cdn' => ['//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'],
     ],
 
     'assets' => [
