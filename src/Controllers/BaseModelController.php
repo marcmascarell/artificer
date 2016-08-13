@@ -308,9 +308,9 @@ class BaseModelController extends BaseController
      * @param $data
      * @return \Illuminate\Validation\Validator
      */
-    protected function validator($data)
+    protected function validate($data)
     {
-        return Validator::make($data, $this->getRules());
+        return Validator::make($data, ['name' => 'required']);
     }
 
     /**

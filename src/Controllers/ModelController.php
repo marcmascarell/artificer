@@ -145,10 +145,9 @@ class ModelController extends BaseModelController
 
         $data = $this->filterInputData();
 
-        $validator = $this->validator($data);
+        $validator = $this->validate($data);
 
         if ($validator->fails()) {
-
             if ($isUpdating) {
                 return $this->redirect($validator, 'admin.model.edit', $id);
             } else {
