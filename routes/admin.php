@@ -5,6 +5,7 @@ use Mascame\Artificer\Controllers\HomeController as HomeController;
 use Mascame\Artificer\Controllers\InstallController as InstallController;
 use Mascame\Artificer\Controllers\ExtensionController as ExtensionController;
 use Mascame\Artificer\Controllers\AuthController as AuthController;
+use Mascame\Artificer\Controllers\PasswordController as PasswordController;
 
 /*
  * Events to inject plugins wont work because routes are loaded before plugins
@@ -45,9 +46,19 @@ Route::group([
     function () {
 
         Route::group(['prefix' => 'user'], function () {
+            // Authentication Routes...
             Route::get('login', AuthController::class . '@showLoginForm')->name('admin.showlogin');
             Route::post('login', AuthController::class . '@login')->name('admin.login');
             Route::get('logout', AuthController::class . '@logout')->name('admin.logout');
+
+            // Registration Routes...
+            Route::get('register', AuthController::class . '@showRegistrationForm')->name('admin.showregister');
+            Route::post('register', AuthController::class . '@register')->name('admin.register');
+
+            // Password Reset Routes...
+            Route::get('password/reset/{token?}', PasswordController::class . '@showResetForm')->name('admin.password.reset.show');
+            Route::post('password/email', PasswordController::class . '@sendResetLinkEmail')->name('admin.password.reset.email');
+            Route::post('password/reset', PasswordController::class . '@reset')->name('admin.password.reset');
         });
 
         Route::group([

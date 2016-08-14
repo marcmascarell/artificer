@@ -1,5 +1,9 @@
 <?php namespace Mascame\Artificer\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesResources;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Request;
 use Auth;
 use Mascame\Artificer\Artificer;
@@ -13,6 +17,7 @@ use Mascame\Artificer\Permit;
 
 class BaseController extends Controller
 {
+    use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 
     public $fields;
     public $data;
