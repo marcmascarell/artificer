@@ -1,7 +1,8 @@
 <?php
 
 use Mascame\Artificer\Controllers\ModelController as ModelController;
-use Mascame\Artificer\Controllers\PageController as PageController;
+use Mascame\Artificer\Controllers\HomeController as HomeController;
+use Mascame\Artificer\Controllers\InstallController as InstallController;
 use Mascame\Artificer\Controllers\ExtensionController as ExtensionController;
 use Mascame\Artificer\Controllers\AuthController as AuthController;
 
@@ -31,7 +32,7 @@ Route::group([
 ],
     function () {
         Route::group(['prefix' => \Mascame\Artificer\Options\AdminOption::get('routePrefix')], function () {
-            Route::get('install', PageController::class . '@install')->name('admin.install');
+            Route::get('install', InstallController::class . '@install')->name('admin.install');
         });
     }
 );
@@ -63,7 +64,7 @@ Route::group([
             'middleware' => ['artificer-auth']
         ], function () {
 
-            Route::get('/', ['as' => 'admin.home', 'uses' => PageController::class . '@home']);
+            Route::get('/', ['as' => 'admin.home', 'uses' => HomeController::class . '@home']);
 
             Route::get('extensions', ExtensionController::class . '@extensions')->name('admin.extensions');
 
