@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Extension;
 
 use Mascame\Artificer\Options\PluginOption;
+use Stolz\Assets\Manager as AssetsManager;
 
 abstract class AbstractExtension
 {
@@ -84,5 +85,19 @@ abstract class AbstractExtension
     {
         return $this->getManager()->isInstalled($this->namespace);
     }
+
+    /**
+     * Plugins: Will output the assets when the extension is installed directly to the vendor
+     * Widgets: Will output the assets when necessary
+     *
+     * Example: [ $this->assetsPath . 'css/my-style.css' ]
+     *
+     * @return array
+     */
+    public function assets(AssetsManager $manager)
+    {
+        return [];
+    }
+
 
 }
