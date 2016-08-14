@@ -7,10 +7,6 @@ use Mascame\Artificer\Controllers\ExtensionController as ExtensionController;
 use Mascame\Artificer\Controllers\AuthController as AuthController;
 use Mascame\Artificer\Controllers\PasswordController as PasswordController;
 
-/*
- * Events to inject plugins wont work because routes are loaded before plugins
- */
-
 Route::pattern('new_id', '\d+');
 Route::pattern('old_id', '\d+');
 Route::pattern('id', '\d+');
@@ -61,24 +57,13 @@ Route::group([
             Route::post('password/reset', PasswordController::class . '@reset')->name('admin.password.reset');
         });
 
-        Route::group([
-            'middleware' => ['artificer-auth']
-        ], function () {
-            Route::get('test', function() {
-                die('yes');
-            });
-        });
-
-        Route::group([
-            'middleware' => ['artificer-auth']
-        ], function () {
+        Route::group(['middleware' => ['artificer-auth']], function () {
 
             Route::get('/', ['as' => 'admin.home', 'uses' => HomeController::class . '@home']);
 
             Route::get('extensions', ExtensionController::class . '@extensions')->name('admin.extensions');
 
             foreach (['plugins', 'widgets'] as $extensionType) {
-
                 Route::group(['prefix' => $extensionType], function () use ($extensionType) {
                     Route::get('{slug}/install', ExtensionController::class . '@install')->name('admin.'. $extensionType .'.install');
                     Route::get('{slug}/uninstall', ExtensionController::class . '@uninstall')->name('admin.'. $extensionType .'.uninstall');
@@ -98,7 +83,7 @@ Route::group([
 
                 Route::get('{slug}/{id}/field/{name}', ModelController::class . '@getRelatedFieldOutput')->name('admin.model.field');
 
-                Event::fire('artificer.routes.model');
+//                Event::fire('artificer.routes.model');
 
 //                Route::post('{slug}/{id}/upload', [
 //                    'as' => 'admin.model.upload',
