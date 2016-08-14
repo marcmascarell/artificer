@@ -6,8 +6,6 @@ use Mascame\Artificer\Controllers\InstallController as InstallController;
 use Mascame\Artificer\Controllers\ExtensionController as ExtensionController;
 use Mascame\Artificer\Controllers\AuthController as AuthController;
 
-//$ret = event('test');
-//dd($ret);
 /*
  * Events to inject plugins wont work because routes are loaded before plugins
  */
