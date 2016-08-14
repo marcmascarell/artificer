@@ -187,24 +187,48 @@ class FieldWrapper
     public function __get($name) {
         $accessor = 'get' . studly_case($name);
 
-        if (! method_exists($this->field, $accessor)) {
-            return null;
-        }
-
-        return $this->field->$accessor();
+        return $this->useFieldMethod($accessor);
     }
 
-    public function __call($method, $args) {
+    protected function useFieldMethod($method, $args = []) {
         if (! method_exists($this->field, $method)) {
             return null;
         }
 
-        return $this->field->$method($args);
+        return (empty($args)) ? $this->field->$method() : $this->field->$method($args);
+    }
+
+    public function __call($method, $args) {
+        return $this->useFieldMethod($method, $args);
     }
 
     public function isFillable() {
         $fillable = Artificer::getModelManager()->getFillable();
 
         return $this->isAll($fillable) || in_array($this->field->getName(), $fillable);
+    }
+
+    /**
+     * @param array|string $classes
+     */
+    protected function mergeClassAttribute($class) {
+        if (! is_array($class)) $class = [$class];
+
+        $attributes = $this->field->getAttributes();
+        $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : [];
+
+        return join(' ', array_merge($classes, $class));
+    }
+
+    /**
+     * @param string $attribute
+     * @param array|string $value
+     */
+    public function addAttribute($attribute, $value) {
+        if ($attribute == 'class') {
+            $value = $this->mergeClassAttribute($value);
+        }
+
+        $this->field->setOptions(['attributes' => [$attribute => $value]]);
     }
 }
