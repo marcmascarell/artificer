@@ -12,6 +12,7 @@ class hasOne extends Relation
 
     public function guessRelatedMethod() {
         // case 'model_id'
+
         $method = str_replace('_id', '', $this->name);
 
         if ($this->modelHasMethod($method)) return $method;
@@ -48,8 +49,8 @@ class hasOne extends Relation
             $select[$d['id']] = $value;
         }
 
-        if (Input::has($this->name)) {
-            $this->id = Input::get($this->name);
+        if (Request::has($this->name)) {
+            $this->id = Request::get($this->name);
         } else {
             if (isset($this->value->id)) {
                 $this->id = $this->value->id;
@@ -58,7 +59,7 @@ class hasOne extends Relation
             }
         }
 
-        print Form::select($this->name, array('0' => Request::ajax() ? '(current)' : '(none)') + $select, $this->id,
+        print \Form::select($this->name, array('0' => Request::ajax() ? '(current)' : '(none)') + $select, $this->id,
             $this->attributes);
     }
 
@@ -88,7 +89,7 @@ class hasOne extends Relation
             </div>
             <?php
 
-            $this->relationModal($this->relatedModel['route'], $this->id);
+//            $this->relationModal($this->relatedModel['route'], $this->id);
         }
     }
 

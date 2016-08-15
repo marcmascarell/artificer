@@ -40,7 +40,7 @@ class Artificer
     /**
      * @return ModelManager
      */
-    public static function getModelManager()
+    public static function modelManager()
     {
         return App::make('ArtificerModelManager');
     }

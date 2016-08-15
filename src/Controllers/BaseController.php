@@ -44,7 +44,7 @@ class BaseController extends Controller
         if (! Auth::guard('admin')->guest()) {
             $this->options = AdminOption::all();
 
-            $this->modelObject = Artificer::getModelManager();
+            $this->modelObject = Artificer::modelManager();
 
             if ($this->isStandAlone()) {
                 $this->master_layout = 'standalone';

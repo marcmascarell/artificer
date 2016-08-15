@@ -43,7 +43,7 @@ class ArtificerFormRequest extends FormRequest
      * Init the needed properties
      */
     protected function init() {
-        $this->modelManager = Artificer::getModelManager();
+        $this->modelManager = Artificer::modelManager();
         $this->model = $this->modelManager->model;
         $this->isUpdating = (bool)($this->route('id'));
     }

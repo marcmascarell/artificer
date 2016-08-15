@@ -138,7 +138,7 @@ class FieldWrapper
     {
         if (! $action) $action = Artificer::getCurrentAction();
 
-        $listOptions = Artificer::getModelManager()->getOption($action);
+        $listOptions = Artificer::modelManager()->getOption($action);
 
         if (! $listOptions || ! isset($listOptions[$visibility])) return false;
 
@@ -203,7 +203,7 @@ class FieldWrapper
     }
 
     public function isFillable() {
-        $fillable = Artificer::getModelManager()->getFillable();
+        $fillable = Artificer::modelManager()->getFillable();
 
         return $this->isAll($fillable) || in_array($this->field->getName(), $fillable);
     }

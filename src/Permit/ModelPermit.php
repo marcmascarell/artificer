@@ -16,7 +16,7 @@ class ModelPermit extends Permit
 
         if (! $model) $model = ModelManager::getCurrent()->name;
 
-        $modelPermissions = Artificer::getModelManager()->getOption('permissions', [], $model);
+        $modelPermissions = Artificer::modelManager()->getOption('permissions', [], $model);
 
         return self::hasPermission($modelPermissions);
     }
@@ -26,7 +26,7 @@ class ModelPermit extends Permit
         return true;
         $model = ModelManager::getCurrent()->name;
 
-        $modelPermissions = Artificer::getModelManager()->getOption('action_permissions.' . $action, [], $model);
+        $modelPermissions = Artificer::modelManager()->getOption('action_permissions.' . $action, [], $model);
 
         return self::hasPermission($modelPermissions);
     }
