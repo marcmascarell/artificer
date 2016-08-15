@@ -40,11 +40,10 @@ class BaseController extends Controller
     {
         $this->theme = AdminOption::get('theme') . '::';
         $this->master_layout = 'base';
+        $this->modelObject = Artificer::modelManager();
 
         if (! Auth::guard('admin')->guest()) {
             $this->options = AdminOption::all();
-
-            $this->modelObject = Artificer::modelManager();
 
             if ($this->isStandAlone()) {
                 $this->master_layout = 'standalone';

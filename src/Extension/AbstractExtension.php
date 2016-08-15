@@ -76,7 +76,7 @@ abstract class AbstractExtension
     /**
      * @return Manager
      */
-    abstract function getManager();
+    abstract protected function getManager();
 
     /**
      * @return bool

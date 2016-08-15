@@ -1,11 +1,25 @@
 <?php namespace Mascame\Artificer\Fields;
 
 use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\Input;
+use Mascame\Formality\Field\Field;
 
 trait Filterable
 {
+
+    /**
+     * @var bool
+     */
     public $filterable = true;
+
+    /**
+     * @var null
+     */
+    public $name = null;
+
+    /**
+     * @var Field
+     */
+    public $field;
 
     /**
      * @param $query Builder
@@ -22,7 +36,7 @@ trait Filterable
     }
 
     /**
-     * @return bool
+     * @return mixed
      */
     public function displayFilter()
     {
