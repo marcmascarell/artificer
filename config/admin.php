@@ -4,11 +4,26 @@ return [
 
 	'title' => 'Artificer',
 	
-	'routePrefix' => 'admin',
+	'route_prefix' => 'admin',
 
 	'theme' => 'artificer-default-theme',
 
-	'vendorPath' => base_path('vendor'),
+	'vendor_path' => base_path('vendor'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Extension driver
+    |--------------------------------------------------------------------------
+    |
+    | System used to store the extension status.
+    | Keep in mind that existent extensions in your system are already
+    | pulled in, but have an installed/uninstalled status.
+    |
+    | Supported: "file"
+    |
+    */
+
+    'extension_driver' => 'file',
 
 	/*
     |--------------------------------------------------------------------------
@@ -27,7 +42,8 @@ return [
 	'aliases' => [
 		'HTML' => \Collective\Html\HtmlFacade::class,
 		'Form' => \Collective\Html\FormFacade::class,
-	],
+        'Assets' => \Stolz\Assets\Laravel\Facade::class,
+    ],
 
 	'commands' => [
 		Mascame\Artificer\Commands\ModalConfigGenerator::class

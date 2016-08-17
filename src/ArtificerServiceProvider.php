@@ -144,6 +144,14 @@ class ArtificerServiceProvider extends ServiceProvider {
 		});
 	}
 
+	private function getExtensionInstaller($type) {
+        if (config('admin.extension_driver') == 'file') {
+            $extensionConfig = $this->getConfigPath() . 'extensions/'. $type .'.php';
+
+            return new FileInstaller(new FileWriter(), $extensionConfig);
+        }
+    }
+
 	private function addManagers()
 	{
         App::singleton('ArtificerModelManager', function () {
@@ -151,20 +159,16 @@ class ArtificerServiceProvider extends ServiceProvider {
         });
 
 		App::singleton('ArtificerWidgetManager', function() {
-            $widgetsConfig = $this->getConfigPath() . 'extensions/widgets.php';
-
             return new WidgetManager(
-                new FileInstaller(new FileWriter(), $widgetsConfig),
+                $this->getExtensionInstaller('widgets'),
                 new Booter(),
                 new Event(app('events'))
             );
         });
 
 		App::singleton('ArtificerPluginManager', function() {
-            $pluginsConfig = $this->getConfigPath() . 'extensions/plugins.php';
-
             return new PluginManager(
-                new FileInstaller(new FileWriter(), $pluginsConfig),
+                $this->getExtensionInstaller('plugins'),
                 new \Mascame\Artificer\Plugin\Booter(),
                 new Event(app('events'))
             );
@@ -187,7 +191,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		// We still haven't modified config, that's why 'admin.admin'
-		$routePrefix = config('admin.admin.routePrefix');
+		$routePrefix = config('admin.admin.route_prefix');
 
 		// Avoid bloating the App with files that will not be needed
 		$this->isBootable = $this->isBootable(request()->path(), $routePrefix);

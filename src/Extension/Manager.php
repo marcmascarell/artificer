@@ -126,7 +126,7 @@ class Manager extends \Mascame\Extender\Manager {
      * @return array
      */
     protected function getComposerPackages() {
-        $installedPackagesFile = config('admin.vendorPath') . '/composer/installed.json';
+        $installedPackagesFile = config('admin.vendor_path') . '/composer/installed.json';
         $packagesWithName = [];
         
         if (\File::exists($installedPackagesFile)) {

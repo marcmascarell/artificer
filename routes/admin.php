@@ -26,7 +26,7 @@ Route::group([
 //    'before' => 'artificer-localization|LaravelLocalizationRedirectFilter'
 ],
     function () {
-        Route::group(['prefix' => \Mascame\Artificer\Options\AdminOption::get('routePrefix')], function () {
+        Route::group(['prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')], function () {
             Route::get('install', InstallController::class . '@install')->name('admin.install');
         });
     }
@@ -34,7 +34,7 @@ Route::group([
 
 Route::group([
     'middleware' => ['web'],
-    'prefix' => \Mascame\Artificer\Options\AdminOption::get('routePrefix'),
+    'prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix'),
 
 //    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
 //    'before' => 'artificer-auth|artificer-localization|LaravelLocalizationRedirectFilter'
