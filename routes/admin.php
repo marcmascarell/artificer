@@ -4,8 +4,10 @@ use Mascame\Artificer\Controllers\ModelController as ModelController;
 use Mascame\Artificer\Controllers\HomeController as HomeController;
 use Mascame\Artificer\Controllers\InstallController as InstallController;
 use Mascame\Artificer\Controllers\ExtensionController as ExtensionController;
-use Mascame\Artificer\Controllers\AuthController as AuthController;
-use Mascame\Artificer\Controllers\PasswordController as PasswordController;
+use Mascame\Artificer\Controllers\LoginController as LoginController;
+use Mascame\Artificer\Controllers\ForgotPasswordController as ForgotPasswordController;
+use Mascame\Artificer\Controllers\RegisterController as RegisterController;
+use Mascame\Artificer\Controllers\ResetPasswordController as ResetPasswordController;
 
 Route::pattern('new_id', '\d+');
 Route::pattern('old_id', '\d+');
@@ -43,18 +45,19 @@ Route::group([
 
         Route::group(['prefix' => 'user'], function () {
             // Authentication Routes...
-            Route::get('login', AuthController::class . '@showLoginForm')->name('admin.showlogin');
-            Route::post('login', AuthController::class . '@login')->name('admin.login');
-            Route::get('logout', AuthController::class . '@logout')->name('admin.logout');
+            Route::get('login', LoginController::class . '@showLoginForm')->name('admin.login.show');
+            Route::post('login', LoginController::class . '@login')->name('admin.login');
+            Route::get('logout', LoginController::class . '@logout')->name('admin.logout');
 
             // Registration Routes...
-            Route::get('register', AuthController::class . '@showRegistrationForm')->name('admin.showregister');
-            Route::post('register', AuthController::class . '@register')->name('admin.register');
+            Route::get('register', RegisterController::class . '@showRegistrationForm')->name('admin.register.show');
+            Route::post('register', RegisterController::class . '@register')->name('admin.register');
 
             // Password Reset Routes...
-            Route::get('password/reset/{token?}', PasswordController::class . '@showResetForm')->name('admin.password.reset.show');
-            Route::post('password/email', PasswordController::class . '@sendResetLinkEmail')->name('admin.password.reset.email');
-            Route::post('password/reset', PasswordController::class . '@reset')->name('admin.password.reset');
+            Route::get('password/reset', ForgotPasswordController::class . '@showLinkRequestForm')->name('admin.password.reset.show');
+            Route::post('password/email', ForgotPasswordController::class . '@sendResetLinkEmail')->name('admin.password.reset.email');
+            Route::get('password/reset/{token}', ResetPasswordController::class . '@showResetForm')->name('admin.password.reset.recover');
+            Route::post('password/reset', ResetPasswordController::class . '@reset')->name('admin.password.reset');
         });
 
         Route::group(['middleware' => ['artificer-auth']], function () {

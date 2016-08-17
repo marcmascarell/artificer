@@ -44,7 +44,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		if (! $this->isBootable) return;
-		
+
 		$this->addPublishableFiles();
 
 		// Wait until app is ready for config to be published
@@ -61,7 +61,9 @@ class ArtificerServiceProvider extends ServiceProvider {
 
         Artificer::assetManager()->add(config('admin.assets', []));
 
-        $this->requireFiles();
+        if (! $this->app->routesAreCached()) {
+            require_once __DIR__ . '/../routes/admin.php';
+        }
 	}
 
     /**
@@ -114,11 +116,6 @@ class ArtificerServiceProvider extends ServiceProvider {
             $path == $routePrefix || Str::startsWith($path, $routePrefix . '/')
         );
     }
-
-	private function requireFiles()
-	{
-		require_once __DIR__ . '/../routes/admin.php';
-	}
 
 	protected function getConfigPath() {
 		return config_path($this->name) . DIRECTORY_SEPARATOR;

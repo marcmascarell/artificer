@@ -17,7 +17,7 @@ use Mascame\Artificer\Permit;
 
 class BaseController extends Controller
 {
-    use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
+//    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public $fields;
     public $data;

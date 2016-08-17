@@ -81,7 +81,7 @@ trait AutoPublishable
             /**
              * Little "hack" because we are not in a Controller so we can not use Redirect.
              *
-             * If we don't refresh we won't have files ready for this request
+             * We have to refresh (we won't have files ready for this request)
              */
             header('Location: '. \URL::current());
             die();
