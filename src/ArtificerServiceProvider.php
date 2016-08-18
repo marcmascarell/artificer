@@ -123,15 +123,17 @@ class ArtificerServiceProvider extends ServiceProvider {
 
 	private function addPublishableFiles()
     {
-		$this->publishes([
-			__DIR__.'/../resources/assets' => public_path('packages/mascame/' . $this->name),
-		], 'public');
+        $this->autoPublishes(function() {
+            $this->publishes([
+                __DIR__.'/../resources/assets' => public_path('packages/mascame/' . $this->name),
+            ], 'public');
 
-        $this->publishes([
-            __DIR__.'/../config/' => $this->getConfigPath(),
-        ], 'config');
+            $this->publishes([
+                __DIR__.'/../config/' => $this->getConfigPath(),
+            ], 'config');
 
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', $this->name);
+            $this->loadTranslationsFrom(__DIR__.'/../resources/lang', $this->name);
+        });
     }
 
 	private function addLocalization()

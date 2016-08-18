@@ -1,4 +1,5 @@
 <?php namespace Mascame\Artificer;
+
 use Illuminate\Support\Facades\App;
 
 /**
@@ -29,24 +30,13 @@ trait AutoPublishable
     private $needsPublish = false;
 
     /**
-     * Is it going to autopublish?
-     *
-     * @var bool
-     */
-    private $willPublish = false;
-
-    /**
      * @param null $fileToCheck
      * @return mixed
      */
     protected function isPublished($fileToCheck = null) {
         if (! $fileToCheck) $fileToCheck = config_path($this->name);
 
-        $isPublished = \File::exists($fileToCheck);
-
-        if (! $isPublished) $this->needsPublish = true;
-
-        return $isPublished;
+        return \File::exists($fileToCheck);
     }
 
     /**
@@ -57,15 +47,24 @@ trait AutoPublishable
      */
     protected function publishes(array $paths, $group = null) {
         parent::publishes($paths, $group);
-        
+
         if ($this->onlyDevelopment && App::environment() != 'local') return;
-        
-        if ($this->willPublish) return;
+
+        if ($this->needsPublish) return;
 
         foreach ($paths as $path) {
-            if ($this->needsPublish || ! $this->isPublished($path)) {
-                $this->autoPublish();
-            }    
+            if (! $this->isPublished($path)) {
+                $this->needsPublish = true;
+                return;
+            }
+        }
+    }
+
+    protected function autoPublishes(\Closure $closure) {
+        $closure();
+
+        if ($this->needsPublish) {
+            $this->autoPublish();
         }
     }
 
@@ -73,21 +72,17 @@ trait AutoPublishable
      * Publish vendor files when app is ready
      */
     protected function autoPublish() {
-        if ($this->willPublish) return;
-        
-        $this->app->booted(function () {
-            \Artisan::call('vendor:publish', ['--provider' => self::class]);
+        \Artisan::call('vendor:publish', ['--provider' => self::class]);
 
-            /**
-             * Little "hack" because we are not in a Controller so we can not use Redirect.
-             *
-             * We have to refresh (we won't have files ready for this request)
-             */
-            header('Location: '. \URL::current());
-            die();
-        });
-        
-        $this->willPublish = true;
+        /**
+         * Little "hack" because we are not in a Controller so we can not use Redirect.
+         *
+         * We have to refresh (we won't have files ready for this request)
+         */
+        sleep(1);
+
+        header('Location: '. \URL::current());
+        die();
     }
     
 }
