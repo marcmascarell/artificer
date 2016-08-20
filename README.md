@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="https://cloud.githubusercontent.com/assets/642299/5885691/45c6fcf8-a374-11e4-96e3-51891f2ca238.jpg" alt="Laravel Artificer"/>
-</p>
+# Artificer
 
 [![Latest Version](https://img.shields.io/github/release/marcmascarell/laravel-artificer.svg?style=flat-square)](https://github.com/marcmascarell/laravel-artificer/releases)
 [![Quality Score](https://img.shields.io/scrutinizer/g/marcmascarell/laravel-artificer.svg?style=flat-square)](https://scrutinizer-ci.com/g/marcmascarell/laravel-artificer/)
@@ -10,49 +8,44 @@
 
 It's built around your Laravel's Eloquent models. It's very flexible, extensible, detects all your models and builds a beautiful interface to manage your data.
 
-##[Documentation](https://artificer.readme.io/)
-
 ##Current state warning
 
 It is under development. Use at your own risk.
 
-##Features
+## Table of Contents
 
-  - Plugins & widgets (making it really simple to extend and customize)
-  - Themes (Having a beautiful default theme)
-  - Automatic form field type detection
-  - Validation
-  - "Hooks" (with Laravel Events)
-  - Ultra configurable
-  - Frontend uses Laravel's blade template engine to avoid complexity
-  - Notifications
-  - Simple Login system
+Here you will find a brief introduction, [go here for full documentation](https://artificer.readme.io/).
+
+- <a href="#compatibility">Compatibility</a>
+- <a href="#installation">Installation</a>
+- <a href="https://artificer.readme.io/" target="_blank">Documentation</a>
+- <a href="#support">Support</a>
+- <a href="#license">License</a>
+
+## Compatibility
+
+ Laravel      | Artificer
+:-------------|:----------
+ 4.x          | v0.1.4-alpha (Unsupported)
+ 5.3          | dev (work in progress)
 
 ##Installation
 
-Require this package in your `composer.json` and run `composer update`:
+### Composer
 
-    "mascame/artificer": "dev-master"
+Add Artificer to your `composer.json` file.
+
+    "mascame/artificer": "dev-master" 
+
+Run `composer install` to get the latest version of the package.
+
+### Laravel
 
 Add the Service Provider to `config/app.php` at the bottom of `providers`:
 
 ```php
 \Mascame\Artificer\ArtificerServiceProvider::class
 ```
-
-###(Optional) Manually publish migrations and config
-
-By default, Artificer will auto-publish its files. However, if you need to publish manually you can do it.
-
-```sh
-php artisan vendor:publish --provider="Mascame\Artificer\ArtificerServiceProvider"
-```
-
-## Adding extensions (plugins & widgets)
-
-Artificer has its own place for its extension's Service Providers, only loading them when it is really needed.
-
-You can find that file at `config/admin/providers.php`
 
 ##Contributing
 
