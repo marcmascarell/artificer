@@ -87,8 +87,12 @@ abstract class AbstractExtension
     }
 
     /**
-     * Plugins: Will output the assets when the extension is installed directly to the vendor
-     * Widgets: Will output the assets when necessary
+     * The assets manager will request the desired assets.
+     *
+     * Plugin assets: Will always be requested
+     * Widget assets: Will only be requested when needed
+     *
+     * Note: If you are using local assets they should be published (only happens if the extension is installed)
      *
      * Example: [ $this->assetsPath . 'css/my-style.css' ]
      *
@@ -99,5 +103,19 @@ abstract class AbstractExtension
         return [];
     }
 
+    /**
+     * Register a view file namespace.
+     *
+     * @param  string  $path
+     * @param  string  $namespace
+     * @return void
+     */
+    protected function loadViewsFrom($path, $namespace)
+    {
+        if (is_dir($appPath = app()->basePath().'/resources/views/vendor/'.$namespace)) {
+            app()['view']->addNamespace($namespace, $appPath);
+        }
 
+        app()['view']->addNamespace($namespace, $path);
+    }
 }
