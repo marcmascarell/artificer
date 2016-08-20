@@ -1,7 +1,7 @@
 {
   "name": "mascame/artificer",
   "description": "Artificer is an admin package built on top of your Eloquent models.",
-  "homepage": "https://github.com/marcmascarell/laravel-artificer",
+  "homepage": "https://github.com/marcmascarell/artificer",
   "keywords": [
     "laravel",
     "admin",
@@ -27,7 +27,6 @@
     "stolz/assets": "^0.1.9"
   },
   "require-dev": {
-    "sami/sami": "3.*",
     "codeception/codeception": "2.*"
   },
   "autoload": {
