@@ -43,7 +43,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		if (! $this->isBootable) return;
+        if (! $this->isBootable) return;
 
 		$this->addPublishableFiles();
 
@@ -135,13 +135,6 @@ class ArtificerServiceProvider extends ServiceProvider {
             $this->loadTranslationsFrom(__DIR__.'/../resources/lang', $this->name);
         });
     }
-
-	private function addLocalization()
-	{
-		App::singleton('ArtificerLocalization', function () {
-			return new Localization();
-		});
-	}
 
 	private function getExtensionInstaller($type) {
         if (config('admin.extension_driver') == 'file') {

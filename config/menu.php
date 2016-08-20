@@ -15,20 +15,10 @@ return [
 		]
 	],
 
-	'plugins'   => [
-		'route'  => 'admin.plugins',
-		'title' => 'Plugins',
+	'extensions'   => [
+		'route'  => 'admin.extensions',
+		'title' => 'Extensions',
 		'icon'  => '<i class="fa fa-plug"></i>',
-		'permissions' => [
-			'admin',
-			'user'
-		]
-	],
-
-	'widgets'   => [
-		'route'  => 'admin.widgets',
-		'title' => 'Widgets',
-		'icon'  => '<i class="fa fa-cubes"></i>',
 		'permissions' => [
 			'admin',
 			'user'

@@ -22,7 +22,6 @@ Route::pattern('username', '[a-z0-9_-]{3,16}');
 //    Route::get('moco', ['uses' => ModelController::class . '@getRelatedFieldOutput'));
 //
 //});
-
 Route::group([
 //    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
 //    'before' => 'artificer-localization|LaravelLocalizationRedirectFilter'
@@ -59,6 +58,8 @@ Route::group([
             Route::get('password/reset/{token}', ResetPasswordController::class . '@showResetForm')->name('admin.password.reset.recover');
             Route::post('password/reset', ResetPasswordController::class . '@reset')->name('admin.password.reset');
         });
+
+
 
         Route::group(['middleware' => ['artificer-auth']], function () {
 

@@ -47,6 +47,8 @@ class Manager extends \Mascame\Extender\Manager {
     }
 
     /**
+     * Todo: refactor
+     *
      * @param $package
      * @param array|string $plugins
      * @return bool

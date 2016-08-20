@@ -10,6 +10,7 @@ class InstallController extends BaseController
      */
     public function install()
     {
+        dd('To do');
 //        $this->modelObject = App::make('ArtificerModel');
 //
 //        try {
