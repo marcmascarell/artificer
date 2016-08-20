@@ -54,6 +54,6 @@ class ModalConfigGenerator extends Command
     }
 
     protected function getStub() {
-        return __DIR__ . '/../../stubs/ModelConfig.php';
+        return __DIR__ . '/../../resources/stubs/ModelConfig.php';
     }
 }
