@@ -1,10 +1,12 @@
 <?php namespace Mascame\Artificer\Extension;
 
+use Mascame\Artificer\Assets\AssetsManagerInterface;
 use Mascame\Artificer\Options\PluginOption;
-use Stolz\Assets\Manager as AssetsManager;
 
 abstract class AbstractExtension
 {
+
+    public $assetsPath = null;
 
     /**
      * Automatically filled
@@ -67,6 +69,11 @@ abstract class AbstractExtension
      */
     protected $option;
 
+    /**
+     * @var ResourceCollector
+     */
+    public $resources;
+
     abstract public function boot();
 
     public function getSlug() {
@@ -87,6 +94,16 @@ abstract class AbstractExtension
     }
 
     /**
+     * vendor/package
+     *
+     * @return string
+     */
+    public function getAssetsPath()
+    {
+        return $this->namespace;
+    }
+
+    /**
      * The assets manager will request the desired assets.
      *
      * Plugin assets: Will always be requested
@@ -96,11 +113,17 @@ abstract class AbstractExtension
      *
      * Example: [ $this->assetsPath . 'css/my-style.css' ]
      *
-     * @return array
+     * @param AssetsManagerInterface $manager
+     * @return AssetsManagerInterface
      */
-    public function assets(AssetsManager $manager)
+    public function assets(AssetsManagerInterface $manager)
     {
-        return [];
+        return $manager;
+    }
+
+    public function resources(ResourceCollector $collector)
+    {
+        return $collector;
     }
 
     /**

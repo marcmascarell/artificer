@@ -2,28 +2,8 @@
 
 use Mascame\Artificer\Extension\AbstractExtension;
 
-abstract class AbstractWidget extends AbstractExtension implements WidgetInterface
+abstract class AbstractWidget extends AbstractExtension
 {
-
-    public $assetsPath = null;
-
-    /**
-     * vendor/package
-     * 
-     * @return string
-     */
-    public function getAssetsPath()
-    {
-        return $this->namespace;
-    }
-
-    /**
-     * @return null
-     */
-    public function output()
-    {
-        return null;
-    }
 
     /**
      * @return Manager

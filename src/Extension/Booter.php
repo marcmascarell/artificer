@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 use Mascame\Artificer\Artificer;
+use Mascame\Artificer\Widget\WidgetInterface;
 use Mascame\Extender\Booter\BooterInterface;
 
 class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface {
@@ -10,6 +11,8 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
      * @var \Mascame\Artificer\Plugin\Manager|\Mascame\Artificer\Widget\Manager
      */
     protected $manager;
+
+    protected $initedResources = null;
 
     public function boot($instance, $name)
     {
@@ -21,10 +24,11 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
     }
 
     /**
-     * @param $instance
+     * @param $instance AbstractExtension
      * @param $name
      */
     protected function beforeBooting($instance, $name) {
+
         if (! $instance->namespace) $instance->namespace = $name;
         if (! $instance->name) $instance->name = $name;
         if (property_exists($instance, 'assetsPath')) {
@@ -32,14 +36,47 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
         }
 
         if (! $instance->slug) {
-            // For slug readability
-            $name = str_replace('\\', '-', $name);
-            $instance->slug = Str::slug($name);
+            $instance->slug = Str::slug(
+                str_replace('\\', '-', $name) // For slug readability
+            );
         }
 
         $this->manager->setSlug($instance->slug, $instance->namespace);
+
+        $this->handleResources($instance);
     }
-    
+
+    protected function handleResources($instance) {
+        $instance->resources = $instance->resources(new ResourceCollector(app(), get_class($instance)));
+
+        $this->getEventDispatcher()->listen('extender.before.install.' . $instance->namespace, function() use ($instance) {
+            $this->initResources($instance)->install();
+            $instance->install();
+        });
+
+        $this->getEventDispatcher()->listen('extender.before.uninstall.' . $instance->namespace, function() use ($instance) {
+            $this->initResources($instance)->uninstall();
+            $instance->uninstall();
+        });
+
+        // Doing it later would not work
+        if ($this->manager->isInstalled($instance->namespace)) {
+            $this->initResources($instance);
+        }
+    }
+
+    /**
+     * Initializes resources & avoid multiple initialization
+     *
+     * @param $instance
+     * @return ResourceInstaller|null
+     */
+    protected function initResources($instance) {
+        if ($this->initedResources) return $this->initedResources;
+
+        return $this->initedResources = (new ResourceInstaller(app(), $instance));
+    }
+
     /**
      * @param $instance \Mascame\Artificer\Extension\AbstractExtension
      * @param $name
@@ -51,10 +88,15 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
     }
 
     /**
-     * @param $instance
+     * @param $instance AbstractExtension
      */
     protected function addAssets($instance) {
-        // Todo: only add assets by default if its a plugin (widgets will load only when necessary)
-//        $instance->assets(Artificer::assetManager());
+        // Widgets will load only when necessary)
+        if (is_a($instance, WidgetInterface::class)) return;
+
+        $assetsManager = Artificer::assetManager();
+
+        $instance->assets($assetsManager);
     }
+
 }

@@ -1,7 +1,9 @@
 <?php namespace Mascame\Artificer;
 
 use \App;
+use Mascame\Artificer\Assets\AssetsManagerInterface;
 use Mascame\Artificer\Controllers\BaseModelController;
+use Mascame\Artificer\Extension\ResourceCollector;
 use Mascame\Artificer\Model\ModelManager;
 
 class Artificer
@@ -63,11 +65,19 @@ class Artificer
     }
 
     /**
-     * @return \Stolz\Assets\Manager
+     * @return AssetsManagerInterface
      */
     public static function assetManager()
     {
         return App::make('ArtificerAssetManager');
+    }
+
+    /**
+     * @return ResourceCollector
+     */
+    public static function resourceCollector()
+    {
+        return App::make('ArtificerResourceCollector');
     }
 
     public static function getCurrentModelId($items)
