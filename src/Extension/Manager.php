@@ -46,6 +46,10 @@ class Manager extends \Mascame\Extender\Manager {
         return self::$packages;
     }
 
+    public function getType() {
+        return $this->type;
+    }
+
     /**
      * Todo: refactor
      *

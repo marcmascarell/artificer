@@ -18,7 +18,8 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider {
     }
 
     /**
-     * @throws \Exception
+     * @param string $path
+     * @param string $namespace
      */
     public function loadViewsFrom($path, $namespace)
     {
@@ -26,7 +27,8 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider {
     }
 
     /**
-     * @throws \Exception
+     * @param string $path
+     * @param string $namespace
      */
     public function loadTranslationsFrom($path, $namespace)
     {
@@ -34,7 +36,7 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider {
     }
 
     /**
-     * @throws \Exception
+     * @param array|string $paths
      */
     public function loadMigrationsFrom($paths)
     {
@@ -42,7 +44,8 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider {
     }
 
     /**
-     * @throws \Exception
+     * @param array $paths
+     * @param null $group
      */
     public function publishes(array $paths, $group = null)
     {
@@ -50,13 +53,17 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider {
     }
 
     /**
-     * @throws \Exception
+     * @param array|mixed $commands
      */
     public function commands($commands)
     {
         return $this->collect('commands', func_get_args());
     }
 
+    /**
+     * @param $method
+     * @param $args
+     */
     protected function collect($method, $args) {
         self::$collected[$this->class][] = [
             'method' => $method,
@@ -64,6 +71,9 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider {
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getCollected() {
         return self::$collected;
     }

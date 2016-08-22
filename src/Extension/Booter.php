@@ -82,21 +82,9 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
      * @param $name
      */
     protected function afterBooting($instance, $name) {
-        if (! $this->manager->isInstalled($instance->namespace)) return;
 
-        $this->addAssets($instance);
     }
 
-    /**
-     * @param $instance AbstractExtension
-     */
-    protected function addAssets($instance) {
-        // Widgets will load only when necessary)
-        if (is_a($instance, WidgetInterface::class)) return;
 
-        $assetsManager = Artificer::assetManager();
-
-        $instance->assets($assetsManager);
-    }
 
 }

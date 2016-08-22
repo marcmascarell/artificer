@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Plugin;
 
 use Mascame\Artificer\Artificer;
+use Mascame\Artificer\Extension\AbstractExtension;
 use Mascame\Extender\Booter\BooterInterface;
 
 class Booter extends \Mascame\Artificer\Extension\Booter implements BooterInterface {
@@ -16,10 +17,21 @@ class Booter extends \Mascame\Artificer\Extension\Booter implements BooterInterf
      * @param $name
      */
     public function afterBooting($instance, $name) {
-        if (! $this->manager->isInstalled($name)) return;
+        if (! $this->manager->isInstalled($instance->namespace)) return;
 
         if ($menu = $instance->getMenu()) {
             Artificer::addMenu($menu);
         }
+
+        $this->addAssets($instance);
+    }
+
+    /**
+     * @param $instance AbstractExtension
+     */
+    protected function addAssets($instance) {
+        $assetsManager = Artificer::assetManager();
+
+        $instance->assets($assetsManager);
     }
 }

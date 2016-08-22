@@ -23,4 +23,11 @@ class MigrateCommandExtension extends MigrateCommand {
         }
     }
 
+    // Returns the default migrations path.
+    // In this case we are overriding it
+    protected function getMigrationPath()
+    {
+        return '';
+    }
+
 }

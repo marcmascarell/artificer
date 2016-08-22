@@ -26,7 +26,6 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         foreach ($this->getCollectedCalls() as $call) {
             call_user_func_array(array($this, $call['method']), $call['args']);
         }
-
     }
 
     protected function getCollectedCalls() {
@@ -58,31 +57,6 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         }
     }
 
-    protected function publishes(array $paths, $group = null)
-    {
-        // We need to override this line
-        $class = $this->extension->namespace;
-
-        if (! array_key_exists($class, static::$publishes)) {
-            static::$publishes[$class] = [];
-        }
-
-        static::$publishes[$class] = array_merge(static::$publishes[$class], $paths);
-
-        if ($group) {
-            if (! array_key_exists($group, static::$publishGroups)) {
-                static::$publishGroups[$group] = [];
-            }
-
-            static::$publishGroups[$group] = array_merge(static::$publishGroups[$group], $paths);
-        }
-    }
-
-    // Remove files
-    protected function revertPublishes() {
-
-    }
-
     // Remove migrations from that step
     // todo: delete by name not batch
     protected function revertLoadMigrationsFrom($args) {
@@ -105,6 +79,55 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         foreach ($batchToRollback as $batch => $paths) {
             $this->rollbackBatch($paths, $batch);
 //            \Artisan::call('migrate:rollback', ['--step' => $step]);
+        }
+    }
+
+    protected function getFileNamesFromPath($path) {
+        return array_map(function($value) {
+            return str_replace('.php', '', $value);
+        }, array_diff(scandir(base_path($path)), ['..', '.', '.gitkeep']));
+    }
+
+    protected function handlePublishes() {
+        if ($this->published) return;
+
+        \Artisan::call('vendor:publish', ['--provider' => $this->extension->namespace]);
+
+        $this->published = true;
+    }
+
+    protected function handleLoadMigrationsFrom($args) {
+        foreach ($this->getNormalizedPaths($args) as $path) {
+            \Artisan::call('artificer:migrate', ['--path' => $path]);
+        }
+    }
+
+    protected function getNormalizedPaths($args) {
+        list($paths) = $args;
+        $paths = (array) $paths;
+
+        foreach ($paths as &$path) {
+            // migrator will prepend base_path
+            if (str_contains($path, base_path() . '/')) {
+                $path = str_replace(base_path() . '/', '', $path);
+            }
+        }
+
+        return $paths;
+    }
+
+    /**
+     * Register a database migration path.
+     *
+     * @param  array|string  $paths
+     * @return void
+     */
+    protected function loadMigrationsFrom($paths)
+    {
+        $migrator = app('ArtificerMigrator');
+
+        foreach ((array) $paths as $path) {
+            $migrator->path($path);
         }
     }
 
@@ -153,37 +176,32 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         $migrator->rollbackBatch($paths, $batch);
     }
 
-    protected function getFileNamesFromPath($path) {
-        return array_map(function($value) {
-            return str_replace('.php', '', $value);
-        }, array_diff(scandir(base_path($path)), ['..', '.', '.gitkeep']));
-    }
+    protected function publishes(array $paths, $group = null)
+    {
+        // We need to override this line
+        $class = $this->extension->namespace;
 
-    protected function handlePublishes() {
-        if ($this->published) return;
-
-        \Artisan::call('vendor:publish', ['--provider' => $this->extension->namespace]);
-
-        $this->published = true;
-    }
-
-    protected function handleLoadMigrationsFrom($args) {
-        foreach ($this->getNormalizedPaths($args) as $path) {
-            \Artisan::call('artificer:migrate', ['--path' => $path]);
+        if (! array_key_exists($class, static::$publishes)) {
+            static::$publishes[$class] = [];
         }
-    }
 
-    protected function getNormalizedPaths($args) {
-        list($paths) = $args;
-        $paths = (array) $paths;
+        static::$publishes[$class] = array_merge(static::$publishes[$class], $paths);
 
-        foreach ($paths as &$path) {
-            // migrator will prepend base_path
-            if (str_contains($path, base_path() . '/')) {
-                $path = str_replace(base_path() . '/', '', $path);
+        if ($group) {
+            if (! array_key_exists($group, static::$publishGroups)) {
+                static::$publishGroups[$group] = [];
             }
-        }
 
-        return $paths;
+            static::$publishGroups[$group] = array_merge(static::$publishGroups[$group], $paths);
+        }
+    }
+
+    // Remove files
+    protected function revertPublishes() {
+        $class = $this->extension->namespace;
+
+        foreach (static::$publishes[$class] as $publisedPath) {
+            \File::deleteDirectory($publisedPath);
+        }
     }
 }
