@@ -60,8 +60,6 @@ class ArtificerServiceProvider extends ServiceProvider {
         Artificer::pluginManager()->boot();
         Artificer::widgetManager()->boot();
 
-//        Artificer::pluginManager()->installer()->uninstall(\Mascame\Artificer\LoginPlugin::class);
-
         $this->manageCorePlugins();
 
         Artificer::assetManager()->add(config('admin.assets', []));

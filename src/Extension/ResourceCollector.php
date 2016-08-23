@@ -11,7 +11,7 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider {
         $this->class = $class;
     }
 
-//    migrations & publishable files must go into install method
+
     public function mergeConfigFrom($path, $key)
     {
         return $this->collect('mergeConfigFrom', func_get_args());
