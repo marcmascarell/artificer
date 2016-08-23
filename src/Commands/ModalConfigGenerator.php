@@ -19,7 +19,7 @@ class ModalConfigGenerator extends Command
      *
      * @var string
      */
-    protected $description = 'Display an inspiring quote';
+    protected $description = 'Generates a model config file with some boilerplate for the given name.';
 
     /**
      * Execute the console command.
