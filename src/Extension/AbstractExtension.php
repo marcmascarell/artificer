@@ -87,9 +87,11 @@ abstract class AbstractExtension
         return $this->slug;
     }
 
-    final public function getConfig()
+    final public function getConfig($key = null, $default = null)
     {
-        return config($this->getConfigDotNotationPath());
+        if ($key) $key = "." . $key;
+
+        return config($this->getConfigDotNotationPath() . $key, $default);
     }
 
     final public function getConfigDotNotationPath() {
