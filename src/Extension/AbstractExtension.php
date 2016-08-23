@@ -62,7 +62,14 @@ abstract class AbstractExtension
     /**
      * @var string
      */
-    public $configFile = null;
+    public $configPath = null;
+
+    /**
+     * Automatically set on set configPath
+     *
+     * @var string
+     */
+    public $configDotNotationPath = null;
 
     /**
      * @var PluginOption
@@ -79,7 +86,26 @@ abstract class AbstractExtension
     public function getSlug() {
         return $this->slug;
     }
-    
+
+    final public function getConfig()
+    {
+        return config($this->getConfigDotNotationPath());
+    }
+
+    final public function getConfigDotNotationPath() {
+        return str_replace('/', '.', $this->getShortConfigPath());
+    }
+
+    final public function getConfigPath()
+    {
+        return config_path($this->getShortConfigPath());
+    }
+
+    private function getShortConfigPath()
+    {
+        return 'admin/extensions/' . $this->slug;
+    }
+
     /**
      * @return Manager
      */
