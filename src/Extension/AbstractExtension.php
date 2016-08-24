@@ -154,19 +154,4 @@ abstract class AbstractExtension
         return $collector;
     }
 
-    /**
-     * Register a view file namespace.
-     *
-     * @param  string  $path
-     * @param  string  $namespace
-     * @return void
-     */
-    protected function loadViewsFrom($path, $namespace)
-    {
-        if (is_dir($appPath = app()->basePath().'/resources/views/vendor/'.$namespace)) {
-            app()['view']->addNamespace($namespace, $appPath);
-        }
-
-        app()['view']->addNamespace($namespace, $path);
-    }
 }
