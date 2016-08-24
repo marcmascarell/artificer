@@ -11,10 +11,10 @@ class MigrationCommands
 
     protected $commands = [
         MigrateCommandExtension::class,
+        MigrateRefreshCommandExtension::class,
         \Illuminate\Database\Console\Migrations\InstallCommand::class,
         \Illuminate\Database\Console\Migrations\RollbackCommand::class,
         \Illuminate\Database\Console\Migrations\ResetCommand::class,
-        \Illuminate\Database\Console\Migrations\RefreshCommand::class
     ];
 
     public function __construct(Migrator $migrator, MigrationRepositoryInterface $repository)
