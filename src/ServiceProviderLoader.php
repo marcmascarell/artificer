@@ -3,9 +3,7 @@
 use Illuminate\Foundation\AliasLoader as Loader;
 
 /**
- * How it works: Simply we wait until app is ready to publish whatever is in the vendor's publishable files
- *
- * Class AutoPublishable
+ * Class ServiceProviderLoader
  * @package Mascame\Artificer
  */
 trait ServiceProviderLoader
