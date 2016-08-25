@@ -1,8 +1,11 @@
 <?php namespace Mascame\Artificer;
 
 use App;
+use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Mascame\Artificer\Assets\AssetsManager;
+use Mascame\Artificer\Commands\MigrationCommands;
 use Mascame\Artificer\Extension\Booter;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Model\ModelObtainer;
@@ -43,7 +46,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		if (! $this->isBootable) return;
+        if (! $this->isBootable) return;
 
 		$this->addPublishableFiles();
 
@@ -136,13 +139,6 @@ class ArtificerServiceProvider extends ServiceProvider {
         });
     }
 
-	private function addLocalization()
-	{
-		App::singleton('ArtificerLocalization', function () {
-			return new Localization();
-		});
-	}
-
 	private function getExtensionInstaller($type) {
         if (config('admin.extension_driver') == 'file') {
             $extensionConfig = $this->getConfigPath() . 'extensions/'. $type .'.php';
@@ -151,7 +147,7 @@ class ArtificerServiceProvider extends ServiceProvider {
         }
     }
 
-	private function addManagers()
+	private function registerBindings()
 	{
         App::singleton('ArtificerModelManager', function () {
             return new ModelManager(new ModelSchema(new ModelObtainer()));
@@ -174,12 +170,23 @@ class ArtificerServiceProvider extends ServiceProvider {
 		});
 
         App::singleton('ArtificerAssetManager', function() {
-            return \Assets::config(array_merge([
+            return (new AssetsManager())->config(array_merge([
                 // Reset those dirs to avoid wrong paths
                 'css_dir' => '',
                 'js_dir' => '',
             ], config('admin.assets')));
         });
+
+        App::singleton('ArtificerMigrationRepository', function() {
+            return new DatabaseMigrationRepository(app('db'), config('admin.migrations'));
+        });
+
+        App::singleton('ArtificerMigrator', function() {
+            return new \Illuminate\Database\Migrations\Migrator(app('ArtificerMigrationRepository'), app('db'), app('files'));
+        });
+
+        // Generates a copy of migration commands with prepending 'artificer:'
+        new MigrationCommands(app('ArtificerMigrator'), app('ArtificerMigrationRepository'));
 	}
 
 	/**
@@ -203,7 +210,7 @@ class ArtificerServiceProvider extends ServiceProvider {
 
             // Todo
 //			$this->addLocalization();
-			$this->addManagers();
+			$this->registerBindings();
 		}
 	}
 

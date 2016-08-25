@@ -1,10 +1,12 @@
 <?php namespace Mascame\Artificer\Extension;
 
+use Mascame\Artificer\Assets\AssetsManagerInterface;
 use Mascame\Artificer\Options\PluginOption;
-use Stolz\Assets\Manager as AssetsManager;
 
 abstract class AbstractExtension
 {
+
+    use PublicVendorPaths;
 
     /**
      * Automatically filled
@@ -60,19 +62,31 @@ abstract class AbstractExtension
     /**
      * @var string
      */
-    public $configFile = null;
+    public $configPath = null;
+
+    /**
+     * Automatically set on set configPath
+     *
+     * @var string
+     */
+    public $configDotNotationPath = null;
 
     /**
      * @var PluginOption
      */
     protected $option;
 
+    /**
+     * @var ResourceCollector
+     */
+    public $resources;
+
     abstract public function boot();
 
     public function getSlug() {
         return $this->slug;
     }
-    
+
     /**
      * @return Manager
      */
@@ -87,17 +101,26 @@ abstract class AbstractExtension
     }
 
     /**
-     * Plugins: Will output the assets when the extension is installed directly to the vendor
-     * Widgets: Will output the assets when necessary
+     * The assets manager will request the desired assets.
+     *
+     * Plugin assets: Will always be requested
+     * Widget assets: Will only be requested when needed
+     *
+     * Note: If you are using local assets they should be published (only happens if the extension is installed)
      *
      * Example: [ $this->assetsPath . 'css/my-style.css' ]
      *
-     * @return array
+     * @param AssetsManagerInterface $manager
+     * @return AssetsManagerInterface
      */
-    public function assets(AssetsManager $manager)
+    public function assets(AssetsManagerInterface $manager)
     {
-        return [];
+        return $manager;
     }
 
+    public function resources(ResourceCollector $collector)
+    {
+        return $collector;
+    }
 
 }

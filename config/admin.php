@@ -2,13 +2,35 @@
 
 return [
 
-	'title' => 'Artificer',
-	
-	'route_prefix' => 'admin',
+    'title' => 'Artificer',
 
-	'theme' => 'artificer-default-theme',
+    'route_prefix' => 'admin',
 
-	'vendor_path' => base_path('vendor'),
+    'theme' => 'artificer-default-theme',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Providers, aliases & commands will be conveniently lazy loaded
+    |--------------------------------------------------------------------------
+    */
+
+    'providers' => [
+        Collective\Html\HtmlServiceProvider::class,
+        Stolz\Assets\Laravel\ServiceProvider::class,
+        Mascame\Artificer\LoginPluginServiceProvider::class,
+        Mascame\Artificer\DefaultThemeServiceProvider::class,
+        Mascame\Artificer\ArtificerWidgetsServiceProvider::class,
+    ],
+
+    'aliases' => [
+        'HTML' => \Collective\Html\HtmlFacade::class,
+        'Form' => \Collective\Html\FormFacade::class,
+        'Assets' => \Stolz\Assets\Laravel\Facade::class,
+    ],
+
+    'commands' => [
+        Mascame\Artificer\Commands\ModalConfigGenerator::class
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -25,42 +47,48 @@ return [
 
     'extension_driver' => 'file',
 
-	/*
+    /*
     |--------------------------------------------------------------------------
-    | Providers, aliases & commands will be conveniently lazy loaded
+    | Artificer's Migration Repository Table
+    |--------------------------------------------------------------------------
+    |
+    | This table keeps track of all the migrations that have already run for
+    | your application. Using this information, we can determine which of
+    | the migrations on disk haven't actually been run in the database.
+    |
+    */
+
+    'migrations' => 'artificer_migrations',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Vendor folder (Where your app dependencies live)
+    |--------------------------------------------------------------------------
+    |
+    | The folder is normally created automatically by Composer.
+    |
+    */
+
+    'vendor_path' => base_path('vendor'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Icons used by the app
     |--------------------------------------------------------------------------
     */
-	
-	'providers' => [
-		Collective\Html\HtmlServiceProvider::class,
-		Stolz\Assets\Laravel\ServiceProvider::class,
-        Mascame\Artificer\LoginPluginServiceProvider::class,
-		Mascame\Artificer\DefaultThemeServiceProvider::class,
-		Mascame\Artificer\ArtificerWidgetsServiceProvider::class,
-	],
 
-	'aliases' => [
-		'HTML' => \Collective\Html\HtmlFacade::class,
-		'Form' => \Collective\Html\FormFacade::class,
-        'Assets' => \Stolz\Assets\Laravel\Facade::class,
-    ],
-
-	'commands' => [
-		Mascame\Artificer\Commands\ModalConfigGenerator::class
-	],
-	
     'icons' => [
-	    'edit' => 'fa fa-pencil',
-		'dashboard' => 'fa fa-dashboard',
-		'delete' => 'fa fa-remove',
-		'filter' => 'fa fa-filter',
-		'info' => 'fa fa-info',
-		'models' => 'fa fa-th',
-		'new' => 'fa fa-plus',
-		'save' => 'fa fa-save',
-		'search' => 'fa fa-search',
-		'show' => 'fa fa-eye',
-		'sort-up' => 'fa fa-long-arrow-up',
-	    'sort-down' => 'fa fa-long-arrow-down',
+        'edit' => 'fa fa-pencil',
+        'dashboard' => 'fa fa-dashboard',
+        'delete' => 'fa fa-remove',
+        'filter' => 'fa fa-filter',
+        'info' => 'fa fa-info',
+        'models' => 'fa fa-th',
+        'new' => 'fa fa-plus',
+        'save' => 'fa fa-save',
+        'search' => 'fa fa-search',
+        'show' => 'fa fa-eye',
+        'sort-up' => 'fa fa-long-arrow-up',
+        'sort-down' => 'fa fa-long-arrow-down',
     ]
 ];

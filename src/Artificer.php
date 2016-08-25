@@ -1,11 +1,14 @@
 <?php namespace Mascame\Artificer;
 
 use \App;
+use Mascame\Artificer\Assets\AssetsManagerInterface;
 use Mascame\Artificer\Controllers\BaseModelController;
+use Mascame\Artificer\Extension\ResourceCollector;
 use Mascame\Artificer\Model\ModelManager;
 
 class Artificer
 {
+    use Themable;
 
     protected static $coreExtensions = [
         'mascame/login'
@@ -62,11 +65,19 @@ class Artificer
     }
 
     /**
-     * @return \Stolz\Assets\Manager
+     * @return AssetsManagerInterface
      */
     public static function assetManager()
     {
         return App::make('ArtificerAssetManager');
+    }
+
+    /**
+     * @return ResourceCollector
+     */
+    public static function resourceCollector()
+    {
+        return App::make('ArtificerResourceCollector');
     }
 
     public static function getCurrentModelId($items)
@@ -74,7 +85,6 @@ class Artificer
         return BaseModelController::getCurrentModelId($items);
     }
 
-    
     public static function addMenu($options)
     {
         return config(['admin.menu' => array_merge(self::getMenu(), $options)]);
@@ -85,26 +95,4 @@ class Artificer
         return config('admin.menu');
     }
 
-    // Todo is it used anywhere?
-//    public static function store($filepath = null, $content, $overide = false)
-//    {
-//        if (!$filepath) {
-//            $pathinfo = pathinfo($filepath);
-//            $filepath = $pathinfo['dirname'];
-//        }
-//
-//        $path = explode('/', $filepath);
-//        array_pop($path);
-//        $path = join('/', $path);
-//
-//        if (!file_exists($path)) {
-//            \File::makeDirectory($path, 0777, true, true);
-//        }
-//
-//        if (!file_exists($filepath) || $overide) {
-//            return \File::put($filepath, $content);
-//        }
-//
-//        return false;
-//    }
 }

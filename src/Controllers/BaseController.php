@@ -1,23 +1,15 @@
 <?php namespace Mascame\Artificer\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesResources;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Request;
-use Auth;
+use View;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Model\ModelManager;
-use View;
-use Illuminate\Routing\Controller as Controller;
 use Mascame\Artificer\Options\AdminOption;
-use Mascame\Artificer\Permit;
 
 // Todo: Make some models forbidden for some users
 
-class BaseController extends Controller
+class BaseController
 {
-//    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public $fields;
     public $data;
@@ -42,16 +34,14 @@ class BaseController extends Controller
         $this->master_layout = 'base';
         $this->modelObject = Artificer::modelManager();
 
-        if (! Auth::guard('admin')->guest()) {
-            $this->options = AdminOption::all();
+        $this->options = AdminOption::all();
 
-            if ($this->isStandAlone()) {
-                $this->master_layout = 'standalone';
-                $this->standalone = true;
-            }
-
-            $this->shareMainViewData();
+        if ($this->isStandAlone()) {
+            $this->master_layout = 'standalone';
+            $this->standalone = true;
         }
+
+        $this->shareMainViewData();
     }
 
     protected function shareMainViewData()
@@ -78,18 +68,7 @@ class BaseController extends Controller
      */
     public function getMenu()
     {
-        if ( ! empty($this->menu)) return $this->menu;
-
-        $menu = AdminOption::get('menu');
-
-        foreach ($menu as $key => $menuItem) {
-            // Todo: Permit is absolete or not?
-            if (Permit\MenuPermit::access($key) || true) {
-                $this->menu[] = $menuItem;
-            }
-        }
-
-        return $this->menu;
+        return AdminOption::get('menu');
     }
 
     /**

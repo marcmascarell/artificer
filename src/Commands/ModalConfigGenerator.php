@@ -19,7 +19,7 @@ class ModalConfigGenerator extends Command
      *
      * @var string
      */
-    protected $description = 'Display an inspiring quote';
+    protected $description = 'Generates a model config file with some boilerplate for the given name.';
 
     /**
      * Execute the console command.
@@ -54,6 +54,6 @@ class ModalConfigGenerator extends Command
     }
 
     protected function getStub() {
-        return __DIR__ . '/../../stubs/ModelConfig.php';
+        return __DIR__ . '/../../resources/stubs/ModelConfig.php';
     }
 }
