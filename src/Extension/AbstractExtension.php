@@ -6,6 +6,8 @@ use Mascame\Artificer\Options\PluginOption;
 abstract class AbstractExtension
 {
 
+    use PublicVendorPaths;
+
     public $assetsPath = null;
 
     /**
@@ -87,27 +89,6 @@ abstract class AbstractExtension
         return $this->slug;
     }
 
-    final public function getConfig($key = null, $default = null)
-    {
-        if ($key) $key = "." . $key;
-
-        return config($this->getConfigDotNotationPath() . $key, $default);
-    }
-
-    final public function getConfigDotNotationPath() {
-        return str_replace('/', '.', $this->getShortConfigPath());
-    }
-
-    final public function getConfigPath()
-    {
-        return config_path($this->getShortConfigPath());
-    }
-
-    private function getShortConfigPath()
-    {
-        return 'admin/extensions/' . $this->slug;
-    }
-
     /**
      * @return Manager
      */
@@ -119,16 +100,6 @@ abstract class AbstractExtension
     public final function isInstalled()
     {
         return $this->getManager()->isInstalled($this->namespace);
-    }
-
-    /**
-     * vendor/package
-     *
-     * @return string
-     */
-    public function getAssetsPath()
-    {
-        return $this->namespace;
     }
 
     /**
