@@ -57,10 +57,14 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         }
     }
 
-    // Remove migrations from that step
-    // todo: delete by name not batch
+    /**
+     * Will look the migrations in $args and find their batch @ artificer_migrations table,
+     * then we will remove all migrations from that batch (because it is one batch per extension).
+     *
+     * @param $args
+     */
     protected function revertLoadMigrationsFrom($args) {
-        $migrations = $result = \DB::table('artificer_migrations')->get();
+        $migrations = $result = \DB::table(config('admin.migrations'))->get();
         $migrations = $migrations->pluck('batch', 'migration')->toArray();
         $batchToRollback = [];
 
@@ -78,7 +82,6 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
 
         foreach ($batchToRollback as $batch => $paths) {
             $this->rollbackBatch($paths, $batch);
-//            \Artisan::call('migrate:rollback', ['--step' => $step]);
         }
     }
 
@@ -145,7 +148,7 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
 
                 $rolledBack = [];
 
-                $migrations = $this->repository->getConnection()->table('artificer_migrations')->where('batch', $batch)->get();
+                $migrations = $this->repository->getConnection()->table(config('admin.migrations'))->where('batch', $batch)->get();
 
                 $count = count($migrations);
 

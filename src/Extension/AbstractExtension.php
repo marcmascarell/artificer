@@ -8,8 +8,6 @@ abstract class AbstractExtension
 
     use PublicVendorPaths;
 
-    public $assetsPath = null;
-
     /**
      * Automatically filled
      *

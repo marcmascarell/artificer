@@ -178,7 +178,7 @@ class ArtificerServiceProvider extends ServiceProvider {
         });
 
         App::singleton('ArtificerMigrationRepository', function() {
-            return new DatabaseMigrationRepository(app('db'), 'artificer_migrations');
+            return new DatabaseMigrationRepository(app('db'), config('admin.migrations'));
         });
 
         App::singleton('ArtificerMigrator', function() {
