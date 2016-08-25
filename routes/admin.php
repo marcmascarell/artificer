@@ -17,15 +17,8 @@ Route::pattern('integer', '\d+');
 Route::pattern('slug', '[a-z0-9_-]+');
 Route::pattern('username', '[a-z0-9_-]{3,16}');
 
-// this works
-//Event::listen('artificer.routes.model', function() {
-//    Route::get('moco', ['uses' => ModelController::class . '@getRelatedFieldOutput'));
-//
-//});
-Route::group([
-//    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
-//    'before' => 'artificer-localization|LaravelLocalizationRedirectFilter'
-],
+
+Route::group([],
     function () {
         Route::group(['prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix')], function () {
             Route::get('install', InstallController::class . '@install')->name('admin.install');
@@ -36,9 +29,6 @@ Route::group([
 Route::group([
     'middleware' => ['web'],
     'prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix'),
-
-//    'prefix' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(),
-//    'before' => 'artificer-auth|artificer-localization|LaravelLocalizationRedirectFilter'
 ],
     function () {
 
@@ -58,8 +48,6 @@ Route::group([
             Route::get('password/reset/{token}', ResetPasswordController::class . '@showResetForm')->name('admin.password.reset.recover');
             Route::post('password/reset', ResetPasswordController::class . '@reset')->name('admin.password.reset');
         });
-
-
 
         Route::group(['middleware' => ['artificer-auth']], function () {
 
@@ -86,13 +74,6 @@ Route::group([
                 Route::delete('{slug}/{id}', ModelController::class . '@destroy')->name('admin.model.destroy');
 
                 Route::get('{slug}/{id}/field/{name}', ModelController::class . '@getRelatedFieldOutput')->name('admin.model.field');
-
-//                Event::fire('artificer.routes.model');
-
-//                Route::post('{slug}/{id}/upload', [
-//                    'as' => 'admin.model.upload',
-//                    'uses' => '\Mascame\Artificer\Plugins\Plupload\PluploadController@plupload'
-//                ]);
             });
 
             Route::group(['prefix' => 'plugin'], function () {
