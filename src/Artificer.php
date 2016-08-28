@@ -11,8 +11,16 @@ class Artificer
     use Themable;
 
     protected static $coreExtensions = [
-        'mascame/login'
+        \Mascame\Artificer\LoginPlugin::class
     ];
+
+    /**
+     * @return array
+     */
+    public static function getCoreExtensions()
+    {
+        return self::$coreExtensions;
+    }
 
     public static function isCoreExtension($extension) {
         return in_array($extension, self::$coreExtensions);
