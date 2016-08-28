@@ -10,10 +10,17 @@ interface AssetsManagerInterface {
     public function add($assets);
 
     /**
-     * Clears all assets
+     * Outputs the collected css
      *
-     * @return $this
+     * @return mixed
      */
-    public function reset();
+    public function css();
+
+    /**
+     * Outputs the collected js
+     *
+     * @return mixed
+     */
+    public function js();
 
 }

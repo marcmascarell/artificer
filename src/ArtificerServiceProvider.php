@@ -1,17 +1,18 @@
 <?php namespace Mascame\Artificer;
 
 use App;
-use Illuminate\Database\Migrations\DatabaseMigrationRepository;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Mascame\Artificer\Assets\AssetsManager;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 use Mascame\Artificer\Commands\MigrationCommands;
-use Mascame\Artificer\Extension\Booter;
-use Mascame\Artificer\Model\ModelManager;
+use Mascame\Artificer\Extension\DatabaseInstaller;
 use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Model\ModelSchema;
+use Mascame\Artificer\Model\ModelManager;
+use Mascame\Artificer\Assets\AssetsManager;
 use Mascame\Artificer\Widget\Manager as WidgetManager;
 use Mascame\Artificer\Plugin\Manager as PluginManager;
+use Mascame\Artificer\Extension\Booter;
 use Mascame\Extender\Event\Event;
 use Mascame\Extender\Installer\FileInstaller;
 use Mascame\Extender\Installer\FileWriter;
@@ -22,10 +23,6 @@ class ArtificerServiceProvider extends ServiceProvider {
 	use AutoPublishable, ServiceProviderLoader;
 	
 	protected $name = 'admin';
-
-    protected $corePlugins = [
-        \Mascame\Artificer\LoginPlugin::class
-    ];
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -56,60 +53,57 @@ class ArtificerServiceProvider extends ServiceProvider {
 		$this->providers(config('admin.providers'));
 		$this->aliases(config('admin.aliases'));
 		$this->commands(config('admin.commands'));
+        $this->addMiddleware();
+
+        Artificer::assetManager()->add(config('admin.assets', []));
 
         Artificer::pluginManager()->boot();
         Artificer::widgetManager()->boot();
 
-        $this->manageCorePlugins();
-
-        Artificer::assetManager()->add(config('admin.assets', []));
-
         if (! $this->app->routesAreCached()) {
             require_once __DIR__ . '/../routes/admin.php';
         }
-	}
+
+        $this->handleInstallation();
+    }
+
+    protected function addMiddleware() {
+        \App::make('router')->middlewareGroup('artificer', []);
+        \App::make('router')->middlewareGroup('artificer-auth', []);
+    }
 
     /**
      * Ensure core plugins are installed
      *
      * @throws \Exception
      */
-	protected function manageCorePlugins() {
+	protected function handleInstallation() {
+	    if (Str::contains(request()->path(), 'install')) {
+            $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'artificer');
+	        return true;
+        }
+
 	    // Avoid installing plugins when using CLI
         if (App::runningInConsole() || App::runningUnitTests()) return true;
 
         $pluginManager = Artificer::pluginManager();
-        $needsRefresh = false;
+        $widgetManager = Artificer::widgetManager();
 
-        foreach ($this->corePlugins as $corePlugin) {
-            if (! $pluginManager->isInstalled($corePlugin)) {
-                $installed = $pluginManager->installer()->install($corePlugin);
+        foreach (Artificer::getCoreExtensions() as $coreExtension) {
 
-                if (! $installed) {
-                    throw new \Exception("Unable to install Artificer core plugin {$corePlugin}");
-                }
-
-                $needsRefresh = true;
+            if (! $pluginManager->isInstalled($coreExtension)
+                && ! $widgetManager->isInstalled($coreExtension)) {
+                // Needs installation
+                abort(200, '', ['Location' => route('admin.install')]);
             }
-        }
-
-        // Refresh to allow changes made by core plugins to take effect
-        if ($needsRefresh) {
-            /**
-             * File driver is slow... wait some seconds (else we would have too many redirects)
-             *
-             * Fortunately we only do this in the first run. Ye, I don't like it either.
-             */
-            sleep(2);
-
-            header('Location: '. \URL::current());
-            die();
         }
     }
 
     /**
-     * Determines if is on admin
+     * Determines if is on adminisBootable
      *
+     * @param $path
+     * @param null $routePrefix
      * @return bool
      */
     public function isBootable($path, $routePrefix = null) {
@@ -145,49 +139,13 @@ class ArtificerServiceProvider extends ServiceProvider {
 
             return new FileInstaller(new FileWriter(), $extensionConfig);
         }
+
+        if (config('admin.extension_driver') == 'database') {
+            return new DatabaseInstaller($type);
+        }
+
+        return new \Exception('Missing extension installer driver.');
     }
-
-	private function registerBindings()
-	{
-        App::singleton('ArtificerModelManager', function () {
-            return new ModelManager(new ModelSchema(new ModelObtainer()));
-        });
-
-		App::singleton('ArtificerWidgetManager', function() {
-            return new WidgetManager(
-                $this->getExtensionInstaller('widgets'),
-                new Booter(),
-                new Event(app('events'))
-            );
-        });
-
-		App::singleton('ArtificerPluginManager', function() {
-            return new PluginManager(
-                $this->getExtensionInstaller('plugins'),
-                new \Mascame\Artificer\Plugin\Booter(),
-                new Event(app('events'))
-            );
-		});
-
-        App::singleton('ArtificerAssetManager', function() {
-            return (new AssetsManager())->config(array_merge([
-                // Reset those dirs to avoid wrong paths
-                'css_dir' => '',
-                'js_dir' => '',
-            ], config('admin.assets')));
-        });
-
-        App::singleton('ArtificerMigrationRepository', function() {
-            return new DatabaseMigrationRepository(app('db'), config('admin.migrations'));
-        });
-
-        App::singleton('ArtificerMigrator', function() {
-            return new \Illuminate\Database\Migrations\Migrator(app('ArtificerMigrationRepository'), app('db'), app('files'));
-        });
-
-        // Generates a copy of migration commands with prepending 'artificer:'
-        new MigrationCommands(app('ArtificerMigrator'), app('ArtificerMigrationRepository'));
-	}
 
 	/**
 	 * Register the service provider.
@@ -225,14 +183,58 @@ class ArtificerServiceProvider extends ServiceProvider {
 		config()->set($config);
 	}
 
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return [];
-	}
+    private function registerBindings()
+    {
+        /*
+        |--------------------------------------------------------------------------
+        | Register commands
+        |--------------------------------------------------------------------------
+        |*/
+
+        App::singleton('ArtificerMigrationRepository', function() {
+            return new DatabaseMigrationRepository(app('db'), config('admin.migrations'));
+        });
+
+        App::singleton('ArtificerMigrator', function() {
+            return new \Illuminate\Database\Migrations\Migrator(app('ArtificerMigrationRepository'), app('db'), app('files'));
+        });
+
+        // Generates a copy of migration commands with prepending 'artificer:'
+        new MigrationCommands(app('ArtificerMigrator'), app('ArtificerMigrationRepository'));
+
+        /*
+        |--------------------------------------------------------------------------
+        | Register managers
+        |--------------------------------------------------------------------------
+        |*/
+
+        App::singleton('ArtificerModelManager', function () {
+            return new ModelManager(new ModelSchema(new ModelObtainer()));
+        });
+
+        App::singleton('ArtificerWidgetManager', function() {
+            return new WidgetManager(
+                $this->getExtensionInstaller('widgets'),
+                new Booter(),
+                new Event(app('events'))
+            );
+        });
+
+        App::singleton('ArtificerPluginManager', function() {
+            return new PluginManager(
+                $this->getExtensionInstaller('plugins'),
+                new \Mascame\Artificer\Plugin\Booter(),
+                new Event(app('events'))
+            );
+        });
+
+        App::singleton('ArtificerAssetManager', function() {
+            return (new AssetsManager())->config(array_merge([
+                // Reset those dirs to avoid wrong paths
+                'css_dir' => '',
+                'js_dir' => '',
+            ], config('admin.assets')));
+        });
+    }
 
 }
