@@ -1,8 +1,6 @@
 <?php namespace Mascame\Artificer\Extension;
 
 use Illuminate\Support\Str;
-use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Widget\WidgetInterface;
 use Mascame\Extender\Booter\BooterInterface;
 
 class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface {
@@ -51,12 +49,14 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
 
         $this->getEventDispatcher()->listen('extender.before.install.' . $instance->namespace, function() use ($instance) {
             $this->initResources($instance)->install();
-            $instance->install();
+
+            if (method_exists($instance, 'install')) $instance->install();
         });
 
         $this->getEventDispatcher()->listen('extender.before.uninstall.' . $instance->namespace, function() use ($instance) {
             $this->initResources($instance)->uninstall();
-            $instance->uninstall();
+
+            if (method_exists($instance, 'uninstall')) $instance->uninstall();
         });
 
         // Doing it later would not work

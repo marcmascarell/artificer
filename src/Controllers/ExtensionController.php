@@ -73,7 +73,7 @@ class ExtensionController extends BaseController
     {
         $extension = $this->getExtensionSlug($extension);
 
-        if ($action == self::ACTION_UNINSTALL && Artificer::isCoreExtension($extension->package)) {
+        if ($action == self::ACTION_UNINSTALL && Artificer::isCoreExtension($extension->namespace)) {
             throw new \Exception('Core extensions can not be uninstalled');
         }
 
