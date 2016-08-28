@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Mascame\Artificer\Middleware\InstalledMiddleware;
 
 
 class InstallServiceProvider extends ServiceProvider {
@@ -14,7 +15,9 @@ class InstallServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-        // Avoid installing plugins when using CLI
+        \App::make('router')->middleware('artificer-installed', InstalledMiddleware::class);
+
+        // Avoid redirection when using CLI
         if (\App::runningInConsole() || \App::runningUnitTests()) return true;
 
         if (! self::isInstalling() && ! self::isInstalled()) {
