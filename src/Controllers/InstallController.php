@@ -90,6 +90,10 @@ class InstallController extends BaseController
         $pluginManager = Artificer::pluginManager();
         $widgetManager = Artificer::widgetManager();
 
+        // Enable install events
+        Artificer::pluginManager()->boot();
+        Artificer::widgetManager()->boot();
+
         foreach (Artificer::getCoreExtensions() as $coreExtension) {
 
             if (! $pluginManager->isInstalled($coreExtension)

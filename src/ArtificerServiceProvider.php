@@ -60,8 +60,10 @@ class ArtificerServiceProvider extends ServiceProvider {
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'artificer');
 
-        Artificer::pluginManager()->boot();
-        Artificer::widgetManager()->boot();
+        if (InstallServiceProvider::isExtensionDriverReady()) {
+            Artificer::pluginManager()->boot();
+            Artificer::widgetManager()->boot();
+        }
 
         if (! $this->app->routesAreCached()) {
             require_once __DIR__ . '/../routes/admin.php';

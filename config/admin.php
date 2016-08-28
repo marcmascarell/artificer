@@ -17,8 +17,11 @@ return [
     'providers' => [
         Collective\Html\HtmlServiceProvider::class,
         Stolz\Assets\Laravel\ServiceProvider::class,
-        Mascame\Artificer\LoginPluginServiceProvider::class,
         Mascame\Artificer\DefaultThemeServiceProvider::class,
+        Mascame\Artificer\InstallServiceProvider::class,
+
+        // Extensions
+        Mascame\Artificer\LoginPluginServiceProvider::class,
         Mascame\Artificer\ArtificerWidgetsServiceProvider::class,
     ],
 
@@ -41,7 +44,7 @@ return [
     | Keep in mind that existent extensions in your system are already
     | pulled in, but have an installed/uninstalled status.
     |
-    | Supported: "file"
+    | Supported: "file", "database"
     |
     */
 

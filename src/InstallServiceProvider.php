@@ -24,7 +24,7 @@ class InstallServiceProvider extends ServiceProvider {
 
 
     public static function isInstalled() {
-        if (! \Schema::hasTable(config('admin.migrations'))) {
+        if (! self::isExtensionDriverReady()) {
             return false;
         }
 
@@ -40,6 +40,12 @@ class InstallServiceProvider extends ServiceProvider {
         }
 
         return true;
+    }
+
+    public static function isExtensionDriverReady() {
+        $driver = config('admin.extension_driver');
+
+        return ($driver == 'file' || $driver == 'database' && \Schema::hasTable(config('admin.migrations')));
     }
 
     public static function isInstalling() {
