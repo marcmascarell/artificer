@@ -29,9 +29,10 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
 
         if (! $instance->namespace) $instance->namespace = $name;
         if (! $instance->name) $instance->name = $name;
-        if (property_exists($instance, 'assetsPath')) {
-            if (! $instance->assetsPath) $instance->assetsPath = 'packages/' . $instance->package . '/';
-        }
+        // Todo: remove?
+//        if (property_exists($instance, 'assetsPath')) {
+//            if (! $instance->assetsPath) $instance->assetsPath = 'packages/' . $instance->package . '/';
+//        }
 
         if (! $instance->slug) {
             $instance->slug = Str::slug(

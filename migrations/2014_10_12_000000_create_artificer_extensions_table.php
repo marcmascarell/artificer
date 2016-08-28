@@ -16,6 +16,7 @@ class CreateArtificerExtensionsTable extends Migration
         Schema::create('artificer_extensions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('type');
             $table->string('status');
             $table->timestamps();
         });

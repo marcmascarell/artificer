@@ -26,7 +26,7 @@ class DatabaseInstaller extends AbstractInstaller implements InstallerInterface 
 
     public function __construct($type)
     {
-        if (! self::$booted) $this->boot();
+        if (! self::$booted && \Schema::hasTable('artificer_extensions')) $this->boot();
 
         $this->type = $type;
         $this->extensions = self::$extensionsByType[$type];

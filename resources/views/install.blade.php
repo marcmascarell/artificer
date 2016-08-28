@@ -156,7 +156,7 @@
         </div>
 
         <div class="row steps">
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
                 <p>Lets get to work!</p>
 
                 <p>Here you got a detailed resume of what I will do, <b>once you are fine press the "Start" button</b>.</p>

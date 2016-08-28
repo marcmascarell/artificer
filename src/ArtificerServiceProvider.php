@@ -50,12 +50,15 @@ class ArtificerServiceProvider extends ServiceProvider {
 		// Wait until app is ready for config to be published
 		if (! $this->isPublished()) return;
 
-		$this->providers(config('admin.providers'));
-		$this->aliases(config('admin.aliases'));
-		$this->commands(config('admin.commands'));
         $this->addMiddleware();
 
+		$this->providers(config('admin.providers'));
+        $this->aliases(config('admin.aliases'));
+		$this->commands(config('admin.commands'));
+
         Artificer::assetManager()->add(config('admin.assets', []));
+
+        $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'artificer');
 
         Artificer::pluginManager()->boot();
         Artificer::widgetManager()->boot();
@@ -63,40 +66,11 @@ class ArtificerServiceProvider extends ServiceProvider {
         if (! $this->app->routesAreCached()) {
             require_once __DIR__ . '/../routes/admin.php';
         }
-
-        $this->handleInstallation();
     }
 
     protected function addMiddleware() {
         \App::make('router')->middlewareGroup('artificer', []);
         \App::make('router')->middlewareGroup('artificer-auth', []);
-    }
-
-    /**
-     * Ensure core plugins are installed
-     *
-     * @throws \Exception
-     */
-	protected function handleInstallation() {
-	    if (Str::contains(request()->path(), 'install')) {
-            $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'artificer');
-	        return true;
-        }
-
-	    // Avoid installing plugins when using CLI
-        if (App::runningInConsole() || App::runningUnitTests()) return true;
-
-        $pluginManager = Artificer::pluginManager();
-        $widgetManager = Artificer::widgetManager();
-
-        foreach (Artificer::getCoreExtensions() as $coreExtension) {
-
-            if (! $pluginManager->isInstalled($coreExtension)
-                && ! $widgetManager->isInstalled($coreExtension)) {
-                // Needs installation
-                abort(200, '', ['Location' => route('admin.install')]);
-            }
-        }
     }
 
     /**
