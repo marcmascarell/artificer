@@ -1,6 +1,7 @@
 <?php namespace Mascame\Artificer\Extension;
 
 use Illuminate\Database\Migrations\Migrator;
+use Illuminate\Support\ServiceProvider;
 
 class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
 
@@ -15,19 +16,46 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
 
     protected $migrated = false;
 
+    /**
+     * Methods that will run at the end, with the loadDefered method
+     *
+     * @var array
+     */
+    protected $defered = [
+        'mergeConfigFrom',
+        'mergeRecursiveConfigFrom'
+    ];
+
     public function __construct(\Illuminate\Contracts\Foundation\Application $app, $extension)
     {
         parent::__construct($app);
 
         $this->extension = $extension;
 
-        $this->collectedCalls = $this->getCollectedCalls();
-
         foreach ($this->getCollectedCalls() as $call) {
+            if ($this->isDefered($call['method'])) continue;
+
             call_user_func_array(array($this, $call['method']), $call['args']);
         }
     }
 
+    public function loadDefered() {
+        foreach ($this->getCollectedCalls() as $call) {
+            if (! $this->isDefered($call['method'])) continue;
+
+            call_user_func_array(array($this, $call['method']), $call['args']);
+        }
+    }
+
+    private function isDefered($method) {
+        return in_array($method, $this->defered);
+    }
+
+    /**
+     * Get the collected resources from the extension instance
+     *
+     * @return array
+     */
     protected function getCollectedCalls() {
         $collectedCalls = $this->extension->resources->getCollected();
         $collectedExtensionCalls = [];
@@ -39,10 +67,16 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         return $collectedExtensionCalls;
     }
 
+    /**
+     * We will call handle{Method} when an extension is installed
+     */
     public function install() {
         $this->toggleResources('handle');
     }
 
+    /**
+     * We will call revert{Method} when an extension is uninstalled
+     */
     public function uninstall() {
         $this->toggleResources('revert');
     }
@@ -94,9 +128,30 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
     protected function handlePublishes() {
         if ($this->published) return;
 
+        $pathsToPublish = ServiceProvider::pathsToPublish(
+            $this->extension->namespace
+        );
+
         \Artisan::call('vendor:publish', ['--provider' => $this->extension->namespace]);
 
+        // Also ensure the paths exist
+        $this->waitUntilPathsExist(array_values($pathsToPublish));
+
         $this->published = true;
+    }
+
+    protected function waitUntilPathsExist($paths, $retries = 5, $checkInterval = 2) {
+        foreach ($paths as $path) {
+            $retry = 0;
+
+            while ( ! file_exists($path) ) {
+                if ($retry >= $retries) {
+                    throw new \Exception('The path "' . $path . '" which we expected to see did not exist for the time we waited.');
+                }
+
+                sleep($checkInterval);
+            }
+        }
     }
 
     protected function handleLoadMigrationsFrom($args) {
@@ -206,5 +261,11 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         foreach (static::$publishes[$class] as $publisedPath) {
             \File::deleteDirectory($publisedPath);
         }
+    }
+
+    protected function mergeRecursiveConfigFrom($path, $key) {
+        config([
+            $key => array_replace_recursive(config($key, []), require $path)
+        ]);
     }
 }
