@@ -44,11 +44,11 @@ return [
     | Keep in mind that existent extensions in your system are already
     | pulled in, but have an installed/uninstalled status.
     |
-    | Supported: "file", "database"
+    | Supported: "database", "file"
     |
     */
 
-    'extension_driver' => 'file',
+    'extension_driver' => 'database',
 
     /*
     |--------------------------------------------------------------------------
