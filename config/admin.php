@@ -93,5 +93,6 @@ return [
         'show' => 'fa fa-eye',
         'sort-up' => 'fa fa-long-arrow-up',
         'sort-down' => 'fa fa-long-arrow-down',
+        'extension' => 'fa fa-plug',
     ]
 ];
