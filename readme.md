@@ -59,4 +59,4 @@ If you need help or any kind of support, please send an e-mail to Marc Mascarell
 
 ##License
 
-MIT
+This package is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
