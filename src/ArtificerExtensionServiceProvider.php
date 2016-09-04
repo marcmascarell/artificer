@@ -16,6 +16,8 @@ use Illuminate\Support\ServiceProvider;
  */
 class ArtificerExtensionServiceProvider extends ServiceProvider {
 
+    protected $package = null;
+
     /**
      * @throws \Exception
      */
@@ -80,4 +82,19 @@ class ArtificerExtensionServiceProvider extends ServiceProvider {
         throw new \Exception('Artificer extensions should use method "' . $method . '" on its own class.');
     }
 
+    /**
+     * @param array|string $widget
+     * @return bool
+     */
+    protected function addWidget($widget) {
+        return Artificer::widgetManager()->add($this->package, $widget);
+    }
+
+    /**
+     * @param array|string $plugin
+     * @return bool
+     */
+    protected function addPlugin($plugin) {
+        return Artificer::pluginManager()->add($this->package, $plugin);
+    }
 }

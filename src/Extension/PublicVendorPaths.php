@@ -3,14 +3,30 @@
 namespace Mascame\Artificer\Extension;
 
 
+use Illuminate\Support\Str;
+
 trait PublicVendorPaths
 {
 
+    /**
+     * Typically your published files are going to live inside a "vendor" path
+     *
+     * For example: resources/views/vendor/...
+     *
+     * @return string
+     */
     private function getPath()
     {
         return 'vendor/' . $this->getConfigShortPath();
     }
 
+    /**
+     * Your config, instead, will reside directly under the "admin" path
+     *
+     * For example: config/admin/extensions/your-package-name/...
+     *
+     * @return string
+     */
     private function getConfigShortPath()
     {
         return 'admin/extensions/' . $this->slug;
@@ -32,6 +48,13 @@ trait PublicVendorPaths
     final public function getConfigPath()
     {
         return config_path($this->getConfigShortPath());
+    }
+
+    final public function getConfigPathFile($file)
+    {
+        if (! Str::endsWith($file, '.php')) $file = $file . '.php';
+
+        return config_path($this->getConfigShortPath() . '/' . $file);
     }
 
     final public function getTranslationsPath()

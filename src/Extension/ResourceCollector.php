@@ -17,6 +17,11 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider {
         return $this->collect('mergeConfigFrom', func_get_args());
     }
 
+    public function mergeRecursiveConfigFrom($path, $key)
+    {
+        return $this->collect('mergeRecursiveConfigFrom', func_get_args());
+    }
+
     /**
      * @param string $path
      * @param string $namespace

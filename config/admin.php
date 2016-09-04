@@ -17,8 +17,11 @@ return [
     'providers' => [
         Collective\Html\HtmlServiceProvider::class,
         Stolz\Assets\Laravel\ServiceProvider::class,
-        Mascame\Artificer\LoginPluginServiceProvider::class,
         Mascame\Artificer\DefaultThemeServiceProvider::class,
+        Mascame\Artificer\InstallServiceProvider::class,
+
+        // Extensions
+        Mascame\Artificer\LoginPluginServiceProvider::class,
         Mascame\Artificer\ArtificerWidgetsServiceProvider::class,
     ],
 
@@ -41,11 +44,20 @@ return [
     | Keep in mind that existent extensions in your system are already
     | pulled in, but have an installed/uninstalled status.
     |
-    | Supported: "file"
+    | Supported: "database"
     |
     */
 
-    'extension_driver' => 'file',
+    'extension_driver' => 'database',
+
+    'extension_drivers' => [
+
+        'database' => [
+            'connection' => env('DB_CONNECTION', 'mysql'),
+            'table' => 'artificer_extensions'
+        ],
+
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -90,5 +102,6 @@ return [
         'show' => 'fa fa-eye',
         'sort-up' => 'fa fa-long-arrow-up',
         'sort-down' => 'fa fa-long-arrow-down',
+        'extension' => 'fa fa-plug',
     ]
 ];
