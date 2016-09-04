@@ -24,7 +24,8 @@
     "mascame/artificer-login-plugin": "dev-master",
     "mascame/formality": "0.*",
     "mascame/extender": "dev-master",
-    "stolz/assets": "^0.1.9"
+    "stolz/assets": "^0.1.9",
+    "laravelcollective/html": "5.3.*"
   },
   "require-dev": {
     "codeception/codeception": "2.*"
