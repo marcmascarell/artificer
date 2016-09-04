@@ -44,11 +44,20 @@ return [
     | Keep in mind that existent extensions in your system are already
     | pulled in, but have an installed/uninstalled status.
     |
-    | Supported: "database", "file"
+    | Supported: "database"
     |
     */
 
     'extension_driver' => 'database',
+
+    'extension_drivers' => [
+
+        'database' => [
+            'connection' => env('DB_CONNECTION', 'mysql'),
+            'table' => 'artificer_extensions'
+        ],
+
+    ],
 
     /*
     |--------------------------------------------------------------------------

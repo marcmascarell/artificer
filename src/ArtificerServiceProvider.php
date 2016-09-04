@@ -110,12 +110,6 @@ class ArtificerServiceProvider extends ServiceProvider {
     }
 
 	private function getExtensionInstaller($type) {
-        if (config('admin.extension_driver') == 'file') {
-            $extensionConfig = $this->getConfigPath() . 'extensions/'. $type .'.php';
-
-            return new FileInstaller(new FileWriter(), $extensionConfig);
-        }
-
         if (config('admin.extension_driver') == 'database') {
             return new DatabaseInstaller($type);
         }

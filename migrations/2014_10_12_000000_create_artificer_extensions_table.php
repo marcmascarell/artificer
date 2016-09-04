@@ -2,9 +2,8 @@
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
-class CreateArtificerExtensionsTable extends Migration
+class CreateArtificerExtensionsTable extends \Mascame\Artificer\ArtificerMigration
 {
     /**
      * Run the migrations.

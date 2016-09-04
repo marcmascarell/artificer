@@ -24,12 +24,24 @@ class DatabaseInstaller extends AbstractInstaller implements InstallerInterface 
 
     protected $extensions = [];
 
+    protected $connection = null;
+
+    protected $table = null;
+
+
     public function __construct($type)
     {
-        if (! self::$booted && \Schema::hasTable('artificer_extensions')) $this->boot();
+        $this->connection = config('admin.extension_drivers.database.connection');
+        $this->table = config('admin.extension_drivers.database.table');
+
+        if (! self::$booted && \Schema::connection($this->connection)->hasTable($this->table)) $this->boot();
 
         $this->type = $type;
         $this->extensions = self::$extensionsByType[$type];
+    }
+
+    protected function table() {
+//        return
     }
 
     protected function boot() {
@@ -45,7 +57,10 @@ class DatabaseInstaller extends AbstractInstaller implements InstallerInterface 
     }
 
     protected function model() {
-        return \Mascame\Artificer\Model\FakeModel::make('ArtificerExtension');
+        return \Mascame\Artificer\Model\FakeModel::make('ArtificerExtension', [
+            'connection' => $this->connection,
+            'table' => $this->table,
+        ]);
     }
 
     public function handleExtensionChanges($extensions)

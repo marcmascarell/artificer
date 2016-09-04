@@ -38,6 +38,7 @@ class InstallServiceProvider extends ServiceProvider {
 
             if (! $pluginManager->isInstalled($coreExtension)
                 && ! $widgetManager->isInstalled($coreExtension)) {
+                dd($coreExtension);
                 return false;
             }
         }
@@ -47,8 +48,10 @@ class InstallServiceProvider extends ServiceProvider {
 
     public static function isExtensionDriverReady() {
         $driver = config('admin.extension_driver');
+        $connectionName = config('admin.extension_drivers.database.connection');
+        $migrationsTable = config('admin.migrations');
 
-        return ($driver == 'file' || $driver == 'database' && \Schema::hasTable(config('admin.migrations')));
+        return ($driver == 'file' || $driver == 'database' && \Schema::connection($connectionName)->hasTable($migrationsTable));
     }
 
     public static function isInstalling() {
