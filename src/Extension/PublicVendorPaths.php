@@ -45,32 +45,11 @@ trait PublicVendorPaths
         return config($this->getDotNotationPath($this->getConfigShortPath()) . $key, $default);
     }
 
-    final public function getConfigPath($file = null)
-    {
-        if ($file) $file = '/' . $file;
-
-        return config_path($this->getConfigShortPath() . $file);
-    }
-
     final public function getConfigPathFile($file)
     {
         if (! Str::endsWith($file, '.php')) $file = $file . '.php';
 
         return config_path($this->getConfigShortPath() . '/' . $file);
-    }
-
-    final public function getTranslationsPath($file = null)
-    {
-        if ($file) $file = '/' . $file;
-
-        return resource_path('lang/' . $this->getPath() . $file);
-    }
-
-    final public function getViewsPath($file = null)
-    {
-        if ($file) $file = '/' . $file;
-
-        return resource_path('views/' . $this->getPath() . $file);
     }
 
     /**
@@ -82,9 +61,28 @@ trait PublicVendorPaths
      */
     final public function getAssetsPath($file = null)
     {
+        return $this->appendFile($this->getPath(), $file);
+    }
+
+    final public function getConfigPath($file = null)
+    {
+        return $this->appendFile(config_path($this->getConfigShortPath()), $file);
+    }
+
+    final public function getTranslationsPath($file = null)
+    {
+        return $this->appendFile(resource_path('lang/' . $this->getPath()), $file);
+    }
+
+    final public function getViewsPath($file = null)
+    {
+        return $this->appendFile(resource_path('views/' . $this->getPath()), $file);
+    }
+
+    private function appendFile($path, $file) {
         if ($file) $file = '/' . $file;
 
-        return $this->getPath() . $file;
+        return $path . $file;
     }
 
 }
