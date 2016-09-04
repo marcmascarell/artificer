@@ -98,7 +98,7 @@ class ArtificerServiceProvider extends ServiceProvider {
     {
         $this->autoPublishes(function() {
             $this->publishes([
-                __DIR__.'/../resources/assets' => public_path('packages/mascame/' . $this->name),
+                __DIR__.'/../resources/assets' => public_path(Artificer::getAssetsPath()),
             ], 'public');
 
             $this->publishes([

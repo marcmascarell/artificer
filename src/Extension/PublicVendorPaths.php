@@ -67,9 +67,14 @@ trait PublicVendorPaths
         return resource_path('views/' . $this->getPath());
     }
 
+    /**
+     * Javascript, CSS and images. Will reside in public directory
+     *
+     * @return string
+     */
     final public function getAssetsPath()
     {
-        return public_path('views/' . $this->getPath());
+        return public_path($this->getPath());
     }
 
 }

@@ -103,4 +103,18 @@ class Artificer
         return config('admin.menu');
     }
 
+    public static function getAssetsPath($file = null)
+    {
+        if ($file) $file = '/' . $file;
+
+        return 'vendor/admin' . $file;
+    }
+
+    public static function getExtensionsAssetsPath($file = null)
+    {
+        if ($file) $file = '/' . $file;
+
+        return self::getAssetsPath('extensions' . $file);
+    }
+
 }

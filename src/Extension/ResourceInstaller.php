@@ -132,12 +132,22 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
             $this->extension->namespace
         );
 
+        $this->ensurePathsExistence(array_keys($pathsToPublish));
+
         \Artisan::call('vendor:publish', ['--provider' => $this->extension->namespace]);
 
-        // Also ensure the paths exist
+        // Ensure the paths exist
         $this->waitUntilPathsExist(array_values($pathsToPublish));
 
         $this->published = true;
+    }
+
+    protected function ensurePathsExistence($paths) {
+        foreach ($paths as $path) {
+            if (! \File::exists($path)) {
+                throw new \Exception('Origin path to publish not found, please ensure the path is correct');
+            }
+        }
     }
 
     protected function waitUntilPathsExist($paths, $retries = 5, $checkInterval = 2) {
