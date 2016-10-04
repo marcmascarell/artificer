@@ -60,7 +60,7 @@ If you need help or any kind of support, please send an e-mail to Marc Mascarell
 
 ##Code of Conduct
 
-This project is committed to enforce the ["Contributor Covenant"](http://contributor-covenant.org/version/1/4/) code of conduct.
+This project is committed to enforce the <a href="http://contributor-covenant.org/version/1/4/" target="_blank">"Contributor Covenant"</a> code of conduct.
 
 ##License
 
