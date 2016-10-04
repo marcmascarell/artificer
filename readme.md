@@ -20,6 +20,7 @@ Here you will find a brief introduction, [go here for full documentation](https:
 - <a href="#installation">Installation</a>
 - <a href="https://artificer.readme.io/" target="_blank">Documentation</a>
 - <a href="#support">Support</a>
+- <a href="#code-of-conduct">Code of Conduct</a>
 - <a href="#license">License</a>
 
 ## Compatibility
@@ -56,6 +57,10 @@ You can find detailed instructions of how to setup the development environment [
 ##Support
 
 If you need help or any kind of support, please send an e-mail to Marc Mascarell at marcmascarell@gmail.com.
+
+##Code of Conduct
+
+This project is committed to enforce the ["Contributor Covenant"](http://contributor-covenant.org/version/1/4/) code of conduct.
 
 ##License
 
