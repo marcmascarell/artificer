@@ -13,8 +13,9 @@
  </p>
 </p>
 
+<br />
 
-It's built around your Laravel's Eloquent models. It's very flexible, extensible, detects all your models and builds a beautiful interface to manage your data.
+It's flexible, extensible and builds a beautiful interface around your models.
 
 ##Current state warning
 
