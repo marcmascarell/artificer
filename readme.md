@@ -1,10 +1,14 @@
-# Artificer
+<p align="center">
+
+<img src="https://cloud.githubusercontent.com/assets/642299/19163982/726d7934-8bfe-11e6-8805-c7a52512eb2a.png" alt="Artificer" title="Artificer" />
+<h1 align="center">Artificer</h1>
+<h3 align="center">The admin panel Laravel deserves</h3>
+</p>
 
 [![Latest Version](https://img.shields.io/github/release/marcmascarell/laravel-artificer.svg?style=flat-square)](https://github.com/marcmascarell/laravel-artificer/releases)
 [![Quality Score](https://img.shields.io/scrutinizer/g/marcmascarell/laravel-artificer.svg?style=flat-square)](https://scrutinizer-ci.com/g/marcmascarell/laravel-artificer/)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
-**Artificer is the admin panel Laravel deserves**.
 
 It's built around your Laravel's Eloquent models. It's very flexible, extensible, detects all your models and builds a beautiful interface to manage your data.
 
@@ -52,7 +56,7 @@ Add the Service Provider to `config/app.php` at the bottom of `providers`:
 
 Thank you for considering contributing! You can contribute at any time forking the project and making a pull request.
 
-You can find detailed instructions of how to setup the development environment [here](https://github.com/marcmascarell/artificer-demo).
+[How to setup the development environment](https://github.com/marcmascarell/artificer-demo).
 
 ##Support
 
