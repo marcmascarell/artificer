@@ -13,8 +13,6 @@
  </p>
 </p>
 
-<br />
-
 It's flexible, extensible and builds a beautiful interface around your models.
 
 ##Current state warning
@@ -27,6 +25,7 @@ Here you will find a brief introduction, [go here for full documentation](https:
 
 - <a href="#compatibility">Compatibility</a>
 - <a href="#installation">Installation</a>
+- <a href="#screenshots">Screenshots</a>
 - <a href="https://artificer.readme.io/" target="_blank">Documentation</a>
 - <a href="#support">Support</a>
 - <a href="#code-of-conduct">Code of Conduct</a>
@@ -56,6 +55,9 @@ Add the Service Provider to `config/app.php` at the bottom of `providers`:
 ```php
 \Mascame\Artificer\ArtificerServiceProvider::class
 ```
+##Screenshots
+![artificer_model_index_shadow](https://cloud.githubusercontent.com/assets/642299/19166487/ffb1d638-8c07-11e6-8285-cb3f5a785a4f.png)
+![artificer_extensions_shadow](https://cloud.githubusercontent.com/assets/642299/19166488/ffb3c308-8c07-11e6-867b-f42de1e851d4.png)
 
 ##Contributing
 
