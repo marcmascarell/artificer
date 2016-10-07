@@ -33,7 +33,12 @@ class MigrationCommands
             $commands[] = $instance;
         }
 
-        $this->registerCommands($commands);
+        /**
+         * Only allow this commands via UI to avoid some inconsistencies
+         */
+        if (! \App::runningInConsole()) {
+            $this->registerCommands($commands);
+        }
     }
 
     protected function registerCommands($commands)

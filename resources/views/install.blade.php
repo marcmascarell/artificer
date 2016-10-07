@@ -148,7 +148,7 @@
     <div class="container">
         <div class="row">
             <div class="text-center">
-                <img src="{{ asset('packages/mascame/admin/img/logo.png') }}" alt="" height="200">
+                <img src="{{ asset('vendor/admin/img/logo.png') }}" alt="" height="200">
 
                 <h1>Hi, I'm Artificer.</h1>
                 <h2>I will be glad to serve you!</h2>

@@ -45,11 +45,6 @@ trait PublicVendorPaths
         return config($this->getDotNotationPath($this->getConfigShortPath()) . $key, $default);
     }
 
-    final public function getConfigPath()
-    {
-        return config_path($this->getConfigShortPath());
-    }
-
     final public function getConfigPathFile($file)
     {
         if (! Str::endsWith($file, '.php')) $file = $file . '.php';
@@ -57,19 +52,37 @@ trait PublicVendorPaths
         return config_path($this->getConfigShortPath() . '/' . $file);
     }
 
-    final public function getTranslationsPath()
+    /**
+     * Do not use public_path() because AssetManager does not understand it as local asset
+     *
+     * Javascript, CSS and images. Will reside in public directory
+     *
+     * @return string
+     */
+    final public function getAssetsPath($file = null)
     {
-        return resource_path('lang/' . $this->getPath());
+        return $this->appendFile($this->getPath(), $file);
     }
 
-    final public function getViewsPath()
+    final public function getConfigPath($file = null)
     {
-        return resource_path('views/' . $this->getPath());
+        return $this->appendFile(config_path($this->getConfigShortPath()), $file);
     }
 
-    final public function getAssetsPath()
+    final public function getTranslationsPath($file = null)
     {
-        return public_path('views/' . $this->getPath());
+        return $this->appendFile(resource_path('lang/' . $this->getPath()), $file);
+    }
+
+    final public function getViewsPath($file = null)
+    {
+        return $this->appendFile(resource_path('views/' . $this->getPath()), $file);
+    }
+
+    private function appendFile($path, $file) {
+        if ($file) $file = '/' . $file;
+
+        return $path . $file;
     }
 
 }

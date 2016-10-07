@@ -14,15 +14,15 @@ return [
         'belongsTo' => ArtificerTypes\Relations\belongsTo::class,
     ],
 
+    /**
+     * field_type => [options]
+     */
     'types' => [
-        // field_type => ['fieldname_1', 'fieldname_1')
-        'key' => [
-            'autodetect' => [
-                'id'
-            ]
-        ],
 
-        'published' => [],
+        // Default type that will be used in case of no better match
+        'default' => [
+            'type' => 'text'
+        ],
 
         'checkbox' => [
             'autodetect' => [
@@ -36,53 +36,7 @@ return [
 
         'custom' => [],
 
-        'password' => [
-            'autodetect' => [
-                'password'
-            ],
-        ],
-
-        'text' => [
-            'autodetect' => [
-                'title',
-                'username',
-                'name'
-            ],
-        ],
-
-        'textarea' => [
-            'autodetect' => [
-                'description'
-            ],
-        ],
-
-        'wysiwyg' => [
-            'autodetect' => [
-                'body',
-                'text'
-            ],
-        ],
-
-        'radio' => [
-            'autodetect' => [
-                'option',
-                'selection',
-            ],
-        ],
-
         'email' => [],
-
-        'link' => [
-            'autodetect' => [
-                'url'
-            ],
-        ],
-
-        'ip' => [
-            'regex' => [
-                '/_ip$/',
-            ],
-        ],
 
         'datetime' => [
 
@@ -117,12 +71,6 @@ return [
 
         'file' => [],
 
-        'image' => [
-            'autodetect' => [
-                'image'
-            ],
-        ],
-
         'hasOne' => [
             'autodetect' => [
                 '_id',
@@ -133,8 +81,78 @@ return [
 
         'hasMany' => [],
 
-        'default' => [
-            'type' => 'text'
-        ]
+        'image' => [
+            'autodetect' => [
+                'image'
+            ],
+        ],
+
+        'ip' => [
+            'regex' => [
+                '/_ip$/',
+            ],
+        ],
+
+
+        'key' => [
+            'autodetect' => [
+                'id'
+            ]
+        ],
+
+        'link' => [
+            'autodetect' => [
+                'url'
+            ],
+        ],
+
+        'password' => [
+            'autodetect' => [
+                'password'
+            ],
+        ],
+
+        'published' => [],
+
+        'radio' => [
+            'autodetect' => [
+                'option',
+                'selection',
+            ],
+        ],
+
+        'text' => [
+            'autodetect' => [
+                'title',
+                'username',
+                'name'
+            ],
+        ],
+
+        'textarea' => [
+            'autodetect' => [
+                'description'
+            ],
+        ],
+
+        // Todo
+//        'select' => [
+//            'autodetect' => [
+//                'city',
+//                'country',
+//            ],
+//
+//            'widgets' => [
+//                \Mascame\Artificer\Widgets\Chosen::class,
+//            ]
+//        ],
+
+        'wysiwyg' => [
+            'autodetect' => [
+                'body',
+                'text'
+            ],
+        ],
+
     ],
 ];
