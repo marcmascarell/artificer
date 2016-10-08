@@ -1,5 +1,6 @@
-<?php namespace Mascame\Artificer\Controllers;
+<?php
 
+namespace Mascame\Artificer\Controllers;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Input;
@@ -7,19 +8,15 @@ use Mascame\Artificer\Fields\FieldFactory;
 use Mascame\Formality\Parser\Parser;
 use View;
 
-
 class BaseModelController extends BaseController
 {
-
     /**
-     * The Eloquent model instance
+     * The Eloquent model instance.
      * @var \Eloquent
      */
     protected $model;
 
-    /**
-     *
-     */
+
     public function __construct()
     {
         parent::__construct();
@@ -45,9 +42,11 @@ class BaseModelController extends BaseController
      */
     protected function getFields($data)
     {
-        if ($this->fields) return $this->fields;
+        if ($this->fields) {
+            return $this->fields;
+        }
 
-        /**
+        /*
          * @var $data Collection
          */
         $modelFields = $this->modelObject->getOption('fields');
@@ -57,7 +56,9 @@ class BaseModelController extends BaseController
         foreach ($this->modelObject->columns as $column) {
             $options = [];
 
-            if (isset($modelFields[$column])) $options = $modelFields[$column];
+            if (isset($modelFields[$column])) {
+                $options = $modelFields[$column];
+            }
 
             $fields[$column] = $options;
         }
@@ -95,7 +96,7 @@ class BaseModelController extends BaseController
      * @param null $data
      * @param $sort
      */
-    protected function all($modelName, $data = null, $sort)
+    protected function all($modelName, $data, $sort)
     {
         $this->handleData($data);
 

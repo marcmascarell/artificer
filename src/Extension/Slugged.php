@@ -1,8 +1,9 @@
-<?php namespace Mascame\Artificer\Extension;
+<?php
+
+namespace Mascame\Artificer\Extension;
 
 trait Slugged
 {
-
     /**
      * @var array
      */
@@ -12,7 +13,8 @@ trait Slugged
      * @param $slug
      * @param $namespace
      */
-    public function setSlug($slug, $namespace) {
+    public function setSlug($slug, $namespace)
+    {
         $this->extensionSlugs[$slug] = $namespace;
     }
 
@@ -20,7 +22,8 @@ trait Slugged
      * @param $slug
      * @return mixed
      */
-    public function getFromSlug($slug) {
+    public function getFromSlug($slug)
+    {
         return $this->get($this->extensionSlugs[$slug]);
     }
 }

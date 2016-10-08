@@ -1,4 +1,7 @@
-<?php namespace Mascame\Artificer\Assets;
+<?php
 
+namespace Mascame\Artificer\Assets;
 
-class AssetsManager extends \Stolz\Assets\Manager implements AssetsManagerInterface {}
+class AssetsManager extends \Stolz\Assets\Manager implements AssetsManagerInterface
+{
+}

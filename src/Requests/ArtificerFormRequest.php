@@ -40,12 +40,13 @@ class ArtificerFormRequest extends FormRequest
     }
 
     /**
-     * Init the needed properties
+     * Init the needed properties.
      */
-    protected function init() {
+    protected function init()
+    {
         $this->modelManager = Artificer::modelManager();
         $this->model = $this->modelManager->model;
-        $this->isUpdating = (bool)($this->route('id'));
+        $this->isUpdating = (bool) ($this->route('id'));
     }
 
     protected function getValidatorInstance()
@@ -66,17 +67,19 @@ class ArtificerFormRequest extends FormRequest
     }
 
     /**
-     * Apply the rules given for the model
+     * Apply the rules given for the model.
      */
-    protected function applyMassAssignmentRules() {
+    protected function applyMassAssignmentRules()
+    {
         $this->model->guard($this->modelManager->getGuarded());
         $this->model->fillable($this->modelManager->getFillable());
     }
 
     /**
-     * Persist the data
+     * Persist the data.
      */
-    public function persist() {
+    public function persist()
+    {
         $data = $this->getData();
 
         if ($this->isUpdating) {
@@ -115,7 +118,7 @@ class ArtificerFormRequest extends FormRequest
 
     // Todo: Handle files
 
-    /**
+    /*
      * @param $data
      * @return array
      */

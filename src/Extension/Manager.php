@@ -1,11 +1,13 @@
-<?php namespace Mascame\Artificer\Extension;
+<?php
+
+namespace Mascame\Artificer\Extension;
 
 use Mascame\Extender\Booter\BooterInterface;
 use Mascame\Extender\Event\EventInterface;
 use Mascame\Extender\Installer\InstallerInterface;
 
-class Manager extends \Mascame\Extender\Manager {
-
+class Manager extends \Mascame\Extender\Manager
+{
     /**
      * @var \Mascame\Artificer\Plugin\Manager|\Mascame\Artificer\Widget\Manager
      */
@@ -17,7 +19,7 @@ class Manager extends \Mascame\Extender\Manager {
     protected $type = 'extension';
 
     /**
-     * Composer packages
+     * Composer packages.
      *
      * @var array
      */
@@ -35,23 +37,24 @@ class Manager extends \Mascame\Extender\Manager {
         InstallerInterface $installer,
         BooterInterface $booter = null,
         EventInterface $eventDispatcher = null
-    )
-    {
+    ) {
         parent::__construct($installer, $booter, $eventDispatcher);
 
         $this->composerPackages = $this->getComposerPackages();
     }
 
-    public function getPackages() {
+    public function getPackages()
+    {
         return self::$packages;
     }
 
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
     /**
-     * Todo: refactor
+     * Todo: refactor.
      *
      * @param $package
      * @param array|string $plugins
@@ -61,11 +64,13 @@ class Manager extends \Mascame\Extender\Manager {
     public function add($package, $plugins)
     {
         if (! $this->isValidPackageName($package)) {
-            throw new \Exception('Extension namespace is mandatory and must be compliant to "vendor/package". Provided: ' . $package);
+            throw new \Exception('Extension namespace is mandatory and must be compliant to "vendor/package". Provided: '.$package);
         }
 
         // Convert to array
-        if (! is_array($plugins)) $plugins = [$plugins];
+        if (! is_array($plugins)) {
+            $plugins = [$plugins];
+        }
 
         // Get package info
         if (! isset(self::$packages[$package])) {
@@ -81,9 +86,9 @@ class Manager extends \Mascame\Extender\Manager {
                     'authors' => [
                         [
                             'name' => 'Anonymous',
-                            'email' => 'anonymous@example.com'
-                        ]
-                    ]
+                            'email' => 'anonymous@example.com',
+                        ],
+                    ],
                 ];
             }
 
@@ -94,9 +99,9 @@ class Manager extends \Mascame\Extender\Manager {
             // Group the extensions provided under the package namespace
             self::$packages[$package]->provides[$this->type][] = $pluginName;
 
-            parent::add($pluginName, function() use ($pluginName, $package) {
+            parent::add($pluginName, function () use ($pluginName, $package) {
 
-                /**
+                /*
                  * First we try to resolve the plugin within the App Container
                  */
                 try {
@@ -113,28 +118,30 @@ class Manager extends \Mascame\Extender\Manager {
 
         return true;
     }
-    
+
     /**
-     * vendor/name
+     * vendor/name.
      *
      * @param $name
      * @return bool
      */
-    protected function isValidPackageName($name) {
-        $regex = "/^[\\w-]+\\/[\\w-]+$/";
+    protected function isValidPackageName($name)
+    {
+        $regex = '/^[\\w-]+\\/[\\w-]+$/';
 
         preg_match($regex, $name, $matches);
 
-        return (count($matches) > 0);
+        return count($matches) > 0;
     }
 
     /**
      * @return array
      */
-    protected function getComposerPackages() {
-        $installedPackagesFile = config('admin.vendor_path') . '/composer/installed.json';
+    protected function getComposerPackages()
+    {
+        $installedPackagesFile = config('admin.vendor_path').'/composer/installed.json';
         $packagesWithName = [];
-        
+
         if (\File::exists($installedPackagesFile)) {
             $packages = json_decode(\File::get($installedPackagesFile), true);
 
@@ -144,7 +151,7 @@ class Manager extends \Mascame\Extender\Manager {
                 $packagesWithName[$package['name']] = $package;
             }
         }
-        
+
         return $packagesWithName;
     }
 
@@ -153,11 +160,12 @@ class Manager extends \Mascame\Extender\Manager {
      * @return mixed
      * @throws \Exception
      */
-    public function getVersion($namespace) {
+    public function getVersion($namespace)
+    {
         if (isset(self::$packages[$namespace])) {
             return self::$packages[$namespace]['version'];
         }
 
-        throw new \Exception('Package with namespace "' . $namespace . '" not found (Should be an existent composer package).');
+        throw new \Exception('Package with namespace "'.$namespace.'" not found (Should be an existent composer package).');
     }
 }

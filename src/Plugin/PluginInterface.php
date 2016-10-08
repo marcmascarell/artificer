@@ -1,5 +1,6 @@
-<?php namespace Mascame\Artificer\Plugin;
+<?php
 
+namespace Mascame\Artificer\Plugin;
 
 interface PluginInterface
 {
@@ -22,5 +23,4 @@ interface PluginInterface
      * @return array
      */
     public function getMenu();
-
-} 
+}

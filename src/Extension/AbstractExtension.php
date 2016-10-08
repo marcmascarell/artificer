@@ -1,15 +1,16 @@
-<?php namespace Mascame\Artificer\Extension;
+<?php
+
+namespace Mascame\Artificer\Extension;
 
 use Mascame\Artificer\Assets\AssetsManagerInterface;
 use Mascame\Artificer\Options\PluginOption;
 
 abstract class AbstractExtension
 {
-
     use PublicVendorPaths;
 
     /**
-     * Automatically filled
+     * Automatically filled.
      *
      * Namespace will automatically be set if empty (will usually be the class itself).
      * Example: "Mascame\Artificer\Extension\Extension"
@@ -19,7 +20,7 @@ abstract class AbstractExtension
     public $namespace;
 
     /**
-     * Automatically filled
+     * Automatically filled.
      *
      * Which package is this part of.
      * Example: "mascame/artificer-widgets"
@@ -29,21 +30,21 @@ abstract class AbstractExtension
     public $package = null;
 
     /**
-     * Automatically filled
+     * Automatically filled.
      *
      * @var array
      */
     public $authors = [];
 
     /**
-     * Automatically filled
+     * Automatically filled.
      *
      * @var string
      */
     public $slug;
 
     /**
-     * Name that will be shown on extensions page. Example: "My great extension"
+     * Name that will be shown on extensions page. Example: "My great extension".
      *
      * @var string
      */
@@ -65,7 +66,7 @@ abstract class AbstractExtension
     public $configPath = null;
 
     /**
-     * Automatically set on set configPath
+     * Automatically set on set configPath.
      *
      * @var string
      */
@@ -83,7 +84,8 @@ abstract class AbstractExtension
 
     abstract public function boot();
 
-    public function getSlug() {
+    public function getSlug()
+    {
         return $this->slug;
     }
 
@@ -95,7 +97,7 @@ abstract class AbstractExtension
     /**
      * @return bool
      */
-    public final function isInstalled()
+    final public function isInstalled()
     {
         return $this->getManager()->isInstalled($this->namespace);
     }
@@ -122,5 +124,4 @@ abstract class AbstractExtension
     {
         return $collector;
     }
-
 }

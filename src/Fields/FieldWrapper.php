@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Fields;
+<?php
+
+namespace Mascame\Artificer\Fields;
 
 use Mascame\Artificer\Artificer;
 use Mascame\Formality\Field\FieldInterface;
@@ -11,7 +13,7 @@ class FieldWrapper
     protected $widgets = [];
 
     /**
-     * Sometimes ajax limits output, setting this to true will return all
+     * Sometimes ajax limits output, setting this to true will return all.
      *
      * @var bool
      */
@@ -40,7 +42,7 @@ class FieldWrapper
     }
 
     /**
-     * Only get widgets that are installed
+     * Only get widgets that are installed.
      *
      * @return array
      */
@@ -81,7 +83,9 @@ class FieldWrapper
      */
     public function output()
     {
-        if ($this->isHidden()) return null;
+        if ($this->isHidden()) {
+            return;
+        }
 
         $field = $this;
 
@@ -92,23 +96,26 @@ class FieldWrapper
         return $field->field->output();
     }
 
-    public function protectGuarded() {
+    public function protectGuarded()
+    {
         if (! $this->isFillable()) {
             $this->field->setOptions([
-                'attributes' => array_merge($this->field->getAttributes(), ['disabled' => 'disabled'])
+                'attributes' => array_merge($this->field->getAttributes(), ['disabled' => 'disabled']),
             ]);
         }
 
         return $this;
     }
 
-    public function withWidgets() {
+    public function withWidgets()
+    {
         $this->withWidgets = true;
 
         return $this;
     }
 
-    protected function applyWidgets() {
+    protected function applyWidgets()
+    {
         $field = $this;
 
         foreach ($this->widgets as $widget) {
@@ -127,7 +134,7 @@ class FieldWrapper
      */
     protected function isAll($array)
     {
-        return (is_array($array) && isset($array[0]) && $array[0] == '*' || $array == '*');
+        return is_array($array) && isset($array[0]) && $array[0] == '*' || $array == '*';
     }
 
     /**
@@ -136,15 +143,21 @@ class FieldWrapper
      */
     protected function isListedAs($visibility, $action = null)
     {
-        if (! $action) $action = Artificer::getCurrentAction();
+        if (! $action) {
+            $action = Artificer::getCurrentAction();
+        }
 
         $listOptions = Artificer::modelManager()->getOption($action);
 
-        if (! $listOptions || ! isset($listOptions[$visibility])) return false;
+        if (! $listOptions || ! isset($listOptions[$visibility])) {
+            return false;
+        }
 
         $list = $listOptions[$visibility];
 
-        if ($this->isAll($list)) return true;
+        if ($this->isAll($list)) {
+            return true;
+        }
 
         return $this->isInArray($this->field->getName(), $list);
     }
@@ -156,7 +169,9 @@ class FieldWrapper
      */
     public function isVisible()
     {
-        if ($this->isHidden()) return false;
+        if ($this->isHidden()) {
+            return false;
+        }
 
         return $this->isListedAs('visible');
     }
@@ -184,25 +199,29 @@ class FieldWrapper
         return array_get(\View::getShared(), 'fields')[$name];
     }
 
-    public function __get($name) {
-        $accessor = 'get' . studly_case($name);
+    public function __get($name)
+    {
+        $accessor = 'get'.studly_case($name);
 
         return $this->useFieldMethod($accessor);
     }
 
-    protected function useFieldMethod($method, $args = []) {
+    protected function useFieldMethod($method, $args = [])
+    {
         if (! method_exists($this->field, $method)) {
-            return null;
+            return;
         }
 
         return (empty($args)) ? $this->field->$method() : $this->field->$method($args);
     }
 
-    public function __call($method, $args) {
+    public function __call($method, $args)
+    {
         return $this->useFieldMethod($method, $args);
     }
 
-    public function isFillable() {
+    public function isFillable()
+    {
         $fillable = Artificer::modelManager()->getFillable();
 
         return $this->isAll($fillable) || in_array($this->field->getName(), $fillable);
@@ -211,20 +230,24 @@ class FieldWrapper
     /**
      * @param array|string $classes
      */
-    protected function mergeClassAttribute($class) {
-        if (! is_array($class)) $class = [$class];
+    protected function mergeClassAttribute($class)
+    {
+        if (! is_array($class)) {
+            $class = [$class];
+        }
 
         $attributes = $this->field->getAttributes();
         $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : [];
 
-        return join(' ', array_merge($classes, $class));
+        return implode(' ', array_merge($classes, $class));
     }
 
     /**
      * @param string $attribute
      * @param array|string $value
      */
-    public function addAttribute($attribute, $value) {
+    public function addAttribute($attribute, $value)
+    {
         if ($attribute == 'class') {
             $value = $this->mergeClassAttribute($value);
         }

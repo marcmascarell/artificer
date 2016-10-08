@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Plugin;
+<?php
+
+namespace Mascame\Artificer\Plugin;
 
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Extension\Slugged;
@@ -8,7 +10,6 @@ class Manager extends \Mascame\Artificer\Extension\Manager
     use Slugged;
 
     protected $type = 'plugins';
-
 
     public function outputCoreRoutes()
     {
@@ -31,11 +32,10 @@ class Manager extends \Mascame\Artificer\Extension\Manager
             }
 
             if (! $isCoreExtension && ! $outputCore) {
-                \Route::group(['prefix' => $extensionInstance->getSlug()], function() use ($extensionInstance) {
+                \Route::group(['prefix' => $extensionInstance->getSlug()], function () use ($extensionInstance) {
                     $extensionInstance->getRoutes();
                 });
             }
         }
     }
-
 }

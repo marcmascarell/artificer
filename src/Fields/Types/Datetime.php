@@ -1,14 +1,17 @@
-<?php namespace Mascame\Artificer\Fields\Types;
+<?php
+
+namespace Mascame\Artificer\Fields\Types;
 
 use Carbon\Carbon;
 use Form;
 
 class DateTime extends \Mascame\Formality\Types\DateTime
 {
-
     public function input()
     {
-        if ($this->value) $this->value = Carbon::parse($this->value)->format('d-m-Y H:i:s');
+        if ($this->value) {
+            $this->value = Carbon::parse($this->value)->format('d-m-Y H:i:s');
+        }
 
         return Form::text($this->name, $this->value, $this->attributes);
     }
@@ -21,5 +24,4 @@ class DateTime extends \Mascame\Formality\Types\DateTime
 
         return $date->format(($format) ? $format : 'd-m-Y H:i:s');
     }
-
 }

@@ -1,8 +1,9 @@
-<?php namespace Mascame\Artificer\Options;
+<?php
+
+namespace Mascame\Artificer\Options;
 
 class AdminOption extends Option
 {
-
     /**
      * @var string
      */
@@ -14,7 +15,7 @@ class AdminOption extends Option
      */
     public static function get($key = null)
     {
-        return Option::get(self::$key . '.' . $key);
+        return Option::get(self::$key.'.'.$key);
     }
 
     /**
@@ -23,7 +24,7 @@ class AdminOption extends Option
      */
     public static function has($key = '')
     {
-        return Option::has(self::$key . '.' . $key);
+        return Option::has(self::$key.'.'.$key);
     }
 
     /**
@@ -32,7 +33,7 @@ class AdminOption extends Option
      */
     public static function all($key = null)
     {
-        if (!$key) {
+        if (! $key) {
             $key = self::$key;
         }
 
@@ -45,6 +46,6 @@ class AdminOption extends Option
      */
     public static function set($key, $value)
     {
-        Option::set(self::$key . '.' . $key, $value);
+        Option::set(self::$key.'.'.$key, $value);
     }
 }

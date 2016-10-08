@@ -1,11 +1,12 @@
-<?php namespace Mascame\Artificer\Fields;
+<?php
+
+namespace Mascame\Artificer\Fields;
 
 use Illuminate\Database\Query\Builder;
 use Mascame\Formality\Field\Field;
 
 trait Filterable
 {
-
     /**
      * @var bool
      */
@@ -50,7 +51,7 @@ trait Filterable
     }
 
     /**
-     * By default it has filter, use hasFilter method if you want to specify something
+     * By default it has filter, use hasFilter method if you want to specify something.
      *
      * @return bool
      */

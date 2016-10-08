@@ -1,7 +1,6 @@
 <?php
 
 use \Mascame\Artificer\Fields\Types as ArtificerTypes;
-use \Mascame\Formality\Types as DefaultTypes;
 
 return [
 
@@ -14,14 +13,14 @@ return [
         'belongsTo' => ArtificerTypes\Relations\belongsTo::class,
     ],
 
-    /**
+    /*
      * field_type => [options]
      */
     'types' => [
 
         // Default type that will be used in case of no better match
         'default' => [
-            'type' => 'text'
+            'type' => 'text',
         ],
 
         'checkbox' => [
@@ -45,28 +44,28 @@ return [
                 '/_on$/',
             ],
 
-            "attributes" => [
+            'attributes' => [
                 'class' => 'form-control',
             ],
 
             'widgets' => [
                 \Mascame\Artificer\Widgets\DateTimepicker::class,
-            ]
+            ],
 
         ],
 
         'date' => [
             'autodetect' => [
-                '_at'
+                '_at',
             ],
 
-            "attributes" => [
+            'attributes' => [
                 'class' => 'form-control',
             ],
 
             'widgets' => [
                 \Mascame\Artificer\Widgets\DateTimepicker::class,
-            ]
+            ],
         ],
 
         'file' => [],
@@ -75,7 +74,7 @@ return [
             'autodetect' => [
                 '_id',
                 'user_id',
-                'fake_id'
+                'fake_id',
             ],
         ],
 
@@ -83,7 +82,7 @@ return [
 
         'image' => [
             'autodetect' => [
-                'image'
+                'image',
             ],
         ],
 
@@ -96,19 +95,19 @@ return [
 
         'key' => [
             'autodetect' => [
-                'id'
-            ]
+                'id',
+            ],
         ],
 
         'link' => [
             'autodetect' => [
-                'url'
+                'url',
             ],
         ],
 
         'password' => [
             'autodetect' => [
-                'password'
+                'password',
             ],
         ],
 
@@ -125,13 +124,13 @@ return [
             'autodetect' => [
                 'title',
                 'username',
-                'name'
+                'name',
             ],
         ],
 
         'textarea' => [
             'autodetect' => [
-                'description'
+                'description',
             ],
         ],
 
@@ -150,7 +149,7 @@ return [
         'wysiwyg' => [
             'autodetect' => [
                 'body',
-                'text'
+                'text',
             ],
         ],
 

@@ -1,32 +1,34 @@
-<?php namespace Mascame\Artificer;
+<?php
+
+namespace Mascame\Artificer;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Mascame\Artificer\Middleware\InstalledMiddleware;
 
-
-class InstallServiceProvider extends ServiceProvider {
-
-
-	/**
-	 * Bootstrap the application events.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
+class InstallServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap the application events.
+     *
+     * @return void
+     */
+    public function boot()
+    {
         \App::make('router')->middleware('artificer-installed', InstalledMiddleware::class);
 
         // Avoid redirection when using CLI
-        if (\App::runningInConsole() || \App::runningUnitTests()) return true;
+        if (\App::runningInConsole() || \App::runningUnitTests()) {
+            return true;
+        }
 
         if (! self::isInstalling() && ! self::isInstalled()) {
             $this->goToInstall();
         }
     }
 
-
-    public static function isInstalled() {
+    public static function isInstalled()
+    {
         if (! self::isExtensionDriverReady()) {
             return false;
         }
@@ -35,10 +37,10 @@ class InstallServiceProvider extends ServiceProvider {
         $widgetManager = Artificer::widgetManager();
 
         foreach (Artificer::getCoreExtensions() as $coreExtension) {
-
             if (! $pluginManager->isInstalled($coreExtension)
                 && ! $widgetManager->isInstalled($coreExtension)) {
                 dd($coreExtension);
+
                 return false;
             }
         }
@@ -46,19 +48,22 @@ class InstallServiceProvider extends ServiceProvider {
         return true;
     }
 
-    public static function isExtensionDriverReady() {
+    public static function isExtensionDriverReady()
+    {
         $driver = config('admin.extension_driver');
         $connectionName = config('admin.extension_drivers.database.connection');
         $migrationsTable = config('admin.migrations');
 
-        return ($driver == 'file' || $driver == 'database' && \Schema::connection($connectionName)->hasTable($migrationsTable));
+        return $driver == 'file' || $driver == 'database' && \Schema::connection($connectionName)->hasTable($migrationsTable);
     }
 
-    public static function isInstalling() {
-        return (Str::contains(request()->path(), 'install'));
+    public static function isInstalling()
+    {
+        return Str::contains(request()->path(), 'install');
     }
 
-    protected function goToInstall() {
+    protected function goToInstall()
+    {
         abort(200, '', ['Location' => route('admin.install')]);
     }
 }

@@ -1,10 +1,12 @@
-<?php namespace Mascame\Artificer\Extension;
+<?php
+
+namespace Mascame\Artificer\Extension;
 
 use Illuminate\Support\Str;
 use Mascame\Extender\Booter\BooterInterface;
 
-class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface {
-
+class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface
+{
     /**
      * @var \Mascame\Artificer\Plugin\Manager|\Mascame\Artificer\Widget\Manager
      */
@@ -25,10 +27,14 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
      * @param $instance AbstractExtension
      * @param $name
      */
-    protected function beforeBooting($instance, $name) {
-
-        if (! $instance->namespace) $instance->namespace = $name;
-        if (! $instance->name) $instance->name = $name;
+    protected function beforeBooting($instance, $name)
+    {
+        if (! $instance->namespace) {
+            $instance->namespace = $name;
+        }
+        if (! $instance->name) {
+            $instance->name = $name;
+        }
         // Todo: remove?
 //        if (property_exists($instance, 'assetsPath')) {
 //            if (! $instance->assetsPath) $instance->assetsPath = 'packages/' . $instance->package . '/';
@@ -45,10 +51,11 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
         $this->handleResources($instance);
     }
 
-    protected function handleResources($instance) {
+    protected function handleResources($instance)
+    {
         $instance->resources = $instance->resources(new ResourceCollector(app(), get_class($instance)));
 
-        $this->getEventDispatcher()->listen('extender.before.install.' . $instance->namespace, function() use ($instance) {
+        $this->getEventDispatcher()->listen('extender.before.install.'.$instance->namespace, function () use ($instance) {
             $resourceInstaller = $this->getResourceInstaller($instance);
 
             $resourceInstaller->install();
@@ -56,13 +63,17 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
             // loadDefered after installation
             $resourceInstaller->loadDefered();
 
-            if (method_exists($instance, 'install')) $instance->install();
+            if (method_exists($instance, 'install')) {
+                $instance->install();
+            }
         });
 
-        $this->getEventDispatcher()->listen('extender.before.uninstall.' . $instance->namespace, function() use ($instance) {
+        $this->getEventDispatcher()->listen('extender.before.uninstall.'.$instance->namespace, function () use ($instance) {
             $this->getResourceInstaller($instance)->uninstall();
 
-            if (method_exists($instance, 'uninstall')) $instance->uninstall();
+            if (method_exists($instance, 'uninstall')) {
+                $instance->uninstall();
+            }
         });
 
         if ($this->manager->isInstalled($instance->namespace)) {
@@ -71,12 +82,13 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
     }
 
     /**
-     * Initializes resources & avoid multiple initialization
+     * Initializes resources & avoid multiple initialization.
      *
      * @param $instance
      * @return ResourceInstaller|null
      */
-    protected function getResourceInstaller($instance) {
+    protected function getResourceInstaller($instance)
+    {
         if (isset($this->resourceInstaller[$instance->namespace])) {
             return $this->resourceInstaller[$instance->namespace];
         }
@@ -88,10 +100,7 @@ class Booter extends \Mascame\Extender\Booter\Booter implements BooterInterface 
      * @param $instance \Mascame\Artificer\Extension\AbstractExtension
      * @param $name
      */
-    protected function afterBooting($instance, $name) {
-
+    protected function afterBooting($instance, $name)
+    {
     }
-
-
-
 }

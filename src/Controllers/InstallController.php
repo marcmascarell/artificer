@@ -1,13 +1,14 @@
-<?php namespace Mascame\Artificer\Controllers;
+<?php
+
+namespace Mascame\Artificer\Controllers;
 
 use Mascame\Artificer\Artificer;
 
 class InstallController extends BaseController
 {
-
     protected $process = [
         'setupExtensions',
-        'installCoreExtensions'
+        'installCoreExtensions',
     ];
 
     public function home()
@@ -21,20 +22,20 @@ class InstallController extends BaseController
                     'icon' => 'fa fa-plug',
                     'actions' => [
                         'Will create the given migrations table<br>
-                        <span class="label label-default">'. config('admin.migrations') .'</span><small> @ config(\'admin.migrations\')</small>',
+                        <span class="label label-default">'.config('admin.migrations').'</span><small> @ config(\'admin.migrations\')</small>',
                         'Will setup the given extension driver<br>
-                        <span class="label label-default">'. config('admin.extension_driver') .'</span><small> @ config(\'admin.extension_driver\')</small>',
-                    ]
+                        <span class="label label-default">'.config('admin.extension_driver').'</span><small> @ config(\'admin.extension_driver\')</small>',
+                    ],
                 ],
                 [
                     'title' => 'Install core extensions',
                     'icon' => 'fa fa-download',
                     'actions' => [
-                        'Will install the core extensions needed to work<br>' . join('', array_map(function($extension) {
-                            return '<span class="label label-default">'. $extension .'</span>';
+                        'Will install the core extensions needed to work<br>'.implode('', array_map(function ($extension) {
+                            return '<span class="label label-default">'.$extension.'</span>';
                         }, Artificer::getCoreExtensions())),
 
-                    ]
+                    ],
                 ],
                 // Todo
 //                [
@@ -46,10 +47,10 @@ class InstallController extends BaseController
                     'icon' => 'fa fa-user-plus',
                     'actions' => [
                         'Will create an admin account<br>
-                        <small>Username</small>: <span class="label label-default">artificer</span> <small>Password</small>: <span class="label label-default">artificer</span>'
-                    ]
+                        <small>Username</small>: <span class="label label-default">artificer</span> <small>Password</small>: <span class="label label-default">artificer</span>',
+                    ],
                 ],
-            ]
+            ],
         ]);
     }
 
@@ -69,12 +70,13 @@ class InstallController extends BaseController
      *
      * @return bool
      */
-    protected function setupExtensions() {
+    protected function setupExtensions()
+    {
         if (config('admin.extension_driver') == 'database' && ! \Schema::hasTable('artificer_extensions')) {
-            $path = __DIR__ . '/../../migrations/';
+            $path = __DIR__.'/../../migrations/';
 
-            if (str_contains($path, base_path() . '/')) {
-                $path = str_replace(base_path() . '/', '', $path);
+            if (str_contains($path, base_path().'/')) {
+                $path = str_replace(base_path().'/', '', $path);
             }
 
             $migrator = app('ArtificerMigrator');
@@ -86,7 +88,8 @@ class InstallController extends BaseController
         return true;
     }
 
-    protected function installCoreExtensions() {
+    protected function installCoreExtensions()
+    {
         $pluginManager = Artificer::pluginManager();
         $widgetManager = Artificer::widgetManager();
 
@@ -95,7 +98,6 @@ class InstallController extends BaseController
         Artificer::widgetManager()->boot();
 
         foreach (Artificer::getCoreExtensions() as $coreExtension) {
-
             if (! $pluginManager->isInstalled($coreExtension)
                 && ! $widgetManager->isInstalled($coreExtension)) {
 
@@ -107,7 +109,5 @@ class InstallController extends BaseController
                 }
             }
         }
-
     }
-
 }
