@@ -1,23 +1,27 @@
-<?php namespace Mascame\Artificer\Plugin;
+<?php
+
+namespace Mascame\Artificer\Plugin;
 
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Extension\AbstractExtension;
 use Mascame\Extender\Booter\BooterInterface;
 
-class Booter extends \Mascame\Artificer\Extension\Booter implements BooterInterface {
-
+class Booter extends \Mascame\Artificer\Extension\Booter implements BooterInterface
+{
     /**
      * @var \Mascame\Artificer\Plugin\Manager
      */
     protected $manager;
 
-
     /**
      * @param $instance AbstractPlugin
      * @param $name
      */
-    public function afterBooting($instance, $name) {
-        if (! $this->manager->isInstalled($instance->namespace)) return;
+    public function afterBooting($instance, $name)
+    {
+        if (! $this->manager->isInstalled($instance->namespace)) {
+            return;
+        }
 
         if ($menu = $instance->getMenu()) {
             Artificer::addMenu($menu);
@@ -29,7 +33,8 @@ class Booter extends \Mascame\Artificer\Extension\Booter implements BooterInterf
     /**
      * @param $instance AbstractExtension
      */
-    protected function addAssets($instance) {
+    protected function addAssets($instance)
+    {
         $assetsManager = Artificer::assetManager();
 
         $instance->assets($assetsManager);

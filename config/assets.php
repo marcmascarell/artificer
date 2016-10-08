@@ -26,7 +26,7 @@ return [
 
     'assets' => [
         'jquery-cdn',
-        'packages/mascame/admin/js/core/restfulizer.js'
-    ]
+        'packages/mascame/admin/js/core/restfulizer.js',
+    ],
 
 ];

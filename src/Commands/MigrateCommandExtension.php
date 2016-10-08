@@ -4,8 +4,8 @@ namespace Mascame\Artificer\Commands;
 
 use Illuminate\Database\Console\Migrations\MigrateCommand;
 
-class MigrateCommandExtension extends MigrateCommand {
-
+class MigrateCommandExtension extends MigrateCommand
+{
     /**
      * Prepare the migration database for running.
      *
@@ -29,5 +29,4 @@ class MigrateCommandExtension extends MigrateCommand {
     {
         return '';
     }
-
 }

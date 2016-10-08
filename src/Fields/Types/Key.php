@@ -1,7 +1,7 @@
-<?php namespace Mascame\Artificer\Fields\Types;
+<?php
+
+namespace Mascame\Artificer\Fields\Types;
 
 class Key extends Text
 {
-
-
 }

@@ -18,7 +18,7 @@ class TestConfigTest extends \TestCase
     // tests
     public function testConfigIsLoaded()
     {
-//        dd(app('Config'));
+        //        dd(app('Config'));
 
         $this->assertTrue(true, true);
     }

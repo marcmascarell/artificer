@@ -10,31 +10,33 @@ class hasOne extends Relation
 {
     protected $id;
 
-    public function guessRelatedMethod() {
+    public function guessRelatedMethod()
+    {
         // case 'model_id'
 
         $method = str_replace('_id', '', $this->name);
 
-        if ($this->modelHasMethod($method)) return $method;
+        if ($this->modelHasMethod($method)) {
+            return $method;
+        }
 
         // case 'my_current_model_id'
         $method = explode('_', $this->name);
         $method = isset(array_reverse($method)[1]) ? array_reverse($method)[1] : null;
 
-        if ($this->modelHasMethod($method)) return $method;
-
-        return null;
+        if ($this->modelHasMethod($method)) {
+            return $method;
+        }
     }
 
     protected function select($data, $show)
     {
-        $select = array();
+        $select = [];
         foreach ($data as $d) {
-
             if (is_array($show)) {
                 $value = '';
                 foreach ($show as $show_key) {
-                    $value .= Str::title($show_key) . ': ' . $d[$show_key];
+                    $value .= Str::title($show_key).': '.$d[$show_key];
 
                     if (end($show) != $show_key) {
                         $value .= ' | ';
@@ -59,7 +61,7 @@ class hasOne extends Relation
             }
         }
 
-        print \Form::select($this->name, array('0' => Request::ajax() ? '(current)' : '(none)') + $select, $this->id,
+        echo \Form::select($this->name, ['0' => Request::ajax() ? '(current)' : '(none)'] + $select, $this->id,
             $this->attributes);
     }
 
@@ -67,10 +69,9 @@ class hasOne extends Relation
     {
         // Todo: $this->showFullField ?
 //        if (!Request::ajax() || $this->showFullField) {
-        if ( ! Request::ajax()) {
-            $new_url = \URL::route('admin.model.create', array('slug' => $this->relatedModel['route']));
-            $edit_url = \URL::route('admin.model.edit', array('slug' => $this->relatedModel['route'], 'id' => ':id:'));
-            ?>
+        if (! Request::ajax()) {
+            $new_url = \URL::route('admin.model.create', ['slug' => $this->relatedModel['route']]);
+            $edit_url = \URL::route('admin.model.edit', ['slug' => $this->relatedModel['route'], 'id' => ':id:']); ?>
             <br>
             <div class="text-right">
                 <div class="btn-group">
@@ -93,7 +94,8 @@ class hasOne extends Relation
         }
     }
 
-    protected function getData() {
+    protected function getData()
+    {
         return \View::getShared()['data'];
     }
 
@@ -111,21 +113,25 @@ class hasOne extends Relation
     {
         $value = ($value) ?: $this->value;
 
-        if ( ! $value) return "<em>(none)</em>";
+        if (! $value) {
+            return '<em>(none)</em>';
+        }
 
         $show = $this->getShow();
 
-        if ( ! is_object($value)) {
+        if (! is_object($value)) {
             $data = $this->getRelatedInstance()->findOrFail($value);
 
-            if ( ! $data) return '(none)';
+            if (! $data) {
+                return '(none)';
+            }
 
             if (is_array($show)) {
                 foreach ($show as $item) {
-                    print $data->$item . "<br>";
+                    echo $data->$item.'<br>';
                 }
 
-                return null;
+                return;
             } elseif (is_callable($show)) {
                 return $show($data);
             } else {
@@ -133,13 +139,10 @@ class hasOne extends Relation
             }
         }
 
-        if ( ! $value) {
+        if (! $value) {
             throw new \Exception('The (hasOne) value is null');
         }
 
-        print $value->{$this->getShow()};
-
-        return null;
+        echo $value->{$this->getShow()};
     }
-
 }

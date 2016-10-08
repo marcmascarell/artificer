@@ -1,10 +1,12 @@
-<?php namespace Mascame\Artificer\Extension;
+<?php
+
+namespace Mascame\Artificer\Extension;
 
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Support\ServiceProvider;
 
-class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
-
+class ResourceInstaller extends \Illuminate\Support\ServiceProvider
+{
     /**
      * @var AbstractExtension
      */
@@ -17,13 +19,13 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
     protected $migrated = false;
 
     /**
-     * Methods that will run at the end, with the loadDefered method
+     * Methods that will run at the end, with the loadDefered method.
      *
      * @var array
      */
     protected $defered = [
         'mergeConfigFrom',
-        'mergeRecursiveConfigFrom'
+        'mergeRecursiveConfigFrom',
     ];
 
     public function __construct(\Illuminate\Contracts\Foundation\Application $app, $extension)
@@ -33,30 +35,37 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         $this->extension = $extension;
 
         foreach ($this->getCollectedCalls() as $call) {
-            if ($this->isDefered($call['method'])) continue;
+            if ($this->isDefered($call['method'])) {
+                continue;
+            }
 
-            call_user_func_array(array($this, $call['method']), $call['args']);
+            call_user_func_array([$this, $call['method']], $call['args']);
         }
     }
 
-    public function loadDefered() {
+    public function loadDefered()
+    {
         foreach ($this->getCollectedCalls() as $call) {
-            if (! $this->isDefered($call['method'])) continue;
+            if (! $this->isDefered($call['method'])) {
+                continue;
+            }
 
-            call_user_func_array(array($this, $call['method']), $call['args']);
+            call_user_func_array([$this, $call['method']], $call['args']);
         }
     }
 
-    private function isDefered($method) {
+    private function isDefered($method)
+    {
         return in_array($method, $this->defered);
     }
 
     /**
-     * Get the collected resources from the extension instance
+     * Get the collected resources from the extension instance.
      *
      * @return array
      */
-    protected function getCollectedCalls() {
+    protected function getCollectedCalls()
+    {
         $collectedCalls = $this->extension->resources->getCollected();
         $collectedExtensionCalls = [];
 
@@ -68,22 +77,25 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
     }
 
     /**
-     * We will call handle{Method} when an extension is installed
+     * We will call handle{Method} when an extension is installed.
      */
-    public function install() {
+    public function install()
+    {
         $this->toggleResources('handle');
     }
 
     /**
-     * We will call revert{Method} when an extension is uninstalled
+     * We will call revert{Method} when an extension is uninstalled.
      */
-    public function uninstall() {
+    public function uninstall()
+    {
         $this->toggleResources('revert');
     }
 
-    protected function toggleResources($action) {
+    protected function toggleResources($action)
+    {
         foreach ($this->getCollectedCalls() as $call) {
-            $handlerMethod = $action . ucfirst($call['method']);
+            $handlerMethod = $action.ucfirst($call['method']);
 
             if (method_exists($this, $handlerMethod)) {
                 $this->{$handlerMethod}($call['args']);
@@ -97,7 +109,8 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
      *
      * @param $args
      */
-    protected function revertLoadMigrationsFrom($args) {
+    protected function revertLoadMigrationsFrom($args)
+    {
         $migrations = $result = \DB::table(config('admin.migrations'))->get();
         $migrations = $migrations->pluck('batch', 'migration')->toArray();
         $batchToRollback = [];
@@ -119,14 +132,18 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         }
     }
 
-    protected function getFileNamesFromPath($path) {
-        return array_map(function($value) {
+    protected function getFileNamesFromPath($path)
+    {
+        return array_map(function ($value) {
             return str_replace('.php', '', $value);
         }, array_diff(scandir(base_path($path)), ['..', '.', '.gitkeep']));
     }
 
-    protected function handlePublishes() {
-        if ($this->published) return;
+    protected function handlePublishes()
+    {
+        if ($this->published) {
+            return;
+        }
 
         $pathsToPublish = ServiceProvider::pathsToPublish(
             $this->extension->namespace
@@ -142,7 +159,8 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         $this->published = true;
     }
 
-    protected function ensurePathsExistence($paths) {
+    protected function ensurePathsExistence($paths)
+    {
         foreach ($paths as $path) {
             if (! \File::exists($path)) {
                 throw new \Exception('Origin path to publish not found, please ensure the path is correct');
@@ -150,13 +168,14 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         }
     }
 
-    protected function waitUntilPathsExist($paths, $retries = 5, $checkInterval = 2) {
+    protected function waitUntilPathsExist($paths, $retries = 5, $checkInterval = 2)
+    {
         foreach ($paths as $path) {
             $retry = 0;
 
-            while ( ! file_exists($path) ) {
+            while (! file_exists($path)) {
                 if ($retry >= $retries) {
-                    throw new \Exception('The path "' . $path . '" which we expected to see did not exist for the time we waited.');
+                    throw new \Exception('The path "'.$path.'" which we expected to see did not exist for the time we waited.');
                 }
 
                 sleep($checkInterval);
@@ -164,20 +183,22 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         }
     }
 
-    protected function handleLoadMigrationsFrom($args) {
+    protected function handleLoadMigrationsFrom($args)
+    {
         foreach ($this->getNormalizedPaths($args) as $path) {
             \Artisan::call('artificer:migrate', ['--path' => $path]);
         }
     }
 
-    protected function getNormalizedPaths($args) {
+    protected function getNormalizedPaths($args)
+    {
         list($paths) = $args;
         $paths = (array) $paths;
 
         foreach ($paths as &$path) {
             // migrator will prepend base_path
-            if (str_contains($path, base_path() . '/')) {
-                $path = str_replace(base_path() . '/', '', $path);
+            if (str_contains($path, base_path().'/')) {
+                $path = str_replace(base_path().'/', '', $path);
             }
         }
 
@@ -199,7 +220,8 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         }
     }
 
-    protected function rollbackBatch($paths, $batch) {
+    protected function rollbackBatch($paths, $batch)
+    {
         $migrator = new class(app('ArtificerMigrationRepository'), app('db'), app('files')) extends Migrator {
             /**
              * Rollback the given batch.
@@ -265,7 +287,8 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
     }
 
     // Remove files
-    protected function revertPublishes() {
+    protected function revertPublishes()
+    {
         $class = $this->extension->namespace;
 
         foreach (static::$publishes[$class] as $publisedPath) {
@@ -273,9 +296,10 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider {
         }
     }
 
-    protected function mergeRecursiveConfigFrom($path, $key) {
+    protected function mergeRecursiveConfigFrom($path, $key)
+    {
         config([
-            $key => array_replace_recursive(config($key, []), require $path)
+            $key => array_replace_recursive(config($key, []), require $path),
         ]);
     }
 }

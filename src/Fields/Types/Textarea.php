@@ -1,8 +1,7 @@
-<?php namespace Mascame\Artificer\Fields\Types;
+<?php
 
-use Form;
+namespace Mascame\Artificer\Fields\Types;
 
 class Textarea extends \Mascame\Formality\Types\Textarea
 {
-
 }

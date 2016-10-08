@@ -1,11 +1,12 @@
-<?php namespace Mascame\Artificer\Model;
+<?php
+
+namespace Mascame\Artificer\Model;
 
 use Schema;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
 class ModelSchema
 {
-
     /**
      * @var array
      */
@@ -59,7 +60,9 @@ class ModelSchema
      */
     public function getTable($modelName)
     {
-        if ( ! $modelName) $modelName = ModelManager::getCurrent()->name;
+        if (! $modelName) {
+            $modelName = ModelManager::getCurrent()->name;
+        }
 
         if (isset($this->models[$modelName]['table'])) {
             return $this->models[$modelName]['table'];
@@ -74,7 +77,7 @@ class ModelSchema
      */
     public function getTables($models)
     {
-        $tables = array();
+        $tables = [];
 
         foreach ($models as $model) {
             $table = $this->getTable($model['name']);
@@ -113,7 +116,7 @@ class ModelSchema
 
     public function isFake($modelName)
     {
-        return (isset($this->models[$modelName]['fake']) && $this->models[$modelName]['fake'] !== false);
+        return isset($this->models[$modelName]['fake']) && $this->models[$modelName]['fake'] !== false;
     }
 
     /**
@@ -146,11 +149,12 @@ class ModelSchema
      */
     public function getClass($modelName)
     {
-        if (! in_array($modelName, array_keys($this->models))) return null;
+        if (! in_array($modelName, array_keys($this->models))) {
+            return;
+        }
 
         $model = $this->models[$modelName];
 
-        return $model['namespace'] . '\\' . $model['name'];
+        return $model['namespace'].'\\'.$model['name'];
     }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'no results' => 'sense resultats',
     'logout' => 'desconnectar',
@@ -9,4 +9,4 @@ return array(
     'models' => 'models',
     'dashboard' => 'panell',
 
-);
+];

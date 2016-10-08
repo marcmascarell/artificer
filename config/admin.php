@@ -32,7 +32,7 @@ return [
     ],
 
     'commands' => [
-        Mascame\Artificer\Commands\ModalConfigGenerator::class
+        Mascame\Artificer\Commands\ModalConfigGenerator::class,
     ],
 
     /*
@@ -54,7 +54,7 @@ return [
 
         'database' => [
             'connection' => env('DB_CONNECTION', 'mysql'),
-            'table' => 'artificer_extensions'
+            'table' => 'artificer_extensions',
         ],
 
     ],
@@ -103,5 +103,5 @@ return [
         'sort-up' => 'fa fa-long-arrow-up',
         'sort-down' => 'fa fa-long-arrow-down',
         'extension' => 'fa fa-plug',
-    ]
+    ],
 ];

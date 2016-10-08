@@ -8,7 +8,6 @@ use Illuminate\Database\Migrations\Migrator;
 
 class MigrationCommands
 {
-
     protected $commands = [
         MigrateCommandExtension::class,
         MigrateRefreshCommandExtension::class,
@@ -28,12 +27,12 @@ class MigrationCommands
                 $instance = new $command($migrator);
             }
 
-            $instance->setName('artificer:' . $instance->getName());
+            $instance->setName('artificer:'.$instance->getName());
 
             $commands[] = $instance;
         }
 
-        /**
+        /*
          * Only allow this commands via UI to avoid some inconsistencies
          */
         if (! \App::runningInConsole()) {
