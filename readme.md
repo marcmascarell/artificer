@@ -27,8 +27,7 @@ Here you will find a brief introduction, [go here for full documentation](https:
 - <a href="#installation">Installation</a>
 - <a href="#screenshots">Screenshots</a>
 - <a href="https://artificer.readme.io/" target="_blank">Documentation</a>
-- <a href="#contributing">Contributing</a>
-    - <a href="#code-of-conduct">Code of Conduct</a>
+- <a href="https://artificer.readme.io/docs/how-to-contribute" target="_blank">Contributing</a>
 - <a href="#support">Support</a>
 - <a href="#license">License</a>
 
@@ -59,16 +58,6 @@ Add the Service Provider to `config/app.php` at the bottom of `providers`:
 ##Screenshots
 ![artificer_model_index_shadow](https://cloud.githubusercontent.com/assets/642299/19166487/ffb1d638-8c07-11e6-8285-cb3f5a785a4f.png)
 ![artificer_extensions_shadow](https://cloud.githubusercontent.com/assets/642299/19166488/ffb3c308-8c07-11e6-867b-f42de1e851d4.png)
-
-##Contributing
-
-Thank you for considering contributing! You can contribute at any time forking the project and making a pull request.
-
-[How to setup the development environment](https://github.com/marcmascarell/artificer-demo).
-
-###Code of Conduct
-
-This project is committed to enforce the <a href="http://contributor-covenant.org/version/1/4/" target="_blank">"Contributor Covenant"</a> code of conduct.
 
 ##Support
 
