@@ -13,6 +13,8 @@
  </p>
 </p>
 
+# Contributing
+
 [How to setup the development environment](https://github.com/marcmascarell/artificer-demo).
 
 ## Code style
