@@ -1,10 +1,11 @@
-<?php namespace Mascame\Artificer\Permit;
+<?php
+
+namespace Mascame\Artificer\Permit;
 
 use Auth;
 
 abstract class Permit extends Auth
 {
-
     protected static $role = null;
 
     /**
@@ -36,8 +37,6 @@ abstract class Permit extends Auth
         if (isset(Auth::user()->$role_column)) {
             return static::$role = Auth::user()->$role_column;
         }
-
-        return null;
     }
 
     /**
@@ -46,7 +45,9 @@ abstract class Permit extends Auth
      */
     public static function hasPermission($permissions = null)
     {
-        if (! $permissions) return true;
+        if (! $permissions) {
+            return true;
+        }
 
         if (is_array($permissions) && self::hasNeededRole($permissions)) {
             return true;
@@ -61,6 +62,6 @@ abstract class Permit extends Auth
      */
     private static function hasNeededRole($permissions)
     {
-        return (in_array(self::getRole(), $permissions) || $permissions[0] == '*');
+        return in_array(self::getRole(), $permissions) || $permissions[0] == '*';
     }
-} 
+}

@@ -1,9 +1,7 @@
-<?php namespace Mascame\Artificer\Fields\Types;
+<?php
 
-use HTML;
-
+namespace Mascame\Artificer\Fields\Types;
 
 class Link extends \Mascame\Formality\Types\Link
 {
-
 }

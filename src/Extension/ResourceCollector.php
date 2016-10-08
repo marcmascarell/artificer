@@ -1,7 +1,9 @@
-<?php namespace Mascame\Artificer\Extension;
+<?php
 
-class ResourceCollector extends \Illuminate\Support\ServiceProvider {
+namespace Mascame\Artificer\Extension;
 
+class ResourceCollector extends \Illuminate\Support\ServiceProvider
+{
     protected $class = null;
     protected static $collected = [];
 
@@ -10,7 +12,6 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider {
         parent::__construct($app);
         $this->class = $class;
     }
-
 
     public function mergeConfigFrom($path, $key)
     {
@@ -69,18 +70,19 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider {
      * @param $method
      * @param $args
      */
-    protected function collect($method, $args) {
+    protected function collect($method, $args)
+    {
         self::$collected[$this->class][] = [
             'method' => $method,
-            'args' => $args
+            'args' => $args,
         ];
     }
 
     /**
      * @return array
      */
-    public function getCollected() {
+    public function getCollected()
+    {
         return self::$collected;
     }
-
 }

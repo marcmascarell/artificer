@@ -1,15 +1,14 @@
-<?php namespace Mascame\Artificer\Model;
+<?php
 
-use Illuminate\Contracts\Database\ModelIdentifier;
+namespace Mascame\Artificer\Model;
+
 use View;
 use Route;
-use \Illuminate\Support\Str as Str;
-use Mascame\Artificer\Options\AdminOption;
+use Illuminate\Support\Str as Str;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
 class ModelManager
 {
-
     /**
      * @var ModelSchema
      */
@@ -86,7 +85,6 @@ class ModelManager
         $this->share();
     }
 
-
     public function share()
     {
         View::share('tables', $this->schema->tables);
@@ -136,7 +134,7 @@ class ModelManager
     }
 
     /**
-     * Look for admin model config, if there is nothing fallback to Model property
+     * Look for admin model config, if there is nothing fallback to Model property.
      *
      * @return array|mixed
      */
@@ -146,7 +144,7 @@ class ModelManager
     }
 
     /**
-     * Look for admin model config, if there is nothing fallback to Model property
+     * Look for admin model config, if there is nothing fallback to Model property.
      *
      * @return array|mixed
      */
@@ -174,7 +172,9 @@ class ModelManager
      */
     private function getCurrentModelName()
     {
-        if ($this->name) return $this->name;
+        if ($this->name) {
+            return $this->name;
+        }
 
         foreach ($this->schema->models as $modelName => $model) {
             if ($this->isCurrent($modelName)) {
@@ -183,8 +183,6 @@ class ModelManager
                 return $this->name = $modelName;
             }
         }
-
-        return null;
     }
 
     protected function prepareCurrentModel()
@@ -200,13 +198,14 @@ class ModelManager
     }
 
     /**
-     * Fills all fields in config if they are not declared and applies default attributes
+     * Fills all fields in config if they are not declared and applies default attributes.
      *
      * @param $columns
      * @param null $model
      * @return mixed
      */
-    protected function addFieldOptions($columns, $model = null) {
+    protected function addFieldOptions($columns, $model = null)
+    {
         $model = ($model) ? $model : $this->name;
 
         $this->getOptions($model);
@@ -227,7 +226,7 @@ class ModelManager
      */
     private function getCurrentModelData()
     {
-        return array(
+        return [
             'class' => $this->class,
             'name' => $this->getCurrentModelName(),
             'route' => $this->getRouteName(),
@@ -235,7 +234,7 @@ class ModelManager
             'columns' => $this->schema->columns,
             'fillable' => $this->fillable,
             'hidden' => $this->isHidden($this->name),
-        );
+        ];
     }
 
     /**
@@ -244,11 +243,13 @@ class ModelManager
      */
     protected function isCurrent($modelName)
     {
-        if ( ! Route::current()) return null;
-        
+        if (! Route::current()) {
+            return;
+        }
+
         $slug = Route::current()->parameter('slug');
 
-        return (isset($this->schema->models[$modelName]['route']) && $this->schema->models[$modelName]['route'] == $slug);
+        return isset($this->schema->models[$modelName]['route']) && $this->schema->models[$modelName]['route'] == $slug;
     }
 
     /**
@@ -265,7 +266,9 @@ class ModelManager
      */
     public function getRouteName($model = null)
     {
-        if ($model) return $this->schema->models[$model]['route'];
+        if ($model) {
+            return $this->schema->models[$model]['route'];
+        }
 
         return (isset($this->schema->models[self::$current]['route'])) ? $this->schema->models[self::$current]['route'] : null;
     }
@@ -287,17 +290,21 @@ class ModelManager
     {
         $model = ($model) ? $model : $this->name;
 
-        if (isset($this->options[$model])) return $this->options[$model];
+        if (isset($this->options[$model])) {
+            return $this->options[$model];
+        }
 
         return $this->options[$model] = array_merge(
             $this->getDefaultOptions(),
-            config('admin.models.' . $model, [])
+            config('admin.models.'.$model, [])
         );
     }
 
     public function getDefaultOptions()
     {
-        if ($this->defaultOptions) return $this->defaultOptions;
+        if ($this->defaultOptions) {
+            return $this->defaultOptions;
+        }
 
         return $this->defaultOptions = config('admin.model.default');
     }
@@ -325,5 +332,4 @@ class ModelManager
     {
         return $this->relations->get();
     }
-
 }

@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Controllers;
+<?php
+
+namespace Mascame\Artificer\Controllers;
 
 use Illuminate\Support\Str;
 use Mascame\Artificer\Artificer;
@@ -20,7 +22,8 @@ class ExtensionController extends BaseController
     /**
      * @return mixed
      */
-    protected function getManager() {
+    protected function getManager()
+    {
         if ($this->getType() == 'plugins') {
             return Artificer::pluginManager();
         }
@@ -31,9 +34,12 @@ class ExtensionController extends BaseController
     /**
      * @return string
      */
-    protected function getType() {
-        if ($this->type) return $this->type;
-        
+    protected function getType()
+    {
+        if ($this->type) {
+            return $this->type;
+        }
+
         return Str::startsWith(\Route::currentRouteName(), 'admin.plugins') ? self::TYPE_PLUGINS : self::TYPE_WIDGETS;
     }
 
@@ -86,8 +92,8 @@ class ExtensionController extends BaseController
      * @param $plugin
      * @return mixed
      */
-    protected function getExtensionSlug($plugin) {
+    protected function getExtensionSlug($plugin)
+    {
         return $this->getManager()->getFromSlug($plugin);
     }
-
 }

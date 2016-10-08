@@ -1,11 +1,12 @@
-<?php namespace Mascame\Artificer\Controllers;
+<?php
+
+namespace Mascame\Artificer\Controllers;
 
 use Mascame\Artificer\Options\AdminOption;
 use Redirect;
 
 class HomeController extends BaseController
 {
-
     public function home()
     {
         $hiddenModels = AdminOption::get('model.hidden');
@@ -15,7 +16,6 @@ class HomeController extends BaseController
         $firstModel = head($nonHiddenModels);
 
         return Redirect::route('admin.model.all',
-            array('slug' => $this->modelObject->schema->models[$firstModel]['route']));
+            ['slug' => $this->modelObject->schema->models[$firstModel]['route']]);
     }
-
 }

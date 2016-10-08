@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer;
+<?php
+
+namespace Mascame\Artificer;
 
 use App;
 use Illuminate\Support\Str;
@@ -14,51 +16,52 @@ use Mascame\Artificer\Widget\Manager as WidgetManager;
 use Mascame\Artificer\Plugin\Manager as PluginManager;
 use Mascame\Artificer\Extension\Booter;
 use Mascame\Extender\Event\Event;
-use Mascame\Extender\Installer\FileInstaller;
-use Mascame\Extender\Installer\FileWriter;
 
+class ArtificerServiceProvider extends ServiceProvider
+{
+    use AutoPublishable, ServiceProviderLoader;
 
-class ArtificerServiceProvider extends ServiceProvider {
+    protected $name = 'admin';
 
-	use AutoPublishable, ServiceProviderLoader;
-	
-	protected $name = 'admin';
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = false;
 
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
-	protected $defer = false;
+    /**
+     * @var bool
+     */
+    protected $isBootable = false;
 
-	/**
-	 * @var bool
-	 */
-	protected $isBootable = false;
+    /**
+     * Bootstrap the application events.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        if (! $this->isBootable) {
+            return;
+        }
 
-	/**
-	 * Bootstrap the application events.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-        if (! $this->isBootable) return;
+        $this->addPublishableFiles();
 
-		$this->addPublishableFiles();
-
-		// Wait until app is ready for config to be published
-		if (! $this->isPublished()) return;
+        // Wait until app is ready for config to be published
+        if (! $this->isPublished()) {
+            return;
+        }
 
         $this->addMiddleware();
 
-		$this->providers(config('admin.providers'));
+        $this->providers(config('admin.providers'));
         $this->aliases(config('admin.aliases'));
-		$this->commands(config('admin.commands'));
+        $this->commands(config('admin.commands'));
 
         Artificer::assetManager()->add(config('admin.assets', []));
 
-        $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'artificer');
+        $this->loadViewsFrom(__DIR__.'/../resources/views/', 'artificer');
 
         if (InstallServiceProvider::isExtensionDriverReady()) {
             Artificer::pluginManager()->boot();
@@ -66,37 +69,41 @@ class ArtificerServiceProvider extends ServiceProvider {
         }
 
         if (! $this->app->routesAreCached()) {
-            require_once __DIR__ . '/../routes/admin.php';
+            require_once __DIR__.'/../routes/admin.php';
         }
     }
 
-    protected function addMiddleware() {
+    protected function addMiddleware()
+    {
         \App::make('router')->middlewareGroup('artificer', []);
         \App::make('router')->middlewareGroup('artificer-auth', []);
     }
 
     /**
-     * Determines if is on adminisBootable
+     * Determines if is on adminisBootable.
      *
      * @param $path
      * @param null $routePrefix
      * @return bool
      */
-    public function isBootable($path, $routePrefix = null) {
-        if (App::runningInConsole() || App::runningUnitTests()) return true;
+    public function isBootable($path, $routePrefix = null)
+    {
+        if (App::runningInConsole() || App::runningUnitTests()) {
+            return true;
+        }
 
-        return (
-            $path == $routePrefix || Str::startsWith($path, $routePrefix . '/')
-        );
+        return
+            $path == $routePrefix || Str::startsWith($path, $routePrefix.'/');
     }
 
-	protected function getConfigPath() {
-		return config_path($this->name) . DIRECTORY_SEPARATOR;
-	}
-
-	private function addPublishableFiles()
+    protected function getConfigPath()
     {
-        $this->autoPublishes(function() {
+        return config_path($this->name).DIRECTORY_SEPARATOR;
+    }
+
+    private function addPublishableFiles()
+    {
+        $this->autoPublishes(function () {
             $this->publishes([
                 __DIR__.'/../resources/assets' => public_path(Artificer::getAssetsPath()),
             ], 'public');
@@ -109,7 +116,8 @@ class ArtificerServiceProvider extends ServiceProvider {
         });
     }
 
-	private function getExtensionInstaller($type) {
+    private function getExtensionInstaller($type)
+    {
         if (config('admin.extension_driver') == 'database') {
             return new DatabaseInstaller($type);
         }
@@ -117,41 +125,44 @@ class ArtificerServiceProvider extends ServiceProvider {
         return new \Exception('Missing extension installer driver.');
     }
 
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		// We still haven't modified config, that's why 'admin.admin'
-		$routePrefix = config('admin.admin.route_prefix');
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        // We still haven't modified config, that's why 'admin.admin'
+        $routePrefix = config('admin.admin.route_prefix');
 
-		// Avoid bloating the App with files that will not be needed
-		$this->isBootable = $this->isBootable(request()->path(), $routePrefix);
+        // Avoid bloating the App with files that will not be needed
+        $this->isBootable = $this->isBootable(request()->path(), $routePrefix);
 
-		if (! $this->isBootable) return;
+        if (! $this->isBootable) {
+            return;
+        }
 
-		// We need the config published before we can use this package!
-		if ($this->isPublished()) {
-			$this->loadConfig();
+        // We need the config published before we can use this package!
+        if ($this->isPublished()) {
+            $this->loadConfig();
 
             // Todo
 //			$this->addLocalization();
-			$this->registerBindings();
-		}
-	}
+            $this->registerBindings();
+        }
+    }
 
-	/**
-	 * Moves admin/admin.php keys to the root level for commodity
-	 */
-	protected function loadConfig() {
-		$config = config('admin');
-		$config = ['admin' => array_merge($config, $config['admin'])];
-		unset($config['admin']['admin']);
+    /**
+     * Moves admin/admin.php keys to the root level for commodity.
+     */
+    protected function loadConfig()
+    {
+        $config = config('admin');
+        $config = ['admin' => array_merge($config, $config['admin'])];
+        unset($config['admin']['admin']);
 
-		config()->set($config);
-	}
+        config()->set($config);
+    }
 
     private function registerBindings()
     {
@@ -161,11 +172,11 @@ class ArtificerServiceProvider extends ServiceProvider {
         |--------------------------------------------------------------------------
         |*/
 
-        App::singleton('ArtificerMigrationRepository', function() {
+        App::singleton('ArtificerMigrationRepository', function () {
             return new DatabaseMigrationRepository(app('db'), config('admin.migrations'));
         });
 
-        App::singleton('ArtificerMigrator', function() {
+        App::singleton('ArtificerMigrator', function () {
             return new \Illuminate\Database\Migrations\Migrator(app('ArtificerMigrationRepository'), app('db'), app('files'));
         });
 
@@ -182,7 +193,7 @@ class ArtificerServiceProvider extends ServiceProvider {
             return new ModelManager(new ModelSchema(new ModelObtainer()));
         });
 
-        App::singleton('ArtificerWidgetManager', function() {
+        App::singleton('ArtificerWidgetManager', function () {
             return new WidgetManager(
                 $this->getExtensionInstaller('widgets'),
                 new Booter(),
@@ -190,7 +201,7 @@ class ArtificerServiceProvider extends ServiceProvider {
             );
         });
 
-        App::singleton('ArtificerPluginManager', function() {
+        App::singleton('ArtificerPluginManager', function () {
             return new PluginManager(
                 $this->getExtensionInstaller('plugins'),
                 new \Mascame\Artificer\Plugin\Booter(),
@@ -198,7 +209,7 @@ class ArtificerServiceProvider extends ServiceProvider {
             );
         });
 
-        App::singleton('ArtificerAssetManager', function() {
+        App::singleton('ArtificerAssetManager', function () {
             return (new AssetsManager())->config(array_merge([
                 // Reset those dirs to avoid wrong paths
                 'css_dir' => '',
@@ -206,5 +217,4 @@ class ArtificerServiceProvider extends ServiceProvider {
             ], config('admin.assets')));
         });
     }
-
 }

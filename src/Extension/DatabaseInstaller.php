@@ -1,10 +1,12 @@
-<?php namespace Mascame\Artificer\Extension;
+<?php
+
+namespace Mascame\Artificer\Extension;
 
 use Mascame\Extender\Installer\AbstractInstaller;
 use Mascame\Extender\Installer\InstallerInterface;
 
-class DatabaseInstaller extends AbstractInstaller implements InstallerInterface {
-
+class DatabaseInstaller extends AbstractInstaller implements InstallerInterface
+{
     protected $repository;
 
     protected $type;
@@ -14,11 +16,11 @@ class DatabaseInstaller extends AbstractInstaller implements InstallerInterface 
     protected static $extensionsByType = [
         'plugins' => [
             'installed' => [],
-            'uninstalled' => []
+            'uninstalled' => [],
         ],
         'widgets' => [
             'installed' => [],
-            'uninstalled' => []
+            'uninstalled' => [],
         ],
     ];
 
@@ -28,35 +30,39 @@ class DatabaseInstaller extends AbstractInstaller implements InstallerInterface 
 
     protected $table = null;
 
-
     public function __construct($type)
     {
         $this->connection = config('admin.extension_drivers.database.connection');
         $this->table = config('admin.extension_drivers.database.table');
 
-        if (! self::$booted && \Schema::connection($this->connection)->hasTable($this->table)) $this->boot();
+        if (! self::$booted && \Schema::connection($this->connection)->hasTable($this->table)) {
+            $this->boot();
+        }
 
         $this->type = $type;
         $this->extensions = self::$extensionsByType[$type];
     }
 
-    protected function table() {
-//        return
+    protected function table()
+    {
+        //        return
     }
 
-    protected function boot() {
+    protected function boot()
+    {
         self::$booted = true;
 
-        return $this->model()->all()->groupBy('type')->map(function($typeItems) {
+        return $this->model()->all()->groupBy('type')->map(function ($typeItems) {
             return $typeItems->groupBy('status')->map(function ($items) {
                 return $items->pluck('name');
             });
-        })->each(function($items, $key) {
+        })->each(function ($items, $key) {
             self::$extensionsByType[$key] = array_merge(self::$extensionsByType[$key], $items->toArray());
         });
     }
 
-    protected function model() {
+    protected function model()
+    {
         return \Mascame\Artificer\Model\FakeModel::make('ArtificerExtension', [
             'connection' => $this->connection,
             'table' => $this->table,
@@ -65,30 +71,38 @@ class DatabaseInstaller extends AbstractInstaller implements InstallerInterface 
 
     public function handleExtensionChanges($extensions)
     {
-        if (empty($extensions)) return;
+        if (empty($extensions)) {
+            return;
+        }
 
         $storedExtensions = array_merge($this->extensions[self::STATUS_INSTALLED], $this->extensions[self::STATUS_UNINSTALLED]);
 
         $added = array_diff($extensions, $storedExtensions);
         $removed = array_diff($storedExtensions, $extensions);
 
-        if (! empty($added)) $this->addExtensions($added);
-        if (! empty($removed)) $this->removeExtensions($removed);
+        if (! empty($added)) {
+            $this->addExtensions($added);
+        }
+        if (! empty($removed)) {
+            $this->removeExtensions($removed);
+        }
     }
 
-    protected function removeExtensions($extensions) {
+    protected function removeExtensions($extensions)
+    {
         foreach ($extensions as $extension) {
             $this->model()->where('name', $extension)->delete();
         }
     }
 
-    protected function addExtensions($extensions) {
+    protected function addExtensions($extensions)
+    {
         foreach ($extensions as $extension) {
             $this->model()->create(
                 [
                     'name' => $extension,
                     'status' => self::STATUS_UNINSTALLED,
-                    'type' => $this->type
+                    'type' => $this->type,
                 ]
             );
         }
@@ -114,7 +128,8 @@ class DatabaseInstaller extends AbstractInstaller implements InstallerInterface 
      * @return bool
      * @throws \Exception
      */
-    public function install($extension) {
+    public function install($extension)
+    {
         return $this->action($extension, self::ACTION_INSTALL);
     }
 
@@ -123,7 +138,8 @@ class DatabaseInstaller extends AbstractInstaller implements InstallerInterface 
      * @return bool
      * @throws \Exception
      */
-    public function uninstall($extension) {
+    public function uninstall($extension)
+    {
         return $this->action($extension, self::ACTION_UNINSTALL);
     }
 
@@ -148,15 +164,16 @@ class DatabaseInstaller extends AbstractInstaller implements InstallerInterface 
         return $result;
     }
 
-    protected function makeOperation($extension, $action) {
+    protected function makeOperation($extension, $action)
+    {
         return $this->model()->updateOrCreate(
             [
-                'name' => $extension
+                'name' => $extension,
             ],
             [
                 'name' => $extension,
                 'status' => $this->actionToStatus[$action],
-                'type' => $this->type
+                'type' => $this->type,
             ]
         );
     }

@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Fields\Types\Relations;
+<?php
+
+namespace Mascame\Artificer\Fields\Types\Relations;
 
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Fields\GuessableRelation;
@@ -37,23 +39,23 @@ class Relation extends Field
         $this->modelObject = Artificer::modelManager();
     }
 
-    public function getRelatedInstance() {
+    public function getRelatedInstance()
+    {
         return $this->getRelatedModel()['instance'];
     }
 
     public function editURL($model_route, $id)
     {
-        return URL::route('admin.model.edit', array('slug' => $model_route, 'id' => $id));
+        return URL::route('admin.model.edit', ['slug' => $model_route, 'id' => $id]);
     }
 
     public function createURL($model_route)
     {
-        return URL::route('admin.model.create', array('slug' => $model_route));
+        return URL::route('admin.model.create', ['slug' => $model_route]);
     }
 
     public function hasFilter()
     {
         return false;
     }
-
 }

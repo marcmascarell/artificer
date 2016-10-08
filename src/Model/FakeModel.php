@@ -1,12 +1,14 @@
-<?php namespace Mascame\Artificer\Model;
+<?php
+
+namespace Mascame\Artificer\Model;
+
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 
 /**
- * Allows to make calls to tables that don't have Model
+ * Allows to make calls to tables that don't have Model.
  *
  * Class FakeModel
- * @package Mascame\Artificer\Model
  */
 class FakeModel
 {
@@ -21,10 +23,12 @@ class FakeModel
         $options = array_merge([
             'table' => null,
             'primaryKey' => 'id',
-            'connection' => null
+            'connection' => null,
         ], $options);
 
-        if ($options['table'] == null) $options['table'] = self::getTableFromModelName($modelName);
+        if ($options['table'] == null) {
+            $options['table'] = self::getTableFromModelName($modelName);
+        }
 
         return
 
@@ -44,7 +48,7 @@ class FakeModel
                 {
                     foreach ($options as $key => $value) {
                         if ($value) {
-                            $propertyName = 'fake' . studly_case($key);
+                            $propertyName = 'fake'.studly_case($key);
                             self::$$propertyName = $value;
                         }
                     }
@@ -65,7 +69,6 @@ class FakeModel
                     return parent::__call($method, $parameters);
                 }
 
-
                 public static function __callStatic($method, $parameters)
                 {
                     if (static::hasMacro($method)) {
@@ -79,7 +82,9 @@ class FakeModel
                 {
                     $method = 'get'.Str::studly($key).'Attribute';
 
-                    if (static::hasMacro($method)) return true;
+                    if (static::hasMacro($method)) {
+                        return true;
+                    }
 
                     return method_exists($this, $method);
                 }
@@ -88,17 +93,21 @@ class FakeModel
                 {
                     $method = 'set'.Str::studly($key).'Attribute';
 
-                    if (static::hasMacro($method)) return true;
+                    if (static::hasMacro($method)) {
+                        return true;
+                    }
 
                     return method_exists($this, $method);
                 }
-
             };
     }
 
-    protected static function getTableFromModelName($modelName) {
+    protected static function getTableFromModelName($modelName)
+    {
         // Check if it is already a table
-        if ($modelName == Str::snake($modelName)) return $modelName;
+        if ($modelName == Str::snake($modelName)) {
+            return $modelName;
+        }
 
         return str_replace('\\', '', Str::snake(Str::plural(class_basename($modelName))));
     }

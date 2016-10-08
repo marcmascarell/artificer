@@ -1,8 +1,9 @@
-<?php namespace Mascame\Artificer\Assets;
+<?php
 
+namespace Mascame\Artificer\Assets;
 
-interface AssetsManagerInterface {
-
+interface AssetsManagerInterface
+{
     /**
      * @param array $assets
      * @return $this
@@ -10,17 +11,16 @@ interface AssetsManagerInterface {
     public function add($assets);
 
     /**
-     * Outputs the collected css
+     * Outputs the collected css.
      *
      * @return mixed
      */
     public function css();
 
     /**
-     * Outputs the collected js
+     * Outputs the collected js.
      *
      * @return mixed
      */
     public function js();
-
 }

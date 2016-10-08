@@ -3,7 +3,6 @@
 namespace Mascame\Artificer\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Foundation\Inspiring;
 
 class ModalConfigGenerator extends Command
 {
@@ -29,11 +28,12 @@ class ModalConfigGenerator extends Command
     public function handle()
     {
         $name = $this->argument('name');
-        $fileName = $name . '.php';
-        $filePath = config_path('admin/models/') . $fileName;
+        $fileName = $name.'.php';
+        $filePath = config_path('admin/models/').$fileName;
 
         if (\File::exists($filePath)) {
-            $this->error('File ' . $filePath . ' already exists.');
+            $this->error('File '.$filePath.' already exists.');
+
             return;
         }
 
@@ -45,15 +45,17 @@ class ModalConfigGenerator extends Command
         \File::put($filePath, $render);
     }
 
-    protected function renderTemplate($template, $data) {
+    protected function renderTemplate($template, $data)
+    {
         foreach ($data as $key => $value) {
-            $template = str_replace('{{ '. $key .' }}', $value, $template);
+            $template = str_replace('{{ '.$key.' }}', $value, $template);
         }
 
         return $template;
     }
 
-    protected function getStub() {
-        return __DIR__ . '/../../resources/stubs/ModelConfig.php';
+    protected function getStub()
+    {
+        return __DIR__.'/../../resources/stubs/ModelConfig.php';
     }
 }

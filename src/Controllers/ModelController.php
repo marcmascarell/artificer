@@ -1,7 +1,8 @@
-<?php namespace Mascame\Artificer\Controllers;
+<?php
+
+namespace Mascame\Artificer\Controllers;
 
 use Input;
-use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Requests\ArtificerFormRequest;
 use Redirect;
@@ -12,7 +13,6 @@ use View;
 
 class ModelController extends BaseModelController
 {
-
     /**
      * Show the form for creating a new resource.
      *
@@ -22,10 +22,10 @@ class ModelController extends BaseModelController
     {
         $this->handleData($this->modelObject->schema->getInstance());
 
-        $form = array(
+        $form = [
             'form_action_route' => 'admin.model.store',
-            'form_method' => 'post'
-        );
+            'form_method' => 'post',
+        ];
 
         return View::make($this->getView('edit'))->with('items', $this->data)->with($form);
     }
@@ -41,14 +41,11 @@ class ModelController extends BaseModelController
         $sort = $this->getSort();
 
         $data = $this->model->where(function ($query) {
-
             foreach (\Request::all() as $name => $value) {
                 if ($value != '' && isset($this->fields[$name])) {
                     $this->fields[$name]->filter($query, $value);
                 }
             }
-
-            return null;
         })
             ->with($this->modelObject->getRelations())
             ->orderBy($sort['column'], $sort['direction'])
@@ -96,10 +93,10 @@ class ModelController extends BaseModelController
             $this->model->with($this->modelObject->getRelations())->findOrFail($id)
         );
 
-        $form = array(
+        $form = [
             'form_action_route' => 'admin.model.update',
-            'form_method' => 'put'
-        );
+            'form_method' => 'put',
+        ];
 
         return View::make($this->getView('edit'))
             ->with('items', $this->data)
@@ -117,14 +114,14 @@ class ModelController extends BaseModelController
 
     protected function handleAjaxResponse($item)
     {
-        return Response::json(array(
+        return Response::json([
                 'item' => $item->toArray(),
-                'refresh' => URL::route('admin.model.field.edit', array(
+                'refresh' => URL::route('admin.model.field.edit', [
                     'slug' => Input::get('_standalone_origin'),
                     'id' => Input::get('_standalone_origin_id'),
-                    'field' => ':fieldName:'
-                ))
-            )
+                    'field' => ':fieldName:',
+                ]),
+            ]
         );
     }
 
@@ -134,7 +131,6 @@ class ModelController extends BaseModelController
      * @param  int $id
      * @return Response
      */
-
     public function updateOrCreate(ArtificerFormRequest $request)
     {
         $request->persist();
@@ -144,7 +140,7 @@ class ModelController extends BaseModelController
         //    return $this->handleAjaxResponse($model);
         //}
 
-        return Redirect::route('admin.model.all', array('slug' => $this->modelObject->getRouteName()));
+        return Redirect::route('admin.model.all', ['slug' => $this->modelObject->getRouteName()]);
     }
 
     /**
@@ -164,5 +160,4 @@ class ModelController extends BaseModelController
 
         return Request::ajax() ? \Response::json([]) : Redirect::back();
     }
-
 }

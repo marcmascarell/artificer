@@ -1,10 +1,11 @@
-<?php namespace Mascame\Artificer\Options;
+<?php
+
+namespace Mascame\Artificer\Options;
 
 use Config;
 
 class PluginOption
 {
-
     /**
      * @var string
      */
@@ -21,7 +22,7 @@ class PluginOption
     public function __construct($namespace, $configFile)
     {
         $exploded_namespace = explode('/', $namespace);
-        $this->namespace = end($exploded_namespace) . '::';
+        $this->namespace = end($exploded_namespace).'::';
         $this->configFile = $configFile;
     }
 
@@ -31,7 +32,7 @@ class PluginOption
      */
     public function get($key = null, $configFile = null)
     {
-        return Config::get($this->getPrefix($configFile) . $key);
+        return Config::get($this->getPrefix($configFile).$key);
     }
 
     /**
@@ -39,7 +40,7 @@ class PluginOption
      */
     public function has($key = '', $configFile = null)
     {
-        return Config::has($this->getPrefix($configFile) . $key);
+        return Config::has($this->getPrefix($configFile).$key);
     }
 
     /**
@@ -47,7 +48,7 @@ class PluginOption
      */
     public function set($key, $value, $configFile = null)
     {
-        Config::set($this->getPrefix($configFile) . $key, $value);
+        Config::set($this->getPrefix($configFile).$key, $value);
     }
 
     /**
@@ -55,7 +56,7 @@ class PluginOption
      */
     public function all($key = null, $configFile = null)
     {
-        return Config::get($this->getPrefix($configFile) . $key);
+        return Config::get($this->getPrefix($configFile).$key);
     }
 
     /**
@@ -77,6 +78,6 @@ class PluginOption
 
     public function getPrefix($configFile = null)
     {
-        return $this->namespace . $this->getFile($configFile) . '.';
+        return $this->namespace.$this->getFile($configFile).'.';
     }
 }

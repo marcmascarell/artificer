@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Controllers;
+<?php
+
+namespace Mascame\Artificer\Controllers;
 
 use Request;
 use View;
@@ -10,7 +12,6 @@ use Mascame\Artificer\Options\AdminOption;
 
 class BaseController
 {
-
     public $fields;
     public $data;
     public $options;
@@ -19,7 +20,7 @@ class BaseController
 
     public $theme;
     public $standalone;
-    public $menu = array();
+    public $menu = [];
     protected $master_layout = null;
 
     /**
@@ -27,10 +28,9 @@ class BaseController
      */
     public $modelObject = null;
 
-
     public function __construct()
     {
-        $this->theme = AdminOption::get('theme') . '::';
+        $this->theme = AdminOption::get('theme').'::';
         $this->master_layout = 'base';
         $this->modelObject = Artificer::modelManager();
 
@@ -49,8 +49,8 @@ class BaseController
         View::share('main_title', AdminOption::get('title'));
         View::share('menu', $this->getMenu());
         View::share('theme', $this->theme);
-        View::share('layout', $this->theme . '.' . $this->master_layout);
-        View::share('fields', array());
+        View::share('layout', $this->theme.'.'.$this->master_layout);
+        View::share('fields', []);
         View::share('standalone', $this->standalone);
         View::share('icon', AdminOption::get('icons'));
     }
@@ -60,7 +60,7 @@ class BaseController
      */
     public function isStandAlone()
     {
-        return (Request::ajax() || Request::has('_standalone'));
+        return Request::ajax() || Request::has('_standalone');
     }
 
     /**
@@ -76,7 +76,6 @@ class BaseController
      */
     public function getView($view)
     {
-        return $this->theme . $view;
+        return $this->theme.$view;
     }
-
 }

@@ -1,15 +1,14 @@
-<?php namespace Mascame\Artificer\Fields;
+<?php
 
-use Mascame\Artificer\Artificer;
+namespace Mascame\Artificer\Fields;
+
 use Mascame\Artificer\Fields\Types\Relations\Relation;
 use Mascame\Artificer\Model\ModelManager;
-use \Illuminate\Support\Str as Str;
-use Mascame\Artificer\Fields\FieldWrapper;
-use Mascame\Formality\Field\Field;
+use Illuminate\Support\Str as Str;
+
 
 class FieldFactory extends \Mascame\Formality\Factory\Factory
 {
-
     public $fieldClass;
     public $fields;
     public $relatedFields = null;
@@ -32,8 +31,7 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
     {
         $fields = parent::makeFields();
 
-        foreach($fields as $key => $field) {
-
+        foreach ($fields as $key => $field) {
             if (is_a($field, \Mascame\Artificer\Fields\Types\Relations\Relation::class)) {
                 $field = $this->completeRelation($field);
             }
@@ -55,19 +53,19 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
         return $typeClass;
     }
 
-
     /**
      * @param $field Relation
      * @return mixed
      */
-    public function completeRelation($field) {
+    public function completeRelation($field)
+    {
         $relationship = $field->getOption('relationship', []);
 
         $completedRelation = [
-            "method" => $field->guessRelatedMethod(),
-            "type" => $field->getType(),
-            "model" => $field->guessModel(),
-            "show" => function($value) {
+            'method' => $field->guessRelatedMethod(),
+            'type' => $field->getType(),
+            'model' => $field->guessModel(),
+            'show' => function ($value) {
                 if (! is_array($value) && method_exists($value, 'toArray')) {
 
                     // Avoids cryptic errors
@@ -80,7 +78,7 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
 
                 // Jump to next column avoiding 'id'
                 return array_values(array_slice($value, 1, 1))[0];
-            }
+            },
         ];
 
         // user config takes preference
@@ -117,7 +115,9 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
      */
     public function getRelated()
     {
-        if ($this->relatedFields) return $this->relatedFields;
+        if ($this->relatedFields) {
+            return $this->relatedFields;
+        }
 
         if (null == $fields = FieldOption::all()) {
             return $this->relatedFields = [];
@@ -138,7 +138,7 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
     {
         $related = $this->getRelated();
 
-        if ( ! empty($related)) {
+        if (! empty($related)) {
             foreach ($related as $field) {
                 $this->modelObject->columns[] = $field;
             }
@@ -173,5 +173,4 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
     {
         return (isset($this->data->$field)) ? $this->data->$field : null;
     }
-
 }

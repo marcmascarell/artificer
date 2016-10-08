@@ -1,6 +1,7 @@
-<?php namespace Mascame\Artificer\Widget;
+<?php
+
+namespace Mascame\Artificer\Widget;
 
 class DashWidget extends AbstractWidget
 {
-
 }

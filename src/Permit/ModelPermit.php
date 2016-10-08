@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Permit;
+<?php
+
+namespace Mascame\Artificer\Permit;
 
 use App;
 use Mascame\Artificer\Artificer;
@@ -7,14 +9,15 @@ use Mascame\Artificer\Options\AdminOption;
 
 class ModelPermit extends Permit
 {
-
-    protected static $actions = array('create', 'update', 'delete', 'view');
+    protected static $actions = ['create', 'update', 'delete', 'view'];
 
     public static function access($model = null)
     {
         return true;
 
-        if (! $model) $model = ModelManager::getCurrent()->name;
+        if (! $model) {
+            $model = ModelManager::getCurrent()->name;
+        }
 
         $modelPermissions = Artificer::modelManager()->getOption('permissions', [], $model);
 
@@ -26,7 +29,7 @@ class ModelPermit extends Permit
         return true;
         $model = ModelManager::getCurrent()->name;
 
-        $modelPermissions = Artificer::modelManager()->getOption('action_permissions.' . $action, [], $model);
+        $modelPermissions = Artificer::modelManager()->getOption('action_permissions.'.$action, [], $model);
 
         return self::hasPermission($modelPermissions);
     }
@@ -36,10 +39,9 @@ class ModelPermit extends Permit
         $route_permission = AdminOption::get('model.route_permission');
 
         if (in_array($route, array_keys($route_permission))) {
-            if (! ModelPermit::to($route_permission[$route])) {
+            if (! self::to($route_permission[$route])) {
                 App::abort('403', 'Insufficient privileges');
             }
         }
     }
-
-} 
+}

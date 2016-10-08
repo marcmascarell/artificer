@@ -2,7 +2,6 @@
 
 class Published extends \Mascame\Formality\Types\Checkbox
 {
-
     public function show()
     {
         if ($this->value) {
@@ -11,8 +10,7 @@ class Published extends \Mascame\Formality\Types\Checkbox
                 <i class="fa fa-globe" title="Published"></i>
             </div>
         <?php
+
         }
-
     }
-
 }

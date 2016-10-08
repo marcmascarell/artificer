@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Widget;
+<?php
+
+namespace Mascame\Artificer\Widget;
 
 use Mascame\Artificer\Extension\Slugged;
 

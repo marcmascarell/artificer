@@ -6,10 +6,9 @@ use Illuminate\Support\Str;
 
 class Image extends File
 {
-
     public function boot()
     {
-//		$this->addWidget(new FocalPoint());
+        //		$this->addWidget(new FocalPoint());
     }
 
     public function input()
@@ -23,28 +22,29 @@ class Image extends File
 
             <div data-position class="focal_position"></div>
         <?php
+
         }
 
-        print Form::file($this->name);
+        echo Form::file($this->name);
     }
 
     public function show()
     {
         $value = $this->value;
 
-        if (!$value) {
+        if (! $value) {
             return '<div class="well well-sm">No file</div>';
         }
 
-        if (!Str::startsWith($value, array('https://', 'http://'))) {
-            $value = '/uploads/' . $value;
-        }
-        ?>
+        if (! Str::startsWith($value, ['https://', 'http://'])) {
+            $value = '/uploads/'.$value;
+        } ?>
 
         <div class="thumbnail">
             <img style="display: block; margin: auto;height:auto; width:auto; max-width:100px; max-height:100px;"
                  src="<?= $value ?>" height="100"/>
         </div>
     <?php
+
     }
 }

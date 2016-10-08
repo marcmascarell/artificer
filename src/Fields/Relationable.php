@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Fields;
+<?php
+
+namespace Mascame\Artificer\Fields;
 
 trait Relationable
 {
@@ -11,7 +13,9 @@ trait Relationable
 
     public function getRelatedModel()
     {
-        if ($this->relatedModel) return $this->relatedModel;
+        if ($this->relatedModel) {
+            return $this->relatedModel;
+        }
 
         $modelName = $this->getRelationAttribute('model');
 
@@ -26,7 +30,9 @@ trait Relationable
     {
         $type = $this->getRelationAttribute('type');
 
-        if ($type) return $type;
+        if ($type) {
+            return $type;
+        }
 
         $pieces = explode('\\', get_called_class());
 
@@ -43,8 +49,11 @@ trait Relationable
         return $this->getRelationAttribute('show');
     }
 
-    private function getRelationOptions() {
-        if ($this->relationOptions) return $this->relationOptions;
+    private function getRelationOptions()
+    {
+        if ($this->relationOptions) {
+            return $this->relationOptions;
+        }
 
         return $this->relationOptions = $this->getOption('relationship');
     }

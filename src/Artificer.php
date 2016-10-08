@@ -1,6 +1,8 @@
-<?php namespace Mascame\Artificer;
+<?php
 
-use \App;
+namespace Mascame\Artificer;
+
+use App;
 use Mascame\Artificer\Assets\AssetsManagerInterface;
 use Mascame\Artificer\Controllers\BaseModelController;
 use Mascame\Artificer\Extension\ResourceCollector;
@@ -11,7 +13,7 @@ class Artificer
     use Themable;
 
     protected static $coreExtensions = [
-        \Mascame\Artificer\LoginPlugin::class
+        \Mascame\Artificer\LoginPlugin::class,
     ];
 
     /**
@@ -22,7 +24,8 @@ class Artificer
         return self::$coreExtensions;
     }
 
-    public static function isCoreExtension($extension) {
+    public static function isCoreExtension($extension)
+    {
         return in_array($extension, self::$coreExtensions);
     }
 
@@ -44,7 +47,7 @@ class Artificer
             case 'admin.model.filter':
                 return 'list';
             default:
-                return null;
+                return;
         }
     }
 
@@ -105,16 +108,19 @@ class Artificer
 
     public static function getAssetsPath($file = null)
     {
-        if ($file) $file = '/' . $file;
+        if ($file) {
+            $file = '/'.$file;
+        }
 
-        return 'vendor/admin' . $file;
+        return 'vendor/admin'.$file;
     }
 
     public static function getExtensionsAssetsPath($file = null)
     {
-        if ($file) $file = '/' . $file;
+        if ($file) {
+            $file = '/'.$file;
+        }
 
-        return self::getAssetsPath('extensions' . $file);
+        return self::getAssetsPath('extensions'.$file);
     }
-
 }

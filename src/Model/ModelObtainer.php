@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Model;
+<?php
+
+namespace Mascame\Artificer\Model;
 
 use File;
 use Mascame\Artificer\Options\AdminOption;
@@ -6,15 +8,12 @@ use Mascame\Artificer\Permit\ModelPermit;
 
 class ModelObtainer
 {
-
     /**
      * @var array
      */
     public $models;
 
-    /**
-     *
-     */
+
     public function __construct()
     {
         $this->models = $this->getModels();
@@ -41,12 +40,13 @@ class ModelObtainer
         return $models;
     }
 
-    protected function getModelBasics($modelName, $namespace = null) {
+    protected function getModelBasics($modelName, $namespace = null)
+    {
         return [
             'name' => $modelName,
             'namespace' => $namespace,
             'route' => $this->makeModelRoute($modelName),
-            'fake' => false
+            'fake' => false,
         ];
     }
 
@@ -81,7 +81,9 @@ class ModelObtainer
      */
     public function getModels()
     {
-        if ( ! empty($this->models)) return $this->models;
+        if (! empty($this->models)) {
+            return $this->models;
+        }
 
         $models = [];
         $configModels = config('admin.model.models', []);
@@ -90,7 +92,7 @@ class ModelObtainer
             $pieces = explode('\\', $model);
             $modelName = end($pieces);
 
-            $basicInfo = $this->getModelBasics($modelName, preg_replace('/\\\\' . $modelName . '$/', '', $model));
+            $basicInfo = $this->getModelBasics($modelName, preg_replace('/\\\\'.$modelName.'$/', '', $model));
 
             $models[] = [$modelName => $basicInfo];
         }
@@ -120,13 +122,13 @@ class ModelObtainer
         }
 
         foreach ($fakeModels as $modelName => $modelData) {
-            $models[$modelName] = array(
+            $models[$modelName] = [
                 'name' => $modelName,
                 'route' => $this->makeModelRoute($modelName),
-                'fake' => array_merge($modelData, array(
-                    'model' => $modelName
-                ))
-            );
+                'fake' => array_merge($modelData, [
+                    'model' => $modelName,
+                ]),
+            ];
         }
 
         return $models;
@@ -142,5 +144,4 @@ class ModelObtainer
 
         return str_replace('.php', '', end($piece));
     }
-
 }

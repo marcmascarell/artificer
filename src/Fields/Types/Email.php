@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Fields\Types;
+<?php
+
+namespace Mascame\Artificer\Fields\Types;
 
 use Form;
 
@@ -11,6 +13,6 @@ class Email extends \Mascame\Formality\Types\Email
 
     public function filter($query, $value)
     {
-        return $query->where($this->name, 'LIKE', '%' . $value . '%');
+        return $query->where($this->name, 'LIKE', '%'.$value.'%');
     }
 }
