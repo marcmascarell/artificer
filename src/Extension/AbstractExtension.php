@@ -71,7 +71,7 @@ abstract class AbstractExtension
     public $resources;
 
     /**
-     * This will be called if the plugin is installed
+     * This will be called if the plugin is installed.
      */
     abstract public function boot();
 
@@ -116,7 +116,7 @@ abstract class AbstractExtension
 
     /**
      * Refers to the resources that you would usually place in the ServiceProvider:
-     * https://laravel.com/docs/5.3/packages#resources
+     * https://laravel.com/docs/5.3/packages#resources.
      *
      * Keep in mind that extension config is not available until boot
      *
