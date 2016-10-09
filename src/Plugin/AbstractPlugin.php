@@ -22,6 +22,7 @@ abstract class AbstractPlugin extends AbstractExtension implements PluginInterfa
      */
     public function getRoutes()
     {
+        return null;
     }
 
     /**
@@ -31,5 +32,6 @@ abstract class AbstractPlugin extends AbstractExtension implements PluginInterfa
      */
     public function getMenu()
     {
+        return null;
     }
 }
