@@ -61,18 +61,6 @@ abstract class AbstractExtension
     public $thumbnail = null;
 
     /**
-     * @var string
-     */
-    public $configPath = null;
-
-    /**
-     * Automatically set on set configPath.
-     *
-     * @var string
-     */
-    public $configDotNotationPath = null;
-
-    /**
      * @var PluginOption
      */
     protected $option;
@@ -82,8 +70,14 @@ abstract class AbstractExtension
      */
     public $resources;
 
+    /**
+     * This will be called if the plugin is installed
+     */
     abstract public function boot();
 
+    /**
+     * @return string
+     */
     public function getSlug()
     {
         return $this->slug;
@@ -120,6 +114,15 @@ abstract class AbstractExtension
         return $manager;
     }
 
+    /**
+     * Refers to the resources that you would usually place in the ServiceProvider:
+     * https://laravel.com/docs/5.3/packages#resources
+     *
+     * Keep in mind that extension config is not available until boot
+     *
+     * @param ResourceCollector $collector
+     * @return ResourceCollector
+     */
     public function resources(ResourceCollector $collector)
     {
         return $collector;
