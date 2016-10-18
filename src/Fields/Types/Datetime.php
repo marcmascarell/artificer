@@ -5,7 +5,7 @@ namespace Mascame\Artificer\Fields\Types;
 use Carbon\Carbon;
 use Form;
 
-class DateTime extends \Mascame\Formality\Types\DateTime
+class Datetime extends \Mascame\Formality\Types\DateTime
 {
     public function input()
     {

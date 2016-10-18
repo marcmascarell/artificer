@@ -16,7 +16,6 @@ class BaseModelController extends BaseController
      */
     protected $model;
 
-
     public function __construct()
     {
         parent::__construct();

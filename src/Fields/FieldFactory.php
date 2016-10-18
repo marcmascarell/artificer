@@ -6,7 +6,6 @@ use Mascame\Artificer\Fields\Types\Relations\Relation;
 use Mascame\Artificer\Model\ModelManager;
 use Illuminate\Support\Str as Str;
 
-
 class FieldFactory extends \Mascame\Formality\Factory\Factory
 {
     public $fieldClass;
