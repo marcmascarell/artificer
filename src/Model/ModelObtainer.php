@@ -13,7 +13,6 @@ class ModelObtainer
      */
     public $models;
 
-
     public function __construct()
     {
         $this->models = $this->getModels();
