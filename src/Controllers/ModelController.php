@@ -20,7 +20,7 @@ class ModelController extends BaseModelController
      */
     public function create()
     {
-        $this->handleData($this->modelObject->schema->getInstance());
+        $this->handleData($this->currentModel);
 
         $form = [
             'form_action_route' => 'admin.model.store',
@@ -36,18 +36,18 @@ class ModelController extends BaseModelController
      */
     public function filter($modelName)
     {
-        $this->handleData($this->model->firstOrFail());
+        $this->handleData($this->currentModel->firstOrFail());
 
         $sort = $this->getSort();
 
-        $data = $this->model->where(function ($query) {
+        $data = $this->currentModel->where(function ($query) {
             foreach (\Request::all() as $name => $value) {
                 if ($value != '' && isset($this->fields[$name])) {
                     $this->fields[$name]->filter($query, $value);
                 }
             }
         })
-            ->with($this->modelObject->getRelations())
+            ->with($this->modelManager->getRelations())
             ->orderBy($sort['column'], $sort['direction'])
             ->get();
 
@@ -62,7 +62,7 @@ class ModelController extends BaseModelController
      */
     public function show($modelName, $id)
     {
-        $this->handleData($this->model->findOrFail($id));
+        $this->handleData($this->currentModel->findOrFail($id));
 
         return View::make($this->getView('show'))->with('item', $this->data);
     }
@@ -76,7 +76,7 @@ class ModelController extends BaseModelController
     {
         $sort = $this->getSort();
 
-        $data = $this->model->with($this->modelObject->getRelations())->orderBy($sort['column'],
+        $data = $this->currentModel->with($this->modelSettings->getRelations())->orderBy($sort['column'],
             $sort['direction'])->get();
 
         return parent::all($modelName, $data, $sort);
@@ -90,7 +90,7 @@ class ModelController extends BaseModelController
     public function edit($modelName, $id)
     {
         $this->handleData(
-            $this->model->with($this->modelObject->getRelations())->findOrFail($id)
+            $this->currentModel->with($this->modelSettings->getRelations())->findOrFail($id)
         );
 
         $form = [
@@ -105,7 +105,7 @@ class ModelController extends BaseModelController
 
     public function field($modelName, $id, $field)
     {
-        $this->handleData($this->model->with($this->modelObject->getRelations())->findOrFail($id));
+        $this->handleData($this->currentModel->with($this->modelSettings->getRelations())->findOrFail($id));
 
         $this->fields[$field]->showFullField = true;
 
@@ -140,7 +140,7 @@ class ModelController extends BaseModelController
         //    return $this->handleAjaxResponse($model);
         //}
 
-        return Redirect::route('admin.model.all', ['slug' => $this->modelObject->getRouteName()]);
+        return Redirect::route('admin.model.all', ['slug' => $this->modelSettings->route]);
     }
 
     /**
@@ -152,7 +152,7 @@ class ModelController extends BaseModelController
      */
     public function destroy($modelName, $id)
     {
-        if ($this->model->destroy($id)) {
+        if ($this->currentModel->destroy($id)) {
             // Todo Notify::success('<b>Success!</b> The record has been deleted!', true);
         } else {
             // Todo Notify::danger('<b>Failed!</b> The record could not be deleted!');

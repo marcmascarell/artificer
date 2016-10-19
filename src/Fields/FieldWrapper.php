@@ -84,7 +84,7 @@ class FieldWrapper
     public function output()
     {
         if ($this->isHidden()) {
-            return;
+            return null;
         }
 
         $field = $this;
@@ -147,7 +147,7 @@ class FieldWrapper
             $action = Artificer::getCurrentAction();
         }
 
-        $listOptions = Artificer::modelManager()->getOption($action);
+        $listOptions = Artificer::modelManager()->current()->getOption($action);
 
         if (! $listOptions || ! isset($listOptions[$visibility])) {
             return false;
@@ -222,7 +222,7 @@ class FieldWrapper
 
     public function isFillable()
     {
-        $fillable = Artificer::modelManager()->getFillable();
+        $fillable = Artificer::modelManager()->current()->getFillable();
 
         return $this->isAll($fillable) || in_array($this->field->getName(), $fillable);
     }

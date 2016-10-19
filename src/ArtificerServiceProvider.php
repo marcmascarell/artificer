@@ -190,7 +190,7 @@ class ArtificerServiceProvider extends ServiceProvider
         |*/
 
         App::singleton('ArtificerModelManager', function () {
-            return new ModelManager(new ModelSchema(new ModelObtainer()));
+            return new ModelManager(new ModelObtainer());
         });
 
         App::singleton('ArtificerWidgetManager', function () {

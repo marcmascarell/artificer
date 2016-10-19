@@ -12,27 +12,27 @@ use Mascame\Artificer\Options\AdminOption;
 
 class BaseController
 {
-    public $fields;
-    public $data;
-    public $options;
+    protected $fields;
+    protected $data;
+    protected $options;
 
     public static $routes;
 
-    public $theme;
-    public $standalone;
-    public $menu = [];
+    protected $theme;
+    protected $standalone;
+    protected $menu = [];
     protected $master_layout = null;
 
     /**
      * @var ModelManager
      */
-    public $modelObject = null;
+    protected $modelManager = null;
 
     public function __construct()
     {
         $this->theme = AdminOption::get('theme').'::';
         $this->master_layout = 'base';
-        $this->modelObject = Artificer::modelManager();
+        $this->modelManager = Artificer::modelManager();
 
         $this->options = AdminOption::all();
 

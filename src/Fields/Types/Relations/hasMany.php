@@ -1,5 +1,6 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
+use Mascame\Artificer\Artificer;
 use Request;
 use Route;
 use Session;
@@ -8,12 +9,6 @@ use Session;
 
 class hasMany extends Relation
 {
-    public function boot()
-    {
-        parent::boot();
-        //$this->addWidget(new Chosen());
-        $this->attributes->add(['class' => 'chosen']);
-    }
 
     public function input()
     {
@@ -25,14 +20,13 @@ class hasMany extends Relation
         $id = $this->fields['id']->value;
 
         $modelName = $this->relation->getRelatedModel();
-        $model = $this->modelObject->schema->models[$modelName];
-        $model['class'] = $this->modelObject->schema->getClass($modelName);
-        $this->model = $model;
+        $model = Artificer::modelManager()->get($modelName);
+        $this->modelManager = $model;
 
         if ((Route::currentRouteName() == 'admin.model.create' || Route::currentRouteName() == 'admin.model.field')
-            && Session::has('_set_relation_on_create_'.$this->modelObject->name)
+            && Session::has('_set_relation_on_create_'.$this->modelSettings->name)
         ) {
-            $relateds = Session::get('_set_relation_on_create_'.$this->modelObject->name);
+            $relateds = Session::get('_set_relation_on_create_'.$this->modelSettings->name);
 
             $related_ids = [];
             foreach ($relateds as $related) {
@@ -49,18 +43,18 @@ class hasMany extends Relation
 
         $this->showItems($data);
 
-        $this->createURL = $this->createURL($this->model['route']).'?'.http_build_query([
+        $this->createRoute = $this->createRoute($this->modelManager['route']).'?'.http_build_query([
                 $this->relation->getForeignKey() => $id,
                 '_standalone' => 'true',
             ]);
 
         if (! Request::ajax() || $this->showFullField) {
-            $this->relationModal($this->model['route'], $id); ?>
+            $this->relationModal($this->modelManager['route'], $id); ?>
             <div class="text-right">
                 <div class="btn-group">
                     <button class="btn btn-default" data-toggle="modal"
-                            data-url="<?= $this->createURL ?>"
-                            data-target="#form-modal-<?= $this->model['route'] ?>">
+                            data-url="<?= $this->createRoute ?>"
+                            data-target="#form-modal-<?= $this->modelManager['route'] ?>">
                         <i class="fa fa-plus"></i>
                     </button>
                 </div>
@@ -107,7 +101,7 @@ class hasMany extends Relation
 
     public function addItem($item)
     {
-        $edit_url = $this->editURL($this->model['route'],
+        $edit_url = $this->editRoute($this->modelManager['route'],
                 $item['id']).'?'.http_build_query(['_standalone' => 'true']); ?>
         <li class="list-group-item">
             <?= $item[$this->relation->getShow()] ?> &nbsp;
@@ -116,13 +110,13 @@ class hasMany extends Relation
 				<span class="btn-group">
 					<button class="btn btn-default" data-toggle="modal"
                             data-url="<?= $edit_url ?>"
-                            data-target="#form-modal-<?= $this->model['route'] ?>">
+                            data-target="#form-modal-<?= $this->modelManager['route'] ?>">
                         <i class="fa fa-edit"></i>
                     </button>
 
 					<a data-method="delete" data-token="<?= csrf_token() ?>"
                        href="<?= route('admin.model.destroy',
-                           ['slug' => $this->model['route'], 'id' => $item['id']], $absolute = true) ?>"
+                           ['slug' => $this->modelManager['route'], 'id' => $item['id']], $absolute = true) ?>"
                        type="button" class="btn btn-default">
                         <i class="fa fa-remove"></i>
                     </a>
@@ -140,11 +134,11 @@ class hasMany extends Relation
 
         if (isset($values) && ! $values->isEmpty()) {
             $modelName = $this->relation->getRelatedModel();
-            $model = $this->modelObject->schema->models[$modelName];
+            $model = $this->modelSettings->schema->models[$modelName];
             $show = $this->relation->getShow();
 
             foreach ($values as $value) {
-                echo '<a href="'.$this->editURL($model['route'],
+                echo '<a href="'.$this->editRoute($model['route'],
                         $value->id).'" target="_blank">'.$value->$show.'</a><br>';
             }
         } else {

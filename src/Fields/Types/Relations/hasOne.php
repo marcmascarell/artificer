@@ -69,21 +69,22 @@ class hasOne extends Relation
     {
         // Todo: $this->showFullField ?
 //        if (!Request::ajax() || $this->showFullField) {
+
         if (! Request::ajax()) {
-            $new_url = \URL::route('admin.model.create', ['slug' => $this->relatedModel['route']]);
-            $edit_url = \URL::route('admin.model.edit', ['slug' => $this->relatedModel['route'], 'id' => ':id:']); ?>
+            $new_url = \URL::route('admin.model.create', ['slug' => $this->relatedModel->route]);
+            $edit_url = \URL::route('admin.model.edit', ['slug' => $this->relatedModel->route, 'id' => ':id:']); ?>
             <br>
             <div class="text-right">
                 <div class="btn-group">
                     <button class="btn btn-default" data-toggle="modal"
                             data-url="<?= $edit_url ?>"
-                            data-target="#form-modal-<?= $this->relatedModel['route'] ?>">
+                            data-target="#form-modal-<?= $this->relatedModel->route ?>">
                         <i class="fa fa-edit"></i>
                     </button>
 
                     <button class="btn btn-default" data-toggle="modal"
                             data-url="<?= $new_url ?>"
-                            data-target="#form-modal-<?= $this->relatedModel['route'] ?>">
+                            data-target="#form-modal-<?= $this->relatedModel->route ?>">
                         <i class="fa fa-plus"></i>
                     </button>
                 </div>

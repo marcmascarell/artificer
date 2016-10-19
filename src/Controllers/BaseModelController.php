@@ -2,7 +2,6 @@
 
 namespace Mascame\Artificer\Controllers;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Input;
 use Mascame\Artificer\Fields\FieldFactory;
 use Mascame\Formality\Parser\Parser;
@@ -14,13 +13,18 @@ class BaseModelController extends BaseController
      * The Eloquent model instance.
      * @var \Eloquent
      */
-    protected $model;
+    protected $currentModel;
+    protected $modelSettings;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->model = $this->modelObject->model;
+        $this->modelSettings = $this->modelManager->current();
+        $this->currentModel = $this->modelSettings->model;
+
+        View::share('models', $this->modelManager->all());
+        View::share('model', $this->modelSettings);
     }
 
     /**
@@ -48,11 +52,11 @@ class BaseModelController extends BaseController
         /*
          * @var $data Collection
          */
-        $modelFields = $this->modelObject->getOption('fields');
+        $modelFields = $this->modelSettings->getOption('fields');
         $types = config('admin.fields.types');
         $fields = [];
 
-        foreach ($this->modelObject->columns as $column) {
+        foreach ($this->modelSettings->columns as $column) {
             $options = [];
 
             if (isset($modelFields[$column])) {

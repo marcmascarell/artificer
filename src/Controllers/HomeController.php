@@ -9,13 +9,10 @@ class HomeController extends BaseController
 {
     public function home()
     {
-        $hiddenModels = AdminOption::get('model.hidden');
+        $model = collect($this->modelManager->all())->filter(function($model) {
+            return ! in_array($model->name, AdminOption::get('model.hidden'));
+        })->first();
 
-        $nonHiddenModels = array_diff(array_keys($this->modelObject->schema->models), $hiddenModels);
-
-        $firstModel = head($nonHiddenModels);
-
-        return Redirect::route('admin.model.all',
-            ['slug' => $this->modelObject->schema->models[$firstModel]['route']]);
+        return Redirect::route('admin.model.all', ['slug' => $model->route]);
     }
 }

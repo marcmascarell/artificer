@@ -20,9 +20,25 @@ class ArtificerFormRequest extends FormRequest
     protected $model;
 
     /**
-     * @var bool
+     * Init the needed properties.
      */
-    protected $isUpdating;
+    protected function init()
+    {
+        $this->modelSettings = Artificer::modelManager()->current();
+        $this->currentModel = $this->modelSettings->model;
+    }
+
+    /**
+     * Extends this method to initialize some vars
+     *
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function getValidatorInstance()
+    {
+        $this->init();
+
+        return parent::getValidatorInstance();
+    }
 
     /**
      * Determine if the user is authorized to make this request.
@@ -31,8 +47,8 @@ class ArtificerFormRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->isUpdating) {
-            $this->model = $this->modelManager->model->findOrFail($this->route('id'));
+        if ($this->isUpdating()) {
+            $this->currentModel = $this->currentModel->findOrFail($this->route('id'));
         }
 
         // Todo
@@ -40,20 +56,11 @@ class ArtificerFormRequest extends FormRequest
     }
 
     /**
-     * Init the needed properties.
+     * @return bool
      */
-    protected function init()
+    protected function isUpdating()
     {
-        $this->modelManager = Artificer::modelManager();
-        $this->model = $this->modelManager->model;
-        $this->isUpdating = (bool) ($this->route('id'));
-    }
-
-    protected function getValidatorInstance()
-    {
-        $this->init();
-
-        return parent::getValidatorInstance();
+        return (bool) ($this->route('id'));
     }
 
     /**
@@ -63,7 +70,7 @@ class ArtificerFormRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->modelManager->getOption('rules', []);
+        return $this->modelSettings->getOption('rules', []);
     }
 
     /**
@@ -71,8 +78,8 @@ class ArtificerFormRequest extends FormRequest
      */
     protected function applyMassAssignmentRules()
     {
-        $this->model->guard($this->modelManager->getGuarded());
-        $this->model->fillable($this->modelManager->getFillable());
+        $this->currentModel->guard($this->modelSettings->getGuarded());
+        $this->currentModel->fillable($this->modelSettings->getFillable());
     }
 
     /**
@@ -82,11 +89,11 @@ class ArtificerFormRequest extends FormRequest
     {
         $data = $this->getData();
 
-        if ($this->isUpdating) {
-            return $this->model->update($data);
+        if ($this->isUpdating()) {
+            return $this->currentModel->update($data);
         }
 
-        return $this->model->create($data);
+        return $this->currentModel->create($data);
     }
 
     /**

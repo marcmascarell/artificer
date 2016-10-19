@@ -9,11 +9,13 @@ trait GuessableRelation
 {
     protected function modelHasMethod($method)
     {
-        return method_exists(Artificer::modelManager()->model, $method);
+        return method_exists(Artificer::modelManager()->current()->model, $method);
     }
 
-    public function guessRelatedMethod()
+    // Todo
+    protected function guessRelatedMethod()
     {
+        return null;
     }
 
     public function guessModel()
@@ -21,8 +23,10 @@ trait GuessableRelation
         $method = $this->guessRelatedMethod();
         $modelName = Str::studly($method);
 
-        if ($method && isset(Artificer::modelManager()->models[$modelName])) {
+        if ($method && Artificer::modelManager()->has($modelName)) {
             return $modelName;
         }
+
+        return null;
     }
 }
