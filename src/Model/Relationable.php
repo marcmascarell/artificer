@@ -2,10 +2,8 @@
 
 namespace Mascame\Artificer\Model;
 
-
 trait Relationable
 {
-
     /**
      * @return array|mixed
      */

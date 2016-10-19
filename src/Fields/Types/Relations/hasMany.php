@@ -9,7 +9,6 @@ use Session;
 
 class hasMany extends Relation
 {
-
     public function input()
     {
         if (! $this->relation->getRelatedModel()) {

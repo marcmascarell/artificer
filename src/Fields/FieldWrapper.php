@@ -84,7 +84,7 @@ class FieldWrapper
     public function output()
     {
         if ($this->isHidden()) {
-            return null;
+            return;
         }
 
         $field = $this;

@@ -7,7 +7,6 @@ use Illuminate\Support\Str as Str;
 
 class ModelManager
 {
-
     /**
      * @var null|string
      */
@@ -34,7 +33,7 @@ class ModelManager
     private function getCurrentModel()
     {
         if (! Str::startsWith(Route::currentRouteName(), 'admin.model.')) {
-            return null;
+            return;
         }
 
         return collect($this->models)->first(function ($values, $modelName) {
@@ -99,5 +98,4 @@ class ModelManager
 
         return $models;
     }
-
 }

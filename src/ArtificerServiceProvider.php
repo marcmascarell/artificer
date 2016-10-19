@@ -9,7 +9,6 @@ use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 use Mascame\Artificer\Commands\MigrationCommands;
 use Mascame\Artificer\Extension\DatabaseInstaller;
 use Mascame\Artificer\Model\ModelObtainer;
-use Mascame\Artificer\Model\ModelSchema;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Assets\AssetsManager;
 use Mascame\Artificer\Widget\Manager as WidgetManager;
