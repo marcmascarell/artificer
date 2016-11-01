@@ -16,7 +16,7 @@ class HooksServiceProvider extends ServiceProvider
      */
     protected $hooks = [
         Hook::UPDATING => [
-            PasswordUpdateHook::class
+            PasswordUpdateHook::class,
         ],
         Hook::CREATING => [
             // Hooks
@@ -44,5 +44,4 @@ class HooksServiceProvider extends ServiceProvider
             Artificer::hook()->to($hook, $handlers);
         }
     }
-
 }

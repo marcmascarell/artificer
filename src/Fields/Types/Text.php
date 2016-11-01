@@ -7,7 +7,6 @@ use Mascame\Artificer\Fields\Field;
 
 class Text extends Field
 {
-
     public function input()
     {
         return Form::text($this->name, $this->value, $this->attributes);

@@ -117,7 +117,7 @@ class ArtificerFormRequest extends FormRequest
         $serialized = [];
 
         /**
-         * @var $field Field
+         * @var Field
          */
         foreach ($fields as $name => $field) {
             if ($this->isUpdating() && $name == 'id') {
@@ -134,7 +134,7 @@ class ArtificerFormRequest extends FormRequest
     {
         $hook = $this->isUpdating() ? Hook::UPDATING : Hook::CREATING;
 
-        /**
+        /*
          * @var $data [Array] of Mascame\Artificer\Fields\Field
          */
         return Artificer::hook()->fire($hook, $data);
@@ -144,7 +144,7 @@ class ArtificerFormRequest extends FormRequest
     {
         $hook = $this->isUpdating() ? Hook::UPDATED : Hook::CREATED;
 
-        /**
+        /*
          * @var $data [Array] of Mascame\Artificer\Fields\Field
          */
         return Artificer::hook()->fire($hook, $data);

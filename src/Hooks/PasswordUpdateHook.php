@@ -2,13 +2,11 @@
 
 namespace Mascame\Artificer\Hooks;
 
-
 use Mascame\Artificer\Fields\Field;
 use Mascame\Hooky\HookContract;
 
 class PasswordUpdateHook implements HookContract
 {
-
     /**
      * Passwords are empty by default.
      * This prevents updating an empty password.
@@ -19,7 +17,7 @@ class PasswordUpdateHook implements HookContract
      */
     public function handle($fields, $next)
     {
-        $fields = array_filter($fields, function(Field $field) use ($fields) {
+        $fields = array_filter($fields, function (Field $field) use ($fields) {
             if ($field->getType() == 'password' && empty($field->getValue())) {
                 return false;
             }
@@ -29,5 +27,4 @@ class PasswordUpdateHook implements HookContract
 
         return $next($fields);
     }
-
 }

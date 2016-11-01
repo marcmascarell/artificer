@@ -4,7 +4,6 @@ namespace Mascame\Artificer\Fields;
 
 use Mascame\Artificer\Artificer;
 use Mascame\Formality\Field\FieldInterface;
-use Mascame\Formality\Field\TypeInterface;
 
 class Field extends \Mascame\Formality\Field\Field implements FieldInterface
 {
@@ -36,7 +35,6 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
 
         $this->widgets = $this->getInstalledWidgets();
     }
-
 
     /**
      * Only get widgets that are installed.

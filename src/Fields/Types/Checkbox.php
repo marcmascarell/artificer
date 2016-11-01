@@ -1,11 +1,12 @@
-<?php namespace Mascame\Artificer\Fields\Types;
+<?php
+
+namespace Mascame\Artificer\Fields\Types;
 
 use Form;
 use Mascame\Artificer\Fields\Field;
 
 class Checkbox extends Field
 {
-
     protected function input()
     {
         $output = Form::hidden($this->name, 0);
@@ -13,5 +14,4 @@ class Checkbox extends Field
 
         return $output;
     }
-
 }
