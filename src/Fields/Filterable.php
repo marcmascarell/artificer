@@ -7,7 +7,6 @@ use Mascame\Formality\Field\FieldInterface;
 
 trait Filterable
 {
-
     /**
      * @var FieldInterface
      */

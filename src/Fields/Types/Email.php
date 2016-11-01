@@ -8,7 +8,6 @@ use Mascame\Artificer\Fields\Field;
 
 class Email extends Field
 {
-
     protected function input()
     {
         return Form::email($this->name, $this->value, $this->attributes);

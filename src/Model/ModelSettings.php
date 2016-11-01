@@ -261,7 +261,7 @@ class ModelSettings
             // Get eloquent value
             if (is_object($values)) {
                 $options['value'] = $values->$column;
-            } else if (is_array($values)) {
+            } elseif (is_array($values)) {
                 $options['value'] = $values[$column] ?? null;
             }
 
@@ -282,7 +282,7 @@ class ModelSettings
 
     public function setValues($values)
     {
-       $this->values = $values;
+        $this->values = $values;
     }
 
     /**

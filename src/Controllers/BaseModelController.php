@@ -4,8 +4,6 @@ namespace Mascame\Artificer\Controllers;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Input;
-use Mascame\Artificer\Fields\FieldFactory;
-use Mascame\Formality\Parser\Parser;
 use View;
 
 class BaseModelController extends BaseController

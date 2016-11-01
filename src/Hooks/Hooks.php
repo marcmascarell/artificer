@@ -2,8 +2,7 @@
 
 namespace Mascame\Artificer\Hooks;
 
-
-class Hook
+class Hooks
 {
     const UPDATING = 'updating';
     const CREATING = 'creating';
