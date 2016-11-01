@@ -20,10 +20,8 @@ class PasswordUpdateHook implements HookContract
     public function handle($fields, $next)
     {
         $fields = array_filter($fields, function(Field $field) use ($fields) {
-            if ($field->getType() == 'password') {
-                if (empty($field->getValue())) {
-                    return false;
-                }
+            if ($field->getType() == 'password' && empty($field->getValue())) {
+                return false;
             }
 
             return true;
