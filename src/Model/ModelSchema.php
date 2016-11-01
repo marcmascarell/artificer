@@ -62,5 +62,4 @@ class ModelSchema
 
         return Schema::getColumnListing($this->getTable());
     }
-
 }

@@ -37,7 +37,7 @@ class ArtificerFormRequest extends FormRequest
     }
 
     /**
-     * Extends this method to initialize some vars
+     * Extends this method to initialize some vars.
      *
      * @return \Illuminate\Contracts\Validation\Validator
      */

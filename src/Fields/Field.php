@@ -81,7 +81,7 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
     public function output()
     {
         if ($this->isHidden()) {
-            return null;
+            return;
         }
 
         if ($this->withWidgets) {

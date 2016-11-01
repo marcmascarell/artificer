@@ -4,7 +4,6 @@ namespace Mascame\Artificer\Model;
 
 use File;
 use Mascame\Artificer\Options\AdminOption;
-use Mascame\Artificer\Permit\ModelPermit;
 
 class ModelObtainer
 {
@@ -140,5 +139,4 @@ class ModelObtainer
 
         return str_replace('.php', '', end($pieces));
     }
-
 }

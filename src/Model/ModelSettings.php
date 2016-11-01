@@ -2,7 +2,6 @@
 
 namespace Mascame\Artificer\Model;
 
-
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
 use Illuminate\Support\Str;
 use Mascame\Artificer\Fields\FieldFactory;
@@ -84,7 +83,7 @@ class ModelSettings
     private $relations = [];
 
     /**
-     * For commodity (to avoid making a bunch of getters)
+     * For commodity (to avoid making a bunch of getters).
      *
      * @var array
      */
@@ -298,5 +297,4 @@ class ModelSettings
 
         return $this->$name;
     }
-
 }

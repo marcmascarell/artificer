@@ -15,7 +15,6 @@ trait GuessableRelation
     // Todo
     protected function guessRelatedMethod()
     {
-        return null;
     }
 
     public function guessModel()
@@ -26,7 +25,5 @@ trait GuessableRelation
         if ($method && Artificer::modelManager()->has($modelName)) {
             return $modelName;
         }
-
-        return null;
     }
 }
