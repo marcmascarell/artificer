@@ -31,6 +31,7 @@ class ModelSchema
     {
         $this->model = $model;
         $this->modelName = $modelName;
+        $this->columns = $this->getColumns();
     }
 
     /**
@@ -55,6 +56,10 @@ class ModelSchema
      */
     public function getColumns()
     {
+        if ($this->columns) {
+            return $this->columns;
+        }
+
         return Schema::getColumnListing($this->getTable());
     }
 

@@ -5,6 +5,8 @@ namespace Mascame\Artificer\Model;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
 use Illuminate\Support\Str;
+use Mascame\Artificer\Fields\FieldFactory;
+use Mascame\Formality\Parser\Parser;
 
 /**
  * @property $name
@@ -65,6 +67,11 @@ class ModelSettings
      * @var
      */
     private $title;
+
+    /**
+     * @var
+     */
+    private $values = null;
 
     /**
      * @var array|mixed
@@ -231,6 +238,52 @@ class ModelSettings
     private function getTitle()
     {
         return $this->getOption('title', Str::title(str_replace('_', ' ', $this->table)));
+    }
+
+    /**
+     * @param \Eloquent|null $values
+     * @return mixed
+     */
+    public function toForm($values = null)
+    {
+        $modelFields = $this->getOption('fields');
+        $types = config('admin.fields.types');
+        $fields = [];
+
+        $values = $values ?? $this->values;
+
+        foreach ($this->columns as $column) {
+            $options = [];
+
+            if (isset($modelFields[$column])) {
+                $options = $modelFields[$column];
+            }
+
+            // Get eloquent value
+            if (is_object($values)) {
+                $options['value'] = $values->$column;
+            } else if (is_array($values)) {
+                $options['value'] = $values[$column] ?? null;
+            }
+
+            $fields[$column] = $options;
+        }
+
+        $fieldFactory = new FieldFactory(new Parser($types), $types, $fields, config('admin.fields.classmap'));
+
+        return $fieldFactory->makeFields();
+    }
+
+    public function withValues($values)
+    {
+        $this->setValues($values);
+
+        return $this;
+    }
+
+    public function setValues($values)
+    {
+       $this->values = $values;
     }
 
     /**

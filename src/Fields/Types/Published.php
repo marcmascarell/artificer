@@ -1,6 +1,6 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-class Published extends \Mascame\Formality\Types\Checkbox
+class Published extends Checkbox
 {
     public function show()
     {

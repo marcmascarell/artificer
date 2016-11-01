@@ -63,10 +63,10 @@ class ModelManager
      */
     public function get($modelName)
     {
-        $model = $this->models[$modelName];
-        $eloquent = new $model['class'];
+        $modelOptions = $this->models[$modelName];
+        $eloquent = new $modelOptions['class'];
 
-        return new ModelSettings($eloquent, $model);
+        return new ModelSettings($eloquent, $modelOptions);
     }
 
     /**

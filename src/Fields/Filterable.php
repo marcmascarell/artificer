@@ -3,22 +3,13 @@
 namespace Mascame\Artificer\Fields;
 
 use Illuminate\Database\Query\Builder;
-use Mascame\Formality\Field\Field;
+use Mascame\Formality\Field\FieldInterface;
 
 trait Filterable
 {
-    /**
-     * @var bool
-     */
-    public $filterable = true;
 
     /**
-     * @var null
-     */
-    public $name = null;
-
-    /**
-     * @var Field
+     * @var FieldInterface
      */
     public $field;
 
@@ -29,10 +20,6 @@ trait Filterable
      */
     public function filter($query, $value)
     {
-        if (method_exists($this->field, 'filter')) {
-            return $this->field->filter($query, $value);
-        }
-
         return $query->where($this->name, $value);
     }
 
@@ -41,10 +28,6 @@ trait Filterable
      */
     public function displayFilter()
     {
-        if (method_exists($this->field, 'displayFilter')) {
-            return $this->field->displayFilter();
-        }
-
         $this->value = \Request::old($this->name);
 
         return $this->output();
@@ -57,10 +40,10 @@ trait Filterable
      */
     public function hasFilter()
     {
-        if (property_exists($this->field, 'filterable')) {
-            return $this->field->filterable;
+        if (property_exists($this, 'filterable')) {
+            return $this->filterable;
         }
 
-        return $this->filterable;
+        return true;
     }
 }

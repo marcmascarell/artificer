@@ -2,6 +2,7 @@
 
 namespace Mascame\Artificer\Controllers;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Input;
 use Mascame\Artificer\Fields\FieldFactory;
 use Mascame\Formality\Parser\Parser;
@@ -14,6 +15,10 @@ class BaseModelController extends BaseController
      * @var \Eloquent
      */
     protected $currentModel;
+
+    /**
+     * @var \Mascame\Artificer\Model\ModelSettings
+     */
     protected $modelSettings;
 
     public function __construct()
@@ -33,45 +38,16 @@ class BaseModelController extends BaseController
     protected function handleData($data)
     {
         $this->data = $data;
+        $modelValues = $this->data;
 
-        $this->getFields($data);
+        // If it is not an Eloquent instance just ignore modelValues
+        if (is_a($modelValues, Collection::class)) {
+            $modelValues = null;
+        }
+
+        View::share('fields', $this->modelSettings->toForm($modelValues));
 
         View::share('data', $this->data);
-    }
-
-    /**
-     * @param $data
-     * @return null
-     */
-    protected function getFields($data)
-    {
-        if ($this->fields) {
-            return $this->fields;
-        }
-
-        /*
-         * @var $data Collection
-         */
-        $modelFields = $this->modelSettings->getOption('fields');
-        $types = config('admin.fields.types');
-        $fields = [];
-
-        foreach ($this->modelSettings->columns as $column) {
-            $options = [];
-
-            if (isset($modelFields[$column])) {
-                $options = $modelFields[$column];
-            }
-
-            $fields[$column] = $options;
-        }
-
-        $fieldFactory = new FieldFactory(new Parser($types), $types, $fields, config('admin.fields.classmap'));
-        $this->fields = $fieldFactory->makeFields();
-
-        View::share('fields', $this->fields);
-
-        return $this->fields;
     }
 
     /**

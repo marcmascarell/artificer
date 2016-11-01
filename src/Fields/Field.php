@@ -6,7 +6,7 @@ use Mascame\Artificer\Artificer;
 use Mascame\Formality\Field\FieldInterface;
 use Mascame\Formality\Field\TypeInterface;
 
-class FieldWrapper
+class Field extends \Mascame\Formality\Field\Field implements FieldInterface
 {
     use Filterable;
 
@@ -25,21 +25,18 @@ class FieldWrapper
     protected $withWidgets = false;
 
     /**
-     * @var FieldInterface|TypeInterface
-     */
-    public $field;
-
-    /**
      * Field constructor.
-     * @param FieldInterface|TypeInterface $field
-     * @param null $relation
+     * @param $name
+     * @param null $value
+     * @param array $options
      */
-    public function __construct(FieldInterface $field)
+    public function __construct($name, $value = null, $options = [])
     {
-        $this->field = $field;
+        parent::__construct($name, $value, $options);
 
         $this->widgets = $this->getInstalledWidgets();
     }
+
 
     /**
      * Only get widgets that are installed.
@@ -50,7 +47,7 @@ class FieldWrapper
     {
         $installedWidgets = [];
         $widgetManager = Artificer::widgetManager();
-        $widgets = $this->field->getOption('widgets', []);
+        $widgets = $this->getOption('widgets', []);
 
         foreach ($widgets as $widget) {
             if ($widgetManager->isInstalled($widget)) {
@@ -65,17 +62,17 @@ class FieldWrapper
      * @param null $value
      * @return null
      */
-    public function show($value = null)
+    public function show()
     {
-        $value = ($value) ? $this->field->setValue($value) : $this->field->getOption('default');
+        $value = $this->value ?: $this->getOption('default');
 
-        if ($show = $this->field->getOption('show')) {
+        if ($show = $this->getOption('show')) {
             if (is_callable($show)) {
                 return $show($value);
             }
         }
 
-        return $this->field->show();
+        return $value;
     }
 
     /**
@@ -87,20 +84,18 @@ class FieldWrapper
             return null;
         }
 
-        $field = $this;
-
         if ($this->withWidgets) {
-            $field = $this->applyWidgets();
+            $this->applyWidgets();
         }
 
-        return $field->field->output();
+        return parent::output();
     }
 
     public function protectGuarded()
     {
         if (! $this->isFillable()) {
-            $this->field->setOptions([
-                'attributes' => array_merge($this->field->getAttributes(), ['disabled' => 'disabled']),
+            $this->setOptions([
+                'attributes' => array_merge($this->getAttributes(), ['disabled' => 'disabled']),
             ]);
         }
 
@@ -116,16 +111,14 @@ class FieldWrapper
 
     protected function applyWidgets()
     {
-        $field = $this;
-
         foreach ($this->widgets as $widget) {
             $widget = Artificer::widgetManager()->get($widget);
             $widget->assets(Artificer::assetManager());
 
-            $field = $widget->field($field);
+            return $widget->field($this);
         }
 
-        return $field;
+        return $this;
     }
 
     /**
@@ -159,7 +152,7 @@ class FieldWrapper
             return true;
         }
 
-        return $this->isInArray($this->field->getName(), $list);
+        return $this->isInArray($this->getName(), $list);
     }
 
     /**
@@ -208,11 +201,11 @@ class FieldWrapper
 
     protected function useFieldMethod($method, $args = [])
     {
-        if (! method_exists($this->field, $method)) {
+        if (! method_exists($this, $method)) {
             return;
         }
 
-        return (empty($args)) ? $this->field->$method() : $this->field->$method($args);
+        return (empty($args)) ? $this->$method() : $this->$method($args);
     }
 
     public function __call($method, $args)
@@ -224,7 +217,7 @@ class FieldWrapper
     {
         $fillable = Artificer::modelManager()->current()->getFillable();
 
-        return $this->isAll($fillable) || in_array($this->field->getName(), $fillable);
+        return $this->isAll($fillable) || in_array($this->getName(), $fillable);
     }
 
     /**
@@ -236,7 +229,7 @@ class FieldWrapper
             $class = [$class];
         }
 
-        $attributes = $this->field->getAttributes();
+        $attributes = $this->getAttributes();
         $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : [];
 
         return implode(' ', array_merge($classes, $class));
@@ -252,6 +245,6 @@ class FieldWrapper
             $value = $this->mergeClassAttribute($value);
         }
 
-        $this->field->setOptions(['attributes' => [$attribute => $value]]);
+        $this->setOptions(['attributes' => [$attribute => $value]]);
     }
 }

@@ -5,7 +5,10 @@ namespace Mascame\Artificer\Requests;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Mascame\Artificer\Artificer;
+use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Hooks\Hook;
 use Mascame\Artificer\Model\ModelManager;
+use Mascame\Artificer\Model\ModelSettings;
 
 class ArtificerFormRequest extends FormRequest
 {
@@ -18,6 +21,11 @@ class ArtificerFormRequest extends FormRequest
      * @var Model
      */
     protected $model;
+
+    /**
+     * @var ModelSettings
+     */
+    protected $modelSettings;
 
     /**
      * Init the needed properties.
@@ -89,11 +97,57 @@ class ArtificerFormRequest extends FormRequest
     {
         $data = $this->getData();
 
+        $data = $this->applyBeforeHook(
+            $this->modelSettings->withValues($data)->toForm()
+        );
+
+        $data = $this->serializeForm($data);
+
         if ($this->isUpdating()) {
-            return $this->currentModel->update($data);
+            $result = $this->currentModel->update($data);
+        } else {
+            $result = $this->currentModel->create($data);
         }
 
-        return $this->currentModel->create($data);
+        return $this->applyAfterHook($result);
+    }
+
+    protected function serializeForm($fields)
+    {
+        $serialized = [];
+
+        /**
+         * @var $field Field
+         */
+        foreach ($fields as $name => $field) {
+            if ($this->isUpdating() && $name == 'id') {
+                continue;
+            }
+
+            $serialized[$name] = $field->getValue();
+        }
+
+        return $serialized;
+    }
+
+    protected function applyBeforeHook($data)
+    {
+        $hook = $this->isUpdating() ? Hook::UPDATING : Hook::CREATING;
+
+        /**
+         * @var $data [Array] of Mascame\Artificer\Fields\Field
+         */
+        return Artificer::hook()->fire($hook, $data);
+    }
+
+    protected function applyAfterHook($data)
+    {
+        $hook = $this->isUpdating() ? Hook::UPDATED : Hook::CREATED;
+
+        /**
+         * @var $data [Array] of Mascame\Artificer\Fields\Field
+         */
+        return Artificer::hook()->fire($hook, $data);
     }
 
     /**
@@ -103,24 +157,9 @@ class ArtificerFormRequest extends FormRequest
     {
         $this->applyMassAssignmentRules();
 
-        return $this->all();
-
-
-
-//        if ($this->modelManager->hasGuarded()) {
-//            $filteredInput = [];
-//
-//            foreach ($data as $key => $value) {
-//                if (in_array($key, $this->modelObject->columns)) {
-//                    $filteredInput[$key] = $value;
-//                }
-//            }
-//
-//            return $this->except($this->modelManager->getGuarded(), $filteredInput);
-//        }
-
         // Todo
-//        $data = $this->handleFiles($data);
+        // $data = $this->handleFiles($data);
+        return $this->all();
     }
 
     // Todo: Handle files

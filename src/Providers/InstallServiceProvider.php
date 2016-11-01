@@ -1,9 +1,10 @@
 <?php
 
-namespace Mascame\Artificer;
+namespace Mascame\Artificer\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Middleware\InstalledMiddleware;
 
 class InstallServiceProvider extends ServiceProvider
@@ -39,8 +40,6 @@ class InstallServiceProvider extends ServiceProvider
         foreach (Artificer::getCoreExtensions() as $coreExtension) {
             if (! $pluginManager->isInstalled($coreExtension)
                 && ! $widgetManager->isInstalled($coreExtension)) {
-                dd($coreExtension);
-
                 return false;
             }
         }

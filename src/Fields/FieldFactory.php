@@ -35,7 +35,7 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
                 $field = $this->completeRelation($field);
             }
 
-            $fields[$key] = new FieldWrapper($field);
+//            $fields[$key] = new FieldWrapper($field);
         }
 
         return $fields;
