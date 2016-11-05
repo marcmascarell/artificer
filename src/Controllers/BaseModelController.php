@@ -26,7 +26,6 @@ class BaseModelController extends BaseController
         $this->modelSettings = $this->modelManager->current();
         $this->currentModel = $this->modelSettings->model;
 
-        View::share('models', $this->modelManager->all());
         View::share('model', $this->modelSettings);
     }
 

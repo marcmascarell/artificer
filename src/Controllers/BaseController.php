@@ -21,7 +21,7 @@ class BaseController
     protected $theme;
     protected $standalone;
     protected $menu = [];
-    protected $master_layout = null;
+    protected $masterLayout = null;
 
     /**
      * @var ModelManager
@@ -31,13 +31,13 @@ class BaseController
     public function __construct()
     {
         $this->theme = AdminOption::get('theme').'::';
-        $this->master_layout = 'base';
+        $this->masterLayout = 'base';
         $this->modelManager = Artificer::modelManager();
 
         $this->options = AdminOption::all();
 
         if ($this->isStandAlone()) {
-            $this->master_layout = 'standalone';
+            $this->masterLayout = 'standalone';
             $this->standalone = true;
         }
 
@@ -46,13 +46,13 @@ class BaseController
 
     protected function shareMainViewData()
     {
-        View::share('main_title', AdminOption::get('title'));
+        View::share('appTitle', AdminOption::get('title'));
         View::share('menu', $this->getMenu());
         View::share('theme', $this->theme);
-        View::share('layout', $this->theme.'.'.$this->master_layout);
-        View::share('fields', []);
+        View::share('layout', $this->theme.'.'.$this->masterLayout);
         View::share('standalone', $this->standalone);
         View::share('icon', AdminOption::get('icons'));
+        View::share('models', $this->modelManager->all());
     }
 
     /**
