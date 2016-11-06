@@ -64,9 +64,24 @@ class ArtificerFormRequest extends FormRequest
     }
 
     /**
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        flash()->error('Validation failed.');
+
+        parent::failedValidation($validator);
+    }
+
+    /**
      * @return bool
      */
-    protected function isUpdating()
+    public function isUpdating()
     {
         return (bool) ($this->route('id'));
     }

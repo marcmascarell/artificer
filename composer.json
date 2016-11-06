@@ -25,7 +25,8 @@
     "mascame/formality": "0.*",
     "mascame/extender": "dev-master",
     "stolz/assets": "^0.1.9",
-    "laravelcollective/html": "5.3.*"
+    "laravelcollective/html": "5.3.*",
+    "laracasts/flash": "^2.0"
   },
   "require-dev": {
     "codeception/codeception": "2.*"

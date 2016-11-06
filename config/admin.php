@@ -18,11 +18,14 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Stolz\Assets\Laravel\ServiceProvider::class,
         Mascame\Artificer\DefaultThemeServiceProvider::class,
-        Mascame\Artificer\InstallServiceProvider::class,
+        Mascame\Artificer\Providers\InstallServiceProvider::class,
+        Mascame\Artificer\Providers\HooksServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
 
         // Extensions
         Mascame\Artificer\LoginPluginServiceProvider::class,
         Mascame\Artificer\ArtificerWidgetsServiceProvider::class,
+        Mascame\Artificer\LogReaderPluginServiceProvider::class,
     ],
 
     'aliases' => [

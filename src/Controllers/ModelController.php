@@ -2,13 +2,11 @@
 
 namespace Mascame\Artificer\Controllers;
 
-use Input;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Requests\ArtificerFormRequest;
 use Redirect;
 use Request;
 use Response;
-use URL;
 use View;
 
 class ModelController extends BaseModelController
@@ -16,15 +14,15 @@ class ModelController extends BaseModelController
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
         $this->handleData($this->currentModel);
 
         $form = [
-            'form_action_route' => 'admin.model.store',
-            'form_method' => 'post',
+            'formActionRoute' => 'admin.model.store',
+            'formMethod' => 'post',
         ];
 
         return View::make($this->getView('edit'))->with('items', $this->data)->with($form);
@@ -32,7 +30,7 @@ class ModelController extends BaseModelController
 
     /**
      * @param $modelName
-     * @return $this
+     * @return @return \Illuminate\Contracts\View\View
      */
     public function filter($modelName)
     {
@@ -58,7 +56,7 @@ class ModelController extends BaseModelController
      * Display the specified resource.
      *
      * @param  int $id
-     * @return Response
+     * @return @return \Illuminate\Contracts\View\View
      */
     public function show($modelName, $id)
     {
@@ -69,8 +67,6 @@ class ModelController extends BaseModelController
 
     /**
      * Display the specified post.
-     *
-     * @return Response
      */
     public function all($modelName, $data = null, $sort = null)
     {
@@ -85,7 +81,9 @@ class ModelController extends BaseModelController
     /**
      * Show the form for editing the specified post.
      *
-     * @param  int $id
+     * @param $modelName
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
      */
     public function edit($modelName, $id)
     {
@@ -94,8 +92,8 @@ class ModelController extends BaseModelController
         );
 
         $form = [
-            'form_action_route' => 'admin.model.update',
-            'form_method' => 'put',
+            'formActionRoute' => 'admin.model.update',
+            'formMethod' => 'put',
         ];
 
         return View::make($this->getView('edit'))
@@ -112,19 +110,6 @@ class ModelController extends BaseModelController
         return \HTML::field($this->fields[$field], AdminOption::get('icons'));
     }
 
-    protected function handleAjaxResponse($item)
-    {
-        return Response::json([
-                'item' => $item->toArray(),
-                'refresh' => URL::route('admin.model.field.edit', [
-                    'slug' => Input::get('_standalone_origin'),
-                    'id' => Input::get('_standalone_origin_id'),
-                    'field' => ':fieldName:',
-                ]),
-            ]
-        );
-    }
-
     /**
      * Update or create the specified resource in storage.
      *
@@ -133,7 +118,15 @@ class ModelController extends BaseModelController
      */
     public function updateOrCreate(ArtificerFormRequest $request)
     {
-        $request->persist();
+        $result = $request->persist();
+
+        if (! $result) {
+            flash()->success('Failed.');
+        } elseif ($request->isUpdating()) {
+            flash()->success('Updated.');
+        } else {
+            flash()->success('Created.');
+        }
 
         // Todo
         //if (Request::ajax()) {
@@ -153,9 +146,9 @@ class ModelController extends BaseModelController
     public function destroy($modelName, $id)
     {
         if ($this->currentModel->destroy($id)) {
-            // Todo Notify::success('<b>Success!</b> The record has been deleted!', true);
+            flash()->success('Deleted.');
         } else {
-            // Todo Notify::danger('<b>Failed!</b> The record could not be deleted!');
+            flash()->error('Failed.');
         }
 
         return Request::ajax() ? \Response::json([]) : Redirect::back();

@@ -8,19 +8,36 @@ use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Options\AdminOption;
 
-// Todo: Make some models forbidden for some users
-
 class BaseController
 {
+    /**
+     * @var
+     */
     protected $fields;
+
+    /**
+     * @var
+     */
     protected $data;
-    protected $options;
 
-    public static $routes;
-
+    /**
+     * @var string
+     */
     protected $theme;
+
+    /**
+     * @var bool
+     */
     protected $standalone;
+
+    /**
+     * @var array
+     */
     protected $menu = [];
+
+    /**
+     * @var null|string
+     */
     protected $masterLayout = null;
 
     /**
@@ -33,8 +50,6 @@ class BaseController
         $this->theme = AdminOption::get('theme').'::';
         $this->masterLayout = 'base';
         $this->modelManager = Artificer::modelManager();
-
-        $this->options = AdminOption::all();
 
         if ($this->isStandAlone()) {
             $this->masterLayout = 'standalone';
@@ -58,7 +73,7 @@ class BaseController
     /**
      * @return bool
      */
-    public function isStandAlone()
+    protected function isStandAlone()
     {
         return Request::ajax() || Request::has('_standalone');
     }
@@ -66,7 +81,7 @@ class BaseController
     /**
      * @return array
      */
-    public function getMenu()
+    private function getMenu()
     {
         return AdminOption::get('menu');
     }
@@ -74,7 +89,7 @@ class BaseController
     /**
      * @param string $view
      */
-    public function getView($view)
+    protected function getView($view)
     {
         return $this->theme.$view;
     }
