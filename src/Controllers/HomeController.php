@@ -8,7 +8,7 @@ use Redirect;
 class HomeController extends BaseController
 {
     /**
-     * Get the first available model
+     * Get the first available model.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
