@@ -4,13 +4,14 @@ namespace Mascame\Artificer\Model;
 
 use File;
 use Mascame\Artificer\Options\AdminOption;
+use Mascame\Artificer\Permit\ModelPermit;
 
 class ModelObtainer
 {
     /**
      * @var array
      */
-    private $models = [];
+    public $models;
 
     public function __construct()
     {
@@ -21,12 +22,16 @@ class ModelObtainer
      * @param $directory
      * @return array
      */
-    private function scanModelsDirectory($directory, $namespace = null)
+    protected function scanModelsDirectory($directory, $namespace = null)
     {
         $models = [];
 
         foreach (File::allFiles($directory) as $modelPath) {
             $modelName = $this->getFromFileName($modelPath);
+
+            if (! ModelPermit::access($modelName)) {
+                continue;
+            }
 
             $models[$modelName] = $this->getModelBasics($modelName, $namespace);
         }
@@ -34,14 +39,13 @@ class ModelObtainer
         return $models;
     }
 
-    private function getModelBasics($modelName, $namespace = null)
+    protected function getModelBasics($modelName, $namespace = null)
     {
         return [
             'name' => $modelName,
             'namespace' => $namespace,
             'route' => $this->makeModelRoute($modelName),
             'fake' => false,
-            'class' => $namespace.'\\'.$modelName,
         ];
     }
 
@@ -49,7 +53,7 @@ class ModelObtainer
      * @param $modelName
      * @return string
      */
-    private function makeModelRoute($modelName)
+    protected function makeModelRoute($modelName)
     {
         return strtolower($modelName);
     }
@@ -107,7 +111,7 @@ class ModelObtainer
         return $models;
     }
 
-    private function getFakeModels()
+    public function getFakeModels()
     {
         $fakeModels = AdminOption::get('model.fake');
         $models = [];
@@ -133,10 +137,10 @@ class ModelObtainer
      * @param $model
      * @return mixed
      */
-    private function getFromFileName($model)
+    public function getFromFileName($model)
     {
-        $pieces = explode('/', $model);
+        $piece = explode('/', $model);
 
-        return str_replace('.php', '', end($pieces));
+        return str_replace('.php', '', end($piece));
     }
 }
