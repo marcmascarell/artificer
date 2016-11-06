@@ -131,7 +131,7 @@ class ArtificerFormRequest extends FormRequest
     {
         $serialized = [];
 
-        /**
+        /*
          * @var Field
          */
         foreach ($fields as $name => $field) {
