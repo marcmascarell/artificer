@@ -17,6 +17,9 @@ use Illuminate\Support\ServiceProvider;
  */
 class ArtificerExtensionServiceProvider extends ServiceProvider
 {
+    /**
+     * @var null
+     */
     protected $package = null;
 
     /**

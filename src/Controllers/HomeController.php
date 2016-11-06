@@ -7,15 +7,17 @@ use Redirect;
 
 class HomeController extends BaseController
 {
+    /**
+     * Get the first available model.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function home()
     {
-        $hiddenModels = AdminOption::get('model.hidden');
+        $model = collect($this->modelManager->all())->first(function ($model) {
+            return ! in_array($model->name, AdminOption::get('model.hidden'));
+        });
 
-        $nonHiddenModels = array_diff(array_keys($this->modelObject->schema->models), $hiddenModels);
-
-        $firstModel = head($nonHiddenModels);
-
-        return Redirect::route('admin.model.all',
-            ['slug' => $this->modelObject->schema->models[$firstModel]['route']]);
+        return Redirect::route('admin.model.all', ['slug' => $model->route]);
     }
 }

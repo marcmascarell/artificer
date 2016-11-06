@@ -8,36 +8,51 @@ use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Options\AdminOption;
 
-// Todo: Make some models forbidden for some users
-
 class BaseController
 {
-    public $fields;
-    public $data;
-    public $options;
+    /**
+     * @var
+     */
+    protected $fields;
 
-    public static $routes;
+    /**
+     * @var
+     */
+    protected $data;
 
-    public $theme;
-    public $standalone;
-    public $menu = [];
-    protected $master_layout = null;
+    /**
+     * @var string
+     */
+    protected $theme;
+
+    /**
+     * @var bool
+     */
+    protected $standalone;
+
+    /**
+     * @var array
+     */
+    protected $menu = [];
+
+    /**
+     * @var null|string
+     */
+    protected $masterLayout = null;
 
     /**
      * @var ModelManager
      */
-    public $modelObject = null;
+    protected $modelManager = null;
 
     public function __construct()
     {
         $this->theme = AdminOption::get('theme').'::';
-        $this->master_layout = 'base';
-        $this->modelObject = Artificer::modelManager();
-
-        $this->options = AdminOption::all();
+        $this->masterLayout = 'base';
+        $this->modelManager = Artificer::modelManager();
 
         if ($this->isStandAlone()) {
-            $this->master_layout = 'standalone';
+            $this->masterLayout = 'standalone';
             $this->standalone = true;
         }
 
@@ -46,19 +61,19 @@ class BaseController
 
     protected function shareMainViewData()
     {
-        View::share('main_title', AdminOption::get('title'));
+        View::share('appTitle', AdminOption::get('title'));
         View::share('menu', $this->getMenu());
         View::share('theme', $this->theme);
-        View::share('layout', $this->theme.'.'.$this->master_layout);
-        View::share('fields', []);
+        View::share('layout', $this->theme.'.'.$this->masterLayout);
         View::share('standalone', $this->standalone);
         View::share('icon', AdminOption::get('icons'));
+        View::share('models', $this->modelManager->all());
     }
 
     /**
      * @return bool
      */
-    public function isStandAlone()
+    protected function isStandAlone()
     {
         return Request::ajax() || Request::has('_standalone');
     }
@@ -66,7 +81,7 @@ class BaseController
     /**
      * @return array
      */
-    public function getMenu()
+    private function getMenu()
     {
         return AdminOption::get('menu');
     }
@@ -74,7 +89,7 @@ class BaseController
     /**
      * @param string $view
      */
-    public function getView($view)
+    protected function getView($view)
     {
         return $this->theme.$view;
     }

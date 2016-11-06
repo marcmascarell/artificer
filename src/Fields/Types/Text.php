@@ -3,8 +3,9 @@
 namespace Mascame\Artificer\Fields\Types;
 
 use Form;
+use Mascame\Artificer\Fields\Field;
 
-class Text extends \Mascame\Formality\Types\Text
+class Text extends Field
 {
     public function input()
     {

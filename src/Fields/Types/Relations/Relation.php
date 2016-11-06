@@ -6,8 +6,8 @@ use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Fields\GuessableRelation;
 use Mascame\Artificer\Fields\Relationable;
 use Mascame\Artificer\Model\ModelManager;
+use Mascame\Artificer\Model\ModelSettings;
 use Mascame\Formality\Field\Field;
-use Route;
 use URL;
 
 class Relation extends Field
@@ -17,43 +17,83 @@ class Relation extends Field
     /**
      * @var ModelManager;
      */
-    public $modelObject;
+    public $modelManager;
 
+    /**
+     * @var ModelSettings;
+     */
+    public $modelSettings;
+
+    /**
+     * @var bool
+     */
     public $relation = true;
 
     /**
-     * @var ModelManager;
+     * @var \Eloquent;
      */
-    public $model;
+    public $currentModel;
+
+    /**
+     * @var
+     */
     public $fields;
-    public $createURL;
+
+    /**
+     * @var
+     */
+    public $createRoute;
+
+    /**
+     * @var
+     */
     public $relatedModel;
 
     /**
      * Relation constructor.
+     * @param $name
+     * @param null $value
+     * @param array $options
      */
     public function __construct($name, $value = null, $options = [])
     {
         parent::__construct($name, $value, $options);
 
-        $this->modelObject = Artificer::modelManager();
+        $this->modelManager = Artificer::modelManager();
+        $this->modelSettings = $this->modelManager->current();
+        $this->currentModel = $this->modelSettings->model;
     }
 
+    /**
+     * @return mixed
+     */
     public function getRelatedInstance()
     {
-        return $this->getRelatedModel()['instance'];
+        return $this->getRelatedModel()->model;
     }
 
-    public function editURL($model_route, $id)
+    /**
+     * @param $modelSlug
+     * @param $id
+     * @return string
+     */
+    public function editRoute($modelSlug, $id)
     {
-        return URL::route('admin.model.edit', ['slug' => $model_route, 'id' => $id]);
+        return URL::route('admin.model.edit', ['slug' => $modelSlug, 'id' => $id]);
     }
 
-    public function createURL($model_route)
+    /**
+     * @param $modelSlug
+     * @return string
+     */
+    public function createRoute($modelSlug)
     {
-        return URL::route('admin.model.create', ['slug' => $model_route]);
+        return URL::route('admin.model.create', ['slug' => $modelSlug]);
     }
 
+    /**
+     * @return bool
+     */
     public function hasFilter()
     {
         return false;

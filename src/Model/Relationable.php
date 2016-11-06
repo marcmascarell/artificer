@@ -2,31 +2,20 @@
 
 namespace Mascame\Artificer\Model;
 
-use Mascame\Artificer\Artificer;
-
-class ModelRelation
+trait Relationable
 {
-    /**
-     * @var
-     */
-    public $relations;
-
     /**
      * @return array|mixed
      */
-    public function get()
+    public function getRelations()
     {
-        if (! empty($this->relations)) {
-            return $this->relations;
-        }
-
-        $fields = Artificer::modelManager()->getOption('fields', []);
+        $fields = $this->getOption('fields', []);
 
         if (empty($fields)) {
             return [];
         }
 
-        return $this->relations = $this->getFieldsWithRelations($fields);
+        return $this->getFieldsWithRelations($fields);
     }
 
     /**

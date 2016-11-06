@@ -2,6 +2,13 @@
 
 namespace Mascame\Artificer\Fields\Types;
 
-class Textarea extends \Mascame\Formality\Types\Textarea
+use Form;
+use Mascame\Artificer\Fields\Field;
+
+class Textarea extends Field
 {
+    protected function input()
+    {
+        return Form::textarea($this->name, $this->value, $this->attributes);
+    }
 }

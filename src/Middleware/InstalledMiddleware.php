@@ -3,7 +3,7 @@
 namespace Mascame\Artificer\Middleware;
 
 use Closure;
-use Mascame\Artificer\InstallServiceProvider;
+use Mascame\Artificer\Providers\InstallServiceProvider;
 
 class InstalledMiddleware
 {

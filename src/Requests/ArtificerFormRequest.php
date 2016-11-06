@@ -5,7 +5,10 @@ namespace Mascame\Artificer\Requests;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Mascame\Artificer\Artificer;
+use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Hooks\Hook;
 use Mascame\Artificer\Model\ModelManager;
+use Mascame\Artificer\Model\ModelSettings;
 
 class ArtificerFormRequest extends FormRequest
 {
@@ -20,9 +23,30 @@ class ArtificerFormRequest extends FormRequest
     protected $model;
 
     /**
-     * @var bool
+     * @var ModelSettings
      */
-    protected $isUpdating;
+    protected $modelSettings;
+
+    /**
+     * Init the needed properties.
+     */
+    protected function init()
+    {
+        $this->modelSettings = Artificer::modelManager()->current();
+        $this->currentModel = $this->modelSettings->model;
+    }
+
+    /**
+     * Extends this method to initialize some vars.
+     *
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function getValidatorInstance()
+    {
+        $this->init();
+
+        return parent::getValidatorInstance();
+    }
 
     /**
      * Determine if the user is authorized to make this request.
@@ -31,8 +55,8 @@ class ArtificerFormRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->isUpdating) {
-            $this->model = $this->modelManager->model->findOrFail($this->route('id'));
+        if ($this->isUpdating()) {
+            $this->currentModel = $this->currentModel->findOrFail($this->route('id'));
         }
 
         // Todo
@@ -40,20 +64,26 @@ class ArtificerFormRequest extends FormRequest
     }
 
     /**
-     * Init the needed properties.
+     * Handle a failed validation attempt.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
-    protected function init()
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
-        $this->modelManager = Artificer::modelManager();
-        $this->model = $this->modelManager->model;
-        $this->isUpdating = (bool) ($this->route('id'));
+        flash()->error('Validation failed.');
+
+        parent::failedValidation($validator);
     }
 
-    protected function getValidatorInstance()
+    /**
+     * @return bool
+     */
+    public function isUpdating()
     {
-        $this->init();
-
-        return parent::getValidatorInstance();
+        return (bool) ($this->route('id'));
     }
 
     /**
@@ -63,7 +93,7 @@ class ArtificerFormRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->modelManager->getOption('rules', []);
+        return $this->modelSettings->getOption('rules', []);
     }
 
     /**
@@ -71,8 +101,8 @@ class ArtificerFormRequest extends FormRequest
      */
     protected function applyMassAssignmentRules()
     {
-        $this->model->guard($this->modelManager->getGuarded());
-        $this->model->fillable($this->modelManager->getFillable());
+        $this->currentModel->guard($this->modelSettings->getGuarded());
+        $this->currentModel->fillable($this->modelSettings->getFillable());
     }
 
     /**
@@ -82,11 +112,57 @@ class ArtificerFormRequest extends FormRequest
     {
         $data = $this->getData();
 
-        if ($this->isUpdating) {
-            return $this->model->update($data);
+        $data = $this->applyBeforeHook(
+            $this->modelSettings->withValues($data)->toForm()
+        );
+
+        $data = $this->serializeForm($data);
+
+        if ($this->isUpdating()) {
+            $result = $this->currentModel->update($data);
+        } else {
+            $result = $this->currentModel->create($data);
         }
 
-        return $this->model->create($data);
+        return $this->applyAfterHook($result);
+    }
+
+    protected function serializeForm($fields)
+    {
+        $serialized = [];
+
+        /*
+         * @var Field
+         */
+        foreach ($fields as $name => $field) {
+            if ($this->isUpdating() && $name == 'id') {
+                continue;
+            }
+
+            $serialized[$name] = $field->getValue();
+        }
+
+        return $serialized;
+    }
+
+    protected function applyBeforeHook($data)
+    {
+        $hook = $this->isUpdating() ? Hook::UPDATING : Hook::CREATING;
+
+        /*
+         * @var $data [Array] of Mascame\Artificer\Fields\Field
+         */
+        return Artificer::hook()->fire($hook, $data);
+    }
+
+    protected function applyAfterHook($data)
+    {
+        $hook = $this->isUpdating() ? Hook::UPDATED : Hook::CREATED;
+
+        /*
+         * @var $data [Array] of Mascame\Artificer\Fields\Field
+         */
+        return Artificer::hook()->fire($hook, $data);
     }
 
     /**
@@ -96,24 +172,9 @@ class ArtificerFormRequest extends FormRequest
     {
         $this->applyMassAssignmentRules();
 
-        return $this->all();
-
-
-
-//        if ($this->modelManager->hasGuarded()) {
-//            $filteredInput = [];
-//
-//            foreach ($data as $key => $value) {
-//                if (in_array($key, $this->modelObject->columns)) {
-//                    $filteredInput[$key] = $value;
-//                }
-//            }
-//
-//            return $this->except($this->modelManager->getGuarded(), $filteredInput);
-//        }
-
         // Todo
-//        $data = $this->handleFiles($data);
+        // $data = $this->handleFiles($data);
+        return $this->all();
     }
 
     // Todo: Handle files

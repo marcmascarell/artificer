@@ -35,7 +35,7 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
                 $field = $this->completeRelation($field);
             }
 
-            $fields[$key] = new FieldWrapper($field);
+//            $fields[$key] = new FieldWrapper($field);
         }
 
         return $fields;
@@ -112,39 +112,39 @@ class FieldFactory extends \Mascame\Formality\Factory\Factory
     /**
      * @return array|null
      */
-    public function getRelated()
-    {
-        if ($this->relatedFields) {
-            return $this->relatedFields;
-        }
-
-        if (null == $fields = FieldOption::all()) {
-            return $this->relatedFields = [];
-        }
-
-        /*
-         * We compare columns with config array to determine if there are new fields
-         */
-        $this->relatedFields = array_diff(array_keys($fields), $this->modelObject->columns);
-
-        return $this->relatedFields;
-    }
+//    public function getRelated()
+//    {
+//        if ($this->relatedFields) {
+//            return $this->relatedFields;
+//        }
+//
+//        if (null == $fields = FieldOption::all()) {
+//            return $this->relatedFields = [];
+//        }
+//
+//        /*
+//         * We compare columns with config array to determine if there are new fields
+//         */
+//        $this->relatedFields = array_diff(array_keys($fields), $this->modelObject->columns);
+//
+//        return $this->relatedFields;
+//    }
 
     /**
      * @return array
      */
-    protected function withRelated()
-    {
-        $related = $this->getRelated();
-
-        if (! empty($related)) {
-            foreach ($related as $field) {
-                $this->modelObject->columns[] = $field;
-            }
-        }
-
-        return $this->modelObject->columns;
-    }
+//    protected function withRelated()
+//    {
+//        $related = $this->getRelated();
+//
+//        if (! empty($related)) {
+//            foreach ($related as $field) {
+//                $this->modelObject->columns[] = $field;
+//            }
+//        }
+//
+//        return $this->modelObject->columns;
+//    }
 
     /**
      * @return array

@@ -7,6 +7,7 @@ use Mascame\Artificer\Assets\AssetsManagerInterface;
 use Mascame\Artificer\Controllers\BaseModelController;
 use Mascame\Artificer\Extension\ResourceCollector;
 use Mascame\Artificer\Model\ModelManager;
+use Mascame\Hooky\Hook;
 
 class Artificer
 {
@@ -81,6 +82,14 @@ class Artificer
     public static function assetManager()
     {
         return App::make('ArtificerAssetManager');
+    }
+
+    /**
+     * @return Hook
+     */
+    public static function hook()
+    {
+        return App::make('ArtificerHook');
     }
 
     /**

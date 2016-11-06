@@ -9,13 +9,14 @@ use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 use Mascame\Artificer\Commands\MigrationCommands;
 use Mascame\Artificer\Extension\DatabaseInstaller;
 use Mascame\Artificer\Model\ModelObtainer;
-use Mascame\Artificer\Model\ModelSchema;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Assets\AssetsManager;
 use Mascame\Artificer\Widget\Manager as WidgetManager;
 use Mascame\Artificer\Plugin\Manager as PluginManager;
 use Mascame\Artificer\Extension\Booter;
+use Mascame\Artificer\Providers\InstallServiceProvider;
 use Mascame\Extender\Event\Event;
+use Mascame\Hooky\Hook;
 
 class ArtificerServiceProvider extends ServiceProvider
 {
@@ -166,6 +167,10 @@ class ArtificerServiceProvider extends ServiceProvider
 
     private function registerBindings()
     {
+        App::singleton('ArtificerHook', function () {
+            return new Hook();
+        });
+
         /*
         |--------------------------------------------------------------------------
         | Register commands
@@ -190,7 +195,7 @@ class ArtificerServiceProvider extends ServiceProvider
         |*/
 
         App::singleton('ArtificerModelManager', function () {
-            return new ModelManager(new ModelSchema(new ModelObtainer()));
+            return new ModelManager(new ModelObtainer());
         });
 
         App::singleton('ArtificerWidgetManager', function () {

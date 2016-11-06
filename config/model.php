@@ -37,11 +37,11 @@ return [
      * All model configs will use this defaults (Merging)
      */
     'default' => [
-        // The real value will never be shown (just that)
+        // The database value will never be shown (just that)
         'hidden' => ['password'],
 
         // Model's 'fillable' property. Fallback to the Model if empty []
-        'fillable' => ['*'],
+        'fillable' => [],
 
         // Model's 'guarded' property. Fallback to the Model if empty []
         'guarded' => ['id'],
