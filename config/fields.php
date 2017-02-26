@@ -92,7 +92,6 @@ return [
             ],
         ],
 
-
         'key' => [
             'autodetect' => [
                 'id',

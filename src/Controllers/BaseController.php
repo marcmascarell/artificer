@@ -2,8 +2,8 @@
 
 namespace Mascame\Artificer\Controllers;
 
-use Request;
 use View;
+use Request;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Options\AdminOption;

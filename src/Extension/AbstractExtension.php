@@ -2,8 +2,8 @@
 
 namespace Mascame\Artificer\Extension;
 
-use Mascame\Artificer\Assets\AssetsManagerInterface;
 use Mascame\Artificer\Options\PluginOption;
+use Mascame\Artificer\Assets\AssetsManagerInterface;
 
 abstract class AbstractExtension
 {

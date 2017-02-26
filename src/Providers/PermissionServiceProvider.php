@@ -2,9 +2,9 @@
 
 namespace Mascame\Artificer\Providers;
 
-use Spatie\Permission\Contracts\Permission as PermissionContract;
-use Spatie\Permission\Contracts\Role as RoleContract;
 use Spatie\Permission\PermissionRegistrar;
+use Spatie\Permission\Contracts\Role as RoleContract;
+use Spatie\Permission\Contracts\Permission as PermissionContract;
 
 class PermissionServiceProvider extends \Spatie\Permission\PermissionServiceProvider
 {

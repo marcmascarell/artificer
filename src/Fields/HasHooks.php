@@ -2,7 +2,6 @@
 
 namespace Mascame\Artificer\Fields;
 
-
 use Illuminate\Support\Str;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Hooks\ModelHook;
@@ -26,15 +25,12 @@ trait HasHooks
     ];
 
     /**
-     * Indicates if hooks were already attached
+     * Indicates if hooks were already attached.
      *
      * @var bool
      */
     private $hooksAttached = false;
 
-    /**
-     *
-     */
     protected function attachHooks()
     {
         if ($this->hooksAttached) {
@@ -42,7 +38,7 @@ trait HasHooks
         }
 
         foreach (self::$hooks as $hook => $handler) {
-            Artificer::hook()->to($hook, function($data, $next) use ($handler) {
+            Artificer::hook()->to($hook, function ($data, $next) use ($handler) {
                 return $this->{$handler}($data, $next);
             });
 
@@ -92,5 +88,4 @@ trait HasHooks
 
         return call_user_func_array([$this, $method], $arguments);
     }
-
 }

@@ -3,8 +3,8 @@
 namespace Mascame\Artificer\Plugin;
 
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Extension\AbstractExtension;
 use Mascame\Extender\Booter\BooterInterface;
+use Mascame\Artificer\Extension\AbstractExtension;
 
 class Booter extends \Mascame\Artificer\Extension\Booter implements BooterInterface
 {

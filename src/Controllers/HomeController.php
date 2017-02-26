@@ -2,8 +2,8 @@
 
 namespace Mascame\Artificer\Controllers;
 
-use Mascame\Artificer\Options\AdminOption;
 use Redirect;
+use Mascame\Artificer\Options\AdminOption;
 
 class HomeController extends BaseController
 {

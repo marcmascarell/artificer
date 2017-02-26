@@ -17,7 +17,6 @@ class ModelSettings
 {
     use Relationable;
 
-
     /**
      * @var ModelSchema
      */

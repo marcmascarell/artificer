@@ -2,10 +2,8 @@
 
 namespace Mascame\Artificer\Model\Permission;
 
-
-class Role extends \Spatie\Permission\Models\Role 
+class Role extends \Spatie\Permission\Models\Role
 {
-    
     /**
      * Create a new Eloquent model instance.
      *

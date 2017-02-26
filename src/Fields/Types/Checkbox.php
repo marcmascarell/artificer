@@ -8,14 +8,13 @@ use Mascame\Artificer\Fields\Field;
 
 class Checkbox extends Field
 {
-
     protected function input()
     {
-        print '<div>';
-        print Form::hidden($this->name, 0);
+        echo '<div>';
+        echo Form::hidden($this->name, 0);
 
-        print Form::checkbox($this->name, 1, $this->value, $this->attributes);
-        print '</div>';
+        echo Form::checkbox($this->name, 1, $this->value, $this->attributes);
+        echo '</div>';
     }
 
     /**
@@ -27,12 +26,10 @@ class Checkbox extends Field
     {
         $fields->each(function (Field $field, $key) {
             if ($field->getType() == $this->getType() && empty($field->getValue())) {
-
                 $field->setValue(0);
             }
         });
 
         return $next($fields);
     }
-
 }

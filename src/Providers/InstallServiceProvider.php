@@ -2,9 +2,9 @@
 
 namespace Mascame\Artificer\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Mascame\Artificer\Artificer;
+use Illuminate\Support\ServiceProvider;
 use Mascame\Artificer\Middleware\InstalledMiddleware;
 
 class InstallServiceProvider extends ServiceProvider

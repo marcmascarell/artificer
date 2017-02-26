@@ -2,8 +2,8 @@
 
 namespace Mascame\Artificer\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Mascame\Artificer\Artificer;
+use Illuminate\Support\ServiceProvider;
 
 class HooksServiceProvider extends ServiceProvider
 {
@@ -33,5 +33,4 @@ class HooksServiceProvider extends ServiceProvider
             Artificer::hook()->to($hook, $handlers);
         }
     }
-
 }

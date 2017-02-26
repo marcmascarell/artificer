@@ -2,10 +2,8 @@
 
 namespace Mascame\Artificer\Model\Permission;
 
-
-class Permission extends \Spatie\Permission\Models\Permission 
+class Permission extends \Spatie\Permission\Models\Permission
 {
-
     /**
      * Create a new Eloquent model instance.
      *
@@ -43,5 +41,4 @@ class Permission extends \Spatie\Permission\Models\Permission
             config('admin.permission.table_names.user_has_permissions')
         );
     }
-
 }
