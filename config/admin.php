@@ -17,10 +17,11 @@ return [
     'providers' => [
         Collective\Html\HtmlServiceProvider::class,
         Stolz\Assets\Laravel\ServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
         Mascame\Artificer\DefaultThemeServiceProvider::class,
         Mascame\Artificer\Providers\InstallServiceProvider::class,
         Mascame\Artificer\Providers\HooksServiceProvider::class,
-        Laracasts\Flash\FlashServiceProvider::class,
 
         // Extensions
         Mascame\Artificer\LoginPluginServiceProvider::class,

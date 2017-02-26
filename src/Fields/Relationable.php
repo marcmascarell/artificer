@@ -37,7 +37,7 @@ trait Relationable
         $modelName = $this->getRelationAttribute('model');
 
         if ($this->modelManager->has($modelName)) {
-            return $this->relatedModel = $this->modelManager->get($modelName);
+            return $this->relatedModel = $this->modelManager->settings($modelName);
         }
 
         throw new \Exception("Couldn't find the related model for '{$this->getName()}''");

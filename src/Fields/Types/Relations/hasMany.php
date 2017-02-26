@@ -19,7 +19,7 @@ class hasMany extends Relation
         $id = $this->fields['id']->value;
 
         $modelName = $this->relation->getRelatedModel();
-        $model = Artificer::modelManager()->get($modelName);
+        $model = Artificer::modelManager()->model($modelName);
         $this->modelManager = $model;
 
         if ((Route::currentRouteName() == 'admin.model.create' || Route::currentRouteName() == 'admin.model.field')

@@ -9,7 +9,7 @@ trait GuessableRelation
 {
     protected function modelHasMethod($method)
     {
-        return method_exists(Artificer::modelManager()->current()->model, $method);
+        return method_exists(Artificer::modelManager()->model(), $method);
     }
 
     // Todo

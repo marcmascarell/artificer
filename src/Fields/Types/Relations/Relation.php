@@ -60,8 +60,8 @@ class Relation extends Field
         parent::__construct($name, $value, $options);
 
         $this->modelManager = Artificer::modelManager();
-        $this->modelSettings = $this->modelManager->current();
-        $this->currentModel = $this->modelSettings->model;
+        $this->modelSettings = $this->modelManager->settings();
+        $this->currentModel = $this->modelManager->model();
     }
 
     /**

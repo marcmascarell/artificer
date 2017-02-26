@@ -39,13 +39,13 @@ class ModelController extends BaseModelController
         $sort = $this->getSort();
 
         $data = $this->currentModel->where(function ($query) {
-            foreach (\Request::all() as $name => $value) {
-                if ($value != '' && isset($this->fields[$name])) {
-                    $this->fields[$name]->filter($query, $value);
+                foreach (\Request::all() as $name => $value) {
+                    if ($value != '' && isset($this->fields[$name])) {
+                        $this->fields[$name]->filter($query, $value);
+                    }
                 }
-            }
-        })
-            ->with($this->modelManager->getRelations())
+            })
+            ->with($this->modelSettings->getRelations())
             ->orderBy($sort['column'], $sort['direction'])
             ->get();
 
@@ -72,8 +72,10 @@ class ModelController extends BaseModelController
     {
         $sort = $this->getSort();
 
-        $data = $this->currentModel->with($this->modelSettings->getRelations())->orderBy($sort['column'],
-            $sort['direction'])->get();
+        $data = $this->currentModel->with($this->modelSettings->getRelations())->orderBy(
+            $sort['column'],
+            $sort['direction']
+        )->get();
 
         return parent::all($modelName, $data, $sort);
     }
@@ -133,7 +135,7 @@ class ModelController extends BaseModelController
         //    return $this->handleAjaxResponse($model);
         //}
 
-        return Redirect::route('admin.model.all', ['slug' => $this->modelSettings->route]);
+        return Redirect::route('admin.model.all', ['slug' => $this->modelManager->current()->route]);
     }
 
     /**
@@ -153,4 +155,5 @@ class ModelController extends BaseModelController
 
         return Request::ajax() ? \Response::json([]) : Redirect::back();
     }
+
 }

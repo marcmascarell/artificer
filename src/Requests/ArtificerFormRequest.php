@@ -5,8 +5,8 @@ namespace Mascame\Artificer\Requests;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Fields\Field;
 use Mascame\Artificer\Hooks\Hook;
+use Mascame\Artificer\Hooks\ModelHook;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Model\ModelSettings;
 
@@ -32,8 +32,8 @@ class ArtificerFormRequest extends FormRequest
      */
     protected function init()
     {
-        $this->modelSettings = Artificer::modelManager()->current();
-        $this->currentModel = $this->modelSettings->model;
+        $this->modelSettings = Artificer::modelManager()->current()->settings();
+        $this->currentModel = Artificer::modelManager()->current()->model();
     }
 
     /**
@@ -97,26 +97,11 @@ class ArtificerFormRequest extends FormRequest
     }
 
     /**
-     * Apply the rules given for the model.
-     */
-    protected function applyMassAssignmentRules()
-    {
-        $this->currentModel->guard($this->modelSettings->getGuarded());
-        $this->currentModel->fillable($this->modelSettings->getFillable());
-    }
-
-    /**
      * Persist the data.
      */
     public function persist()
     {
-        $data = $this->getData();
-
-        $data = $this->applyBeforeHook(
-            $this->modelSettings->withValues($data)->toForm()
-        );
-
-        $data = $this->serializeForm($data);
+        $data = Artificer::modelManager()->current()->serialize();
 
         if ($this->isUpdating()) {
             $result = $this->currentModel->update($data);
@@ -124,57 +109,7 @@ class ArtificerFormRequest extends FormRequest
             $result = $this->currentModel->create($data);
         }
 
-        return $this->applyAfterHook($result);
-    }
-
-    protected function serializeForm($fields)
-    {
-        $serialized = [];
-
-        /*
-         * @var Field
-         */
-        foreach ($fields as $name => $field) {
-            if ($this->isUpdating() && $name == 'id') {
-                continue;
-            }
-
-            $serialized[$name] = $field->getValue();
-        }
-
-        return $serialized;
-    }
-
-    protected function applyBeforeHook($data)
-    {
-        $hook = $this->isUpdating() ? Hook::UPDATING : Hook::CREATING;
-
-        /*
-         * @var $data [Array] of Mascame\Artificer\Fields\Field
-         */
-        return Artificer::hook()->fire($hook, $data);
-    }
-
-    protected function applyAfterHook($data)
-    {
-        $hook = $this->isUpdating() ? Hook::UPDATED : Hook::CREATED;
-
-        /*
-         * @var $data [Array] of Mascame\Artificer\Fields\Field
-         */
-        return Artificer::hook()->fire($hook, $data);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getData()
-    {
-        $this->applyMassAssignmentRules();
-
-        // Todo
-        // $data = $this->handleFiles($data);
-        return $this->all();
+        return $result;
     }
 
     // Todo: Handle files

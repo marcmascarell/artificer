@@ -5,8 +5,10 @@ namespace Mascame\Artificer\Model;
 use Route;
 use Illuminate\Support\Str as Str;
 
+
 class ModelManager
 {
+
     /**
      * @var null|string
      */
@@ -23,8 +25,32 @@ class ModelManager
      */
     public function __construct(ModelObtainer $modelObtainer)
     {
-        $this->models = $modelObtainer->getModels();
+        $this->models = $this->makeModels(
+            $modelObtainer->getModels()
+        );
+
         $this->current = $this->getCurrentModel();
+        $params = \Request::all();
+
+        if ($this->current && ! empty($params)) {
+            $this->current()->setValues($params);
+        }
+    }
+
+    /**
+     * @param $models
+     * @return mixed
+     */
+    private function makeModels($properties)
+    {
+        $models = [];
+
+        foreach ($properties as $modelProperties) {
+            $name = $modelProperties['name'];
+            $models[$name] = new Model($modelProperties);
+        }
+
+        return $models;
     }
 
     /**
@@ -33,12 +59,14 @@ class ModelManager
     private function getCurrentModel()
     {
         if (! Str::startsWith(Route::currentRouteName(), 'admin.model.')) {
-            return;
+            return null;
         }
 
-        return collect($this->models)->first(function ($values, $modelName) {
-            return $this->isCurrent($modelName);
+        $model = collect($this->models)->first(function ($model, $modelName) {
+            return $this->isCurrent($model->name);
         });
+
+        return $model->name;
     }
 
     /**
@@ -51,29 +79,38 @@ class ModelManager
             return false;
         }
 
-        $slug = Route::current()->parameter('slug');
-
-        return isset($this->models[$modelName]['route']) && $this->models[$modelName]['route'] == $slug;
+        return $this->models[$modelName]->route == Route::current()->parameter('slug');
     }
 
     /**
      * @param $modelName
-     * @return ModelSettings
+     * @return Model
+     * @throws \Exception
      */
     public function get($modelName)
     {
-        $modelOptions = $this->models[$modelName];
-        $eloquent = new $modelOptions['class'];
+        if (isset($this->models[$modelName])){
+            return $this->models[$modelName];
+        }
 
-        return new ModelSettings($eloquent, $modelOptions);
+        // Try to find it by class name
+        $model = array_first($this->models, function($value, $key) use ($modelName) {
+            return $value->class == $modelName;
+        });
+
+        if (! $model) {
+            throw new \Exception('Model ' . $modelName . ' not found.');
+        }
+
+        return $model;
     }
 
     /**
-     * @return ModelSettings
+     * @return Model
      */
     public function current()
     {
-        return $this->get($this->current['name']);
+        return $this->get($this->current);
     }
 
     /**
@@ -90,12 +127,7 @@ class ModelManager
      */
     public function all()
     {
-        $models = [];
-
-        foreach (array_keys($this->models) as $modelName) {
-            $models[$modelName] = $this->get($modelName);
-        }
-
-        return $models;
+        return $this->models;
     }
+
 }

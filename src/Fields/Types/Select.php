@@ -9,7 +9,10 @@ class Select extends Field
 {
     protected function input()
     {
-        return Form::select($this->name, $this->value, false, $this->attributes);
+        return Form::select($this->name, $this->getOption('choices', [
+            'my options',
+            'are awesome',
+        ]), $this->value, $this->attributes);
     }
 
     public function outputRange($start, $end)

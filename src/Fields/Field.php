@@ -7,8 +7,12 @@ use Mascame\Formality\Field\FieldInterface;
 
 class Field extends \Mascame\Formality\Field\Field implements FieldInterface
 {
-    use Filterable;
+    use Filterable,
+        HasHooks;
 
+    /**
+     * @var array
+     */
     protected $widgets = [];
 
     /**
@@ -34,6 +38,8 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
         parent::__construct($name, $value, $options);
 
         $this->widgets = $this->getInstalledWidgets();
+
+        $this->attachHooks();
     }
 
     /**
@@ -89,6 +95,9 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
         return parent::output();
     }
 
+    /**
+     * @return $this
+     */
     public function protectGuarded()
     {
         if (! $this->isFillable()) {
@@ -100,6 +109,9 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function withWidgets()
     {
         $this->withWidgets = true;
@@ -107,6 +119,9 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     protected function applyWidgets()
     {
         foreach ($this->widgets as $widget) {
@@ -138,7 +153,7 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
             $action = Artificer::getCurrentAction();
         }
 
-        $listOptions = Artificer::modelManager()->current()->getOption($action);
+        $listOptions = Artificer::modelManager()->current()->settings()->getOption($action);
 
         if (! $listOptions || ! isset($listOptions[$visibility])) {
             return false;
@@ -185,11 +200,18 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
         return $this->isListedAs('hidden');
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     public static function get($name)
     {
         return array_get(\View::getShared(), 'fields')[$name];
     }
 
+    /**
+     * @param $name
+     */
     public function __get($name)
     {
         $accessor = 'get'.studly_case($name);
@@ -197,6 +219,10 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
         return $this->useFieldMethod($accessor);
     }
 
+    /**
+     * @param $method
+     * @param array $args
+     */
     protected function useFieldMethod($method, $args = [])
     {
         if (! method_exists($this, $method)) {
@@ -206,14 +232,9 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
         return (empty($args)) ? $this->$method() : $this->$method($args);
     }
 
-    public function __call($method, $args)
-    {
-        return $this->useFieldMethod($method, $args);
-    }
-
     public function isFillable()
     {
-        $fillable = Artificer::modelManager()->current()->getFillable();
+        $fillable = Artificer::modelManager()->current()->settings()->getFillable();
 
         return $this->isAll($fillable) || in_array($this->getName(), $fillable);
     }
@@ -245,4 +266,5 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
 
         $this->setOptions(['attributes' => [$attribute => $value]]);
     }
+
 }

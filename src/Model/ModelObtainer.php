@@ -12,11 +12,6 @@ class ModelObtainer
      */
     private $models = [];
 
-    public function __construct()
-    {
-        $this->models = $this->getModels();
-    }
-
     /**
      * @param $directory
      * @return array
@@ -34,6 +29,11 @@ class ModelObtainer
         return $models;
     }
 
+    /**
+     * @param $modelName
+     * @param null $namespace
+     * @return array
+     */
     private function getModelBasics($modelName, $namespace = null)
     {
         return [
@@ -73,6 +73,7 @@ class ModelObtainer
 
     /**
      * @return array
+     * @throws \Exception
      */
     public function getModels()
     {
@@ -107,6 +108,9 @@ class ModelObtainer
         return $models;
     }
 
+    /**
+     * @return array
+     */
     private function getFakeModels()
     {
         $fakeModels = AdminOption::get('model.fake');

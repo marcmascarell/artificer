@@ -5,13 +5,8 @@ use Mascame\Artificer\Controllers\HomeController as HomeController;
 use Mascame\Artificer\Controllers\InstallController as InstallController;
 use Mascame\Artificer\Controllers\ExtensionController as ExtensionController;
 
-Route::pattern('new_id', '\d+');
-Route::pattern('old_id', '\d+');
 Route::pattern('id', '\d+');
-Route::pattern('integer', '\d+');
-
 Route::pattern('slug', '[a-z0-9_-]+');
-Route::pattern('username', '[a-z0-9_-]{3,16}');
 
 Route::group([
     'middleware' => ['web', 'artificer'],

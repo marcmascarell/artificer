@@ -8,6 +8,7 @@ use View;
 
 class BaseModelController extends BaseController
 {
+
     /**
      * The Eloquent model instance.
      * @var \Eloquent
@@ -23,10 +24,12 @@ class BaseModelController extends BaseController
     {
         parent::__construct();
 
-        $this->modelSettings = $this->modelManager->current();
-        $this->currentModel = $this->modelSettings->model;
+        $model = $this->modelManager->current();
 
-        View::share('model', $this->modelSettings);
+        $this->modelSettings = $model->settings();
+        $this->currentModel = $model->model();
+
+        View::share('model', $model);
     }
 
     /**
@@ -35,16 +38,9 @@ class BaseModelController extends BaseController
     protected function handleData($data)
     {
         $this->data = $data;
-        $modelValues = $this->data;
-
-        // If it is not an Eloquent instance just ignore modelValues
-        if (is_a($modelValues, Collection::class)) {
-            $modelValues = null;
-        }
-
-        View::share('fields', $this->modelSettings->toForm($modelValues));
 
         View::share('data', $this->data);
+        View::share('fields', $this->modelManager->current()->toForm());
     }
 
     /**
