@@ -1,38 +1,40 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
-use Mascame\Artificer\Fields\Field;
-use Mascame\Artificer\Model\Model;
 use URL;
 use Route;
+use Mascame\Artificer\Model\Model;
+use Mascame\Artificer\Fields\Field;
 
-class Relation extends Field {
-
-	/**
-	 * @var Model;
-	 */
-	public $modelObject;
-	public $model;
-	public $fields;
-	public $createURL;
+class Relation extends Field
+{
+    /**
+     * @var Model;
+     */
+    public $modelObject;
+    public $model;
+    public $fields;
+    public $createURL;
 
     public function boot()
     {
-		parent::boot();
+        parent::boot();
 
         $this->modelObject = \App::make('artificer-model');
     }
 
-	public function editURL($model_route, $id) {
-		return URL::route('admin.model.edit', array('slug' => $model_route, 'id' => $id));
-	}
+    public function editURL($model_route, $id)
+    {
+        return URL::route('admin.model.edit', ['slug' => $model_route, 'id' => $id]);
+    }
 
-	public function createURL($model_route) {
-		return URL::route('admin.model.create', array('slug' => $model_route));
-	}
+    public function createURL($model_route)
+    {
+        return URL::route('admin.model.create', ['slug' => $model_route]);
+    }
 
-	public function relationModal($relatedModelRouteName, $id = 0)
-	{
-		?>
+    public function relationModal($relatedModelRouteName, $id = 0)
+    {
+        ?>
 		<!-- Modal -->
 		<div class="modal fade standalone" id="form-modal-<?= $relatedModelRouteName ?>" tabindex="-1" role="dialog"
 			 aria-labelledby="myModalLabel" aria-hidden="true">
@@ -92,10 +94,12 @@ class Relation extends Field {
 						$form.prepend('<input type="hidden" name="_standalone_origin" value="<?=$this->modelObject->getRouteName(Model::$current)?>">');
 						$form.prepend('<input type="hidden" name="_standalone_origin_id" value="<?=$id?>">');
 
-						<?php if (Route::currentRouteName() == 'admin.model.create') { ?>
+						<?php if (Route::currentRouteName() == 'admin.model.create') {
+            ?>
 						$form.prepend('<input type="hidden" name="_set_relation_on_create" value="<?=Model::getCurrent()?>">');
 						$form.prepend('<input type="hidden" name="_set_relation_on_create_foreign" value="<?=$this->relation->getForeignKey()?>">');
-						<?php } ?>
+						<?php 
+        } ?>
 
 						var action = $form.attr('action');
 
@@ -144,5 +148,6 @@ class Relation extends Field {
 			});
 		</script>
 	<?php
-	}
+
+    }
 }

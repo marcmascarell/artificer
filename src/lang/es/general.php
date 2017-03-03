@@ -1,7 +1,7 @@
 <?php
 
-return array(
+return [
 
-    'no results' => 'no results'
+    'no results' => 'no results',
 
-);
+];

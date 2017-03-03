@@ -1,17 +1,17 @@
 <?php
 
-return array(
+return [
 
-	'installed'   => array(
-		'mascame/sortable',
-		'mascame/gallery',
-		'mascame/datatables',
-		'mascame/plupload',
-		'mascame/localization',
-	),
+    'installed'   => [
+        'mascame/sortable',
+        'mascame/gallery',
+        'mascame/datatables',
+        'mascame/plupload',
+        'mascame/localization',
+    ],
 
-	'uninstalled' => array(
-		'mascame/pagination'
-	),
+    'uninstalled' => [
+        'mascame/pagination',
+    ],
 
-);
+];

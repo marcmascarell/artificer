@@ -1,137 +1,135 @@
 <?php
 
-use Mascame\ArtificerWidgets\DateTimepicker\DateTimepicker;
 use Mascame\ArtificerWidgets\Datepicker\Datepicker;
+use Mascame\ArtificerWidgets\DateTimepicker\DateTimepicker;
 
-return array(
+return [
 
-	'classmap' => array(
-		'bool' => '\Mascame\Artificer\Fields\Types\Checkbox',
-		'boolean' => '\Mascame\Artificer\Fields\Types\Checkbox',
+    'classmap' => [
+        'bool' => '\Mascame\Artificer\Fields\Types\Checkbox',
+        'boolean' => '\Mascame\Artificer\Fields\Types\Checkbox',
 //		'image'   => '\Mascame\Artificer\Plugins\Plupload\PluploadField',
-		'hasOne'  => '\Mascame\Artificer\Fields\Types\Relations\hasOne',
-		'hasMany' => '\Mascame\Artificer\Fields\Types\Relations\hasMany',
-		'belongsTo' => '\Mascame\Artificer\Fields\Types\Relations\belongsTo',
-	),
+        'hasOne'  => '\Mascame\Artificer\Fields\Types\Relations\hasOne',
+        'hasMany' => '\Mascame\Artificer\Fields\Types\Relations\hasMany',
+        'belongsTo' => '\Mascame\Artificer\Fields\Types\Relations\belongsTo',
+    ],
 
-	'types'    => array(
-		// field_type => array('fieldname_1', 'fieldname_1')
-		'key'      => array(
-            'autodetect' => array(
-                'id'
-            )
-		),
+    'types'    => [
+        // field_type => array('fieldname_1', 'fieldname_1')
+        'key'      => [
+            'autodetect' => [
+                'id',
+            ],
+        ],
 
-		'published' => array(),
+        'published' => [],
 
-		'checkbox'     => array(
-            'autodetect' => array(
+        'checkbox'     => [
+            'autodetect' => [
                 'accept',
                 'active',
                 'boolean',
                 'activated',
-            ),
-		),
+            ],
+        ],
 
-        'custom'     => array(
+        'custom'     => [
 
-        ),
+        ],
 
-		'password'     => array(
-            'autodetect' => array(
-                'password'
-            ),
-		),
+        'password'     => [
+            'autodetect' => [
+                'password',
+            ],
+        ],
 
-		'text'         => array(
-            'autodetect' => array(
+        'text'         => [
+            'autodetect' => [
                 'title',
                 'username',
-                'name'
-            ),
-		),
+                'name',
+            ],
+        ],
 
-		'textarea'     => array(
+        'textarea'     => [
 
-		),
+        ],
 
-		'wysiwyg'      => array(
-            'autodetect' => array(
+        'wysiwyg'      => [
+            'autodetect' => [
                 'body',
-                'text'
-            ),
-		),
+                'text',
+            ],
+        ],
 
-		'option'       => array(
-            'autodetect' => array(
+        'option'       => [
+            'autodetect' => [
                 'selection',
-            ),
-		),
+            ],
+        ],
 
-		'email'        => array(),
+        'email'        => [],
 
-		'link'         => array(
-            'autodetect' => array(
-                'url'
-            ),
-        ),
+        'link'         => [
+            'autodetect' => [
+                'url',
+            ],
+        ],
 
+        'datetime'         => [
+            'autodetect' => [
+                '_at',
+            ],
 
-
-        'datetime'         => array(
-            'autodetect' => array(
-                '_at'
-            ),
-
-            "attributes" => array(
+            'attributes' => [
                 'class' => 'form-control datetimepicker', 'data-date-format' => 'YYYY-MM-DD HH:mm:ss',
 
-            ),
+            ],
 
-            'widgets' => array(
+            'widgets' => [
                 new DateTimepicker(),
-            )
+            ],
 
-        ),
+        ],
 
-		'date'         => array(
-            'autodetect' => array(
-                '_at'
-            ),
+        'date'         => [
+            'autodetect' => [
+                '_at',
+            ],
 
-            "attributes" => array(
+            'attributes' => [
                 'class' => 'form-control datepicker',
 
-            ),
+            ],
 
-            'widgets' => array(
+            'widgets' => [
                 new Datepicker(),
-            )
+            ],
 
-		),
+        ],
 
-		'file'         => array(),
+        'file'         => [],
 
-		'image'        => array(
-            'autodetect' => array(
-                'image'
-            ),
-		),
+        'image'        => [
+            'autodetect' => [
+                'image',
+            ],
+        ],
 
-		'image_center' => array(),
+        'image_center' => [],
 
-		'hasOne'       => array(
-            'autodetect' => array(
+        'hasOne'       => [
+            'autodetect' => [
                 '_id',
                 'user_id',
-                'fake_id'
-            ),
-		),
+                'fake_id',
+            ],
+        ],
 
-		'hasMany'      => array(),
+        'hasMany'      => [],
 
-		'default'      => array(
-            'type' => 'text'
-        )
-	),
-);
+        'default'      => [
+            'type' => 'text',
+        ],
+    ],
+];

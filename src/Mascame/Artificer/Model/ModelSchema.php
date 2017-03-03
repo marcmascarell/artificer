@@ -1,161 +1,155 @@
-<?php namespace Mascame\Artificer\Model;
+<?php
 
-use Mascame\Artificer\Permit\ModelPermit;
+namespace Mascame\Artificer\Model;
+
 use Schema;
-use Mascame\Artificer\Options\ModelOption;
-use Mascame\Artificer\Options\AdminOption;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
-class ModelSchema {
+class ModelSchema
+{
+    /**
+     * @var array
+     */
+    public $tables;
 
-	/**
-	 * @var array
-	 */
-	public $tables;
+    /**
+     * @var array
+     */
+    public $models;
 
-	/**
-	 * @var array
-	 */
-	public $models;
+    /**
+     * @var string
+     */
+    public $class;
 
-	/**
-	 * @var string
-	 */
-	public $class;
+    /**
+     * @var string
+     */
+    public $name;
 
-	/**
-	 * @var string
-	 */
-	public $name;
+    /**
+     * @var array
+     */
+    public $columns;
 
+    /**
+     * @var array|mixed
+     */
+    public $options = [];
 
-	/**
-	 * @var array
-	 */
-	public $columns;
+    /**
+     * @var
+     */
+    public static $current = null;
 
-	/**
-	 * @var array|mixed
-	 */
-	public $options = array();
+    public function __construct(ModelObtainer $modelObtainer)
+    {
+        $this->models = $modelObtainer->models;
+        $this->tables = $this->getTables($this->models);
+    }
 
-	/**
-	 * @var
-	 */
-	public static $current = null;
+    public function hasColumn($column)
+    {
+        return (is_array($column) && in_array($column, $this->columns)) ? true : false;
+    }
 
-	/**
-	 *
-	 */
-	public function __construct(ModelObtainer $modelObtainer)
-	{
-		$this->models = $modelObtainer->models;
-		$this->tables = $this->getTables($this->models);
-	}
+    /**
+     * @param $table
+     * @return bool
+     */
+    public function hasTable($table)
+    {
+        return Schema::hasTable($table);
+    }
 
-	public function hasColumn($column)
-	{
-		return (is_array($column) && in_array($column, $this->columns)) ? true : false;
-	}
+    /**
+     * @return mixed
+     */
+    public function getTable($modelName = null)
+    {
+        if (! $modelName) {
+            $modelName = $this->name;
+        }
 
-	/**
-	 * @param $table
-	 * @return bool
-	 */
-	public function hasTable($table)
-	{
-		return Schema::hasTable($table);
-	}
+        if (isset($this->models[$modelName]['table'])) {
+            return $this->models[$modelName]['table'];
+        }
 
-	/**
-	 * @return mixed
-	 */
-	public function getTable($modelName = null)
-	{
-		if (!$modelName) {
-			$modelName = $this->name;
-		}
+        return $this->getInstance($modelName)->getTable();
+    }
 
-		if (isset($this->models[$modelName]['table'])) {
-			return $this->models[$modelName]['table'];
-		}
+    /**
+     * @param $models
+     * @return array
+     */
+    public function getTables($models)
+    {
+        $tables = [];
 
-		return $this->getInstance($modelName)->getTable();
-	}
+        foreach ($models as $model) {
+            $table = $this->getTable($model['name']);
+            $this->models[$model['name']]['table'] = $table;
+            $tables[] = $table;
+        }
 
-	/**
-	 * @param $models
-	 * @return array
-	 */
-	public function getTables($models)
-	{
-		$tables = array();
+        return $tables;
+    }
 
-		foreach ($models as $model) {
-			$table = $this->getTable($model['name']);
-			$this->models[$model['name']]['table'] = $table;
-			$tables[] = $table;
-		}
+    /**
+     * @param $table
+     * @return array
+     */
+    public function getColumns($table)
+    {
+        return Schema::getColumnListing($table);
+    }
 
-		return $tables;
-	}
+    /**
+     * @param $modelName
+     * @return mixed
+     */
+    public function instantiate($modelName)
+    {
+        $modelClass = $this->getClass($modelName);
 
-	/**
-	 * @param $table
-	 * @return array
-	 */
-	public function getColumns($table)
-	{
-		return Schema::getColumnListing($table);
-	}
+        return $this->models[$modelName]['instance'] = new $modelClass;
+    }
 
-	/**
-	 * @param $modelName
-	 * @return mixed
-	 */
-	public function instantiate($modelName)
-	{
-		$modelClass = $this->getClass($modelName);
+    /**
+     * @param $modelName
+     * @return bool
+     */
+    public function hasInstance($modelName)
+    {
+        return (isset($this->models[$modelName]['instance'])) ? true : false;
+    }
 
-		return $this->models[$modelName]['instance'] = new $modelClass;
-	}
+    /**
+     * @param null $modelName
+     * @return mixed
+     */
+    public function getInstance($modelName = null)
+    {
+        ($modelName) ?: $modelName = $this->name;
 
-	/**
-	 * @param $modelName
-	 * @return bool
-	 */
-	public function hasInstance($modelName)
-	{
-		return (isset($this->models[$modelName]['instance'])) ? true : false;
-	}
+        if ($this->hasInstance($modelName)) {
+            return $this->models[$modelName]['instance'];
+        }
 
-	/**
-	 * @param null $modelName
-	 * @return mixed
-	 */
-	public function getInstance($modelName = null)
-	{
-		($modelName) ?: $modelName = $this->name;
+        return $this->instantiate($modelName);
+    }
 
-		if ($this->hasInstance($modelName)) {
-			return $this->models[$modelName]['instance'];
-		}
+    /**
+     * @param $modelName
+     * @return string
+     */
+    public function getClass($modelName)
+    {
+        if (false !== $key = array_search($modelName, array_keys($this->models))) {
+            $modelName = array_keys($this->models);
+            $modelName = $modelName[$key];
+        }
 
-		return $this->instantiate($modelName);
-	}
-
-	/**
-	 * @param $modelName
-	 * @return string
-	 */
-	public function getClass($modelName)
-	{
-		if (false !== $key = array_search($modelName, array_keys($this->models))) {
-			$modelName = array_keys($this->models);
-			$modelName = $modelName[$key];
-		}
-
-		return '\\' . $modelName;
-	}
-
+        return '\\'.$modelName;
+    }
 }

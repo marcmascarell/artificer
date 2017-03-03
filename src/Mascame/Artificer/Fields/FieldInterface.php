@@ -1,6 +1,7 @@
-<?php namespace Mascame\Artificer\Fields;
+<?php
 
-interface FieldInterface {
+namespace Mascame\Artificer\Fields;
 
-
+interface FieldInterface
+{
 }

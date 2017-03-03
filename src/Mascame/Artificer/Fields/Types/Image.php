@@ -1,19 +1,19 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Form;
 use Str;
+use Form;
 
-class Image extends File {
+class Image extends File
+{
+    public function boot()
+    {
+        //		$this->addWidget(new FocalPoint());
+    }
 
-	public function boot()
-	{
-//		$this->addWidget(new FocalPoint());
-	}
-
-	public function input()
-	{
-		if ($this->value != null) {
-			?>
+    public function input()
+    {
+        if ($this->value != null) {
+            ?>
 			<div data-box class="focal_box">
 				<?= $this->show() ?>
 				<div data-point class="focal_point"></div>
@@ -21,27 +21,28 @@ class Image extends File {
 
 			<div data-position class="focal_position"></div>
 		<?php
-		}
 
-		print Form::file($this->name);
-	}
+        }
 
-	public function show()
-	{
-		$value = $this->value;
+        echo Form::file($this->name);
+    }
 
-		if (!$value) {
-			return '<div class="well well-sm">No file</div>';
-		}
+    public function show()
+    {
+        $value = $this->value;
 
-		if (!Str::startsWith($value, array('https://', 'http://'))) {
-			$value = '/uploads/' . $value;
-		}
-		?>
+        if (! $value) {
+            return '<div class="well well-sm">No file</div>';
+        }
+
+        if (! Str::startsWith($value, ['https://', 'http://'])) {
+            $value = '/uploads/'.$value;
+        } ?>
 
 		<div class="thumbnail">
 			<img style="display: block; margin: auto;height:auto; width:auto; max-width:100px; max-height:100px;" src="<?= $value ?>" height="100"/>
 		</div>
 	<?php
-	}
+
+    }
 }

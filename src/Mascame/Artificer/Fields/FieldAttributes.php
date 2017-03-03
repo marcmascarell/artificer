@@ -1,36 +1,34 @@
-<?php namespace Mascame\Artificer\Fields;
+<?php
 
-use Mascame\Artificer\Localization;
-use Mascame\Artificer\Options\ModelOption;
-use Mascame\Artificer\Options\FieldOption;
+namespace Mascame\Artificer\Fields;
 
-class FieldAttributes {
-
+class FieldAttributes
+{
     protected $options;
     protected $fieldOptions;
-    
-	public function __construct($options, FieldOptions $fieldOptions)
-	{
-		$this->options = $options;
+
+    public function __construct($options, FieldOptions $fieldOptions)
+    {
+        $this->options = $options;
         $this->fieldOptions = $fieldOptions;
-	}
+    }
 
-	/**
-	 * @return array
-	 */
-	public function all()
-	{
-		return $this->fieldOptions->getExistent('attributes', array());
-	}
+    /**
+     * @return array
+     */
+    public function all()
+    {
+        return $this->fieldOptions->getExistent('attributes', []);
+    }
 
-	/**
-	 * @param $key
-	 * @return array
-	 */
-	public function get($key)
-	{
-		return (isset($this->options[$key])) ? $this->options[$key] : array();
-	}
+    /**
+     * @param $key
+     * @return array
+     */
+    public function get($key)
+    {
+        return (isset($this->options[$key])) ? $this->options[$key] : [];
+    }
 
     /**
      * @param $key
@@ -38,14 +36,14 @@ class FieldAttributes {
      */
     public function has($key)
     {
-        return (isset($this->options[$key]));
+        return isset($this->options[$key]);
     }
 
     /**
      * @param array $attributes
      * @return array|mixed
      */
-    public function add($attributes = array())
+    public function add($attributes = [])
     {
         $current_attributes = $this->all();
 
@@ -55,8 +53,6 @@ class FieldAttributes {
             $this->fieldOptions->add('attributes', $attributes);
         }
 
-
         return $this->fieldOptions->all();
     }
-    
 }

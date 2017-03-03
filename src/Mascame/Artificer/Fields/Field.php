@@ -1,52 +1,50 @@
-<?php namespace Mascame\Artificer\Fields;
+<?php
+
+namespace Mascame\Artificer\Fields;
 
 use Event;
-use App;
-use Illuminate\Database\Query\Builder;
-use Mascame\Artificer\Localization;
 use Mascame\Artificer\Model\Model;
-use Mascame\Artificer\Options\ModelOption;
-use Mascame\Artificer\Options\FieldOption;
+use Mascame\Artificer\Localization;
+use Illuminate\Database\Query\Builder;
 use Mascame\Artificer\Widgets\AbstractWidget;
 
-class Field implements FieldInterface {
-
-	public $type;
-	public $title;
-	public $name;
-	public $modelName;
-	public $configKey;
-	public $configFieldKey;
-	public $value;
-	public $output;
-	public static $widgets = array();
+class Field implements FieldInterface
+{
+    public $type;
+    public $title;
+    public $name;
+    public $modelName;
+    public $configKey;
+    public $configFieldKey;
+    public $value;
+    public $output;
+    public static $widgets = [];
     /**
      * @var FieldOptions
      */
-	public $options;
-	public $lists = array();
+    public $options;
+    public $lists = [];
     /**
      * @var FieldRelation
      */
-	public $relation;
+    public $relation;
     /**
      * @var Localization
      */
-	public $localization;
-	public $locale;
-	public $wiki;
+    public $localization;
+    public $locale;
+    public $wiki;
     /**
      * @var FieldAttributes
      */
     public $attributes;
 
-	/**
-	 * Sometimes ajax limits output, setting this to true will return all
-	 *
-	 * @var bool
-	 */
-	public $showFullField = false;
-
+    /**
+     * Sometimes ajax limits output, setting this to true will return all.
+     *
+     * @var bool
+     */
+    public $showFullField = false;
 
     /**
      * @param $name
@@ -54,67 +52,64 @@ class Field implements FieldInterface {
      * @param $modelName
      * @param $relation
      */
-	public function __construct($name, $value = null, $modelName, $relation)
-	{
-		$this->name = $name;
-		$this->value = $value;
-		$this->modelName = $modelName;
+    public function __construct($name, $value, $modelName, $relation)
+    {
+        $this->name = $name;
+        $this->value = $value;
+        $this->modelName = $modelName;
         $this->type = $this->getType(get_called_class());
 
         $this->options = new FieldOptions($this->name, $this->type);
 
-		$this->relation = new FieldRelation($relation, $this->options->getExistent('relationship'));
+        $this->relation = new FieldRelation($relation, $this->options->getExistent('relationship'));
         $this->attributes = new FieldAttributes($this->options->getExistent('attributes'), $this->options);
 
-        if (!$this->attributes->has('class')) {
-            $this->attributes->add(array('class' => 'form-control'));
+        if (! $this->attributes->has('class')) {
+            $this->attributes->add(['class' => 'form-control']);
         }
 
-		$this->title = $this->getTitle($this->name);
-		$this->wiki = $this->getWiki();
+        $this->title = $this->getTitle($this->name);
+        $this->wiki = $this->getWiki();
 
-		$this->boot();
-	}
+        $this->boot();
+    }
 
-	public function getWiki()
-	{
-		return $this->options->getExistent('wiki');
-	}
+    public function getWiki()
+    {
+        return $this->options->getExistent('wiki');
+    }
 
-	/**
-	 * @param string $type_class
-	 * @return string
-	 */
-	public function getType($type_class)
-	{
+    /**
+     * @param string $type_class
+     * @return string
+     */
+    public function getType($type_class)
+    {
         $pieces = explode('\\', $type_class);
 
-		return strtolower(end($pieces));
-	}
+        return strtolower(end($pieces));
+    }
 
+    /**
+     * @param $widget
+     * @return bool
+     */
+    public function addWidget(AbstractWidget $widget)
+    {
+        if (! in_array($widget->name, self::$widgets)) {
+            self::$widgets[$widget->name] = $widget;
 
-	/**
-	 * @param $widget
-	 * @return bool
-	 */
-	public function addWidget(AbstractWidget $widget)
-	{
-		if (!in_array($widget->name, self::$widgets)) {
-			self::$widgets[$widget->name] = $widget;
+            return true;
+        }
 
-			return true;
-		}
-
-		return false;
-	}
-
+        return false;
+    }
 
     /**
      * Used to load custom assets, widgets, ...
-     *
      */
-	public function boot()
-	{
+    public function boot()
+    {
         if ($this->options->has('widgets')) {
             $widgets = $this->options->get('widgets');
 
@@ -122,16 +117,15 @@ class Field implements FieldInterface {
                 $this->addWidget($widget);
             }
         }
-	}
-
+    }
 
     /**
      * @return null
      */
-	public function show()
-	{
-		return $this->value;
-	}
+    public function show()
+    {
+        return $this->value;
+    }
 
     /**
      * @param null $value
@@ -139,204 +133,208 @@ class Field implements FieldInterface {
      */
     public function display($value = null)
     {
-		$this->value = $this->getValue($value);
+        $this->value = $this->getValue($value);
 
         return $this->show();
     }
 
+    /**
+     * @param null $value
+     * @return null
+     */
+    public function getValue($value = null)
+    {
+        $value = ($value) ? $value : $this->options->getExistent('default', null);
 
-	/**
-	 * @param null $value
-	 * @return null
-	 */
-	public function getValue($value = null)
-	{
-		$value = ($value) ? $value : $this->options->getExistent('default', null);
+        if ($this->options->has('show')) {
+            $show = $this->options->get('show');
 
-		if ($this->options->has('show')) {
-			$show = $this->options->get('show');
+            if (is_callable($show)) {
+                return $show($value);
+            }
+        }
 
-			if (is_callable($show)) {
-				return $show($value);
-			}
-		}
+        return $value;
+    }
 
-		return $value;
-	}
+    /**
+     * @return bool
+     */
+    public function input()
+    {
+        return false;
+    }
 
+    /**
+     * @param $input
+     * @return mixed
+     */
+    public function userInput($input)
+    {
+        $input = str_replace('(:value)', $this->value, $input);
+        $input = str_replace('(:name)', $this->name, $input);
+        $input = str_replace('(:label)', $this->title, $input);
 
-	/**
-	 * @return bool
-	 */
-	public function input()
-	{
-		return false;
-	}
+        return $input;
+    }
 
+    /**
+     * @return bool|mixed|null|string
+     */
+    public function output()
+    {
+        Event::fire('artificer.field.'.$this->type.'.before.output', $this->value);
 
-	/**
-	 * @param $input
-	 * @return mixed
-	 */
-	public function userInput($input)
-	{
-		$input = str_replace('(:value)', $this->value, $input);
-		$input = str_replace('(:name)', $this->name, $input);
-		$input = str_replace('(:label)', $this->title, $input);
-
-		return $input;
-	}
-
-
-	/**
-	 * @return bool|mixed|null|string
-	 */
-	public function output()
-	{
-		Event::fire('artificer.field.' . $this->type . '.before.output', $this->value);
-
-		if ($this->isHidden()) {
-			return null;
-		} else if ($this->isGuarded()) {
-			return $this->guarded();
-		}
+        if ($this->isHidden()) {
+            return;
+        } elseif ($this->isGuarded()) {
+            return $this->guarded();
+        }
 
         $this->value = $this->getValue($this->value);
 
-		if ($this->options->has('input')) {
-			return $this->userInput($this->options->get('input'));
-		}
+        if ($this->options->has('input')) {
+            return $this->userInput($this->options->get('input'));
+        }
 
-		return $this->input();
-	}
+        return $this->input();
+    }
 
+    /**
+     * @return string
+     */
+    public function hidden()
+    {
+        return '<div class="label label-warning">Hidden data</div>';
+    }
 
-	/**
-	 * @return string
-	 */
-	public function hidden()
-	{
-		return '<div class="label label-warning">Hidden data</div>';
-	}
+    /**
+     * @param $array
+     * @return bool
+     */
+    protected function isAll($array)
+    {
+        return is_array($array) && isset($array[0]) && $array[0] == '*';
+    }
 
-	/**
-	 * @param $array
-	 * @return bool
-	 */
-	protected function isAll($array) {
-		return (is_array($array) && isset($array[0]) && $array[0] == '*');
-	}
+    /**
+     * @param string $list
+     * @return bool
+     */
+    public function isListed($list = 'show')
+    {
+        if (! isset($this->options->model['list'][$list])) {
+            return false;
+        }
 
-	/**
-	 * @param string $list
-	 * @return bool
-	 */
-	public function isListed($list = 'show')
-	{
-		if (!isset($this->options->model['list'][$list])) return false;
+        $list = $this->options->model['list'][$list];
 
-		$list = $this->options->model['list'][$list];
+        if ($this->isAll($list)) {
+            return true;
+        }
 
-		if ($this->isAll($list)) return true;
+        return $this->isInArray($this->name, $list);
+    }
 
-		return $this->isInArray($this->name, $list);
-	}
+    /**
+     * @return bool
+     */
+    public function isHiddenList()
+    {
+        return $this->isListed('hide');
+    }
 
+    /**
+     * @param $value
+     * @param $array
+     * @return bool
+     */
+    public function isInArray($value, $array)
+    {
+        return (is_array($array) && in_array($value, $array)) ? true : false;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isHiddenList()
-	{
-		return $this->isListed('hide');
-	}
+    /**
+     * @return string
+     */
+    public function guarded()
+    {
+        return '(guarded) '.$this->show();
+    }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function getTitle($name)
+    {
+        if ($this->options->has('title')) {
+            return $this->options->get('title');
+        }
 
-	/**
-	 * @param $value
-	 * @param $array
-	 * @return bool
-	 */
-	public function isInArray($value, $array)
-	{
-		return (is_array($array) && in_array($value, $array)) ? true : false;
-	}
+        return $name;
+    }
 
+    /**
+     * @return bool
+     */
+    public function isGuarded()
+    {
+        if (! isset($this->options->model['guarded'])) {
+            return false;
+        }
 
-	/**
-	 * @return string
-	 */
-	public function guarded()
-	{
-		return '(guarded) ' . $this->show();
-	}
+        return $this->isInArray($this->name, $this->options->model['guarded']);
+    }
 
+    /**
+     * @return bool
+     */
+    public function isHidden()
+    {
+        if (! isset($this->options->model['hidden'])) {
+            return false;
+        }
 
-	/**
-	 * @param $name
-	 * @return mixed
-	 */
-	public function getTitle($name)
-	{
-		if ($this->options->has('title')) return $this->options->get('title');
+        return $this->isInArray($this->name, $this->options->model['hidden']);
+    }
 
-		return $name;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isGuarded()
-	{
-        if (!isset($this->options->model['guarded'])) return false;
-
-		return $this->isInArray($this->name, $this->options->model['guarded']);
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isHidden()
-	{
-        if (!isset($this->options->model['hidden'])) return false;
-
-		return $this->isInArray($this->name, $this->options->model['hidden']);
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isRelation()
-	{
-		return $this->relation->isRelation();
-	}
+    /**
+     * @return bool
+     */
+    public function isRelation()
+    {
+        return $this->relation->isRelation();
+    }
 
     /**
      * @param $query Builder
      * @param $value
      * @return mixed
      */
-    public function filter($query, $value) {
+    public function filter($query, $value)
+    {
         return $query->where($query, $value);
     }
 
     /**
      * @return bool
      */
-    public function displayFilter() {
+    public function displayFilter()
+    {
         return false;
     }
 
     /**
      * @return bool
      */
-    public function hasFilter() {
+    public function hasFilter()
+    {
         return ($this->displayFilter()) ? true : false;
     }
 
-	public static function get($name) {
-		return array_get(\View::getShared(), 'fields')[$name];
-	}
+    public static function get($name)
+    {
+        return array_get(\View::getShared(), 'fields')[$name];
+    }
 }

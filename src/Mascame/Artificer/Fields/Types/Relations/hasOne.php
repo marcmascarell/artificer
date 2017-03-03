@@ -1,29 +1,29 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
+use URL;
 use Form;
 use Input;
-use URL;
 use Request;
 
-class hasOne extends Relation {
-
+class hasOne extends Relation
+{
     protected $id;
 
-	public function boot()
-	{
+    public function boot()
+    {
         parent::boot();
-		//$this->addWidget(new Chosen());
-		$this->attributes->add(array('class' => 'chosen form-control'));
-	}
+        //$this->addWidget(new Chosen());
+        $this->attributes->add(['class' => 'chosen form-control']);
+    }
 
-    protected function select($data, $show) {
-        $select = array();
+    protected function select($data, $show)
+    {
+        $select = [];
         foreach ($data as $d) {
-
             if (is_array($show)) {
                 $value = '';
                 foreach ($show as $show_key) {
-                    $value .= \Str::title($show_key) . ': ' . $d[$show_key];
+                    $value .= \Str::title($show_key).': '.$d[$show_key];
 
                     if (end($show) != $show_key) {
                         $value .= ' | ';
@@ -38,20 +38,20 @@ class hasOne extends Relation {
 
         if (Input::has($this->name)) {
             $this->id = Input::get($this->name);
-        } else if (isset($this->value->id)) {
+        } elseif (isset($this->value->id)) {
             $this->id = $this->value->id;
         } else {
             $this->id = $this->value;
         }
 
-        print Form::select($this->name, array('0' => Request::ajax() ? '(current)' : '(none)') + $select, $this->id, $this->attributes->all());
+        echo Form::select($this->name, ['0' => Request::ajax() ? '(current)' : '(none)'] + $select, $this->id, $this->attributes->all());
     }
 
-    protected function buttons() {
-        if (!Request::ajax() || $this->showFullField) {
-            $new_url = \URL::route('admin.model.create', array('slug' => $this->model['route']));
-            $edit_url = \URL::route('admin.model.edit', array('slug' => $this->model['route'], 'id' => ':id:'));
-            ?>
+    protected function buttons()
+    {
+        if (! Request::ajax() || $this->showFullField) {
+            $new_url = \URL::route('admin.model.create', ['slug' => $this->model['route']]);
+            $edit_url = \URL::route('admin.model.edit', ['slug' => $this->model['route'], 'id' => ':id:']); ?>
             <br>
             <div class="text-right">
                 <div class="btn-group">
@@ -74,56 +74,59 @@ class hasOne extends Relation {
         }
     }
 
-	public function input()
-	{
-        if (!$this->relation->getRelatedModel()) {
+    public function input()
+    {
+        if (! $this->relation->getRelatedModel()) {
             throw new \Exception('missing relation in config for the current model.');
         }
 
-		$this->model = $this->modelObject->schema->models[$this->relation->getRelatedModel()];
+        $this->model = $this->modelObject->schema->models[$this->relation->getRelatedModel()];
         $this->model['class'] = $modelClass = $this->modelObject->schema->getClass($this->model['name']);
         $show = $this->relation->getShow();
 
-        $show_query = (is_array($show)) ? array('*') : array('id', $show);
-		$data = $modelClass::all($show_query)->toArray();
+        $show_query = (is_array($show)) ? ['*'] : ['id', $show];
+        $data = $modelClass::all($show_query)->toArray();
 
         $this->select($data, $show);
         $this->buttons();
-	}
+    }
 
-	public function show($value = null)
-	{
-		$value = ($value) ?: $this->value;
+    public function show($value = null)
+    {
+        $value = ($value) ?: $this->value;
 
-		if (!$value) return "<em>(none)</em>";
+        if (! $value) {
+            return '<em>(none)</em>';
+        }
 
         $show = $this->relation->getShow();
 
-        if (!is_object($value)) {
-            $model = '\\' . $this->relation->getRelatedModel();
+        if (! is_object($value)) {
+            $model = '\\'.$this->relation->getRelatedModel();
 
             $data = $model::find($value);
 
-            if (!$data) return '(none)';
+            if (! $data) {
+                return '(none)';
+            }
 
             if (is_array($show)) {
                 foreach ($show as $item) {
-                    print $data->$item . "<br>";
+                    echo $data->$item.'<br>';
                 }
-                return null;
+
+                return;
             } else {
                 return $data->$show;
             }
         }
 
-		if (!$value) {
-			throw new \Exception('The (hasOne) value is null');
-		}
+        if (! $value) {
+            throw new \Exception('The (hasOne) value is null');
+        }
 
-		$show = $this->options['relationship']['show'];
+        $show = $this->options['relationship']['show'];
 
-		print $value->$show;
-        return null;
-	}
-
+        echo $value->$show;
+    }
 }

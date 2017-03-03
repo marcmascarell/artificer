@@ -1,20 +1,19 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
-use Mascame\Artificer\Fields\Field;
 use Form;
+use Mascame\Artificer\Fields\Field;
 
-class Checkbox extends Field {
-
-	public function input()
-	{
-		?>
+class Checkbox extends Field
+{
+    public function input()
+    {
+        ?>
 		<div class="checkbox">
 			<?php
-			print Form::hidden($this->name, 0);
-			print Form::checkbox($this->name, 1, $this->value, $this->attributes->all());
-			?>
+            echo Form::hidden($this->name, 0);
+        echo Form::checkbox($this->name, 1, $this->value, $this->attributes->all()); ?>
 		</div>
 		<?php
-	}
 
+    }
 }

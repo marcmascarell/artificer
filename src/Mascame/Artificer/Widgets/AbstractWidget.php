@@ -1,20 +1,21 @@
-<?php namespace Mascame\Artificer\Widgets;
+<?php
 
-abstract class AbstractWidget {
+namespace Mascame\Artificer\Widgets;
 
-	public $name;
-	public $package_assets = '/packages/mascame/artificer-widgets';
+abstract class AbstractWidget
+{
+    public $name;
+    public $package_assets = '/packages/mascame/artificer-widgets';
 
-	public function __construct()
-	{
-		$this->name = get_called_class();
+    public function __construct()
+    {
+        $this->name = get_called_class();
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function output()
-	{
-		return false;
-	}
-
+    public function output()
+    {
+        return false;
+    }
 }

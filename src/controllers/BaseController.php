@@ -1,19 +1,20 @@
-<?php namespace Mascame\Artificer;
+<?php
 
-use Input;
-use Auth;
-use Mascame\Artificer\Fields\Field;
-use Mascame\Artificer\Model\Model;
-use View;
-use Controller;
+namespace Mascame\Artificer;
+
 use App;
+use Auth;
+use View;
+use Input;
+use Controller;
+use Mascame\Artificer\Model\Model;
+use Mascame\Artificer\Fields\Field;
 use Mascame\Artificer\Options\AdminOption;
-use Mascame\Artificer\Permit;
 
 // Todo: Make some models forbidden for some users
 
-class BaseController extends Controller {
-
+class BaseController extends Controller
+{
     public $fields;
     public $data;
     public $options;
@@ -22,7 +23,7 @@ class BaseController extends Controller {
 
     public $theme;
     public $standalone;
-    public $menu = array();
+    public $menu = [];
     protected $master_layout = null;
 
     /**
@@ -30,11 +31,9 @@ class BaseController extends Controller {
      */
     public $modelObject = null;
 
-    /**
-     */
     public function __construct()
     {
-        $this->theme = AdminOption::get('theme') . '::';
+        $this->theme = AdminOption::get('theme').'::';
         $this->master_layout = 'base';
 
         if (Auth::check()) {
@@ -52,23 +51,27 @@ class BaseController extends Controller {
         }
     }
 
-    protected function share() {
+    protected function share()
+    {
         View::share('main_title', AdminOption::get('title'));
         View::share('menu', $this->getMenu());
         View::share('theme', $this->theme);
-        View::share('layout', $this->theme . '.' . $this->master_layout);
-        View::share('fields', array());
+        View::share('layout', $this->theme.'.'.$this->master_layout);
+        View::share('fields', []);
         View::share('standalone', $this->standalone);
         View::share('icon', AdminOption::get('icons'));
     }
 
-    public function isStandAlone() {
-        return (\Request::ajax() || Input::has('_standalone'));
+    public function isStandAlone()
+    {
+        return \Request::ajax() || Input::has('_standalone');
     }
 
     public function getMenu()
     {
-        if (!empty($this->menu)) return $this->menu;
+        if (! empty($this->menu)) {
+            return $this->menu;
+        }
         $menu = AdminOption::get('menu');
 
         foreach ($menu as $menu_key => $menu_item) {
@@ -85,7 +88,7 @@ class BaseController extends Controller {
      */
     public function getView($view)
     {
-        return $this->theme . $view;
+        return $this->theme.$view;
     }
 
     public static function assets()
@@ -98,6 +101,4 @@ class BaseController extends Controller {
 
         return $widgets;
     }
-
-
 }

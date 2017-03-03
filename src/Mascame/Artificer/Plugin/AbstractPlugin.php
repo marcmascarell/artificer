@@ -1,71 +1,73 @@
-<?php namespace Mascame\Artificer\Plugin;
+<?php
 
-use Mascame\Artificer\Options\PluginOption;
+namespace Mascame\Artificer\Plugin;
+
 use App;
+use Mascame\Artificer\Options\PluginOption;
 
-abstract class AbstractPlugin implements PluginInterface {
+abstract class AbstractPlugin implements PluginInterface
+{
+    /**
+     * @var
+     */
+    public $version;
 
-	/**
-	 * @var
-	 */
-	public $version;
+    /**
+     * @var
+     */
+    public $namespace;
 
-	/**
-	 * @var
-	 */
-	public $namespace;
+    /**
+     * @var
+     */
+    public $name;
 
-	/**
-	 * @var
-	 */
-	public $name;
+    /**
+     * @var
+     */
+    public $description;
 
-	/**
-	 * @var
-	 */
-	public $description;
+    /**
+     * @var
+     */
+    public $author;
 
-	/**
-	 * @var
-	 */
-	public $author;
+    /**
+     * @var string
+     */
+    public $configFile;
 
-	/**
-	 * @var string
-	 */
-	public $configFile;
+    /**
+     * @var mixed
+     */
+    public $slug;
 
-	/**
-	 * @var mixed
-	 */
-	public $slug;
+    /**
+     * @var array
+     */
+    public $routes = [];
 
-	/**
-	 * @var array
-	 */
-	public $routes = array();
+    /**
+     * @var bool
+     */
+    protected $installed = false;
 
-	/**
-	 * @var bool
-	 */
-	protected $installed = false;
-
-	/**
-	 * @var PluginManager
-	 */
-	protected $manager;
+    /**
+     * @var PluginManager
+     */
+    protected $manager;
 
     /**
      * @var PluginOption
      */
     protected $option;
 
-	/**
-	 * @param $namespace
-	 */
-	public function __construct($namespace)
-	{
-		$this->namespace = $namespace;
+    /**
+     * @param $namespace
+     */
+    public function __construct($namespace)
+    {
+        $this->namespace = $namespace;
         $this->configFile = $this->getPluginName();
         $this->option = new PluginOption($namespace, $this->configFile);
         $this->slug = str_replace('/', '__slash__', $this->namespace);
@@ -74,55 +76,63 @@ abstract class AbstractPlugin implements PluginInterface {
 //        $this->config = $this->getOptions();
 
         $this->meta();
-	}
+    }
 
-	abstract public function boot();
+    abstract public function boot();
 
-	abstract public function meta();
+    abstract public function meta();
 
     /**
      * @param $file
      */
-    protected function setDefaultConfigFile($file) {
+    protected function setDefaultConfigFile($file)
+    {
         $this->option->setConfigFile($file);
     }
 
-	/**
-	 * @return bool
-	 */
-	public function isInstalled() {
-		return ($this->manager->isInstalled($this->namespace)) ? true : false;
-	}
+    /**
+     * @return bool
+     */
+    public function isInstalled()
+    {
+        return ($this->manager->isInstalled($this->namespace)) ? true : false;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getPluginName() {
-		$exploded_namespace = explode('/', $this->namespace);
+    /**
+     * @return mixed
+     */
+    public function getPluginName()
+    {
+        $exploded_namespace = explode('/', $this->namespace);
 
-		return end($exploded_namespace);
-	}
+        return end($exploded_namespace);
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getPluginShowName() {
-		return $this->name;
-	}
+    /**
+     * @return mixed
+     */
+    public function getPluginShowName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @param $array
-	 */
-	public function addRoutes($array) {
-		if ($this->isInstalled()) $this->routes = $array;
-	}
+    /**
+     * @param $array
+     */
+    public function addRoutes($array)
+    {
+        if ($this->isInstalled()) {
+            $this->routes = $array;
+        }
+    }
 
-	/**
-	 * @param $route
-	 * @param array $params
-	 * @return null|string
-	 */
-	protected function route($route, $params = array()) {
+    /**
+     * @param $route
+     * @param array $params
+     * @return null|string
+     */
+    protected function route($route, $params = [])
+    {
         return ($this->isInstalled()) ? route($route, $params) : null;
-	}
+    }
 }

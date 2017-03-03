@@ -9,31 +9,26 @@ Route::filter('artificer-auth', function () {
     if (Auth::guest()
         && Route::currentRouteName() != 'admin.showlogin'
         && Route::currentRouteName() != 'admin.login'
-    )
-    {
-        if (Request::ajax())
-        {
+    ) {
+        if (Request::ajax()) {
             return Response::make('Unauthorized', 401);
-        }
-        else
-        {
+        } else {
             return Redirect::route('admin.showlogin');
         }
-    } else if (Auth::check()
+    } elseif (Auth::check()
         && Route::currentRouteName() != 'admin.logout') {
-        if (!in_array(Auth::user()->$role_column, $roles)) {
+        if (! in_array(Auth::user()->$role_column, $roles)) {
             return Redirect::route('admin.logout');
         }
     }
 });
 
-
 Route::filter('artificer-localization', function () {
-	$langs = AdminOption::get('localization.user_locales');
+    $langs = AdminOption::get('localization.user_locales');
 
-	if (!in_array(LaravelLocalization::getCurrentLocale(), $langs)) {
-		LaravelLocalization::setLocale(array_keys($langs)[0]);
-	}
+    if (! in_array(LaravelLocalization::getCurrentLocale(), $langs)) {
+        LaravelLocalization::setLocale(array_keys($langs)[0]);
+    }
 
-	LaravelLocalization::setSupportedLocales($langs);
+    LaravelLocalization::setSupportedLocales($langs);
 });

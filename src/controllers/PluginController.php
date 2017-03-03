@@ -1,101 +1,101 @@
-<?php namespace Mascame\Artificer;
+<?php
 
-use Mascame\Arrayer\Arrayer;
-use Mascame\Artificer\Plugin\PluginManager;
-use Redirect;
-use View;
+namespace Mascame\Artificer;
+
 use App;
-use Mascame\Artificer\Options\AdminOption;
 use File;
+use View;
+use Redirect;
+use Mascame\Arrayer\Arrayer;
+use Mascame\Artificer\Options\AdminOption;
 
-class PluginController extends BaseController {
+class PluginController extends BaseController
+{
+    public function plugins()
+    {
+        return View::make($this->getView('plugins'))
+            ->with('plugins', App::make('artificer-plugin-manager')->getAll());
+    }
 
+    public function installPlugin($plugin)
+    {
+        return $this->pluginOperation($plugin, 'install');
+    }
 
-	public function plugins()
-	{
-		return View::make($this->getView('plugins'))
-			->with('plugins', App::make('artificer-plugin-manager')->getAll());
-	}
+    public function uninstallPlugin($plugin)
+    {
+        return $this->pluginOperation($plugin, 'uninstall');
+    }
 
-	public function installPlugin($plugin)
-	{
-		return $this->pluginOperation($plugin, 'install');
-	}
+    /**
+     * @param string $operation
+     */
+    public function pluginOperation($plugin, $operation)
+    {
+        $plugin = str_replace('__slash__', '/', $plugin);
 
-	public function uninstallPlugin($plugin)
-	{
-		return $this->pluginOperation($plugin, 'uninstall');
-	}
+        if ($operation == 'install') {
+            $from = 'uninstalled';
+            $to = 'installed';
+            $message = 'Successfully installed <b>'.$plugin.'</b>';
+        } else {
+            $from = 'installed';
+            $to = 'uninstalled';
+            $message = 'Successfully uninstalled <b>'.$plugin.'</b>';
+        }
 
-	/**
-	 * @param string $operation
-	 */
-	public function pluginOperation($plugin, $operation)
-	{
-		$plugin = str_replace('__slash__', '/', $plugin);
+        $plugins = AdminOption::get('plugins');
 
-		if ($operation == 'install') {
-			$from = 'uninstalled';
-			$to = 'installed';
-			$message = 'Successfully installed <b>' . $plugin . '</b>';
-		} else {
-			$from = 'installed';
-			$to = 'uninstalled';
-			$message = 'Successfully uninstalled <b>' . $plugin . '</b>';
-		}
+        if (isset($plugins[$to])) {
+            if (in_array($plugin, $plugins[$to])) {
+                Notification::danger('Can not '.$operation.' '.$plugin.', maybe it is already '.$from);
 
-		$plugins = AdminOption::get('plugins');
+                return Redirect::route('admin.page.plugins');
+            }
+        }
 
-		if (isset($plugins[$to])) {
-			if (in_array($plugin, $plugins[$to])) {
-				Notification::danger('Can not ' . $operation . ' ' . $plugin . ', maybe it is already ' . $from);
+        $this->makeOperation($plugins, $plugin, $from, $to, $message);
 
-				return Redirect::route('admin.page.plugins');
-			}
-		}
+        return Redirect::route('admin.page.plugins');
+    }
 
-		$this->makeOperation($plugins, $plugin, $from, $to, $message);
+    /**
+     * @param string $from
+     * @param string $to
+     * @param string $message
+     */
+    protected function makeOperation($plugins, $plugin, $from, $to, $message)
+    {
+        try {
+            $file = App::make('artificer-plugin-manager')->plugins_config_file;
 
-		return Redirect::route('admin.page.plugins');
-	}
+            $this->modifyFile($file, $plugins, $plugin, $from, $to);
 
-	/**
-	 * @param string $from
-	 * @param string $to
-	 * @param string $message
-	 */
-	protected function makeOperation($plugins, $plugin, $from, $to, $message)
-	{
-		try {
-			$file = App::make('artificer-plugin-manager')->plugins_config_file;
+            Notification::success($message);
+        } catch (\Exception $e) {
+            throw new \Exception('Failed to modify plugins config');
+        }
 
-			$this->modifyFile($file, $plugins, $plugin, $from, $to);
+        return Redirect::route('admin.page.plugins');
+    }
 
-			Notification::success($message);
-		} catch (\Exception $e) {
-			throw new \Exception("Failed to modify plugins config");
-		}
+    /**
+     * @param $file
+     * @param $plugins
+     * @param $plugin
+     * @param $to
+     * @throws \Exception
+     */
+    protected function modifyFile($file, $plugins, $plugin, $from, $to)
+    {
+        if (($key = array_search($plugin, $plugins[$from])) !== false) {
+            unset($plugins[$from][$key]);
+            $plugins[$to][] = $plugin;
 
-		return Redirect::route('admin.page.plugins');
-	}
-
-	/**
-	 * @param $file
-	 * @param $plugins
-	 * @param $plugin
-	 * @param $to
-	 * @throws \Exception
-	 */
-	protected function modifyFile($file, $plugins, $plugin, $from, $to)
-	{
-		if (($key = array_search($plugin, $plugins[$from])) !== false) {
-			unset($plugins[$from][$key]);
-			$plugins[$to][] = $plugin;
-
-			if (!file_exists($file)) throw new \Exception('No plugins file.');
-
-			File::put($file, with(new Arrayer($plugins))->getContent());
-		}
-	}
-
+            if (! file_exists($file)) {
+                throw new \Exception('No plugins file.');
+            }
+            File::put($file, with(new Arrayer($plugins))->getContent());
+        }
+    }
 }
