@@ -81,7 +81,7 @@ class ArtificerServiceProvider extends ServiceProvider
     }
 
     /**
-     * Determines if is on adminisBootable.
+     * Determines if admin is bootable.
      *
      * @param $path
      * @param null $routePrefix
