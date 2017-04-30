@@ -9,17 +9,17 @@ class Radio extends Field
 {
     protected function input()
     {
-        print '<div>';
+        echo '<div>';
 
         foreach ($this->getOption('choices', []) as $choice) {
             $isChecked = ($this->value == $choice);
 
-            print '<label class="radio-inline">';
-            print Form::radio($this->name, $choice, $isChecked, $this->attributes);
-            print "&emsp;" . $choice;
-            print '</label>';
+            echo '<label class="radio-inline">';
+            echo Form::radio($this->name, $choice, $isChecked, $this->attributes);
+            echo '&emsp;'.$choice;
+            echo '</label>';
         }
 
-        print '</div>';
+        echo '</div>';
     }
 }

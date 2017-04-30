@@ -5,10 +5,8 @@ namespace Mascame\Artificer\Model;
 use Route;
 use Illuminate\Support\Str as Str;
 
-
 class ModelManager
 {
-
     /**
      * @var null|string
      */
@@ -59,7 +57,7 @@ class ModelManager
     private function getCurrentModel()
     {
         if (! Str::startsWith(Route::currentRouteName(), 'admin.model.')) {
-            return null;
+            return;
         }
 
         $model = collect($this->models)->first(function ($model, $modelName) {
@@ -89,17 +87,17 @@ class ModelManager
      */
     public function get($modelName)
     {
-        if (isset($this->models[$modelName])){
+        if (isset($this->models[$modelName])) {
             return $this->models[$modelName];
         }
 
         // Try to find it by class name
-        $model = array_first($this->models, function($value, $key) use ($modelName) {
+        $model = array_first($this->models, function ($value, $key) use ($modelName) {
             return $value->class == $modelName;
         });
 
         if (! $model) {
-            throw new \Exception('Model ' . $modelName . ' not found.');
+            throw new \Exception('Model '.$modelName.' not found.');
         }
 
         return $model;
@@ -129,5 +127,4 @@ class ModelManager
     {
         return $this->models;
     }
-
 }

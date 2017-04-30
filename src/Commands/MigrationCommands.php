@@ -2,9 +2,9 @@
 
 namespace Mascame\Artificer\Commands;
 
+use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Database\Console\Migrations\InstallCommand;
 use Illuminate\Database\Migrations\MigrationRepositoryInterface;
-use Illuminate\Database\Migrations\Migrator;
 
 class MigrationCommands
 {

@@ -266,5 +266,4 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
 
         $this->setOptions(['attributes' => [$attribute => $value]]);
     }
-
 }

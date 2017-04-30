@@ -2,9 +2,9 @@
 
 namespace Mascame\Artificer\Fields;
 
-use Mascame\Artificer\Fields\Types\Relations\Relation;
-use Mascame\Artificer\Model\ModelManager;
 use Illuminate\Support\Str as Str;
+use Mascame\Artificer\Model\ModelManager;
+use Mascame\Artificer\Fields\Types\Relations\Relation;
 
 class FieldFactory extends \Mascame\Formality\Factory\Factory
 {

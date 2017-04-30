@@ -2,12 +2,12 @@
 
 namespace Mascame\Artificer\Controllers;
 
+use View;
+use Request;
+use Redirect;
+use Response;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Requests\ArtificerFormRequest;
-use Redirect;
-use Request;
-use Response;
-use View;
 
 class ModelController extends BaseModelController
 {
@@ -39,12 +39,12 @@ class ModelController extends BaseModelController
         $sort = $this->getSort();
 
         $data = $this->currentModel->where(function ($query) {
-                foreach (\Request::all() as $name => $value) {
-                    if ($value != '' && isset($this->fields[$name])) {
-                        $this->fields[$name]->filter($query, $value);
-                    }
+            foreach (\Request::all() as $name => $value) {
+                if ($value != '' && isset($this->fields[$name])) {
+                    $this->fields[$name]->filter($query, $value);
                 }
-            })
+            }
+        })
             ->with($this->modelSettings->getRelations())
             ->orderBy($sort['column'], $sort['direction'])
             ->get();
@@ -155,5 +155,4 @@ class ModelController extends BaseModelController
 
         return Request::ajax() ? \Response::json([]) : Redirect::back();
     }
-
 }

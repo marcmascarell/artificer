@@ -1,7 +1,7 @@
 <?php
 
-use Mascame\Artificer\Controllers\ModelController as ModelController;
 use Mascame\Artificer\Controllers\HomeController as HomeController;
+use Mascame\Artificer\Controllers\ModelController as ModelController;
 use Mascame\Artificer\Controllers\InstallController as InstallController;
 use Mascame\Artificer\Controllers\ExtensionController as ExtensionController;
 

@@ -3,11 +3,11 @@
 namespace Mascame\Artificer;
 
 use App;
+use Mascame\Hooky\Hook;
+use Mascame\Artificer\Model\ModelManager;
+use Mascame\Artificer\Extension\ResourceCollector;
 use Mascame\Artificer\Assets\AssetsManagerInterface;
 use Mascame\Artificer\Controllers\BaseModelController;
-use Mascame\Artificer\Extension\ResourceCollector;
-use Mascame\Artificer\Model\ModelManager;
-use Mascame\Hooky\Hook;
 
 class Artificer
 {

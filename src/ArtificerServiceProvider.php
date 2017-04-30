@@ -3,20 +3,20 @@
 namespace Mascame\Artificer;
 
 use App;
+use Mascame\Hooky\Hook;
 use Illuminate\Support\Str;
+use Mascame\Extender\Event\Event;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Migrations\DatabaseMigrationRepository;
+use Mascame\Artificer\Extension\Booter;
+use Mascame\Artificer\Model\ModelManager;
+use Mascame\Artificer\Model\ModelObtainer;
+use Mascame\Artificer\Assets\AssetsManager;
 use Mascame\Artificer\Commands\MigrationCommands;
 use Mascame\Artificer\Extension\DatabaseInstaller;
-use Mascame\Artificer\Model\ModelObtainer;
-use Mascame\Artificer\Model\ModelManager;
-use Mascame\Artificer\Assets\AssetsManager;
-use Mascame\Artificer\Widget\Manager as WidgetManager;
 use Mascame\Artificer\Plugin\Manager as PluginManager;
-use Mascame\Artificer\Extension\Booter;
+use Mascame\Artificer\Widget\Manager as WidgetManager;
 use Mascame\Artificer\Providers\InstallServiceProvider;
-use Mascame\Extender\Event\Event;
-use Mascame\Hooky\Hook;
+use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 
 class ArtificerServiceProvider extends ServiceProvider
 {

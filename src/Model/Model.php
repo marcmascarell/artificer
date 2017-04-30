@@ -2,10 +2,9 @@
 
 namespace Mascame\Artificer\Model;
 
-
 use Illuminate\Support\Collection;
-use Mascame\Artificer\Fields\FieldFactory;
 use Mascame\Formality\Parser\Parser;
+use Mascame\Artificer\Fields\FieldFactory;
 
 /**
  * @property $name
@@ -16,7 +15,6 @@ use Mascame\Formality\Parser\Parser;
  */
 class Model
 {
-
     /**
      * @var \Illuminate\Database\Eloquent\Model
      */
@@ -51,7 +49,6 @@ class Model
      * @var Collection
      */
     private $fields;
-
 
     /**
      * For commodity (to avoid making a bunch of getters).
@@ -184,5 +181,4 @@ class Model
 
         return $this->$name;
     }
-
 }

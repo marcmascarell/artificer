@@ -2,9 +2,9 @@
 
 namespace Mascame\Artificer\Controllers;
 
+use View;
 use Illuminate\Support\Str;
 use Mascame\Artificer\Artificer;
-use View;
 
 class ExtensionController extends BaseController
 {
