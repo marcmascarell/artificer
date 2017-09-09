@@ -2,9 +2,9 @@
 
 namespace Mascame\Artificer\Controllers;
 
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Input;
 use View;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Database\Eloquent\Collection;
 
 class BaseModelController extends BaseController
 {

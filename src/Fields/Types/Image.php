@@ -1,8 +1,8 @@
 <?php namespace Mascame\Artificer\Fields\Types;
 
 use Form;
-use Mascame\Formality\Types\File;
 use Illuminate\Support\Str;
+use Mascame\Formality\Types\File;
 
 class Image extends File
 {
@@ -22,7 +22,6 @@ class Image extends File
 
             <div data-position class="focal_position"></div>
         <?php
-
         }
 
         echo Form::file($this->name);
@@ -45,6 +44,5 @@ class Image extends File
                  src="<?= $value ?>" height="100"/>
         </div>
     <?php
-
     }
 }

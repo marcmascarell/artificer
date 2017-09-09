@@ -1,10 +1,10 @@
 <?php namespace Mascame\Artificer\Fields\Types\Relations;
 
+use URL;
 use Form;
-use Illuminate\Support\Str;
 use Input;
 use Request;
-use URL;
+use Illuminate\Support\Str;
 
 class hasOne extends Relation
 {

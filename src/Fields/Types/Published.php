@@ -10,7 +10,6 @@ class Published extends Checkbox
                 <i class="fa fa-globe" title="Published"></i>
             </div>
         <?php
-
         }
     }
 }

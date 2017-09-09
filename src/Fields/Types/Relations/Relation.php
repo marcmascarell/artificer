@@ -2,13 +2,13 @@
 
 namespace Mascame\Artificer\Fields\Types\Relations;
 
-use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Fields\GuessableRelation;
-use Mascame\Artificer\Fields\Relationable;
-use Mascame\Artificer\Model\ModelManager;
-use Mascame\Artificer\Model\ModelSettings;
-use Mascame\Formality\Field\Field;
 use URL;
+use Mascame\Artificer\Artificer;
+use Mascame\Formality\Field\Field;
+use Mascame\Artificer\Model\ModelManager;
+use Mascame\Artificer\Fields\Relationable;
+use Mascame\Artificer\Model\ModelSettings;
+use Mascame\Artificer\Fields\GuessableRelation;
 
 class Relation extends Field
 {

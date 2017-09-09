@@ -2,9 +2,9 @@
 
 namespace Mascame\Artificer\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Hooks\Hook;
+use Illuminate\Support\ServiceProvider;
 use Mascame\Artificer\Hooks\PasswordUpdateHook;
 
 class HooksServiceProvider extends ServiceProvider

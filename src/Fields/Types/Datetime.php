@@ -2,8 +2,8 @@
 
 namespace Mascame\Artificer\Fields\Types;
 
-use Carbon\Carbon;
 use Form;
+use Carbon\Carbon;
 
 class Datetime extends \Mascame\Formality\Types\DateTime
 {

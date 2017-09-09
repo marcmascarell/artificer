@@ -2,12 +2,12 @@
 
 namespace Mascame\Artificer\Controllers;
 
+use View;
+use Request;
+use Redirect;
+use Response;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Requests\ArtificerFormRequest;
-use Redirect;
-use Request;
-use Response;
-use View;
 
 class ModelController extends BaseModelController
 {

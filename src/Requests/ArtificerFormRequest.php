@@ -2,13 +2,13 @@
 
 namespace Mascame\Artificer\Requests;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Http\FormRequest;
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Fields\Field;
 use Mascame\Artificer\Hooks\Hook;
+use Mascame\Artificer\Fields\Field;
+use Illuminate\Database\Eloquent\Model;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Model\ModelSettings;
+use Illuminate\Foundation\Http\FormRequest;
 
 class ArtificerFormRequest extends FormRequest
 {

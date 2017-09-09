@@ -2,8 +2,8 @@
 
 namespace Mascame\Artificer\Hooks;
 
-use Mascame\Artificer\Fields\Field;
 use Mascame\Hooky\HookContract;
+use Mascame\Artificer\Fields\Field;
 
 class PasswordUpdateHook implements HookContract
 {

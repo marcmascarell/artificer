@@ -2,8 +2,8 @@
 
 namespace Mascame\Artificer\Extension;
 
-use Mascame\Extender\Booter\BooterInterface;
 use Mascame\Extender\Event\EventInterface;
+use Mascame\Extender\Booter\BooterInterface;
 use Mascame\Extender\Installer\InstallerInterface;
 
 class Manager extends \Mascame\Extender\Manager

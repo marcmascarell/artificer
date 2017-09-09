@@ -4,8 +4,8 @@ namespace Mascame\Artificer\Model;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
 use Illuminate\Support\Str;
-use Mascame\Artificer\Fields\FieldFactory;
 use Mascame\Formality\Parser\Parser;
+use Mascame\Artificer\Fields\FieldFactory;
 
 /**
  * @property $name
