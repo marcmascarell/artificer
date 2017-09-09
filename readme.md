@@ -38,7 +38,7 @@ Here you will find a brief introduction, [go here for full documentation](https:
  4.x          | v0.1.4-alpha (Unsupported)
  5.3          | dev (work in progress)
 
-##Installation
+## Installation
 
 ### Composer
 
@@ -55,14 +55,21 @@ Add the Service Provider to `config/app.php` at the bottom of `providers`:
 ```php
 \Mascame\Artificer\ArtificerServiceProvider::class
 ```
-##Screenshots
+## Screenshots
 ![artificer_model_index_shadow](https://cloud.githubusercontent.com/assets/642299/19166487/ffb1d638-8c07-11e6-8285-cb3f5a785a4f.png)
 ![artificer_extensions_shadow](https://cloud.githubusercontent.com/assets/642299/19166488/ffb3c308-8c07-11e6-867b-f42de1e851d4.png)
 
-##Support
+## Support
 
 If you need help or any kind of support, please send an e-mail to Marc Mascarell at marcmascarell@gmail.com.
 
-##License
+---
+
+[![JetBrains & PhpStorm](https://ubublog.com/wp-content/uploads/logo-ps-jb.png)](https://jetbrains.com/phpstorm)  
+_This project is friendly supported by [JetBrains](https://jetbrains.com) & [PhpStorm](https://jetbrains.com/phpstorm)!_
+
+---
+
+## License
 
 This package is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
