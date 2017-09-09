@@ -36,7 +36,7 @@ Here you will find a brief introduction, [go here for full documentation](https:
  Laravel      | Artificer
 :-------------|:----------
  4.x          | v0.1.4-alpha (Unsupported)
- 5.3          | dev (work in progress)
+ 5.5          | dev (work in progress)
 
 ## Installation
 
