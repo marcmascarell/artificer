@@ -148,7 +148,7 @@ class ArtificerServiceProvider extends ServiceProvider
             $this->loadConfig();
 
             // Todo
-//			$this->addLocalization();
+            //			$this->addLocalization();
             $this->registerBindings();
         }
     }

@@ -59,7 +59,6 @@ class hasMany extends Relation
                 </div>
             </div>
         <?php
-
         }
     }
 
@@ -82,19 +81,17 @@ class hasMany extends Relation
                 $this->addItem($item);
             } ?>
             </ul>
-        <?php 
+        <?php
         } else {
             ?>
             <div class="well well-sm">No items yet</div>
         <?php
-
         } ?></div><?php
 
         if (! Request::ajax()) {
             ?>
             <!--			</div>-->
         <?php
-
         }
     }
 
@@ -124,7 +121,6 @@ class hasMany extends Relation
 
         </li>
     <?php
-
     }
 
     public function show($values = null)
