@@ -18,6 +18,7 @@ return [
         'es' => ['name' => 'Spanish', 'script' => 'Latn', 'dir' => 'ltr', 'native' => 'Español'],
         'en'          => ['name' => 'English',                'script' => 'Latn', 'dir' => 'ltr', 'native' => 'English'],
         'fr'          => ['name' => 'French',                 'script' => 'Latn', 'dir' => 'ltr', 'native' => 'Français'],
+        'it' => ['name' => 'Italian', 'script' => 'Latn', 'dir' => 'ltr', 'native' => 'Italiano'],
     ],
 
     // Your own lang detection can be made here
