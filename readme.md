@@ -14,7 +14,9 @@ It's flexible, extensible and builds a beautiful interface around your models.
 
 ## Current state warning
 
-It is under development. Use at your own risk.
+It is under development. Use at your own risk. 
+
+To see development progress change to `dev` branch.
 
 ## Table of Contents
 
