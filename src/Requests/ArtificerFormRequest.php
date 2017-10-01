@@ -94,7 +94,6 @@ class ArtificerFormRequest extends FormRequest
      */
     public function persist()
     {
-
         $data = Artificer::modelManager()->current()->serialize();
         $modelInstance = $this->currentModel;
 

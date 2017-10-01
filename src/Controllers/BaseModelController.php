@@ -2,12 +2,8 @@
 
 namespace Mascame\Artificer\Controllers;
 
-use Illuminate\Database\Eloquent\Collection;
-use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Fields\Field;
-use Mascame\Artificer\Fields\Types\Relations\Relation;
-use Mascame\Artificer\Model\ModelManager;
 use View;
+use Mascame\Artificer\Artificer;
 use Illuminate\Support\Facades\Input;
 
 class BaseModelController extends BaseController
@@ -27,7 +23,7 @@ class BaseModelController extends BaseController
     {
         parent::__construct();
 
-        $this->whenSessionLoaded(function() {
+        $this->whenSessionLoaded(function () {
             $model = $this->modelManager->current();
 
             $this->modelSettings = $model->settings();
@@ -73,10 +69,10 @@ class BaseModelController extends BaseController
         $filters = Input::get('filters');
 
         if (! $filters) {
-            return null;
+            return;
         }
 
-        return collect($filters)->transform(function($filter) {
+        return collect($filters)->transform(function ($filter) {
             $filter = json_decode($filter);
 
             return [$filter->key => $filter->value];

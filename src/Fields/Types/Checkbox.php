@@ -2,7 +2,6 @@
 
 namespace Mascame\Artificer\Fields\Types;
 
-use Form;
 use Illuminate\Support\Collection;
 use Mascame\Artificer\Fields\Field;
 

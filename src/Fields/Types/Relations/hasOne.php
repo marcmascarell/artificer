@@ -1,10 +1,8 @@
-<?php namespace Mascame\Artificer\Fields\Types\Relations;
+<?php
 
-use URL;
-use Form;
+namespace Mascame\Artificer\Fields\Types\Relations;
+
 use Input;
-use Request;
-use Illuminate\Support\Str;
 
 class hasOne extends Relation
 {
@@ -33,7 +31,6 @@ class hasOne extends Relation
 
         return false;
     }
-
 
     protected function getData()
     {

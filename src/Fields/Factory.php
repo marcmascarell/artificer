@@ -3,12 +3,11 @@
 namespace Mascame\Artificer\Fields;
 
 use Illuminate\Support\Str as Str;
-use Mascame\Artificer\Fields\Types\Relations\Relation;
 use Mascame\Formality\ParserInterface;
+use Mascame\Artificer\Fields\Types\Relations\Relation;
 
 class Factory
 {
-
     /**
      * @var array
      */
@@ -109,7 +108,7 @@ class Factory
 
         foreach ($fields as $key => $field) {
             /**
-             * @var $field Relation
+             * @var Relation
              */
             if ($field->isRelation()) {
                 $field = $this->completeRelation($field);
@@ -155,5 +154,4 @@ class Factory
 
         return $field;
     }
-
 }

@@ -2,11 +2,11 @@
 
 namespace Mascame\Artificer\Model;
 
+use Mascame\Formality\Parser;
 use Illuminate\Support\Collection;
 use Mascame\Artificer\Fields\Field;
-use Mascame\Artificer\Fields\Types\Relations\Relation;
-use Mascame\Formality\Parser;
 use Mascame\Artificer\Fields\Factory;
+use Mascame\Artificer\Fields\Types\Relations\Relation;
 
 /**
  * @property $name
@@ -61,7 +61,7 @@ class Model
         }
 
         if (! class_exists($this->class)) {
-            throw new \Exception('Model class '. $this->class .' not found.');
+            throw new \Exception('Model class '.$this->class.' not found.');
         }
 
         $this->model = new $this->class;
@@ -96,7 +96,7 @@ class Model
     }
 
     /**
-     * Returns a Collection with Fields
+     * Returns a Collection with Fields.
      *
      * @return Collection
      */
@@ -113,22 +113,25 @@ class Model
     }
 
     /**
-     * Transform Fields to a collection ready to populate a form
+     * Transform Fields to a collection ready to populate a form.
      *
      * @param $fields Collection
      * @return Collection
      */
-    public function transformFields($fields = null) {
-        if (! $fields) $fields = $this->toFields();
+    public function transformFields($fields = null)
+    {
+        if (! $fields) {
+            $fields = $this->toFields();
+        }
 
-        return $fields->filter(function($field) {
-            /**
+        return $fields->filter(function ($field) {
+            /*
              * @var $field Field
              */
             return $field->isVisible();
-        })->transform(function($field) {
+        })->transform(function ($field) {
             /**
-             * @var $field Field
+             * @var Field
              */
             $options = $field->getOptions();
 
@@ -142,7 +145,7 @@ class Model
             ];
 
             if ($field->isRelation()) {
-                /**
+                /*
                  * @var $field Relation
                  */
                 $transform['relation'] = $options['relationship'];
@@ -160,14 +163,17 @@ class Model
      * @param $values Collection|\Illuminate\Support\Collection
      * @return Collection|\Illuminate\Support\Collection
      */
-    public function transformValues($values, $fields = null) {
-        if (! $fields) $fields = $this->toFields();
+    public function transformValues($values, $fields = null)
+    {
+        if (! $fields) {
+            $fields = $this->toFields();
+        }
 
-        /**
+        /*
          * @var $values Collection
          */
-        return $values->transform(function($row) use ($fields) {
-            /**
+        return $values->transform(function ($row) use ($fields) {
+            /*
              * @var $row \Eloquent
              */
             $row->setHidden([]); // Allows us to get all values. TODO: should this be an option?
@@ -176,7 +182,7 @@ class Model
 
             foreach ($values as $name => &$value) {
                 /**
-                 * @var $field Field
+                 * @var Field
                  */
                 $field = $fields[$name];
 
@@ -187,7 +193,7 @@ class Model
 
                 if ($field->isRelation()) {
                     /**
-                     * @var $field Relation
+                     * @var Relation
                      */
                     $value = $field->transformToVisibleProperties(collect($value));
                 } else {
@@ -200,7 +206,7 @@ class Model
     }
 
     /**
-     * Prepared data to be inserted on DB
+     * Prepared data to be inserted on DB.
      *
      * @return array
      */
@@ -215,13 +221,13 @@ class Model
         ];
 
         /**
-         * @var $field Field
+         * @var Field
          */
         foreach ($fields as $name => $field) {
             if ($field->isRelation()) {
 
                 /**
-                 * @var $field Relation
+                 * @var Relation
                  */
                 $relationValues = [];
 
@@ -233,7 +239,7 @@ class Model
                     'name' => $name,
                     'type' => $field->getType(),
                     'model' => $field->relatedModel,
-                    'values' => $relationValues
+                    'values' => $relationValues,
                 ];
             } else {
                 // Todo: without isset -> Undefined index: id.

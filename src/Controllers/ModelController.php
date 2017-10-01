@@ -2,13 +2,12 @@
 
 namespace Mascame\Artificer\Controllers;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use View;
 use Request;
-use Redirect;
 use Response;
 use Mascame\Artificer\Options\AdminOption;
 use Mascame\Artificer\Requests\ArtificerFormRequest;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ModelController extends BaseModelController
 {
@@ -107,9 +106,9 @@ class ModelController extends BaseModelController
         }
 
         /**
-         * @var $paginatedData LengthAwarePaginator
+         * @var LengthAwarePaginator
          */
-        $paginatedData = $queryBuilder->paginate((int)request()->get('perPage'));
+        $paginatedData = $queryBuilder->paginate((int) request()->get('perPage'));
 
         return [
             'values' => $this->modelManager->current()->transformValues(collect($paginatedData->items())),
@@ -122,17 +121,15 @@ class ModelController extends BaseModelController
             'sortBy' => [
                 'column' => $sort['sortBy'],
                 'direction' => $sort['sortByDirection'],
-            ]
+            ],
         ];
     }
-
-
 
 //    public function field($modelName, $id, $field)
 //    {
 //        $this->handleData($this->currentModel->with($this->modelSettings->getRelations())->findOrFail($id));
 //
-////        $this->fields[$field]->showFullField = true;
+    ////        $this->fields[$field]->showFullField = true;
 //
 //        return \HTML::field($this->fields[$field], AdminOption::get('icons'));
 //    }
@@ -157,7 +154,7 @@ class ModelController extends BaseModelController
         //}
 
         return [
-            'route' => route('admin.model.all', ['slug' => $this->modelManager->current()->route])
+            'route' => route('admin.model.all', ['slug' => $this->modelManager->current()->route]),
         ];
     }
 

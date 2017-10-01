@@ -27,7 +27,6 @@ class AbstractField implements FieldInterface
      */
     protected $type;
 
-
     /**
      * @param null $value
      * @return null

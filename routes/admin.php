@@ -1,9 +1,9 @@
 <?php
 
-use Mascame\Artificer\Controllers\HomeController as HomeController;
 use Mascame\Artificer\Controllers\ModelController as ModelController;
 use Mascame\Artificer\Controllers\InstallController as InstallController;
 use Mascame\Artificer\Controllers\ExtensionController as ExtensionController;
+
 //dd(\Illuminate\Support\Facades\Hash::make('artificer'));
 //$user = \Mascame\Artificer\ArtificerUser::find(1);
 //
@@ -25,7 +25,7 @@ Route::pattern('slug', '[a-z0-9_-]+');
 Route::group([
     'middleware' => [
         'web',
-        'artificer'
+        'artificer',
     ],
     'prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix'),
 ], function () {
@@ -37,7 +37,6 @@ Route::group([
     \Mascame\Artificer\Artificer::pluginManager()->outputCoreRoutes();
 
     Route::group(['middleware' => ['artificer-auth']], function () {
-
         Route::get('extensions', ExtensionController::class.'@extensions')->name('admin.extensions');
 
         foreach (['plugins', 'widgets'] as $extensionType) {
