@@ -2,8 +2,8 @@
 
 namespace Mascame\Artificer;
 
-use Auth;
 use App;
+use Auth;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Extension\ResourceCollector;
 use Mascame\Artificer\Assets\AssetsManagerInterface;
@@ -62,7 +62,7 @@ class Artificer
             case 'admin.model.destroy':
                 return self::ACTION_DELETE;
             default:
-                return null;
+                return;
         }
     }
 
@@ -149,10 +149,8 @@ class Artificer
         return self::getAssetsPath('extensions'.$file);
     }
 
-
     public static function auth()
     {
         return Auth::guard('admin');
     }
-
 }

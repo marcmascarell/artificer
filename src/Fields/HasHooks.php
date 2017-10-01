@@ -22,9 +22,6 @@ trait HasHooks
         ModelHook::RESTORED  => 'restoredHook',
     ];
 
-    /**
-     *
-     */
     protected function attachHooks()
     {
         foreach (self::$hooks as $hook => $handler) {

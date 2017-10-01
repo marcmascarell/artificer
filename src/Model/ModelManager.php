@@ -52,7 +52,7 @@ class ModelManager
     private function getCurrentModelName()
     {
         if (! Str::startsWith(Route::currentRouteName(), 'admin.model.')) {
-            return null;
+            return;
         }
 
         $model = collect($this->models)->first(function ($model, $modelName) {

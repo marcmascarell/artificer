@@ -32,7 +32,7 @@ class Field extends AbstractField implements FieldInterface
      */
     public function isRelation()
     {
-        return !! $this->getOption('relationship', false);
+        return (bool) $this->getOption('relationship', false);
     }
 
     /**
@@ -139,5 +139,4 @@ class Field extends AbstractField implements FieldInterface
     {
         return $value;
     }
-
 }

@@ -64,7 +64,7 @@ trait Relationable
     }
 
     /**
-     * The value column (usually 'id')
+     * The value column (usually 'id').
      *
      * @return bool
      */
@@ -83,5 +83,4 @@ trait Relationable
 
         return $options[$attribute] ?? $default;
     }
-
 }

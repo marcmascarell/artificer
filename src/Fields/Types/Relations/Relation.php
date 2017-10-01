@@ -2,9 +2,9 @@
 
 namespace Mascame\Artificer\Fields\Types\Relations;
 
+use Mascame\Artificer\Artificer;
 use Illuminate\Support\Collection;
 use Mascame\Artificer\Fields\Field;
-use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Fields\Relationable;
 use Mascame\Artificer\Model\ModelSettings;
 use Mascame\Artificer\Fields\GuessableRelation;
@@ -60,7 +60,6 @@ class Relation extends Field
     {
         $relatedModel = $this->getRelatedModel();
 
-
         if (! $relatedModel) {
             throw new \Exception('Missing relation in config for the current model.');
         }
@@ -79,7 +78,7 @@ class Relation extends Field
         $showColumn = $this->getShownProperty();
         $valueColumn = $this->getKeyProperty();
 
-        return $collection->transform(function($item) use ($valueColumn, $showColumn) {
+        return $collection->transform(function ($item) use ($valueColumn, $showColumn) {
             return [
                 'label' => $item[$showColumn],
                 'value' => $item[$valueColumn],

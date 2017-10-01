@@ -3,10 +3,10 @@
 namespace Mascame\Artificer\Controllers;
 
 use Auth;
-use Illuminate\Routing\Controller;
 use View;
 use Request;
 use Mascame\Artificer\Artificer;
+use Illuminate\Routing\Controller;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Options\AdminOption;
 
@@ -59,7 +59,7 @@ class BaseController extends Controller
     // Todo: move to middleware
     protected function protectFromUnintendedActions()
     {
-        $this->whenSessionLoaded(function() {
+        $this->whenSessionLoaded(function () {
             $this->modelManager = Artificer::modelManager();
 
             $action = Artificer::getCurrentAction();
@@ -78,7 +78,6 @@ class BaseController extends Controller
 
     protected function shareMainViewData()
     {
-
         View::share('appTitle', AdminOption::get('title'));
         View::share('menu', $this->getMenu());
         View::share('theme', $this->theme);
@@ -86,10 +85,10 @@ class BaseController extends Controller
         View::share('icon', AdminOption::get('icons'));
 
         // Models need the current user, we have to wait until session is available
-        $this->whenSessionLoaded(function() {
-            View::share('models', $this->modelManager->all()->filter(function($model) {
+        $this->whenSessionLoaded(function () {
+            View::share('models', $this->modelManager->all()->filter(function ($model) {
                 return ! $model->settings()->hidden;
-            })->transform(function($model) {
+            })->transform(function ($model) {
                 return [
                     'slug' => $model->route,
                     'title' => $model->settings()->title,

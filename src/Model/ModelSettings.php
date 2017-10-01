@@ -106,7 +106,7 @@ class ModelSettings
      */
     public function isHidden()
     {
-        $roles = $this->getOption('roles.' . Artificer::ACTION_BROWSE, null);
+        $roles = $this->getOption('roles.'.Artificer::ACTION_BROWSE, null);
 
         if ($roles && ! Artificer::auth()->user()->hasAnyRole($roles)) {
             return true;

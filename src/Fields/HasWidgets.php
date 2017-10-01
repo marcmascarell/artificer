@@ -2,9 +2,7 @@
 
 namespace Mascame\Artificer\Fields;
 
-use Illuminate\Support\Str;
 use Mascame\Artificer\Artificer;
-use Mascame\Artificer\Hooks\ModelHook;
 
 trait HasWidgets
 {
