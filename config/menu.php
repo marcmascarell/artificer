@@ -2,22 +2,17 @@
 
 return [
 
-    /*
-     * Keys are useless
-     */
-
-    'dashboard' => [
-        'route'  => 'admin.home',
+    [
         'title' => 'Dashboard',
+        'route'  => 'admin.home',
         'icon'  => '<i class="fa fa-dashboard"></i>',
         'permissions' => [
             'admin',
         ],
     ],
-
-    'extensions'   => [
-        'route'  => 'admin.extensions',
+    [
         'title' => 'Extensions',
+        'route'  => 'admin.extensions',
         'icon'  => '<i class="fa fa-plug"></i>',
         'permissions' => [
             'admin',

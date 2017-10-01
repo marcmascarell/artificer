@@ -3,39 +3,24 @@
 namespace Mascame\Artificer\Fields;
 
 use Mascame\Artificer\Artificer;
-use Mascame\Formality\Field\FieldInterface;
 
-class Field extends \Mascame\Formality\Field\Field implements FieldInterface
+class Field extends AbstractField implements FieldInterface
 {
     use Filterable,
-        HasHooks;
-
-    /**
-     * @var array
-     */
-    protected $widgets = [];
-
-    /**
-     * Sometimes ajax limits output, setting this to true will return all.
-     *
-     * @var bool
-     */
-    public $showFullField = false;
-
-    /**
-     * @var bool
-     */
-    protected $withWidgets = false;
+        HasHooks,
+        HasWidgets;
 
     /**
      * Field constructor.
+     * @param $type
      * @param $name
-     * @param null $value
      * @param array $options
      */
-    public function __construct($name, $value = null, $options = [])
+    public function __construct($type, $name, $options = [])
     {
-        parent::__construct($name, $value, $options);
+        $this->type = $type;
+        $this->name = $name;
+        $this->options = $options;
 
         $this->widgets = $this->getInstalledWidgets();
 
@@ -43,95 +28,11 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
     }
 
     /**
-     * Only get widgets that are installed.
-     *
-     * @return array
+     * @return bool
      */
-    protected function getInstalledWidgets()
+    public function isRelation()
     {
-        $installedWidgets = [];
-        $widgetManager = Artificer::widgetManager();
-        $widgets = $this->getOption('widgets', []);
-
-        foreach ($widgets as $widget) {
-            if ($widgetManager->isInstalled($widget)) {
-                $installedWidgets[] = $widget;
-            }
-        }
-
-        return $installedWidgets;
-    }
-
-    /**
-     * @param null $value
-     * @return null
-     */
-    public function show()
-    {
-        $value = $this->value ?: $this->getOption('default');
-
-        if ($show = $this->getOption('show')) {
-            if (is_callable($show)) {
-                return $show($value);
-            }
-        }
-
-        return $value;
-    }
-
-    /**
-     * @return bool|mixed|null|string
-     */
-    public function output()
-    {
-        if ($this->isHidden()) {
-            return;
-        }
-
-        if ($this->withWidgets) {
-            $this->applyWidgets();
-        }
-
-        return parent::output();
-    }
-
-    /**
-     * @return $this
-     */
-    public function protectGuarded()
-    {
-        if (! $this->isFillable()) {
-            $this->setOptions([
-                'attributes' => array_merge($this->getAttributes(), ['disabled' => 'disabled']),
-            ]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function withWidgets()
-    {
-        $this->withWidgets = true;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    protected function applyWidgets()
-    {
-        foreach ($this->widgets as $widget) {
-            $widget = Artificer::widgetManager()->get($widget);
-            $widget->assets(Artificer::assetManager());
-
-            return $widget->field($this);
-        }
-
-        return $this;
+        return !! $this->getOption('relationship', false);
     }
 
     /**
@@ -140,32 +41,27 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
      */
     protected function isAll($array)
     {
-        return is_array($array) && isset($array[0]) && $array[0] == '*' || $array == '*';
+        return is_array($array)
+                && isset($array[0])
+                && ($array[0] == '*' || $array == '*');
     }
 
     /**
      * @param string $visibility [visible|hidden]
      * @return bool
      */
-    protected function isListedAs($visibility, $action = null)
+    protected function hasVisibility($visibility)
     {
-        if (! $action) {
-            $action = Artificer::getCurrentAction();
-        }
+        $visibilityOptions = Artificer::modelManager()->current()->settings()->getOption(
+            Artificer::getCurrentAction()
+        );
 
-        $listOptions = Artificer::modelManager()->current()->settings()->getOption($action);
-
-        if (! $listOptions || ! isset($listOptions[$visibility])) {
+        if (! $visibilityOptions || ! isset($visibilityOptions[$visibility])) {
             return false;
         }
 
-        $list = $listOptions[$visibility];
-
-        if ($this->isAll($list)) {
-            return true;
-        }
-
-        return $this->isInArray($this->getName(), $list);
+        return $this->isAll($visibilityOptions[$visibility])
+               || $this->isInArray($this->getName(), $visibilityOptions[$visibility]);
     }
 
     /**
@@ -179,7 +75,7 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
             return false;
         }
 
-        return $this->isListedAs('visible');
+        return $this->hasVisibility('visible');
     }
 
     /**
@@ -187,9 +83,9 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
      * @param $array
      * @return bool
      */
-    public function isInArray($value, $array)
+    private function isInArray($value, $array)
     {
-        return (is_array($array) && in_array($value, $array)) ? true : false;
+        return is_array($array) && in_array($value, $array);
     }
 
     /**
@@ -197,41 +93,12 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
      */
     public function isHidden()
     {
-        return $this->isListedAs('hidden');
+        return $this->hasVisibility('hidden');
     }
 
     /**
-     * @param $name
-     * @return mixed
+     * @return bool
      */
-    public static function get($name)
-    {
-        return array_get(\View::getShared(), 'fields')[$name];
-    }
-
-    /**
-     * @param $name
-     */
-    public function __get($name)
-    {
-        $accessor = 'get'.studly_case($name);
-
-        return $this->useFieldMethod($accessor);
-    }
-
-    /**
-     * @param $method
-     * @param array $args
-     */
-    protected function useFieldMethod($method, $args = [])
-    {
-        if (! method_exists($this, $method)) {
-            return;
-        }
-
-        return (empty($args)) ? $this->$method() : $this->$method($args);
-    }
-
     public function isFillable()
     {
         $fillable = Artificer::modelManager()->current()->settings()->getFillable();
@@ -242,16 +109,15 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
     /**
      * @param array|string $classes
      */
-    protected function mergeClassAttribute($class)
+    protected function mergeAttribute($attribute, $value)
     {
-        if (! is_array($class)) {
-            $class = [$class];
+        if (! is_array($value)) {
+            $value = [$value];
         }
 
-        $attributes = $this->getAttributes();
-        $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : [];
+        $attributes = $this->getAttributes()[$attribute] ?? [];
 
-        return implode(' ', array_merge($classes, $class));
+        return array_merge($attributes, $value);
     }
 
     /**
@@ -260,10 +126,18 @@ class Field extends \Mascame\Formality\Field\Field implements FieldInterface
      */
     public function addAttribute($attribute, $value)
     {
-        if ($attribute == 'class') {
-            $value = $this->mergeClassAttribute($value);
-        }
+        $value = $this->mergeAttribute($attribute, $value);
 
         $this->setOptions(['attributes' => [$attribute => $value]]);
     }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function transformValue($value)
+    {
+        return $value;
+    }
+
 }

@@ -2,13 +2,15 @@
 
 namespace Mascame\Artificer\Controllers;
 
+use Auth;
+use Illuminate\Routing\Controller;
 use View;
 use Request;
 use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Options\AdminOption;
 
-class BaseController
+class BaseController extends Controller
 {
     /**
      * @var
@@ -38,7 +40,7 @@ class BaseController
     /**
      * @var null|string
      */
-    protected $masterLayout = null;
+    protected $masterLayout = 'base';
 
     /**
      * @var ModelManager
@@ -47,27 +49,62 @@ class BaseController
 
     public function __construct()
     {
-        $this->theme = AdminOption::get('theme').'::';
-        $this->masterLayout = 'base';
-        $this->modelManager = Artificer::modelManager();
+        $this->protectFromUnintendedActions();
 
-        if ($this->isStandAlone()) {
-            $this->masterLayout = 'standalone';
-            $this->standalone = true;
-        }
+        $this->theme = AdminOption::get('theme').'::';
 
         $this->shareMainViewData();
     }
 
+    // Todo: move to middleware
+    protected function protectFromUnintendedActions()
+    {
+        $this->whenSessionLoaded(function() {
+            $this->modelManager = Artificer::modelManager();
+
+            $action = Artificer::getCurrentAction();
+
+            if ($action) {
+                $roles = Artificer::modelManager()->current()->settings()->getOption('roles', []);
+
+                if (isset($roles[$action])
+                    && ! empty($roles[$action])
+                    && ! Artificer::auth()->user()->hasAnyRole($roles[$action])) {
+                    abort(403, 'Unauthorized action.');
+                }
+            }
+        });
+    }
+
     protected function shareMainViewData()
     {
+
         View::share('appTitle', AdminOption::get('title'));
         View::share('menu', $this->getMenu());
         View::share('theme', $this->theme);
         View::share('layout', $this->theme.'.'.$this->masterLayout);
-        View::share('standalone', $this->standalone);
         View::share('icon', AdminOption::get('icons'));
-        View::share('models', $this->modelManager->all());
+
+        // Models need the current user, we have to wait until session is available
+        $this->whenSessionLoaded(function() {
+            View::share('models', $this->modelManager->all()->filter(function($model) {
+                return ! $model->settings()->hidden;
+            })->transform(function($model) {
+                return [
+                    'slug' => $model->route,
+                    'title' => $model->settings()->title,
+                ];
+            }));
+        });
+    }
+
+    protected function whenSessionLoaded($callback)
+    {
+        $this->middleware(function ($request, $next) use ($callback) {
+            $callback();
+
+            return $next($request);
+        });
     }
 
     /**
@@ -92,5 +129,10 @@ class BaseController
     protected function getView($view)
     {
         return $this->theme.$view;
+    }
+
+    public function delegateToVue()
+    {
+        return View::make($this->getView('base'));
     }
 }

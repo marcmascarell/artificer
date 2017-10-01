@@ -27,7 +27,7 @@ trait Filterable
      */
     public function displayFilter()
     {
-        $this->value = \Request::old($this->name);
+        $this->default = \Request::old($this->name);
 
         return $this->output();
     }

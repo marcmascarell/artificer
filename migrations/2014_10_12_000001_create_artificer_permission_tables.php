@@ -85,7 +85,7 @@ class CreateArtificerPermissionTables extends Migration
      */
     public function down()
     {
-        $config = config('laravel-permission.table_names');
+        $config = config('admin.permission.table_names');
 
         Schema::drop($config['role_has_permissions']);
         Schema::drop($config['user_has_roles']);

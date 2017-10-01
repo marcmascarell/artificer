@@ -2,47 +2,43 @@
 
 namespace Mascame\Artificer\Fields\Types;
 
-use Form;
-use Illuminate\Support\Collection;
 use Mascame\Artificer\Fields\Field;
 
 class Password extends Field
 {
     public $filterable = false;
 
-    protected function input()
-    {
-        return Form::password($this->name, $this->attributes);
-    }
+    const PLACEHOLDER = 'PASSWORD_PLACEHOLDER';
 
-    public function show()
+    /**
+     * @param $value
+     * @return null|string
+     */
+    public function transformValue($value)
     {
-        return 'hidden';
+        return $this->getDefault();
     }
 
     /**
-     * Passwords are empty by default.
-     * This prevents updating an empty password.
-     *
-     * @param $fields Collection
-     * @param $next
-     * @return mixed
+     * @return null|string
      */
-    public function updatingHook($data, $next)
+    public function getDefault()
     {
-        list($field, $model) = $data;
+        $default = parent::getDefault();
 
-        $model->remember_token = 'pollo';
-//        dd('here!!', $data);
-//        dd($fields);
-//        $fields->filter(function (Field $field) use ($fields) {
-//            if ($field->getType() == $this->getType() && empty($field->getValue())) {
-//                return false;
-//            }
-//
-//            return true;
-//        });
+        return $default ?? self::PLACEHOLDER;
+    }
 
-        return $next(['cagunlaputa']);
+    /**
+     * @param $model \Eloquent
+     */
+    public function updatingHook($model)
+    {
+        $name = $this->getName();
+        $value = $model->{$name};
+
+        if ($value === self::PLACEHOLDER) {
+            $model->__unset($name);
+        }
     }
 }

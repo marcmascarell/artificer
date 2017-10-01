@@ -2,7 +2,6 @@
 
 namespace Mascame\Artificer;
 
-use Illuminate\Support\Facades\App;
 use Mascame\Artificer\Options\AdminOption;
 
 /**
@@ -12,11 +11,6 @@ use Mascame\Artificer\Options\AdminOption;
  */
 trait Themable
 {
-    /**
-     * @var App
-     */
-    protected $app;
-
     protected static $themes;
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Mascame\Artificer\Controllers;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use View;
 use Request;
 use Redirect;
@@ -14,43 +15,58 @@ class ModelController extends BaseModelController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return array
      */
     public function create()
     {
-        $this->handleData($this->currentModel);
+        $data = $this->currentModel;
 
-        $form = [
-            'formActionRoute' => 'admin.model.store',
-            'formMethod' => 'post',
+        return [
+            'values' => $this->modelManager->current()->transformValues(collect([$data]))->first(),
+            'fields' => $this->modelManager->current()->transformFields(),
         ];
+    }
 
-        return View::make($this->getView('edit'))->with('items', $this->data)->with($form);
+    /**
+     * Show the form for editing the specified post.
+     *
+     * @param $modelName
+     * @param $id
+     * @return array
+     */
+    public function edit($modelName, $id)
+    {
+        $values = $this->currentModel->with($this->modelSettings->getRelations())->findOrFail($id);
+
+        return [
+            'values' => $this->modelManager->current()->transformValues(collect([$values]))->first(),
+            'fields' => $this->modelManager->current()->transformFields(),
+        ];
     }
 
     /**
      * @param $modelName
      * @return @return \Illuminate\Contracts\View\View
      */
-    public function filter($modelName)
-    {
-        $this->handleData($this->currentModel->firstOrFail());
-
-        $sort = $this->getSort();
-
-        $data = $this->currentModel->where(function ($query) {
-            foreach (\Request::all() as $name => $value) {
-                if ($value != '' && isset($this->fields[$name])) {
-                    $this->fields[$name]->filter($query, $value);
-                }
-            }
-        })
-            ->with($this->modelSettings->getRelations())
-            ->orderBy($sort['column'], $sort['direction'])
-            ->get();
-
-        return parent::all($modelName, $data, $sort);
-    }
+//    public function filter($modelName)
+//    {
+//        $this->handleData($this->currentModel->firstOrFail());
+//
+//        $sort = $this->getSort();
+//
+//        $data = $this->currentModel->where(function ($query) {
+//            foreach (\Request::all() as $name => $value) {
+//                if ($value != '' && isset($this->fields[$name])) {
+//                    $this->fields[$name]->filter($query, $value);
+//                }
+//            }
+//        })
+//            ->with($this->modelSettings->getRelations())
+//            ->orderBy($sort['column'], $sort['direction'])
+//            ->get();
+//
+//        return parent::all($modelName, $data, $sort);
+//    }
 
     /**
      * Display the specified resource.
@@ -68,49 +84,58 @@ class ModelController extends BaseModelController
     /**
      * Display the specified post.
      */
-    public function all($modelName, $data = null, $sort = null)
+    public function all($modelName)
     {
-        $sort = $this->getSort();
+        $queryBuilder = $this->currentModel->with($this->modelSettings->getRelations());
 
-        $data = $this->currentModel->with($this->modelSettings->getRelations())->orderBy(
-            $sort['column'],
-            $sort['direction']
-        )->get();
+        if ($filters = $this->getFilters()) {
+            $fields = $this->modelManager->current()->toFields();
 
-        return parent::all($modelName, $data, $sort);
-    }
+            $queryBuilder->where(function ($query) use ($filters, $fields) {
+                foreach ($filters as $name => $value) {
+                    if (empty($value) || ! isset($fields[$name])) {
+                        continue;
+                    }
 
-    /**
-     * Show the form for editing the specified post.
-     *
-     * @param $modelName
-     * @param $id
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function edit($modelName, $id)
-    {
-        $this->handleData(
-            $this->currentModel->with($this->modelSettings->getRelations())->findOrFail($id)
-        );
+                    $fields[$name]->filter($query, $value);
+                }
+            });
+        }
 
-        $form = [
-            'formActionRoute' => 'admin.model.update',
-            'formMethod' => 'put',
+        if ($sort = $this->getSort()) {
+            $queryBuilder->orderBy($sort['sortBy'], $sort['sortByDirection']);
+        }
+
+        /**
+         * @var $paginatedData LengthAwarePaginator
+         */
+        $paginatedData = $queryBuilder->paginate((int)request()->get('perPage'));
+
+        return [
+            'values' => $this->modelManager->current()->transformValues(collect($paginatedData->items())),
+            'fields' => $this->modelManager->current()->transformFields(),
+            'pagination' => [
+                'currentPage' => $paginatedData->currentPage(),
+                'perPage' => $paginatedData->perPage(),
+                'total' => $paginatedData->total(),
+            ],
+            'sortBy' => [
+                'column' => $sort['sortBy'],
+                'direction' => $sort['sortByDirection'],
+            ]
         ];
-
-        return View::make($this->getView('edit'))
-            ->with('items', $this->data)
-            ->with($form);
     }
 
-    public function field($modelName, $id, $field)
-    {
-        $this->handleData($this->currentModel->with($this->modelSettings->getRelations())->findOrFail($id));
 
-        $this->fields[$field]->showFullField = true;
 
-        return \HTML::field($this->fields[$field], AdminOption::get('icons'));
-    }
+//    public function field($modelName, $id, $field)
+//    {
+//        $this->handleData($this->currentModel->with($this->modelSettings->getRelations())->findOrFail($id));
+//
+////        $this->fields[$field]->showFullField = true;
+//
+//        return \HTML::field($this->fields[$field], AdminOption::get('icons'));
+//    }
 
     /**
      * Update or create the specified resource in storage.
@@ -123,11 +148,7 @@ class ModelController extends BaseModelController
         $result = $request->persist();
 
         if (! $result) {
-            flash()->success('Failed.');
-        } elseif ($request->isUpdating()) {
-            flash()->success('Updated.');
-        } else {
-            flash()->success('Created.');
+            // Todo
         }
 
         // Todo
@@ -135,7 +156,9 @@ class ModelController extends BaseModelController
         //    return $this->handleAjaxResponse($model);
         //}
 
-        return Redirect::route('admin.model.all', ['slug' => $this->modelManager->current()->route]);
+        return [
+            'route' => route('admin.model.all', ['slug' => $this->modelManager->current()->route])
+        ];
     }
 
     /**
@@ -147,12 +170,11 @@ class ModelController extends BaseModelController
      */
     public function destroy($modelName, $id)
     {
+        // Todo: improve responses
         if ($this->currentModel->destroy($id)) {
-            flash()->success('Deleted.');
-        } else {
-            flash()->error('Failed.');
+            return \Response::json([]);
         }
 
-        return Request::ajax() ? \Response::json([]) : Redirect::back();
+        return \App::abort(403);
     }
 }

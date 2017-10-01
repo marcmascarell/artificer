@@ -1,6 +1,6 @@
 {
   "name": "mascame/artificer",
-  "description": "Artificer is an admin package built on top of your Eloquent models.",
+  "description": "Artificer is the admin panel Laravel deserves. Built on top of your Eloquent models.",
   "homepage": "https://github.com/marcmascarell/artificer",
   "keywords": [
     "laravel",
@@ -18,16 +18,13 @@
     }
   ],
   "require": {
-    "php": ">=5.6.4",
+    "php": ">=7.0.0",
     "mascame/artificer-default-theme": "dev-l5-migration",
-    "mascame/artificer-widgets": "dev-l5-migration",
     "mascame/artificer-login-plugin": "dev-master",
-    "mascame/formality": "0.*",
     "mascame/extender": "dev-master",
     "stolz/assets": "^0.1.9",
-    "laravelcollective/html": "5.3.*",
-    "laracasts/flash": "^2.0",
-    "spatie/laravel-permission": "^1.5.2"
+    "spatie/laravel-permission": "^1.13.0",
+    "mascame/formality": "^1.0.0"
   },
   "require-dev": {
     "codeception/codeception": "2.*"
@@ -37,5 +34,12 @@
       "Mascame\\Artificer\\": "src/"
     }
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "dev",
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Mascame\\Artificer\\ArtificerServiceProvider"
+      ]
+    }
+  }
 }

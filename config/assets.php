@@ -26,7 +26,8 @@ return [
 
     'assets' => [
         'jquery-cdn',
-        'packages/mascame/admin/js/core/restfulizer.js',
+        \Mascame\Artificer\Artificer::getAssetsPath('vendor/element-ui/theme-default/index.css'),
+        \Mascame\Artificer\Artificer::getAssetsPath('js/app.js'),
     ],
 
 ];

@@ -8,14 +8,9 @@ use Mascame\Artificer\Fields\Field;
 
 class Email extends Field
 {
-    protected function input()
-    {
-        return Form::email($this->name, $this->value, $this->attributes);
-    }
-
     public function show()
     {
-        return HTML::mailto($this->value, $this->value);
+        return HTML::mailto($this->default, $this->default);
     }
 
     public function displayFilter()

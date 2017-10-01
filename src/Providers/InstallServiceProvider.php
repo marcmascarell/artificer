@@ -16,11 +16,11 @@ class InstallServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \App::make('router')->middleware('artificer-installed', InstalledMiddleware::class);
+        app('router')->pushMiddlewareToGroup('artificer-installed', InstalledMiddleware::class);
 
         // Avoid redirection when using CLI
         if (\App::runningInConsole() || \App::runningUnitTests()) {
-            return true;
+            return;
         }
 
         if (! self::isInstalling() && ! self::isInstalled()) {

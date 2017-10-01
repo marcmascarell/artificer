@@ -10,6 +10,9 @@ class hasOne extends Relation
 {
     protected $id;
 
+    /**
+     * @return array|bool|mixed|null
+     */
     public function guessRelatedMethod()
     {
         // case 'model_id'
@@ -27,73 +30,10 @@ class hasOne extends Relation
         if ($this->modelHasMethod($method)) {
             return $method;
         }
+
+        return false;
     }
 
-    protected function select($data, $show)
-    {
-        $select = [];
-        foreach ($data as $d) {
-            if (is_array($show)) {
-                $value = '';
-                foreach ($show as $show_key) {
-                    $value .= Str::title($show_key).': '.$d[$show_key];
-
-                    if (end($show) != $show_key) {
-                        $value .= ' | ';
-                    }
-                }
-            } elseif (is_callable($show)) {
-                $value = $show($d);
-            } else {
-                $value = $d[$show];
-            }
-
-            $select[$d['id']] = $value;
-        }
-
-        if (Request::has($this->name)) {
-            $this->id = Request::get($this->name);
-        } else {
-            if (isset($this->value->id)) {
-                $this->id = $this->value->id;
-            } else {
-                $this->id = $this->value;
-            }
-        }
-
-        echo \Form::select($this->name, ['0' => Request::ajax() ? '(current)' : '(none)'] + $select, $this->id,
-            $this->attributes);
-    }
-
-    protected function buttons()
-    {
-        // Todo: $this->showFullField ?
-//        if (!Request::ajax() || $this->showFullField) {
-
-        if (! Request::ajax()) {
-            $new_url = \URL::route('admin.model.create', ['slug' => $this->relatedModel->route]);
-            $edit_url = \URL::route('admin.model.edit', ['slug' => $this->relatedModel->route, 'id' => ':id:']); ?>
-            <br>
-            <div class="text-right">
-                <div class="btn-group">
-                    <button class="btn btn-default" data-toggle="modal"
-                            data-url="<?= $edit_url ?>"
-                            data-target="#form-modal-<?= $this->relatedModel->route ?>">
-                        <i class="fa fa-edit"></i>
-                    </button>
-
-                    <button class="btn btn-default" data-toggle="modal"
-                            data-url="<?= $new_url ?>"
-                            data-target="#form-modal-<?= $this->relatedModel->route ?>">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
-            </div>
-            <?php
-
-//            $this->relationModal($this->relatedModel['route'], $this->id);
-        }
-    }
 
     protected function getData()
     {
@@ -103,22 +43,22 @@ class hasOne extends Relation
     public function input()
     {
         $data = $this->getRelatedInstance()->all(
-            (is_string($this->getShow())) ? ['id', $this->getShow()] : ['*']
+            (is_string($this->getShownProperty())) ? ['id', $this->getShownProperty()] : ['*']
         )->toArray();
 
-        $this->select($data, $this->getShow());
+        $this->select($data, $this->getShownProperty());
         $this->buttons();
     }
 
     public function show($value = null)
     {
-        $value = ($value) ?: $this->value;
+        $value = ($value) ?: $this->default;
 
         if (! $value) {
             return '<em>(none)</em>';
         }
 
-        $show = $this->getShow();
+        $show = $this->getShownProperty();
 
         if (! is_object($value)) {
             $data = $this->getRelatedInstance()->findOrFail($value);
@@ -144,6 +84,6 @@ class hasOne extends Relation
             throw new \Exception('The (hasOne) value is null');
         }
 
-        echo $value->{$this->getShow()};
+        echo $value->{$this->getShownProperty()};
     }
 }

@@ -2,6 +2,11 @@
 
 namespace Mascame\Artificer\Controllers;
 
+use Illuminate\Database\Eloquent\Collection;
+use Mascame\Artificer\Artificer;
+use Mascame\Artificer\Fields\Field;
+use Mascame\Artificer\Fields\Types\Relations\Relation;
+use Mascame\Artificer\Model\ModelManager;
 use View;
 use Illuminate\Support\Facades\Input;
 
@@ -22,12 +27,14 @@ class BaseModelController extends BaseController
     {
         parent::__construct();
 
-        $model = $this->modelManager->current();
+        $this->whenSessionLoaded(function() {
+            $model = $this->modelManager->current();
 
-        $this->modelSettings = $model->settings();
-        $this->currentModel = $model->model();
+            $this->modelSettings = $model->settings();
+            $this->currentModel = $model->model();
 
-        View::share('model', $model);
+            View::share('model', $model);
+        });
     }
 
     /**
@@ -35,10 +42,16 @@ class BaseModelController extends BaseController
      */
     protected function handleData($data)
     {
-        $this->data = $data;
+//        $this->data = $data;
+//        $fields = $this->modelManager->current()->toForm($data);
 
-        View::share('data', $this->data);
-        View::share('fields', $this->modelManager->current()->toForm());
+//        View::share('fields', $fields);
+//
+//        if (Artificer::getCurrentAction() === Artificer::ACTION_BROWSE) {
+//            View::share('values', $this->toValues($this->modelManager->current()->toFields($data), $data));
+//        } else {
+//            View::share('values', $data);
+//        }
     }
 
     /**
@@ -47,31 +60,26 @@ class BaseModelController extends BaseController
     protected function getSort()
     {
         return [
-            'column' =>  Input::get('sort_by', 'id'),
-            'direction' =>  Input::get('direction', 'asc'),
+            'sortBy' =>  Input::get('sortBy', 'id'),
+            'sortByDirection' =>  Input::get('sortByDirection', 'asc'),
         ];
     }
 
     /**
-     * @param $items
-     * @return null
+     * @return null|array
      */
-    public static function getCurrentModelId($items)
+    protected function getFilters()
     {
-        return (isset($items->id)) ? $items->id : null;
-    }
+        $filters = Input::get('filters');
 
-    /**
-     * @param $modelName
-     * @param null $data
-     * @param $sort
-     */
-    protected function all($modelName, $data, $sort)
-    {
-        $this->handleData($data);
+        if (! $filters) {
+            return null;
+        }
 
-        return View::make($this->getView('all'))
-            ->with('items', $this->data)
-            ->with('sort', $sort);
+        return collect($filters)->transform(function($filter) {
+            $filter = json_decode($filter);
+
+            return [$filter->key => $filter->value];
+        })->collapse()->toArray();
     }
 }

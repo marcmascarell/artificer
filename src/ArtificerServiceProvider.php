@@ -3,7 +3,6 @@
 namespace Mascame\Artificer;
 
 use App;
-use Mascame\Hooky\Hook;
 use Illuminate\Support\Str;
 use Mascame\Extender\Event\Event;
 use Illuminate\Support\ServiceProvider;
@@ -20,8 +19,12 @@ use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 
 class ArtificerServiceProvider extends ServiceProvider
 {
-    use AutoPublishable, ServiceProviderLoader;
+    use AutoPublishable,
+        ServiceProviderLoader;
 
+    /**
+     * @var string
+     */
     protected $name = 'admin';
 
     /**
@@ -93,8 +96,7 @@ class ArtificerServiceProvider extends ServiceProvider
             return true;
         }
 
-        return
-            $path == $routePrefix || Str::startsWith($path, $routePrefix.'/');
+        return $path == $routePrefix || Str::startsWith($path, $routePrefix.'/');
     }
 
     protected function getConfigPath()
@@ -167,10 +169,6 @@ class ArtificerServiceProvider extends ServiceProvider
 
     private function registerBindings()
     {
-        App::singleton('ArtificerHook', function () {
-            return new Hook();
-        });
-
         /*
         |--------------------------------------------------------------------------
         | Register commands

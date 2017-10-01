@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Artificer Installer</title>
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/png" href="{{ asset('vendor/admin/img/favicon.png') }}"/>
 
     {!! \Mascame\Artificer\Artificer::assetManager()->css() !!}
     {!! \Mascame\Artificer\Artificer::assetManager()->js() !!}

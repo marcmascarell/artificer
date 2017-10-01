@@ -2,17 +2,25 @@
 
 namespace Mascame\Artificer;
 
+use Auth;
 use App;
-use Mascame\Hooky\Hook;
 use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Extension\ResourceCollector;
 use Mascame\Artificer\Assets\AssetsManagerInterface;
-use Mascame\Artificer\Controllers\BaseModelController;
 
 class Artificer
 {
     use Themable;
 
+    const ACTION_BROWSE = 'browse';
+    const ACTION_READ = 'read';
+    const ACTION_EDIT = 'edit';
+    const ACTION_ADD = 'add';
+    const ACTION_DELETE = 'delete';
+
+    /**
+     * @var array
+     */
     protected static $coreExtensions = [
         \Mascame\Artificer\LoginPlugin::class,
     ];
@@ -25,6 +33,10 @@ class Artificer
         return self::$coreExtensions;
     }
 
+    /**
+     * @param $extension
+     * @return bool
+     */
     public static function isCoreExtension($extension)
     {
         return in_array($extension, self::$coreExtensions);
@@ -33,22 +45,24 @@ class Artificer
     /**
      * Returns the current user's action.
      *
-     * @return null|string list, edit, create, show
+     * @return null|string browse, read, edit, add or delete
      */
     public static function getCurrentAction()
     {
         switch (\Route::currentRouteName()) {
-            case 'admin.model.create':
-                return 'create';
-            case 'admin.model.edit':
-                return 'edit';
-            case 'admin.model.show':
-                return 'show';
             case 'admin.model.all':
             case 'admin.model.filter':
-                return 'list';
+                return self::ACTION_BROWSE;
+            case 'admin.model.show':
+                return self::ACTION_READ;
+            case 'admin.model.edit':
+                return self::ACTION_EDIT;
+            case 'admin.model.create':
+                return self::ACTION_ADD;
+            case 'admin.model.destroy':
+                return self::ACTION_DELETE;
             default:
-                return;
+                return null;
         }
     }
 
@@ -85,14 +99,6 @@ class Artificer
     }
 
     /**
-     * @return Hook
-     */
-    public static function hook()
-    {
-        return App::make('ArtificerHook');
-    }
-
-    /**
      * @return ResourceCollector
      */
     public static function resourceCollector()
@@ -100,21 +106,27 @@ class Artificer
         return App::make('ArtificerResourceCollector');
     }
 
-    public static function getCurrentModelId($items)
-    {
-        return BaseModelController::getCurrentModelId($items);
-    }
-
+    /**
+     * @param $options
+     * @return mixed
+     */
     public static function addMenu($options)
     {
         return config(['admin.menu' => array_merge(self::getMenu(), $options)]);
     }
 
+    /**
+     * @return mixed
+     */
     protected static function getMenu()
     {
         return config('admin.menu');
     }
 
+    /**
+     * @param null $file
+     * @return string
+     */
     public static function getAssetsPath($file = null)
     {
         if ($file) {
@@ -124,6 +136,10 @@ class Artificer
         return 'vendor/admin'.$file;
     }
 
+    /**
+     * @param null $file
+     * @return string
+     */
     public static function getExtensionsAssetsPath($file = null)
     {
         if ($file) {
@@ -132,4 +148,11 @@ class Artificer
 
         return self::getAssetsPath('extensions'.$file);
     }
+
+
+    public static function auth()
+    {
+        return Auth::guard('admin');
+    }
+
 }

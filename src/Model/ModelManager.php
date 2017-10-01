@@ -27,12 +27,7 @@ class ModelManager
             $modelObtainer->getModels()
         );
 
-        $this->current = $this->getCurrentModel();
-        $params = \Request::all();
-
-        if ($this->current && ! empty($params)) {
-            $this->current()->setValues($params);
-        }
+        $this->current = $this->getCurrentModelName();
     }
 
     /**
@@ -54,10 +49,10 @@ class ModelManager
     /**
      * @return null|string
      */
-    private function getCurrentModel()
+    private function getCurrentModelName()
     {
         if (! Str::startsWith(Route::currentRouteName(), 'admin.model.')) {
-            return;
+            return null;
         }
 
         $model = collect($this->models)->first(function ($model, $modelName) {
@@ -113,11 +108,15 @@ class ModelManager
 
     /**
      * @param $modelName
-     * @return bool
+     * @return bool|Model
      */
     public function has($modelName)
     {
-        return isset($this->models[$modelName]);
+        try {
+            return $this->get($modelName);
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -125,6 +124,6 @@ class ModelManager
      */
     public function all()
     {
-        return $this->models;
+        return collect($this->models);
     }
 }

@@ -3,74 +3,94 @@
 return [
 
     /*
-     * Specify where models live
-     */
+    |--------------------------------------------------------------------------
+    | Models discovery
+    |--------------------------------------------------------------------------
+    |
+    | Define how Artificer should find your models or specify them one by one.
+    |
+    */
+
     'directories' => [
         // '\\App\\Models' => app_path() . '/Models',
     ],
 
-    /*
-     * You can also specify models individually
-     */
     'models' => [
+        // \App\User::class,
         \App\User::class,
+        \App\Test::class,
+        \Mascame\Artificer\ArtificerUser::class,
+        \Mascame\Artificer\Model\Permission\Role::class,
+        \Mascame\Artificer\Model\Permission\Permission::class,
     ],
 
-    /*
-     * Models that will not be shown in menu (Example: BookAttribute)
-     *
-     * Useful when you are using directory model scan.
-     */
-    'hidden' => [],
-
-    'route_permission' => [
-        'admin.model.store'   => 'create',
-        'admin.model.create'  => 'create',
-        'admin.model.update'  => 'update',
-        'admin.model.edit'    => 'update',
-        'admin.model.destroy' => 'delete',
-        'admin.model.show'    => 'view',
-        'admin.model.all'     => 'view',
+    'hidden' => [
+        // \App\User::class,
     ],
 
-    /*
-     * All model configs will use this defaults (Merging)
-     */
+    // All model configs will use this defaults (Merging)
     'default' => [
-        // The database value will never be shown (just that)
-        'hidden' => ['password'],
 
-        // Model's 'fillable' property. Fallback to the Model if empty []
-        'fillable' => [],
+        /*
+        |--------------------------------------------------------------------------
+        | Mass Assignment
+        |--------------------------------------------------------------------------
+        |
+        | A mass-assignment vulnerability occurs when a user passes an unexpected HTTP
+        | parameter through a request, and that parameter changes a column in your database
+        | you did not expect.
+        |
+        | This fields are fallback to their correspondent Model property if empty.
+        |
+        */
 
-        // Model's 'guarded' property. Fallback to the Model if empty []
+        'fillable' => ['*'],
+
         'guarded' => ['id'],
 
-        // Fields that are shown on creation
-        'create' => [
+        /*
+        |--------------------------------------------------------------------------
+        | Field visibility
+        |--------------------------------------------------------------------------
+        |
+        | Fields that will be hidden or shown on a certain action.
+        |
+        */
+
+        'browse' => [
             'visible' => ['*'],
-            'hidden' => ['id'],
+            'hidden' => [
+                'password',
+                'created_at',
+                'updated_at',
+                'remember_token'
+            ],
         ],
 
-        // Fields that are shown on edit
+        'read' => [
+            'visible' => ['*'],
+        ],
+
         'edit' => [
             'visible' => ['*'],
             'hidden' => ['id'],
         ],
 
-        // Fields that will be shown when on list view mode
-        'list' => [
+        'add' => [
             'visible' => ['*'],
-            'hidden' => ['password'],
+            'hidden' => ['id'],
         ],
 
-        // Fields that will be shown when on detailed item view mode
-        'show' => [
-            'visible' => ['*'],
-        ],
+        /*
+        |--------------------------------------------------------------------------
+        | Fields
+        |--------------------------------------------------------------------------
+        |
+        */
 
         'fields' => [],
 
+        // Todo: does this apply anymore?
         // Attributes of fields, applied unless field has attributes
         'attributes' => [
             'class' => 'form-control',

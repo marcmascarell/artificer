@@ -4,21 +4,15 @@ namespace Mascame\Artificer\Requests;
 
 use Mascame\Artificer\Artificer;
 use Illuminate\Database\Eloquent\Model;
-use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Model\ModelSettings;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ArtificerFormRequest extends FormRequest
 {
     /**
-     * @var ModelManager
-     */
-    protected $modelManager;
-
-    /**
      * @var Model
      */
-    protected $model;
+    protected $currentModel;
 
     /**
      * @var ModelSettings
@@ -71,7 +65,8 @@ class ArtificerFormRequest extends FormRequest
      */
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
-        flash()->error('Validation failed.');
+        // Todo: return json
+//        flash()->error('Validation failed.');
 
         parent::failedValidation($validator);
     }
@@ -81,7 +76,7 @@ class ArtificerFormRequest extends FormRequest
      */
     public function isUpdating()
     {
-        return (bool) ($this->route('id'));
+        return in_array(request()->method(), ['PUT', 'PATCH']);
     }
 
     /**
@@ -99,12 +94,24 @@ class ArtificerFormRequest extends FormRequest
      */
     public function persist()
     {
+
         $data = Artificer::modelManager()->current()->serialize();
+        $modelInstance = $this->currentModel;
 
         if ($this->isUpdating()) {
-            $result = $this->currentModel->update($data);
+            $result = $modelInstance->update($data['currentModel']);
         } else {
-            $result = $this->currentModel->create($data);
+            $modelInstance = $this->currentModel->create($data['currentModel']);
+
+            $result = ($modelInstance);
+        }
+
+        if ($result) {
+            foreach ($data['relations'] as $relation) {
+                if ($relation['type'] === 'hasMany') {
+                    $result = $modelInstance->{$relation['name']}()->sync($relation['values']);
+                }
+            }
         }
 
         return $result;

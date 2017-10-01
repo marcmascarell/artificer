@@ -4,12 +4,29 @@ use Mascame\Artificer\Controllers\HomeController as HomeController;
 use Mascame\Artificer\Controllers\ModelController as ModelController;
 use Mascame\Artificer\Controllers\InstallController as InstallController;
 use Mascame\Artificer\Controllers\ExtensionController as ExtensionController;
+//dd(\Illuminate\Support\Facades\Hash::make('artificer'));
+//$user = \Mascame\Artificer\ArtificerUser::find(1);
+//
+//\Mascame\Artificer\Model\Permission\Role::create(['name' => 'editor']);
+//\Mascame\Artificer\Model\Permission\Role::create(['name' => 'admin']);
+//\Mascame\Artificer\Model\Permission\Role::create(['name' => 'writer']);
+//
+//$perms = new \Mascame\Artificer\Model\Permission\Permission();
+//$perms->forgetCachedPermissions();
+//
+//$user->assignRole('writer');
+//$user->assignRole('admin');
+////
+//dd($user->hasRole('admin'));
 
 Route::pattern('id', '\d+');
 Route::pattern('slug', '[a-z0-9_-]+');
 
 Route::group([
-    'middleware' => ['web', 'artificer'],
+    'middleware' => [
+        'web',
+        'artificer'
+    ],
     'prefix' => \Mascame\Artificer\Options\AdminOption::get('route_prefix'),
 ], function () {
     Route::group(['middleware' => 'artificer-installed', 'prefix' => 'install'], function () {
@@ -20,7 +37,6 @@ Route::group([
     \Mascame\Artificer\Artificer::pluginManager()->outputCoreRoutes();
 
     Route::group(['middleware' => ['artificer-auth']], function () {
-        Route::get('/', ['as' => 'admin.home', 'uses' => HomeController::class.'@home']);
 
         Route::get('extensions', ExtensionController::class.'@extensions')->name('admin.extensions');
 
@@ -31,7 +47,7 @@ Route::group([
             });
         }
 
-        Route::group(['prefix' => 'model'], function () {
+        Route::group(['prefix' => 'api/model'], function () {
             Route::get('{slug}', ModelController::class.'@all')->name('admin.model.all');
             Route::get('{slug}/filter', ModelController::class.'@filter')->name('admin.model.filter');
             Route::get('{slug}/create', ModelController::class.'@create')->name('admin.model.create');
@@ -48,5 +64,9 @@ Route::group([
         Route::group(['prefix' => 'plugin'], function () {
             \Mascame\Artificer\Artificer::pluginManager()->outputRoutes();
         });
+
+        Route::get('/{catchall?}', \Mascame\Artificer\Controllers\BaseController::class.'@delegateToVue')
+            ->name('admin.home')
+            ->where('catchall', '(.*)');
     });
 });

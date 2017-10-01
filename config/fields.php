@@ -13,15 +13,15 @@ return [
         'belongsTo' => ArtificerTypes\Relations\belongsTo::class,
     ],
 
-    /*
-     * field_type => [options]
-     */
     'types' => [
-
-        // Default type that will be used in case of no better match
-        'default' => [
-            'type' => 'text',
+        // field_type => ['fieldname_1', 'fieldname_1')
+        'key' => [
+            'autodetect' => [
+                'id',
+            ],
         ],
+
+        'published' => [],
 
         'checkbox' => [
             'autodetect' => [
@@ -35,87 +35,9 @@ return [
 
         'custom' => [],
 
-        'email' => [],
-
-        'datetime' => [
-
-            'regex' => [
-                '/_at$/',
-                '/_on$/',
-            ],
-
-            'attributes' => [
-                'class' => 'form-control',
-            ],
-
-            'widgets' => [
-                \Mascame\Artificer\Widgets\DateTimepicker::class,
-            ],
-
-        ],
-
-        'date' => [
-            'autodetect' => [
-                '_at',
-            ],
-
-            'attributes' => [
-                'class' => 'form-control',
-            ],
-
-            'widgets' => [
-                \Mascame\Artificer\Widgets\DateTimepicker::class,
-            ],
-        ],
-
-        'file' => [],
-
-        'hasOne' => [
-            'autodetect' => [
-                '_id',
-                'user_id',
-                'fake_id',
-            ],
-        ],
-
-        'hasMany' => [],
-
-        'image' => [
-            'autodetect' => [
-                'image',
-            ],
-        ],
-
-        'ip' => [
-            'regex' => [
-                '/_ip$/',
-            ],
-        ],
-
-        'key' => [
-            'autodetect' => [
-                'id',
-            ],
-        ],
-
-        'link' => [
-            'autodetect' => [
-                'url',
-            ],
-        ],
-
         'password' => [
             'autodetect' => [
                 'password',
-            ],
-        ],
-
-        'published' => [],
-
-        'radio' => [
-            'autodetect' => [
-                'option',
-                'selection',
             ],
         ],
 
@@ -133,18 +55,6 @@ return [
             ],
         ],
 
-        // Todo
-//        'select' => [
-//            'autodetect' => [
-//                'city',
-//                'country',
-//            ],
-//
-//            'widgets' => [
-//                \Mascame\Artificer\Widgets\Chosen::class,
-//            ]
-//        ],
-
         'wysiwyg' => [
             'autodetect' => [
                 'body',
@@ -152,5 +62,75 @@ return [
             ],
         ],
 
+        'radio' => [
+            'autodetect' => [
+                'option',
+                'selection',
+                'genre',
+            ],
+        ],
+
+        'email' => [],
+
+        'link' => [
+            'autodetect' => [
+                'url',
+            ],
+        ],
+
+        'ip' => [
+            'regex' => [
+                '/_ip$/',
+            ],
+        ],
+
+        'time' => [
+
+            'regex' => [
+                '/_time$/',
+            ],
+        ],
+
+        'datetime' => [
+            'regex' => [
+                '/_at$/',
+                '/_on$/',
+            ],
+        ],
+
+        'select' => [
+            'autodetect' => [
+                'tags',
+                'choices',
+            ],
+        ],
+
+        'date' => [
+            'autodetect' => [
+                '_at',
+            ],
+        ],
+
+        'file' => [],
+
+        'image' => [
+            'autodetect' => [
+                'image',
+            ],
+        ],
+
+        'hasOne' => [
+            'autodetect' => [
+                '_id',
+                'user_id',
+                'fake_id',
+            ],
+        ],
+
+        'hasMany' => [],
+
+        'default' => [
+            'type' => 'text',
+        ],
     ],
 ];

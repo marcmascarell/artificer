@@ -3,7 +3,9 @@
 namespace Mascame\Artificer\Model;
 
 // Todo: get column type http://stackoverflow.com/questions/18562684/how-to-get-database-field-type-in-laravel
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Mascame\Artificer\Artificer;
 
 /**
  * @property $name
@@ -104,6 +106,12 @@ class ModelSettings
      */
     public function isHidden()
     {
+        $roles = $this->getOption('roles.' . Artificer::ACTION_BROWSE, null);
+
+        if ($roles && ! Artificer::auth()->user()->hasAnyRole($roles)) {
+            return true;
+        }
+
         return in_array($this->name, config('admin.model.hidden'));
     }
 
@@ -182,7 +190,7 @@ class ModelSettings
      */
     public function getOption($key, $default = null)
     {
-        return $this->getOptions()[$key] ?? $default;
+        return Arr::get($this->getOptions(), $key, $default);
     }
 
     /**

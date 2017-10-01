@@ -7,7 +7,7 @@ class AdminOption extends Option
     /**
      * @var string
      */
-    public static $key = 'admin';
+    private static $key = 'admin';
 
     /**
      * @param null $key

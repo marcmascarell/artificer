@@ -2,47 +2,27 @@
 
 namespace Mascame\Artificer\Fields\Types\Relations;
 
-use URL;
+use Illuminate\Support\Collection;
+use Mascame\Artificer\Fields\Field;
 use Mascame\Artificer\Artificer;
-use Mascame\Formality\Field\Field;
-use Mascame\Artificer\Model\ModelManager;
 use Mascame\Artificer\Fields\Relationable;
 use Mascame\Artificer\Model\ModelSettings;
 use Mascame\Artificer\Fields\GuessableRelation;
 
 class Relation extends Field
 {
-    use Relationable, GuessableRelation;
-
-    /**
-     * @var ModelManager;
-     */
-    public $modelManager;
+    use Relationable,
+        GuessableRelation;
 
     /**
      * @var ModelSettings;
      */
-    public $modelSettings;
-
-    /**
-     * @var bool
-     */
-    public $relation = true;
+    protected $modelSettings;
 
     /**
      * @var \Eloquent;
      */
-    public $currentModel;
-
-    /**
-     * @var
-     */
-    public $fields;
-
-    /**
-     * @var
-     */
-    public $createRoute;
+    protected $currentModel;
 
     /**
      * @var
@@ -55,13 +35,13 @@ class Relation extends Field
      * @param null $value
      * @param array $options
      */
-    public function __construct($name, $value = null, $options = [])
+    public function __construct($type, $name, $options = [])
     {
-        parent::__construct($name, $value, $options);
+        parent::__construct($type, $name, $options);
 
-        $this->modelManager = Artificer::modelManager();
-        $this->modelSettings = $this->modelManager->settings();
-        $this->currentModel = $this->modelManager->model();
+        $this->modelSettings = Artificer::modelManager()->current()->settings();
+        $this->currentModel = Artificer::modelManager()->current()->model();
+        $this->relatedModel = $this->getRelatedModel();
     }
 
     /**
@@ -73,22 +53,38 @@ class Relation extends Field
     }
 
     /**
-     * @param $modelSlug
-     * @param $id
-     * @return string
+     * @return mixed
+     * @throws \Exception
      */
-    public function editRoute($modelSlug, $id)
+    public function getRelationOptions()
     {
-        return URL::route('admin.model.edit', ['slug' => $modelSlug, 'id' => $id]);
+        $relatedModel = $this->getRelatedModel();
+
+
+        if (! $relatedModel) {
+            throw new \Exception('Missing relation in config for the current model.');
+        }
+
+        return $this->transformToVisibleProperties(
+            $relatedModel->model->get([$this->getKeyProperty(), $this->getShownProperty()])
+        );
     }
 
     /**
-     * @param $modelSlug
-     * @return string
+     * @param $collection Collection|\Illuminate\Database\Eloquent\Collection
+     * @return Collection|\Illuminate\Database\Eloquent\Collection
      */
-    public function createRoute($modelSlug)
+    public function transformToVisibleProperties($collection)
     {
-        return URL::route('admin.model.create', ['slug' => $modelSlug]);
+        $showColumn = $this->getShownProperty();
+        $valueColumn = $this->getKeyProperty();
+
+        return $collection->transform(function($item) use ($valueColumn, $showColumn) {
+            return [
+                'label' => $item[$showColumn],
+                'value' => $item[$valueColumn],
+            ];
+        });
     }
 
     /**

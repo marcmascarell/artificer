@@ -2,6 +2,7 @@
 
 namespace Mascame\Artificer\Fields;
 
+use Mascame\Artificer\Artificer;
 use Mascame\Artificer\Model\ModelManager;
 
 trait Relationable
@@ -9,12 +10,7 @@ trait Relationable
     /**
      * @var ModelManager;
      */
-    public $modelManager;
-
-    /**
-     * @var null
-     */
-    private $relationOptions = null;
+    protected $modelManager;
 
     /**
      * @return bool
@@ -25,7 +21,7 @@ trait Relationable
     }
 
     /**
-     * @return \Mascame\Artificer\Model\ModelSettings
+     * @return \Mascame\Artificer\Model\Model
      * @throws \Exception
      */
     public function getRelatedModel()
@@ -36,8 +32,8 @@ trait Relationable
 
         $modelName = $this->getRelationAttribute('model');
 
-        if ($this->modelManager->has($modelName)) {
-            return $this->relatedModel = $this->modelManager->settings($modelName);
+        if (Artificer::modelManager()->has($modelName)) {
+            return $this->relatedModel = Artificer::modelManager()->get($modelName);
         }
 
         throw new \Exception("Couldn't find the related model for '{$this->getName()}''");
@@ -46,55 +42,46 @@ trait Relationable
     /**
      * @return bool|mixed
      */
-    public function getType()
-    {
-        $type = $this->getRelationAttribute('type');
-
-        if ($type) {
-            return $type;
-        }
-
-        $pieces = explode('\\', get_called_class());
-
-        return end($pieces);
-    }
-
-    /**
-     * @return bool
-     */
-    public function getForeignKey()
-    {
-        return $this->getRelationAttribute('foreign');
-    }
+//    public function getType()
+//    {
+//        $type = $this->getRelationAttribute('type');
+//
+//        if ($type) {
+//            return $type;
+//        }
+//
+//        $pieces = explode('\\', get_called_class());
+//
+//        return end($pieces);
+//    }
 
     /**
      * @return bool
      */
-    public function getShow()
+    public function getShownProperty()
     {
         return $this->getRelationAttribute('show');
     }
 
     /**
-     * @return null
+     * The value column (usually 'id')
+     *
+     * @return bool
      */
-    private function getRelationOptions()
+    public function getKeyProperty()
     {
-        if ($this->relationOptions) {
-            return $this->relationOptions;
-        }
-
-        return $this->relationOptions = $this->getOption('relationship');
+        return $this->getRelationAttribute('key', 'id');
     }
 
     /**
      * @param $attribute
      * @return bool
      */
-    public function getRelationAttribute($attribute)
+    public function getRelationAttribute($attribute, $default = false)
     {
-        $options = $this->getRelationOptions();
+        $options = $this->getOption('relationship');
 
-        return isset($options[$attribute]) ? $options[$attribute] : false;
+        return $options[$attribute] ?? $default;
     }
+
 }
