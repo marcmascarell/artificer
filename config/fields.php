@@ -1,6 +1,6 @@
 <?php
 
-use \Mascame\Artificer\Fields\Types as ArtificerTypes;
+use Mascame\Artificer\Fields\Types as ArtificerTypes;
 
 return [
 
