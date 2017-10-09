@@ -59,7 +59,8 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider
 
         try {
             $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         return $this->collect('publishes', func_get_args(), $caller);
     }

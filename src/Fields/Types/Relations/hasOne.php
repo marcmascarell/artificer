@@ -2,7 +2,6 @@
 
 namespace Mascame\Artificer\Fields\Types\Relations;
 
-
 class hasOne extends Relation
 {
     protected $id;
@@ -30,5 +29,4 @@ class hasOne extends Relation
 
         return false;
     }
-
 }

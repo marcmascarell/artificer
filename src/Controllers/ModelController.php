@@ -80,7 +80,6 @@ class ModelController extends BaseModelController
         return View::make($this->getView('show'))->with('item', $this->data);
     }
 
-
     /**
      * Display the specified post.
      */

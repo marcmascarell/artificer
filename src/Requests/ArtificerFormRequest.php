@@ -2,11 +2,11 @@
 
 namespace Mascame\Artificer\Requests;
 
+use Mascame\Artificer\Utils;
 use Mascame\Artificer\Artificer;
 use Illuminate\Database\Eloquent\Model;
 use Mascame\Artificer\Model\ModelSettings;
 use Illuminate\Foundation\Http\FormRequest;
-use Mascame\Artificer\Utils;
 
 class ArtificerFormRequest extends FormRequest
 {

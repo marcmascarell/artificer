@@ -2,12 +2,10 @@
 
 namespace Mascame\Artificer\Fields\Types;
 
-use Illuminate\Support\Collection;
 use Mascame\Artificer\Fields\Field;
 
 class Checkbox extends Field
 {
-
     public function savingHook($model)
     {
         $name = $this->getName();

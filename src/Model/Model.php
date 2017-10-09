@@ -2,9 +2,9 @@
 
 namespace Mascame\Artificer\Model;
 
-use Illuminate\Http\UploadedFile;
 use Mascame\Artificer\Utils;
 use Mascame\Formality\Parser;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Mascame\Artificer\Fields\Field;
 use Mascame\Artificer\Fields\Factory;
@@ -242,7 +242,7 @@ class Model
             'relations' => [],
         ];
 
-        /**
+        /*
          * @var Field
          */
         foreach ($fields as $name => $field) {
@@ -250,8 +250,7 @@ class Model
                 && (
                     $field->getType() !== 'hasOne'
                     && $field->getType() !== 'belongsTo')
-                )
-            {
+                ) {
 
                 /**
                  * @var Relation
@@ -279,7 +278,7 @@ class Model
                 }
 
                 /**
-                 * @var $file UploadedFile
+                 * @var UploadedFile
                  */
                 foreach ($files as $file) {
                     if (! $file || ! $file->isValid()) {
@@ -289,7 +288,7 @@ class Model
                     $paths[] = $file->store('public');
                 }
 
-                $serialized['currentModel'][$name] = join(',', $paths);
+                $serialized['currentModel'][$name] = implode(',', $paths);
             } else {
                 // Todo: without isset -> Undefined index: id.
                 // Can this have unexpected consequences?

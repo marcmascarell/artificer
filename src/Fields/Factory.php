@@ -107,7 +107,7 @@ class Factory
         }
 
         foreach ($fields as $key => $field) {
-            /**
+            /*
              * @var Relation
              */
             if ($field->isRelation()) {
