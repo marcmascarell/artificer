@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 export default {
     computed: {
@@ -20,7 +21,7 @@ export default {
         },
         transformData(fields, values) {
             return _.transform(fields, (result, field, name) => {
-                result[name] = this.getValue(name, field.type, values[name] || null);
+                result[name] = this.getValue(field, values[name] || null);
             }, {});
         },
         /**
@@ -38,7 +39,7 @@ export default {
                 }
             }, {})
         },
-        getValue(name, type, value) {
+        getValue(field, value) {
             let defaultValue = null;
 
             if (this.isCreate) {
@@ -47,17 +48,38 @@ export default {
                 }
             }
 
-            if (type === 'hasMany') {
-
+            if (field.isRelation) {
                 if (! value || value.length === 0) {
                     return [];
                 }
 
-                return _.map(value, 'value');
+                if (field.type === 'hasMany') {
+                    return _.map(value, 'value');
+                } else {
+                    // [{label: "Carissa Kessler", value: 3}]
+                    return value[0].value;
+                }
             }
 
-            if (type === 'checkbox') {
+            if (field.type === 'checkbox') {
                 defaultValue = false;
+
+                if (value === 1) {
+                    value = true;
+                }
+            }
+
+            if (field.type === 'file' || field.type === 'image') {
+                defaultValue = [];
+
+                if (value) {
+                    value = _.transform(value.split(','), (result, value, key) => {
+                        result.push({
+                            name: value,
+                            url: value,
+                        })
+                    }, []);
+                }
             }
 
             return value || defaultValue;

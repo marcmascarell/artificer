@@ -114,8 +114,12 @@ return [
         'file' => [],
 
         'image' => [
+            'regex' => [
+                '/_image$/',
+            ],
             'autodetect' => [
                 'image',
+                'avatar',
             ],
         ],
 

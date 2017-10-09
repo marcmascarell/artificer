@@ -65,7 +65,10 @@ class Relation extends Field
         }
 
         return $this->transformToVisibleProperties(
-            $relatedModel->model->get([$this->getKeyProperty(), $this->getShownProperty()])
+            $relatedModel->model->get([
+                $this->getKeyProperty(),
+                $this->getShownProperty()
+            ])
         );
     }
 

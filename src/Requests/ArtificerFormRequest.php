@@ -6,6 +6,7 @@ use Mascame\Artificer\Artificer;
 use Illuminate\Database\Eloquent\Model;
 use Mascame\Artificer\Model\ModelSettings;
 use Illuminate\Foundation\Http\FormRequest;
+use Mascame\Artificer\Utils;
 
 class ArtificerFormRequest extends FormRequest
 {
@@ -89,12 +90,18 @@ class ArtificerFormRequest extends FormRequest
         return $this->modelSettings->getOption('rules', []);
     }
 
+    protected function validationData()
+    {
+        return Utils::castData($this->all());
+    }
+
     /**
      * Persist the data.
      */
     public function persist()
     {
         $data = Artificer::modelManager()->current()->serialize();
+
         $modelInstance = $this->currentModel;
 
         if ($this->isUpdating()) {

@@ -2,6 +2,8 @@
 
 namespace Mascame\Artificer\Model;
 
+use Illuminate\Http\UploadedFile;
+use Mascame\Artificer\Utils;
 use Mascame\Formality\Parser;
 use Illuminate\Support\Collection;
 use Mascame\Artificer\Fields\Field;
@@ -142,6 +144,7 @@ class Model
                 'hasFilter' => $field->hasFilter(),
                 'isRelation' => $field->isRelation(),
                 'default' => $field->getDefault(),
+                'options' => $field->getOption('options', null),
             ];
 
             if ($field->isRelation()) {
@@ -181,6 +184,12 @@ class Model
             $values = $row->toArray();
 
             foreach ($values as $name => &$value) {
+                // Loaded relationship values
+                if (! isset($fields[$name])) {
+                    unset($values[$name]);
+                    continue;
+                }
+
                 /**
                  * @var Field
                  */
@@ -192,10 +201,22 @@ class Model
                 }
 
                 if ($field->isRelation()) {
+                    $relationMethod = $field->getOption('relationship.method');
+                    $relationValues = (isset($values[$relationMethod])) ? $values[$relationMethod] : $value;
+
+                    if (empty($relationValues)) {
+                        $value = null;
+                        continue;
+                    }
+
+                    if ($field->getType() === 'hasOne' || $field->getType() === 'belongsTo') {
+                        $relationValues = [$relationValues];
+                    }
+
                     /**
                      * @var Relation
                      */
-                    $value = $field->transformToVisibleProperties(collect($value));
+                    $value = $field->transformToVisibleProperties(collect($relationValues));
                 } else {
                     $value = $field->transformValue($value);
                 }
@@ -213,7 +234,8 @@ class Model
     public function serialize()
     {
         $fields = $this->toFields();
-        $values = request()->only($fields->keys()->toArray());
+        $values = Utils::castData(request()->all());
+        $values = collect($values)->only($fields->keys()->toArray());
 
         $serialized = [
             'currentModel' => [],
@@ -224,7 +246,12 @@ class Model
          * @var Field
          */
         foreach ($fields as $name => $field) {
-            if ($field->isRelation()) {
+            if ($field->isRelation()
+                && (
+                    $field->getType() !== 'hasOne'
+                    && $field->getType() !== 'belongsTo')
+                )
+            {
 
                 /**
                  * @var Relation
@@ -232,7 +259,9 @@ class Model
                 $relationValues = [];
 
                 if ($field->getType() === 'hasMany') {
-                    $relationValues = $field->relatedModel->model->whereIn('id', $values[$name])->get();
+                    $ids = explode(',', $values[$name]);
+
+                    $relationValues = $field->relatedModel->model->whereIn('id', $ids)->get();
                 }
 
                 $serialized['relations'][] = [
@@ -241,6 +270,26 @@ class Model
                     'model' => $field->relatedModel,
                     'values' => $relationValues,
                 ];
+            } elseif ($field->getType() === 'image' || $field->getType() === 'file') {
+                $files = request()->file($name);
+                $paths = [];
+
+                if (! is_array($files)) {
+                    $files = [$files];
+                }
+
+                /**
+                 * @var $file UploadedFile
+                 */
+                foreach ($files as $file) {
+                    if (! $file || ! $file->isValid()) {
+                        continue;
+                    }
+
+                    $paths[] = $file->store('public');
+                }
+
+                $serialized['currentModel'][$name] = join(',', $paths);
             } else {
                 // Todo: without isset -> Undefined index: id.
                 // Can this have unexpected consequences?

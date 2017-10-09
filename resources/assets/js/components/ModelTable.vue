@@ -1,7 +1,26 @@
 <template>
-    <div>
+    <div class="ModelTable">
+        <div class="row">
+            <div class="ModelTable__topButtons col-md-12 text-right">
+                <button  v-if="values.length > 0 || showingFilters"
+                         class="btn btn-primary"
+                         @click="showingFilters = ! showingFilters">
+                    <i :class="getIcon('filter')"></i>
+
+                    <template v-if="showingFilters">Hide filters</template>
+                    <template v-else>Show filters</template>
+                </button>
+
+                <router-link :to="{name: 'create', params: {model: $route.params.model}}" class="btn btn-primary">
+                    <i :class="getIcon('new')"></i> New
+                </router-link>
+            </div>
+        </div>
+
         <template v-if="values.length">
-            <filters :fields="fields" @filter="onFilter"></filters>
+            <filters v-if="showingFilters"
+                     :fields="fields"
+                     @filter="onFilter"></filters>
 
             <el-table v-loading.body="isLoading"
                       class="table table-responsive"
@@ -69,7 +88,10 @@
         </template>
 
         <template v-else-if="isFiltering">
-            <filters :fields="fields" @filter="onFilter"></filters>
+            <filters v-if="showingFilters"
+                     :fields="fields"
+                     @filter="onFilter">
+            </filters>
 
             <h2>
                 No results found for the filters provided. :[
@@ -94,6 +116,7 @@
             return {
                 fields: [],
                 values: [],
+                showingFilters: false,
                 pagination: {
                     currentPage: null,
                     perPage: null,
@@ -125,7 +148,7 @@
                 }
             },
             isFiltering() {
-                return this.$route.query && this.$route.query.filters !== null;
+                return this.$route.query && this.$route.query.filters !== undefined;
             }
         },
         methods: {
@@ -186,7 +209,6 @@
                     });
                 }
             },
-
             handlePageChange(value) {
                 this.pushQuery({ page: value });
             },
@@ -272,4 +294,9 @@
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
+    .ModelTable {
+        &__topButtons {
+            margin-bottom: 1em;
+        }
+    }
 </style>

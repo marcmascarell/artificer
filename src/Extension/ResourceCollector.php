@@ -55,7 +55,13 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider
      */
     public function publishes(array $paths, $group = null)
     {
-        return $this->collect('publishes', func_get_args());
+        $caller = null;
+
+        try {
+            $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
+        } catch (\Exception $e) {}
+
+        return $this->collect('publishes', func_get_args(), $caller);
     }
 
     /**
@@ -69,12 +75,14 @@ class ResourceCollector extends \Illuminate\Support\ServiceProvider
     /**
      * @param $method
      * @param $args
+     * @param null $caller
      */
-    protected function collect($method, $args)
+    protected function collect($method, $args, $caller = null)
     {
         self::$collected[$this->class][] = [
             'method' => $method,
             'args' => $args,
+            'caller' => $caller,
         ];
     }
 

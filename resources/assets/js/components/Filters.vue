@@ -3,7 +3,7 @@
         <div class="box" v-loading.body="isLoading">
             <fields :fields="filterableFields" :values.sync="values"></fields>
 
-            <div class="text-right">
+            <div class="Filters__submit text-right">
                 <el-button class="btn btn-primary"
                            type="primary"
                            :native-type="'submit'"
@@ -68,4 +68,9 @@
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
+    .Filters {
+        &__submit {
+            padding: 0 10px 10px;
+        }
+    }
 </style>

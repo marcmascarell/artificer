@@ -25,6 +25,9 @@ class Manager extends \Mascame\Extender\Manager
      */
     protected $composerPackages = [];
 
+    /**
+     * @var array
+     */
     protected static $packages = [];
 
     /**
@@ -43,11 +46,17 @@ class Manager extends \Mascame\Extender\Manager
         $this->composerPackages = $this->getComposerPackages();
     }
 
+    /**
+     * @return array
+     */
     public function getPackages()
     {
         return self::$packages;
     }
 
+    /**
+     * @return string
+     */
     public function getType()
     {
         return $this->type;

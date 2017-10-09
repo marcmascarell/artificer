@@ -1,8 +1,12 @@
 <template>
-    <form class="AdminForm"
+    <form id="AdminForm"
+          class="AdminForm"
           :method="method"
           :action="action"
-          @submit.prevent="submit">
+          @submit.prevent="submit"
+          enctype="multipart/form-data">
+
+        <input type="hidden" name="_method" :value="method">
 
         <div class="box" v-loading.body="isLoading">
             <fields :fields="fields" :values.sync="values"></fields>
@@ -110,10 +114,50 @@
                         this.hideLoader();
                     })
             },
+            getItemType(item) {
+                var TYPES = {
+                        'undefined'        : 'undefined',
+                        'number'           : 'number',
+                        'boolean'          : 'boolean',
+                        'string'           : 'string',
+                        '[object Function]': 'function',
+                        '[object RegExp]'  : 'regexp',
+                        '[object Array]'   : 'array',
+                        '[object Date]'    : 'date',
+                        '[object Error]'   : 'error'
+                    },
+                    TOSTRING = Object.prototype.toString;
+
+                return TYPES[typeof item] || TYPES[TOSTRING.call(item)] || (item ? 'object' : 'null');
+            },
             submit() {
                 this.showLoader();
 
-                axios[this.method](this.action, this.getFormValues(this.values, this.fields), {
+                let form = new FormData(document.getElementById('AdminForm'));
+
+                const values = this.getFormValues(this.values, this.fields);
+
+                // FormData converts all to string (shame!), so we will send the types to backend for casting
+                const types = {};
+
+                _.each(values, (value, key) => {
+                    if (this.fields[key].type !== 'image' || this.fields[key].type !== 'file') {
+                        form.set(key, value);
+                        types[key] = this.getItemType(value);
+                    }
+                });
+
+                form.set('_types', JSON.stringify(types));
+
+                for (var pair of form.entries()) {
+                    console.log(pair[0]+ ', ' + pair[1]);
+                }
+
+                /**
+                 * Always use POST (FormData does not work properly with other than that)
+                 * However, we will tell Laravel that its POST/PUT via _method form field
+                 */
+                axios['post'](this.action, form, {
                     'content-type': 'multipart/form-data'
                 })
                     .then(response => {

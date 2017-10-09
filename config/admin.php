@@ -15,7 +15,6 @@ return [
     */
 
     'providers' => [
-        Collective\Html\HtmlServiceProvider::class,
         Stolz\Assets\Laravel\ServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Mascame\Artificer\DefaultThemeServiceProvider::class,
@@ -28,8 +27,6 @@ return [
     ],
 
     'aliases' => [
-        'HTML' => \Collective\Html\HtmlFacade::class,
-        'Form' => \Collective\Html\FormFacade::class,
         'Assets' => \Stolz\Assets\Laravel\Facade::class,
     ],
 
