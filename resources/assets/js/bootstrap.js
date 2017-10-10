@@ -21,6 +21,20 @@ try {
 
 window.axios = require('axios');
 
+axios.interceptors.response.use(function (response) {
+    console.log('response interceptor then', response);
+    // Do something with response data
+    return response;
+}, function (error) {
+    if (error.response.headers['x-missing-auth'] !== undefined) {
+        window.location = '/admin/login';
+        return;
+    }
+
+    // Do something with response error
+    return Promise.reject(error);
+});
+
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**

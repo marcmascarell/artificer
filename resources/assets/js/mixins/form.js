@@ -43,7 +43,7 @@ export default {
             let defaultValue = null;
 
             if (this.isCreate) {
-                if (type === 'datetime') {
+                if (field.type === 'datetime') {
                     return new Date();
                 }
             }
