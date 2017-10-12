@@ -27,11 +27,16 @@
     "mascame/formality": "^1.0.0"
   },
   "require-dev": {
-    "codeception/codeception": "2.*"
+    "orchestra/testbench": "~3.0"
   },
   "autoload": {
     "psr-4": {
       "Mascame\\Artificer\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Mascame\\Artificer\\Tests\\": "tests/"
     }
   },
   "minimum-stability": "dev",

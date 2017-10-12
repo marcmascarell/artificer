@@ -135,8 +135,9 @@ class ArtificerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // We still haven't modified config, that's why 'admin.admin'
-        $routePrefix = config('admin.admin.route_prefix');
+        $this->loadConfig();
+
+        $routePrefix = config('admin.route_prefix');
 
         // Avoid bloating the App with files that will not be needed
         $this->isBootable = $this->isBootable(request()->path(), $routePrefix);
@@ -145,27 +146,27 @@ class ArtificerServiceProvider extends ServiceProvider
             return;
         }
 
-        // We need the config published before we can use this package!
-        if ($this->isPublished()) {
-            $this->loadConfig();
-
-            // Todo
-            //			$this->addLocalization();
-            $this->registerBindings();
-        }
+        // Todo
+        // $this->addLocalization();
+        $this->registerBindings();
     }
 
+
     /**
-     * Moves admin/admin.php keys to the root level for commodity.
+     *
      */
     protected function loadConfig()
     {
-        $config = config('admin');
-        $config = ['admin' => array_merge($config, $config['admin'])];
-        unset($config['admin']['admin']);
+        Utils::mergeConfigFrom(__DIR__.'/../config', 'admin');
 
-        config()->set($config);
+        // Moves admin/admin.php keys to the root level for commodity.
+        $config = array_merge(config('admin'), config('admin.admin'));
+
+        unset($config['admin']);
+
+        config()->set('admin', $config);
     }
+
 
     private function registerBindings()
     {
