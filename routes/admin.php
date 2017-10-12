@@ -54,7 +54,7 @@ Route::group([
             Route::get('{slug}/{id}/edit', ModelController::class.'@edit')->name('admin.model.edit');
             Route::get('{slug}/{id}/edit/{field}', ModelController::class.'@field')->name('admin.model.field.edit');
             Route::post('{slug}/store', ModelController::class.'@updateOrCreate')->name('admin.model.store');
-            Route::post('{slug}/upload', ModelController::class.'@upload')->name('admin.model.upload');
+//            Route::post('{slug}/upload', ModelController::class.'@upload')->name('admin.model.upload');
             Route::put('{slug}/{id}', ModelController::class.'@updateOrCreate')->name('admin.model.update');
             Route::delete('{slug}/{id}', ModelController::class.'@destroy')->name('admin.model.destroy');
 

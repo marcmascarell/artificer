@@ -22,7 +22,6 @@ try {
 window.axios = require('axios');
 
 axios.interceptors.response.use(function (response) {
-    console.log('response interceptor then', response);
     // Do something with response data
     return response;
 }, function (error) {
@@ -31,7 +30,6 @@ axios.interceptors.response.use(function (response) {
         return;
     }
 
-    // Do something with response error
     return Promise.reject(error);
 });
 
