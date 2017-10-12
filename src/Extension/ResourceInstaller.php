@@ -2,9 +2,9 @@
 
 namespace Mascame\Artificer\Extension;
 
+use Mascame\Artificer\Utils;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Migrations\Migrator;
-use Mascame\Artificer\Utils;
 
 class ResourceInstaller extends \Illuminate\Support\ServiceProvider
 {
@@ -298,7 +298,7 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider
     }
 
     /**
-     * Modified: Now it also accepts directories
+     * Modified: Now it also accepts directories.
      *
      * @param $path
      * @param $key
@@ -307,5 +307,4 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider
     {
         Utils::mergeConfigFrom($path, $key);
     }
-
 }

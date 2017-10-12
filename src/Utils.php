@@ -2,8 +2,6 @@
 
 namespace Mascame\Artificer;
 
-use Symfony\Component\Finder\SplFileInfo;
-
 class Utils
 {
     /**
@@ -64,13 +62,13 @@ class Utils
             $files = \File::allFiles($path);
 
             /**
-             * @var $file \Symfony\Component\Finder\SplFileInfo
+             * @var \Symfony\Component\Finder\SplFileInfo
              */
             foreach ($files as $file) {
                 $fileName = $file->getBasename('.php');
                 $filePath = str_replace('/', '.', $file->getRelativePath());
 
-                $congifKey = str_finish($key . '.' . $filePath, '.') . $fileName;
+                $congifKey = str_finish($key.'.'.$filePath, '.').$fileName;
 
                 self::mergeConfigFrom($file->getRealPath(), $congifKey);
             }
@@ -90,8 +88,7 @@ class Utils
         $config = config($key, []);
 
         config([
-            $key => array_replace_recursive($values, $config)
+            $key => array_replace_recursive($values, $config),
         ]);
     }
-
 }

@@ -5,14 +5,13 @@ namespace Mascame\Artificer\Tests;
 use Mascame\Artificer\ArtificerServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
-
 abstract class TestCase extends OrchestraTestCase
 {
     protected $withDummy = true;
+
     public function setUp()
     {
         parent::setUp();
-
 
         $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
         $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession');
@@ -24,7 +23,6 @@ abstract class TestCase extends OrchestraTestCase
             ArtificerServiceProvider::class,
         ];
     }
-
 
     /**
      * Define environment setup.
@@ -43,5 +41,4 @@ abstract class TestCase extends OrchestraTestCase
             'prefix'   => '',
         ]);
     }
-
 }
