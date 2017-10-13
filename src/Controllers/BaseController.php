@@ -3,6 +3,7 @@
 namespace Mascame\Artificer\Controllers;
 
 use Auth;
+use Mascame\Artificer\Support\JavaScript;
 use View;
 use Request;
 use Mascame\Artificer\Artificer;
@@ -83,6 +84,17 @@ class BaseController extends Controller
         View::share('theme', $this->theme);
         View::share('layout', $this->theme.'.'.$this->masterLayout);
         View::share('icon', AdminOption::get('icons'));
+
+        // Send routes to JS
+        config([
+            'ziggy' => [
+                'whitelist' => [
+                    'admin.*'
+                ]
+            ]
+        ]);
+
+        JavaScript::add(['icons' => AdminOption::get('icons')]);
 
         // Models need the current user, we have to wait until session is available
         $this->whenSessionLoaded(function () {

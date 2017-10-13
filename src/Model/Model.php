@@ -2,7 +2,8 @@
 
 namespace Mascame\Artificer\Model;
 
-use Mascame\Artificer\Utils;
+use Mascame\Artificer\Config;
+use Mascame\Artificer\Support\DataType;
 use Mascame\Formality\Parser;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -234,7 +235,7 @@ class Model
     public function serialize()
     {
         $fields = $this->toFields();
-        $values = Utils::castData(request()->all());
+        $values = DataType::cast(request()->all());
         $values = collect($values)->only($fields->keys()->toArray());
 
         $serialized = [

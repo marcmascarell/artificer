@@ -25,7 +25,7 @@ axios.interceptors.response.use(function (response) {
     // Do something with response data
     return response;
 }, function (error) {
-    if (error.response.headers['x-missing-auth'] !== undefined) {
+    if (error.response && error.response.headers['x-missing-auth'] !== undefined) {
         window.location = '/admin/login';
         return;
     }

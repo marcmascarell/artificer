@@ -1,10 +1,10 @@
 <?php
 
-namespace Mascame\Artificer;
+namespace Mascame\Artificer\Support;
 
 use Symfony\Component\Finder\SplFileInfo;
 
-class Utils
+class DataType
 {
     /**
      * Casts JS FormData.
@@ -13,7 +13,7 @@ class Utils
      * @param null|array $types
      * @return array
      */
-    public static function castData($data, $types = null)
+    public static function cast($data, $types = null)
     {
         $fields = $data;
         $types = $types ?? (isset($fields['_types'])) ? json_decode($fields['_types'], true) : null;

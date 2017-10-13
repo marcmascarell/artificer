@@ -107,7 +107,7 @@
 
 <script>
     import _ from 'lodash';
-    import { getIcon, apiRoute } from "../utils";
+    import { getIcon } from "../utils";
     import loaderMixin from "../mixins/loader";
     import Filters from "./Filters";
 
@@ -268,7 +268,7 @@
                 });
             },
             handleDelete(index, row) {
-                axios['delete'](apiRoute('destroy', {
+                axios['delete'](route('admin.model.destroy', {
                     model: this.$route.params.model,
                     id: row.id,
                 }))

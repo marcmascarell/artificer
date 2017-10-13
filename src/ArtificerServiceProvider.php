@@ -2,8 +2,8 @@
 
 namespace Mascame\Artificer;
 
-use App;
 use Illuminate\Support\Str;
+use Mascame\Artificer\Middleware\JavaScriptMiddleware;
 use Mascame\Extender\Event\Event;
 use Illuminate\Support\ServiceProvider;
 use Mascame\Artificer\Extension\Booter;
@@ -79,7 +79,10 @@ class ArtificerServiceProvider extends ServiceProvider
 
     protected function addMiddleware()
     {
-        \App::make('router')->middlewareGroup('artificer', []);
+        \App::make('router')->middlewareGroup('artificer', [
+            JavaScriptMiddleware::class
+        ]);
+
         \App::make('router')->middlewareGroup('artificer-auth', []);
     }
 
@@ -157,7 +160,7 @@ class ArtificerServiceProvider extends ServiceProvider
      */
     protected function loadConfig()
     {
-        Utils::mergeConfigFrom(__DIR__.'/../config', 'admin');
+        Config::mergeConfigFrom(__DIR__.'/../config', 'admin');
 
         // Moves admin/admin.php keys to the root level for commodity.
         $config = array_merge(config('admin'), config('admin.admin'));

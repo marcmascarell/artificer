@@ -24,7 +24,9 @@
     "mascame/extender": "dev-master",
     "stolz/assets": "^0.1.9",
     "spatie/laravel-permission": "^1.13.0",
-    "mascame/formality": "^1.0.0"
+    "mascame/formality": "^1.0.0",
+    "tightenco/ziggy": "dev-master",
+    "laracasts/utilities": "dev-master"
   },
   "require-dev": {
     "orchestra/testbench": "~3.0"

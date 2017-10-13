@@ -33,7 +33,7 @@
 <script>
     import _ from 'lodash';
     import moment from 'moment';
-    import { getIcon, apiRoute } from "../utils";
+    import { getIcon } from "../utils";
     import loaderMixin from "../mixins/loader";
     import formMixin from "../mixins/form";
     import Fields from "./Fields";
@@ -84,13 +84,13 @@
         computed: {
             action() {
                 if (this.$route.name === 'edit') {
-                    return apiRoute('update', {
+                    return route('admin.model.update', {
                         model: this.$route.params.model,
                         id: this.$route.params.id,
                     });
                 }
 
-                return apiRoute('store', {
+                return route('admin.model.store', {
                     model: this.$route.params.model
                 })
             },

@@ -18,7 +18,7 @@
 <script>
     import _ from 'lodash';
     import moment from 'moment';
-    import { getIcon, apiRoute } from "../utils";
+    import { getIcon } from "../utils";
     import loaderMixin from "../mixins/loader";
     import formMixin from "../mixins/form";
     import Fields from "./Fields";

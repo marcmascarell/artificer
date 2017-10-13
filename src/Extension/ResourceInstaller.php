@@ -4,7 +4,7 @@ namespace Mascame\Artificer\Extension;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Migrations\Migrator;
-use Mascame\Artificer\Utils;
+use Mascame\Artificer\Config;
 
 class ResourceInstaller extends \Illuminate\Support\ServiceProvider
 {
@@ -305,7 +305,7 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider
      */
     protected function mergeRecursiveConfigFrom($path, $key)
     {
-        Utils::mergeConfigFrom($path, $key);
+        Config::mergeConfigFrom($path, $key);
     }
 
 }

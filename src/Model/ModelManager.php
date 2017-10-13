@@ -72,7 +72,7 @@ class ModelManager
             return false;
         }
 
-        return $this->models[$modelName]->route == Route::current()->parameter('slug');
+        return $this->models[$modelName]->route == Route::current()->parameter('model');
     }
 
     /**

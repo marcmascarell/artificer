@@ -47,18 +47,18 @@ Route::group([
         }
 
         Route::group(['prefix' => 'api/model'], function () {
-            Route::get('{slug}', ModelController::class.'@all')->name('admin.model.all');
-            Route::get('{slug}/filter', ModelController::class.'@filter')->name('admin.model.filter');
-            Route::get('{slug}/create', ModelController::class.'@create')->name('admin.model.create');
-            Route::get('{slug}/{id}', ModelController::class.'@show')->name('admin.model.show');
-            Route::get('{slug}/{id}/edit', ModelController::class.'@edit')->name('admin.model.edit');
-            Route::get('{slug}/{id}/edit/{field}', ModelController::class.'@field')->name('admin.model.field.edit');
-            Route::post('{slug}/store', ModelController::class.'@updateOrCreate')->name('admin.model.store');
-//            Route::post('{slug}/upload', ModelController::class.'@upload')->name('admin.model.upload');
-            Route::put('{slug}/{id}', ModelController::class.'@updateOrCreate')->name('admin.model.update');
-            Route::delete('{slug}/{id}', ModelController::class.'@destroy')->name('admin.model.destroy');
+            Route::get('{model}', ModelController::class.'@all')->name('admin.model.all');
+            Route::get('{model}/filter', ModelController::class.'@filter')->name('admin.model.filter');
+            Route::get('{model}/create', ModelController::class.'@create')->name('admin.model.create');
+            Route::get('{model}/{id}', ModelController::class.'@show')->name('admin.model.show');
+            Route::get('{model}/{id}/edit', ModelController::class.'@edit')->name('admin.model.edit');
+            Route::get('{model}/{id}/edit/{field}', ModelController::class.'@field')->name('admin.model.field.edit');
+            Route::post('{model}/store', ModelController::class.'@updateOrCreate')->name('admin.model.store');
+//            Route::post('{model}/upload', ModelController::class.'@upload')->name('admin.model.upload');
+            Route::put('{model}/{id}', ModelController::class.'@updateOrCreate')->name('admin.model.update');
+            Route::delete('{model}/{id}', ModelController::class.'@destroy')->name('admin.model.destroy');
 
-            Route::get('{slug}/{id}/field/{name}', ModelController::class.'@getRelatedFieldOutput')->name('admin.model.field');
+            Route::get('{model}/{id}/field/{name}', ModelController::class.'@getRelatedFieldOutput')->name('admin.model.field');
         });
 
         Route::group(['prefix' => 'plugin'], function () {

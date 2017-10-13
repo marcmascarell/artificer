@@ -2,11 +2,11 @@
 
 namespace Mascame\Artificer\Requests;
 
-use Mascame\Artificer\Utils;
 use Mascame\Artificer\Artificer;
 use Illuminate\Database\Eloquent\Model;
 use Mascame\Artificer\Model\ModelSettings;
 use Illuminate\Foundation\Http\FormRequest;
+use Mascame\Artificer\Support\DataType;
 
 class ArtificerFormRequest extends FormRequest
 {
@@ -92,7 +92,7 @@ class ArtificerFormRequest extends FormRequest
 
     protected function validationData()
     {
-        return Utils::castData($this->all());
+        return DataType::cast($this->all());
     }
 
     /**
