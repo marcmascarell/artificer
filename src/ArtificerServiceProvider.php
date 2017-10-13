@@ -154,10 +154,6 @@ class ArtificerServiceProvider extends ServiceProvider
         $this->registerBindings();
     }
 
-
-    /**
-     *
-     */
     protected function loadConfig()
     {
         Config::mergeConfigFrom(__DIR__.'/../config', 'admin');
@@ -169,7 +165,6 @@ class ArtificerServiceProvider extends ServiceProvider
 
         config()->set('admin', $config);
     }
-
 
     private function registerBindings()
     {

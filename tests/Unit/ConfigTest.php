@@ -2,7 +2,6 @@
 
 namespace Mascame\Artificer\Tests\Unit;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mascame\Artificer\Tests\TestCase;
 
 class ConfigTest extends TestCase

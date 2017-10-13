@@ -298,7 +298,7 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider
     }
 
     /**
-     * Modified: Now it also accepts directories
+     * Modified: Now it also accepts directories.
      *
      * @param $path
      * @param $key
@@ -307,5 +307,4 @@ class ResourceInstaller extends \Illuminate\Support\ServiceProvider
     {
         Config::mergeConfigFrom($path, $key);
     }
-
 }

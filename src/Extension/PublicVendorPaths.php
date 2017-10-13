@@ -130,5 +130,4 @@ trait PublicVendorPaths
 
         return $path.$file;
     }
-
 }
