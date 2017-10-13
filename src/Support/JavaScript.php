@@ -2,7 +2,6 @@
 
 namespace Mascame\Artificer\Support;
 
-
 use Laracasts\Utilities\JavaScript\JavaScriptFacade;
 
 class JavaScript
@@ -34,5 +33,4 @@ EOT;
     {
         self::$data = array_merge(self::$data, $data);
     }
-
 }

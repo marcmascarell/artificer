@@ -4,9 +4,9 @@ namespace Mascame\Artificer\Requests;
 
 use Mascame\Artificer\Artificer;
 use Illuminate\Database\Eloquent\Model;
+use Mascame\Artificer\Support\DataType;
 use Mascame\Artificer\Model\ModelSettings;
 use Illuminate\Foundation\Http\FormRequest;
-use Mascame\Artificer\Support\DataType;
 
 class ArtificerFormRequest extends FormRequest
 {

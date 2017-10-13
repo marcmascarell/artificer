@@ -3,7 +3,6 @@
 namespace Mascame\Artificer;
 
 use Illuminate\Support\Str;
-use Mascame\Artificer\Middleware\JavaScriptMiddleware;
 use Mascame\Extender\Event\Event;
 use Illuminate\Support\ServiceProvider;
 use Mascame\Artificer\Extension\Booter;
@@ -12,6 +11,7 @@ use Mascame\Artificer\Model\ModelObtainer;
 use Mascame\Artificer\Assets\AssetsManager;
 use Mascame\Artificer\Commands\MigrationCommands;
 use Mascame\Artificer\Extension\DatabaseInstaller;
+use Mascame\Artificer\Middleware\JavaScriptMiddleware;
 use Mascame\Artificer\Plugin\Manager as PluginManager;
 use Mascame\Artificer\Widget\Manager as WidgetManager;
 use Mascame\Artificer\Providers\InstallServiceProvider;
@@ -80,7 +80,7 @@ class ArtificerServiceProvider extends ServiceProvider
     protected function addMiddleware()
     {
         \App::make('router')->middlewareGroup('artificer', [
-            JavaScriptMiddleware::class
+            JavaScriptMiddleware::class,
         ]);
 
         \App::make('router')->middlewareGroup('artificer-auth', []);

@@ -3,12 +3,12 @@
 namespace Mascame\Artificer\Controllers;
 
 use Auth;
-use Mascame\Artificer\Support\JavaScript;
 use View;
 use Request;
 use Mascame\Artificer\Artificer;
 use Illuminate\Routing\Controller;
 use Mascame\Artificer\Model\ModelManager;
+use Mascame\Artificer\Support\JavaScript;
 use Mascame\Artificer\Options\AdminOption;
 
 class BaseController extends Controller
@@ -89,9 +89,9 @@ class BaseController extends Controller
         config([
             'ziggy' => [
                 'whitelist' => [
-                    'admin.*'
-                ]
-            ]
+                    'admin.*',
+                ],
+            ],
         ]);
 
         JavaScript::add(['icons' => AdminOption::get('icons')]);

@@ -3,7 +3,6 @@
 namespace Mascame\Artificer\Middleware;
 
 use Closure;
-use Mascame\Artificer\Providers\InstallServiceProvider;
 use Mascame\Artificer\Support\JavaScript;
 
 class JavaScriptMiddleware

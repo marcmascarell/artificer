@@ -3,12 +3,12 @@
 namespace Mascame\Artificer\Model;
 
 use Mascame\Artificer\Config;
-use Mascame\Artificer\Support\DataType;
 use Mascame\Formality\Parser;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Mascame\Artificer\Fields\Field;
 use Mascame\Artificer\Fields\Factory;
+use Mascame\Artificer\Support\DataType;
 use Mascame\Artificer\Fields\Types\Relations\Relation;
 
 /**
@@ -278,7 +278,7 @@ class Model
                     $files = [$files];
                 }
 
-                /**
+                /*
                  * @var UploadedFile
                  */
                 foreach ($files as $file) {

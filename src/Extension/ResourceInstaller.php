@@ -2,9 +2,9 @@
 
 namespace Mascame\Artificer\Extension;
 
+use Mascame\Artificer\Config;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Migrations\Migrator;
-use Mascame\Artificer\Config;
 
 class ResourceInstaller extends \Illuminate\Support\ServiceProvider
 {
