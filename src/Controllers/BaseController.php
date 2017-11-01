@@ -2,7 +2,6 @@
 
 namespace Mascame\Artificer\Controllers;
 
-use Auth;
 use View;
 use Request;
 use Mascame\Artificer\Artificer;
