@@ -61,7 +61,7 @@ class DataType
         if (is_dir($path)) {
             $files = \File::allFiles($path);
 
-            /**
+            /*
              * @var \Symfony\Component\Finder\SplFileInfo
              */
             foreach ($files as $file) {
