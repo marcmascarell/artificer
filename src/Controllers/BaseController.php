@@ -50,31 +50,11 @@ class BaseController extends Controller
 
     public function __construct()
     {
-        $this->protectFromUnintendedActions();
+        $this->modelManager = Artificer::modelManager();
 
         $this->theme = AdminOption::get('theme').'::';
 
         $this->shareMainViewData();
-    }
-
-    // Todo: move to middleware
-    protected function protectFromUnintendedActions()
-    {
-        $this->whenSessionLoaded(function () {
-            $this->modelManager = Artificer::modelManager();
-
-            $action = Artificer::getCurrentAction();
-
-            if ($action) {
-                $roles = Artificer::modelManager()->current()->settings()->getOption('roles', []);
-
-                if (isset($roles[$action])
-                    && ! empty($roles[$action])
-                    && ! Artificer::auth()->user()->hasAnyRole($roles[$action])) {
-                    abort(403, 'Unauthorized action.');
-                }
-            }
-        });
     }
 
     protected function shareMainViewData()

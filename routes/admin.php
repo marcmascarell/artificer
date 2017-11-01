@@ -36,7 +36,7 @@ Route::group([
 
     \Mascame\Artificer\Artificer::pluginManager()->outputCoreRoutes();
 
-    Route::group(['middleware' => ['artificer-auth']], function () {
+    Route::group(['middleware' => ['artificer-auth', \Mascame\Artificer\Middleware\PermissionGuard::class]], function () {
         Route::get('extensions', ExtensionController::class.'@extensions')->name('admin.extensions');
 
         foreach (['plugins', 'widgets'] as $extensionType) {
