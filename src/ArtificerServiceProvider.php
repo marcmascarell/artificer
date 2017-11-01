@@ -2,7 +2,7 @@
 
 namespace Mascame\Artificer;
 
-use \App as App;
+use App as App;
 use Illuminate\Support\Str;
 use Mascame\Extender\Event\Event;
 use Illuminate\Support\ServiceProvider;
