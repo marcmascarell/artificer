@@ -16,7 +16,9 @@ class JavaScriptMiddleware
      */
     public function handle($request, Closure $next)
     {
-        JavaScript::sendDataToJS();
+        \Blade::directive('phpToJS', function () {
+            return "<?php echo \Mascame\Artificer\Support\JavaScript::transform(); ?>";
+        });
 
         return $next($request);
     }

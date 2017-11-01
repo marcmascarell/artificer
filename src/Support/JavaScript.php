@@ -6,15 +6,14 @@ use Laracasts\Utilities\JavaScript\JavaScriptFacade;
 
 class JavaScript
 {
+    /**
+     * @var array
+     */
     private static $data = [];
 
-    public static function sendDataToJS()
-    {
-        \Blade::directive('phpToJS', function () {
-            return "<?php echo \Mascame\Artificer\Support\JavaScript::transform(); ?>";
-        });
-    }
-
+    /**
+     * @return string
+     */
     public static function transform()
     {
         $data = JavaScriptFacade::constructJavaScript(self::$data);
@@ -27,10 +26,13 @@ EOT;
     }
 
     /**
+     * Merges the given data
+     *
      * @param $data
      */
     public static function add($data)
     {
         self::$data = array_merge(self::$data, $data);
     }
+
 }
