@@ -26,7 +26,7 @@ EOT;
     }
 
     /**
-     * Merges the given data
+     * Merges the given data.
      *
      * @param $data
      */
@@ -34,5 +34,4 @@ EOT;
     {
         self::$data = array_merge(self::$data, $data);
     }
-
 }
