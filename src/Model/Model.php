@@ -2,6 +2,7 @@
 
 namespace Mascame\Artificer\Model;
 
+use Illuminate\Support\Str;
 use Mascame\Artificer\Config;
 use Mascame\Formality\Parser;
 use Illuminate\Http\UploadedFile;
@@ -259,7 +260,12 @@ class Model
                 $relationValues = [];
 
                 if ($field->getType() === 'hasMany') {
-                    $ids = explode(',', $values[$name]);
+
+                    if (Str::contains(',', $values[$name])) {
+                        $ids = explode(',', $values[$name]);
+                    } else {
+                        $ids = [$values[$name]];
+                    }
 
                     $relationValues = $field->relatedModel->model->whereIn('id', $ids)->get();
                 }
