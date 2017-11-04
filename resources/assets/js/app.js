@@ -59,6 +59,13 @@ const router = new VueRouter({
 const app = new Vue({
     router,
     data() {
-        return window.AppData || {};
+        return {
+            iframe: null
+        };
+    },
+    methods: {
+        openIframe(iframe) {
+            this.iframe = iframe;
+        }
     }
 }).$mount('#app');
