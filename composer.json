@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": ">=7.0.0",
-    "mascame/artificer-default-theme": "dev-l5-migration",
+    "mascame/artificer-default-theme": "dev-master",
     "mascame/artificer-login-plugin": "dev-master",
     "mascame/extender": "dev-master",
     "stolz/assets": "^0.1.9",
