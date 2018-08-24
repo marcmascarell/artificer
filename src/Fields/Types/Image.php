@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Fields\Types;
+<?php
+
+namespace Mascame\Artificer\Fields\Types;
 
 use Form;
 use Illuminate\Support\Str;

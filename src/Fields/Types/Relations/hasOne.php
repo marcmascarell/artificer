@@ -1,4 +1,6 @@
-<?php namespace Mascame\Artificer\Fields\Types\Relations;
+<?php
+
+namespace Mascame\Artificer\Fields\Types\Relations;
 
 use URL;
 use Form;
