@@ -1,3 +1,11 @@
+**Important**
+
+Since August 2018 Laravel has [Nova](https://nova.laravel.com/) which essentialy does a very similar job to what I aimed for, you should use that instead. If you are looking for an Open Source option you should check [Voyager](https://laravelvoyager.com/).
+
+As of now this project is deprecated but maybe takes a new direction at anytime.
+
+---
+
 <p align="center">
  <img src="https://cloud.githubusercontent.com/assets/642299/19163982/726d7934-8bfe-11e6-8805-c7a52512eb2a.png" alt="Artificer" title="Artificer" />
  <h1 align="center">Artificer</h1>
